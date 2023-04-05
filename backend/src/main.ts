@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import * as fs from 'fs'
+import * as yaml from 'yaml'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -23,6 +25,10 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: false,
     })
+
+    const yamlString: string = yaml.stringify(document, {})
+    fs.writeFileSync('../api.yaml', yamlString)
+
     SwaggerModule.setup('swagger', app, document)
   }
 
