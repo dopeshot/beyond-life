@@ -1,12 +1,17 @@
 import { Controller, Get } from '@nestjs/common'
-import { AppService } from './app.service'
+import { ApiProperty, ApiResponse } from '@nestjs/swagger'
 
+class STUFF {
+  @ApiProperty()
+  first: string
+  @ApiProperty()
+  second: string
+}
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello()
+  @ApiResponse({ status: 200, description: 'Hello World!', type: STUFF })
+  getHello(): STUFF {
+    return { first: 'Hello', second: 'World' }
   }
 }
