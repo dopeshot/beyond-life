@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "openapi-fetch": "^0.0.5",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "typescript": "^5.0.3"
+  },
+  "scripts": {
+    "fetch": "npx openapi-fetch --url http://localhost:3001/swagger-yaml --output ./src/api.d.ts",
+    "build": "tsc",
+    "start": "tsc && node dist/index.js"
+  }
+}

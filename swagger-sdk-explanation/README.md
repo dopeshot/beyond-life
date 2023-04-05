@@ -7,7 +7,9 @@ There are different scripts to accomplish this, in this example I used the [open
 ## Usage
   
 ```sh
-npx openapi-typescript http://localhost/3001/swagger-json --output api.d.ts
+npx openapi-typescript http://localhost/3001/swagger-yaml --output ./src/api.d.ts
+// or
+npm run fetch
 ```
 
-See the [api](./api.d.ts) for a sample sdk and [test.ts](./test.ts) for the usage.
+See the [api](./src/api.d.ts) for a sample sdk and [index.ts](./src/index.ts) for the usage.
