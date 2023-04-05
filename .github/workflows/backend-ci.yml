@@ -56,7 +56,7 @@ jobs:
       - name: tests
         run: npm run test
 
-e2e-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     needs: setup
     defaults:
