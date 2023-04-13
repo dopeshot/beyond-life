@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import i18nConfig from '../../next-i18next.config'
 import languageDetector from './languageDetector'
 
 /**
@@ -20,7 +21,7 @@ export const useRedirect = (to?: string): React.ReactNode => {
         }
 
         if (languageDetector.cache)
-            languageDetector.cache(detectedLanguage ?? 'en')
+            languageDetector.cache(detectedLanguage ?? i18nConfig.i18n.defaultLocale)
         router.replace('/' + detectedLanguage + to)
     })
 
