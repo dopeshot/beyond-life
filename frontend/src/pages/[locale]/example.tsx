@@ -24,17 +24,17 @@ export { getStaticPaths, getStaticProps }
 export default SecondPage
 
 // If you want to merge the i18n props with other props...
-// export { getStaticPaths }
 // export const getStaticProps: GetStaticProps<any> = async (context) => {
 //     // some data fetched from anywhere...
 //     const someData = 'hello world'
 //     return {
 //         props: {
 //             ...(await getI18nProps(context, [
-//                 'secondPage',
+//                 'example',
 //                 'common',
 //             ])),
 //             someData,
 //         },
 //     }
 // }
+// export { getStaticPaths }
