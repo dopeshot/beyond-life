@@ -12,7 +12,7 @@ const SecondPage = () => {
             <title>{siteTitle}</title>
         </Head>
         <main className="container">
-            <Link href="/">{t('back-home')}</Link>
+            <Link href="/">{t("back-home")}</Link>
             <h1 className="font-bold text-2xl">{t("example:h1")}</h1>
         </main>
     </>

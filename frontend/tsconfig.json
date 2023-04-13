@@ -23,7 +23,6 @@
                 "./src/*"
             ]
         },
-        "baseUrl": "./",
         "types": [
             "cypress"
         ],
@@ -34,6 +33,7 @@
         "**/*.tsx",
         "cypress",
         "cypress.d.ts",
+        "i18next.d.ts",
         "next-i18next.config.js"
     ],
     "exclude": [
