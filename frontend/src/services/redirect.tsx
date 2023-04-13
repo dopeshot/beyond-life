@@ -2,6 +2,10 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import languageDetector from './languageDetector'
 
+/**
+ * Handles the redirecting to the correct language.
+ * @param to optional use whe you want to redirect to a different page.
+ */
 export const useRedirect = (to?: string): React.ReactNode => {
     const router = useRouter()
     to = to || router.asPath
@@ -23,13 +27,11 @@ export const useRedirect = (to?: string): React.ReactNode => {
     return <></>
 }
 
+/**
+ * Helper component to use the redirect hook.
+ * Use this component instead of the hook.
+ */
 export const Redirect = () => {
     useRedirect()
-    return <></>
-}
-
-// eslint-disable-next-line react/display-name
-export const getRedirect = (to: string) => () => {
-    useRedirect(to)
     return <></>
 }
