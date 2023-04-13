@@ -22,12 +22,18 @@
             "@/*": [
                 "./src/*"
             ]
-        }
+        },
+        "baseUrl": "./",
+        "types": [
+            "cypress"
+        ],
     },
     "include": [
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
+        "cypress",
+        "cypress.d.ts",
         "next-i18next.config.js"
     ],
     "exclude": [
