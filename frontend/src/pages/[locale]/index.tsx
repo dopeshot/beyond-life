@@ -1,4 +1,4 @@
-import LanguageSwitchLink from '@/components/LanguageSwitcher'
+import LanguageSwitchLink from '@/components/LanguageSwitchLink'
 import Link from '@/components/Link'
 import { getStaticPaths, makeStaticProps } from '@/services/getStatic'
 import { useTranslation } from 'next-i18next'
