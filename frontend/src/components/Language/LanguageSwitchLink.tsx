@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import i18nConfig from '../../next-i18next.config'
+import i18nConfig from '../../../next-i18next.config'
 
 type LanguageSwitchLinkProps = {
     /** Sets custom language */

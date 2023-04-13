@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next"
 import Head from "next/head"
-import Link from "../../components/Link"
+import Link from "../../components/Link/Link"
 import { getStaticPaths, makeStaticProps } from "../../services/getStatic"
 
 const SecondPage = () => {

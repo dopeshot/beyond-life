@@ -2,8 +2,8 @@ import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import i18nextConfig from '../../../next-i18next.config'
-import LanguageSwitchLink from '../../components/LanguageSwitchLink'
-import Link from '../../components/Link'
+import LanguageSwitchLink from '../../components/Language/LanguageSwitchLink'
+import Link from '../../components/Link/Link'
 import { getStaticPaths, makeStaticProps } from '../../services/getStatic'
 
 /**
