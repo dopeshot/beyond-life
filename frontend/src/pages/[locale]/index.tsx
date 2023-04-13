@@ -1,10 +1,10 @@
-import LanguageSwitchLink from '@/components/LanguageSwitchLink'
-import Link from '@/components/Link'
-import { getStaticPaths, makeStaticProps } from '@/services/getStatic'
 import { useTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import i18nextConfig from '../../../next-i18next.config'
+import LanguageSwitchLink from '../../components/LanguageSwitchLink'
+import Link from '../../components/Link'
+import { getStaticPaths, makeStaticProps } from '../../services/getStatic'
 
 /**
  * Index Page
