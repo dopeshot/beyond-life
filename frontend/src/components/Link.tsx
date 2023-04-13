@@ -2,9 +2,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 type LinkComponentProps = {
+    /** Sets custom language */
     locale?: string
+    /** Link we want to go to.  */
     href?: string
+    /** Set to true when it should ignore language handling. */
     skipLocaleHandling?: boolean
+    /** Link text. */
     children: React.ReactNode
 }
 
@@ -14,13 +18,16 @@ type LinkComponentProps = {
 const LinkComponent: React.FC<LinkComponentProps> = ({ children, skipLocaleHandling, ...rest }) => {
     const router = useRouter()
     let locale = rest.locale || router.query.locale || ''
+    let href = rest.href || router.asPath
 
+    // When locale is an array, we need to get the first item.
     if (typeof locale === "object") locale = locale[0]
 
-    let href = rest.href || router.asPath
+    // Manage external links.
     if (href.indexOf('http') === 0)
-        skipLocaleHandling = true
+        return <a href={href}>{children}</a>
 
+    // Update href to include language
     if (locale && !skipLocaleHandling)
         href = href ? `/${locale}${href}` : router.pathname.replace('[locale]', locale)
 
