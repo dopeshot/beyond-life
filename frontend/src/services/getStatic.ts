@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { Namespaces } from '../../i18next'
 import i18nConfig from '../../next-i18next.config'
 
 /**
@@ -8,7 +9,7 @@ import i18nConfig from '../../next-i18next.config'
  * @param namespaces the namespaces that are used in the page
  * @returns i18n props
  */
-export async function getI18nProps(context: InferGetStaticPropsType<any>, namespaces: string[] = ['common']) {
+export async function getI18nProps(context: InferGetStaticPropsType<any>, namespaces: Namespaces[] = ["common"]) {
     const locale = context?.params?.locale
 
     let props = {
@@ -22,7 +23,7 @@ export async function getI18nProps(context: InferGetStaticPropsType<any>, namesp
  * @param namespaces the namespaces that are used in the page
  * @returns i18n props
  */
-export function makeStaticProps(namespaces: string[]) {
+export function makeStaticProps(namespaces: Namespaces[]) {
     return async function getStaticProps(context: InferGetStaticPropsType<any>) {
         return {
             props: await getI18nProps(context, namespaces)
