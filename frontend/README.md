@@ -27,6 +27,10 @@ npm run test-e2e:cli
 npm run test-components:cli
 ```
 
+### Dev Rules
+
+- i18n keys with snake_case, e.g.: `back_to_home`, `settings`, `settings_display_username`
+
 ### Tools
 
 - [Nextjs](https://nextjs.org/) is used as frontend framework.
