@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 import i18nConfig from '../../../next-i18next.config'
 
 type LanguageSwitchLinkProps = {
@@ -11,20 +12,27 @@ type LanguageSwitchLinkProps = {
 
 const LanguageSwitchLink: React.FC<LanguageSwitchLinkProps> = ({ locale = i18nConfig.i18n.defaultLocale, ...rest }) => {
     const router = useRouter()
-    let pathName = router.pathname
 
-    Object.keys(router.query).forEach((key) => {
-        if (key === 'locale') {
-            pathName = pathName.replace(`[${key}]`, locale)
-            return
-        }
+    const pathName = useMemo(() => {
+        let newPathName = router.pathname
+        Object.keys(router.query).forEach((key) => {
+            if (key === 'locale') {
+                newPathName = newPathName.replace(`[${key}]`, locale)
+                return
+            }
 
-        let routerQuery = router.query[key]
-        if (routerQuery instanceof Array) routerQuery = routerQuery[0]
-        pathName = pathName.replace(`[${key}]`, routerQuery ?? "")
-    })
+            let routerQuery = router.query[key]
+            if (routerQuery instanceof Array) routerQuery = routerQuery[0]
+            newPathName = newPathName.replace(`[${key}]`, routerQuery ?? '')
+        })
 
-    let href = rest.href ? `/${locale}${rest.href}` : pathName
+        return newPathName
+    }, [router.pathname, router.query, locale])
+
+    const href = useMemo(() => {
+        return rest.href ? `/${locale}${rest.href}` : pathName
+    }, [rest.href, pathName, locale])
+
     return <Link href={href}>
         {locale}
     </Link>
