@@ -19,8 +19,8 @@ const Home = () => {
             <title>BeyondLife</title>
         </Head>
         <main className="container">
-            <h1 className="font-bold text-2xl">{t('title')}</h1>
-            <Link href="/example">{t('example-link')}</Link>
+            <h1 className="font-bold text-2xl">{t("greeting")}</h1>
+            <Link href="/example">{t("example_link")}</Link>
 
             {/* Language Switcher */}
             <div>

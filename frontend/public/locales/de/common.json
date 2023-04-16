@@ -1,5 +1,5 @@
 {
-    "back-home": "Zurück zur Hauptseite",
-    "example-link": "Beispiel Link",
-    "title": "Hallo"
+    "back_to_main_page": "Zurück zur Hauptseite",
+    "example_link": "Beispiel Link",
+    "greeting": "Hallo"
 }

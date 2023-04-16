@@ -5,15 +5,15 @@ import { getStaticPaths, makeStaticProps } from "../../services/getStatic"
 
 const SecondPage = () => {
     const { t } = useTranslation(['common', 'example'])
-    const siteTitle = `${t("example:h1")} | BeyondLife`
+    const siteTitle = `${t("example:goodbye")} | BeyondLife`
 
     return <>
         <Head>
             <title>{siteTitle}</title>
         </Head>
         <main className="container">
-            <Link href="/">{t("back-home")}</Link>
-            <h1 className="font-bold text-2xl">{t("example:h1")}</h1>
+            <Link href="/">{t("back_to_main_page")}</Link>
+            <h1 className="font-bold text-2xl">{t("example:goodbye")}</h1>
         </main>
     </>
 }

@@ -1,5 +1,5 @@
 {
-    "back-home": "Back home",
-    "example-link": "Example Link",
-    "title": "Hello"
+    "back_to_main_page": "Back home",
+    "example_link": "Example Link",
+    "greeting": "Hello"
 }
