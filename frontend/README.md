@@ -21,10 +21,10 @@ npm run start # Starts that build
 npm run test 
 
 # Run e2e tests in cli (without client)
-npm run test-e2e:cli
+npm run te:cli
 
 # Run component + unit tests in cli (without client)
-npm run test-components:cli
+npm run tc:cli
 ```
 
 ### Dev Rules

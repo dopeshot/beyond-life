@@ -8,8 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "test": "npx cypress open",
-        "test-components:cli": "npx cypress run --component",
-        "test-e2e:cli": "npx cypress run"
+        "tc:cli": "npx cypress run --component",
+        "te:cli": "npx cypress run"
     },
     "dependencies": {
         "@mui/base": "^5.0.0-alpha.125",
