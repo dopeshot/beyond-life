@@ -27,9 +27,9 @@ npm run te:cli
 npm run tc:cli
 ```
 
-### Dev Rules
+### Development Guidelines
 
-- i18n keys with snake_case, e.g.: `back_to_home`, `settings`, `settings_display_username`
+- Naming Conventions i18n keys with snake_case, e.g.: `back_to_home`, `settings`, `settings_display_username`
 
 ### Tools
 
