@@ -53,8 +53,14 @@ jobs:
       - name: node modules
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
-      - name: run tests
-        run: npm run te:cli
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        timeout-minutes: 15
+        with:
+          working-directory: ./frontend
+          build: npm run build
+          start: npm start
+          command: npm run te:cli
           
       - uses: actions/upload-artifact@v3
         if: always()
@@ -88,8 +94,14 @@ jobs:
       - name: node modules
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
-      - name: run tests
-        run: npm run te:cli
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        timeout-minutes: 15
+        with:
+          working-directory: ./frontend
+          build: npm run build
+          start: npm start
+          command: npm run tc:cli
           
       - uses: actions/upload-artifact@v3
         if: always()
