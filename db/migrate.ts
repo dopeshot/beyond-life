@@ -82,7 +82,7 @@ async function getCurrentState(dataSource: DataSource): Promise<number> {
 async function findMigrationNameForVersion(version: number){
 	const name =  fs.readdirSync('migrations', {withFileTypes: true} ).filter((item) => item.isDirectory() && item.name.substring(0,item.name.indexOf('-')) === version.toString()).map((item)=> item.name)
 	if (name.length === 0){
-		throw new Error(chalk.red('Verison number does not have corresponding migration in clientFolder'))
+		throw new Error(chalk.red('Version number does not have corresponding migration in clientFolder'))
 	}
 	return name[0]
 }
