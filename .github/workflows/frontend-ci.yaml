@@ -32,9 +32,13 @@ jobs:
           path: ~/.npm
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
-  e2e-tests:
+  tests:
     runs-on: ubuntu-latest
     needs: setup
+    strategy:
+      matrix:
+        # Run arm and amd build seperatly
+        version: [te:cli, tc:cli]
     defaults:
       run:
         shell: bash
@@ -60,7 +64,7 @@ jobs:
           working-directory: ./frontend
           build: npm run build
           start: npm start
-          command: npm run te:cli
+          command: npm run ${{ matrix.version }}
           
       - uses: actions/upload-artifact@v3
         if: always()
@@ -73,50 +77,9 @@ jobs:
             frontend/cypress/videos/*
             frontend/coverage
 
-  component-tests:
-    runs-on: ubuntu-latest
-    needs: setup
-    defaults:
-      run:
-        shell: bash
-        working-directory: frontend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Load cache
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-
-      - name: node modules
-        run: npm ci --audit:false --cache ~/.npm --prefer-offline
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        timeout-minutes: 15
-        with:
-          working-directory: ./frontend
-          build: npm run build
-          start: npm start
-          command: npm run tc:cli
-          
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: component-test-reports
-          path: |
-            frontend/cypress/results/*
-            frontend/cypress/reports/*
-            frontend/cypress/screenshots/*
-            frontend/cypress/videos/*
-            frontend/coverage
-
   docker-build-and-push:
     runs-on: ubuntu-latest
-    needs: [e2e-tests, component-tests]
+    needs: [tests]
     strategy:
       matrix:
         # Run arm and amd build seperatly
