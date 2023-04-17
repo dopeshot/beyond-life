@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         # Run arm and amd build seperatly
-        version: [te:cli, tc:cli]
+        version: ["te:cli", "tc:cli"]
     defaults:
       run:
         shell: bash
