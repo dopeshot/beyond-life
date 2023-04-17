@@ -140,8 +140,8 @@ async function main(args: string[]){
 			break
 		case 'prev':
 			console.log(chalk.blue('Unapplying one migration'))
-			 await unapplyMigrationsFrom(sourceDB, currentState, 1)
-			 console.log(chalk.green('Unapplied one migration.'))
+			await unapplyMigrationsFrom(sourceDB, currentState, 1)
+			console.log(chalk.green('Unapplied one migration.'))
 			break
 		case 'status':
 			if (currentState != 0){
