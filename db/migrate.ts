@@ -48,7 +48,7 @@ async function applyMigrationsFrom(dataSource: DataSource, version : number, cou
 	const nonAppliedMigrations = allMigrationNames.filter((item)=> +item.substring(0, item.indexOf('-')) > version).sort() // Strings start with (unique) number, therefore default sorting is fine
 	let appliedMigrationCount = 0
 	const queryRunner = dataSource.createQueryRunner()
-	// Before starting,create necessary table if not exists 
+	// Before starting, create necessary table if not exists 
 	await queryRunner.query(`CREATE TABLE IF NOT EXISTS migration_state(version integer)`)
 	for (const migration of nonAppliedMigrations){
 		console.log(migration)
