@@ -121,7 +121,7 @@ async function main(args: string[]){
 			console.log(chalk.blue('Create Migration'))
 			const name = args[1]
 			createNewMigration(name)
-			console.log(chalk.green('Ending sucessfully'))
+			console.log(chalk.green('Ending successfully'))
 			break	
 		case 'up':
 			console.log(chalk.blue('Applying migrations'))
