@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AppController } from './app.controller'
+import { PermissionGroupsModule } from './permission-groups/permission-groups.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AppController } from './app.controller'
       }),
       inject: [ConfigService],
     }),
+    PermissionGroupsModule,
   ],
   controllers: [AppController],
   providers: [],
