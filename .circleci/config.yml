@@ -8,7 +8,7 @@ jobs:
     executor: node/default 
     working_directory: ~/beyond-life/backend
     steps:
-      - checkout
+      - checkout:
           path: ~/beyond-life
       - node/install-packages:
           pkg-manager: npm
@@ -19,41 +19,7 @@ jobs:
     executor: node/default 
     working_directory: ~/beyond-life/frontend
     steps:
-      - checkout
-          path: ~/beyond-life
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          command: npm audit
-          name: Audit
-
-workflows:
-  audit-workflow:
-    jobs:
-      - audit-frontend
-      - audit-backend
-version: 2.1
-
-orbs:
-  node: circleci/node@5.1.0
-
-jobs:
-  audit-backend: 
-    executor: node/default 
-    working_directory: ~/beyond-life/backend
-    steps:
-      - checkout
-          path: ~/beyond-life
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          command: npm audit
-          name: Audit
-  audit-frontend: 
-    executor: node/default 
-    working_directory: ~/beyond-life/frontend
-    steps:
-      - checkout
+      - checkout:
           path: ~/beyond-life
       - node/install-packages:
           pkg-manager: npm
