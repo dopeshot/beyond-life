@@ -1,8 +1,9 @@
 import { DataSource } from "typeorm";
 import { newDb } from 'pg-mem';
+import { UserEntity } from "../../src/db/entities/users.entity";
 
 // List of all entities in the application
-const DEFAULT_ENTITIES = []
+const DEFAULT_ENTITIES = [UserEntity]
 
 
 /**

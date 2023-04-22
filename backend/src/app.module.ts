@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { AppController } from './app.controller'
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { SharedModule } from './shared/shared.module';
+import { DbModule } from './db/db.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { AppController } from './app.controller'
       }),
       inject: [ConfigService],
     }),
+    SharedModule,
+    DbModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
