@@ -6,9 +6,10 @@ orbs:
 jobs:
   audit-backend: 
     executor: node/default 
-    working_directory: ~/backend
+    working_directory: ~/beyond-life/backend
     steps:
       - checkout
+          path: ~/beyond-life
       - node/install-packages:
           pkg-manager: npm
       - run:
@@ -16,9 +17,10 @@ jobs:
           name: Audit
   audit-frontend: 
     executor: node/default 
-    working_directory: ~/frontend
+    working_directory: ~/beyond-life/frontend
     steps:
       - checkout
+          path: ~/beyond-life
       - node/install-packages:
           pkg-manager: npm
       - run:
