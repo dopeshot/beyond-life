@@ -72,14 +72,14 @@ jobs:
 
       - name: Hash existing
         run: echo "OLD_HASH=$(sha1sum ./frontend/src/generated/schema.ts)" >> "$GITHUB_OUTPUT"
-        id: type-hasher
+        id: type-hasher-old
 
       - name: Generate types
         run: sh typegen.sh
 
       - name: Hash created
         run: echo "NEW_HASH=$(sha1sum ./frontend/src/generated/schema.ts)" >> "$GITHUB_OUTPUT"
-        id: type-hasher
+        id: type-hasher-new
 
       - name: Cache
         id: cache
@@ -90,7 +90,7 @@ jobs:
 
 
   commit-types:
-    if: steps.type-hasher.OLD_HASH != steps.type-hasher.NEW_HASH
+    if: steps.type-hasher-old.OLD_HASH != steps.type-hasher-new.NEW_HASH
     runs-on: ubuntu-latest
     needs: [update-types]
     defaults:
