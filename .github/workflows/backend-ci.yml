@@ -111,6 +111,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BOT_PAT }}
 
       - name: Load cache
         id: cache
@@ -118,15 +120,17 @@ jobs:
         with:
           path: frontend/src/generated/schema.ts
           key: types-${{ github.sha }}
+          
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add frontend/src/generated/schema.ts
+          git commit -m "generated"
+          
+      - name: Push
+        run: git push
 
-      - name: Commit types
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: "frontend/src/generated/schema.ts"
-          message: "Added types"
-          fetch: true
-          pathspec_error_handling: exitImmediately
-          push: origin HEAD:${{ github.head_ref }} --force
 
   docker-build-and-push:
     runs-on: ubuntu-latest
