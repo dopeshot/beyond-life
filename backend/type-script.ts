@@ -26,7 +26,7 @@ async function main() {
   const yamlString = yaml.stringify(document, {});
   fs.writeFileSync('./api.yaml', yamlString);
 
-  exec('npx openapi-typescript schema.yaml --output types.ts');
+  exec('npx openapi-typescript schema.yaml --output schema.ts');
   fs.rmSync('./api.yaml');
 }
 
