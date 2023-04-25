@@ -124,6 +124,7 @@ jobs:
         with:
           add: "frontend/src/generated/schema.ts"
           message: "Added types"
+          fetch: true
           pathspec_error_handling: exitImmediately
           push: origin HEAD:${{ github.head_ref }}
 
