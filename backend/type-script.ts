@@ -5,7 +5,9 @@ import * as fs from 'fs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DataSource } from 'typeorm';
 import { setupDataSource } from './test/helpers/db.helper';
-import { exec } from 'child_process';
+import {promisify} from 'util';
+
+const exec = promisify(require('node:child_process').exec);
 
 async function main() {
   const dataSource = await setupDataSource();
@@ -26,7 +28,10 @@ async function main() {
   const yamlString = yaml.stringify(document, {});
   fs.writeFileSync('./api.yaml', yamlString);
 
-  exec('npx openapi-typescript schema.yaml --output schema.ts');
+  const { stdout, stderr } = await exec('npx openapi-typescript api.yaml --output schema.ts');
+  console.log('stdout:', stdout);
+  console.error('stderr:', stderr);
+
   fs.rmSync('./api.yaml');
 }
 
