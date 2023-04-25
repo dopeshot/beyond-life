@@ -72,6 +72,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: Load cache
+        id: load-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: node modules
+        working-directory: ./backend
+        run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
       - name: Hash existing
         run: echo "OLD_HASH=$(sha1sum ./frontend/src/generated/schema.ts)" >> "$GITHUB_OUTPUT"
