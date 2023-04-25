@@ -90,7 +90,7 @@ jobs:
 
 
   commit-types:
-    if: steps.type-hasher-old.OLD_HASH != steps.type-hasher-new.NEW_HASH
+    if: ${{ steps.type-hasher-old.OLD_HASH }} != ${{ steps.type-hasher-new.NEW_HASH }}
     runs-on: ubuntu-latest
     needs: [update-types]
     defaults:
