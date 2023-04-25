@@ -127,6 +127,7 @@ jobs:
           fetch: true
           pathspec_error_handling: exitImmediately
           push: origin HEAD:${{ github.head_ref }}
+          pull: '--rebase'
 
   docker-build-and-push:
     runs-on: ubuntu-latest
