@@ -126,8 +126,7 @@ jobs:
           message: "Added types"
           fetch: true
           pathspec_error_handling: exitImmediately
-          push: origin HEAD:${{ github.head_ref }}
-          pull: '--rebase'
+          push: origin HEAD:${{ github.head_ref }} --force
 
   docker-build-and-push:
     runs-on: ubuntu-latest
