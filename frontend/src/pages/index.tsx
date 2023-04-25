@@ -1,3 +1,7 @@
-// This component redirects to the correct language.
-import { Redirect } from '../services/redirect'
-export default Redirect
+const Home = () => {
+    return <>
+        <h1 className="text-red-500">Home</h1>
+    </>
+}
+
+export default Home
