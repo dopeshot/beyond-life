@@ -1,4 +1,4 @@
-( cd backend && npm run gen:types ) > /dev/null
+( cd backend && npm run gen:types )
 ls backend
 if [ -f ./backend/schema.ts ]; then
 	if [[ $(sha1sum ./backend/schema.ts) = $(sha1sum ./frontend/src/generated/schema.ts) ]]; then
