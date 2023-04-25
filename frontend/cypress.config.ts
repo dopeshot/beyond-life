@@ -6,6 +6,7 @@ export default defineConfig({
     baseUrl: "http://localhost:3000",
   },
   component: {
+    specPattern: "**/*.{cy,unit}.{js,jsx,ts,tsx}",
     devServer: {
       framework: "next",
       bundler: "webpack",
