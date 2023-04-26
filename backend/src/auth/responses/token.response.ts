@@ -10,6 +10,7 @@ export class TokenResponse {
     description: 'JWT access_token used for direct access to protected endpoints',
   })
   access_token: string;
+  
   @Expose()
   @ApiProperty({
     description: 'JWT refresh_token used for refreshing the access_token',
