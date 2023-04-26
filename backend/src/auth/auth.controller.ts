@@ -39,7 +39,7 @@ export class AuthController {
 
   @Post('register')
   @ApiBody({ type: RegisterDTO })
-  @ApiOperation({ summary: 'Register new users' })
+  @ApiOperation({ summary: 'Register new user' })
   @ApiConflictResponse({
     description: 'User properties already in use',
   })
