@@ -57,7 +57,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: LoginDTO })
-  @ApiOperation({ summary: 'Login existing users' })
+  @ApiOperation({ summary: 'Login existing user' })
   @ApiUnauthorizedResponse({
     description: 'User credentials are invalid/User has been banned',
   })
