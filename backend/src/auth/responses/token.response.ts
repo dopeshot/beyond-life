@@ -7,7 +7,7 @@ import { Expose } from 'class-transformer';
 export class TokenResponse {
   @Expose()
   @ApiProperty({
-    description: 'JWT access_token used for direct acces to proteced endpoints',
+    description: 'JWT access_token used for direct access to protected endpoints',
   })
   access_token: string;
   @Expose()
