@@ -1,10 +1,13 @@
+import { Headline } from "../components/Headline"
+
 /**
  * Index Page
  */
 const Home = () => {
-  return <>
-    <h1 className="text-red-500">Hello</h1>
-  </>
+    return <div className="container">
+        <Headline>Headline</Headline>
+        <p className="text-gray-800">Paragraph</p>
+    </div>
 }
 
 export default Home
