@@ -18,6 +18,11 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
         "paths": {
             "@/*": [
                 "./src/*"
@@ -31,6 +36,7 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
+        ".next/types/**/*.ts",
         "cypress",
         "cypress.d.ts",
         "i18next.d.ts",
