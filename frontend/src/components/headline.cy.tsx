@@ -18,7 +18,7 @@ describe("Headline", () => {
         })
 
         it("should display margin when set hasMargin is set to true", () => {
-            cy.get(`h${LEVEL}`).should("have.class", "mb-2 md:mb-4")
+            cy.get(`h${LEVEL}`).should("have.class", "mb-2")
         })
     })
 
@@ -28,7 +28,7 @@ describe("Headline", () => {
                 Test
             </Headline>
         )
-        cy.get(`h${LEVEL}`).should("not.have.class", "mb-2 md:mb-4")
+        cy.get(`h${LEVEL}`).should("not.have.class", "mb-2")
     })
 })
 
