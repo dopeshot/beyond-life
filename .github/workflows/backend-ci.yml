@@ -65,9 +65,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    outputs:
-      new-hash: ${{ steps.type-hasher-old.outputs.OLD_HASH }}
-      old-hash: ${{ steps.type-hasher-new.outputs.NEW_HASH }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -83,16 +80,8 @@ jobs:
         working-directory: ./backend
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
-      - name: Hash existing
-        run: echo "OLD_HASH=$(sha1sum ./frontend/src/generated/schema.ts | awk '{ print $1 }')" >> "$GITHUB_OUTPUT"
-        id: type-hasher-old
-
       - name: Generate types
         run: sh typegen.sh
-
-      - name: Hash created
-        run: echo "NEW_HASH=$(sha1sum ./frontend/src/generated/schema.ts | awk '{ print $1 }' )" >> "$GITHUB_OUTPUT"
-        id: type-hasher-new
 
       - name: Cache
         id: cache
@@ -103,7 +92,6 @@ jobs:
 
   commit-types:
     needs: [update-types]
-    if: ${{ needs.update-types.outputs.old-hash }} != ${{ needs.update-types.outputs.new-hash }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -114,8 +102,6 @@ jobs:
         with:
           token: ${{ secrets.BOT_PAT }}
           ref: ${{ github.head_ref }}
-
-      - run: echo ${{ needs.update-types.outputs.old-hash }} ${{ needs.update-types.outputs.new-hash }} 
 
       - name: Load cache
         id: cache
@@ -129,7 +115,7 @@ jobs:
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
           git add frontend/src/generated/schema.ts
-          git commit -m "generated"
+          git commit -m "generated" || echo "No changes to commit"
           
       - name: Push
         run: git push
