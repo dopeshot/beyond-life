@@ -3,7 +3,7 @@ import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { GlobalNavbar } from '../../components/Navbar/GlobalNavbar/GlobalNavbar'
 import './../globals.css'
 
-const font = Plus_Jakarta_Sans({ subsets: ['latin'] })
+export const fontPlusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
 export const metadata = {
     title: 'Beyond Life',
@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return <html lang="en">
-        <body className={`flex flex-col min-h-screen ${font.className}`}>
+        <body className={`flex flex-col min-h-screen ${fontPlusJakartaSans.className}`}>
             <GlobalNavbar />
             {children}
             <GlobalFooter />

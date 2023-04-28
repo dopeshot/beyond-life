@@ -1,7 +1,7 @@
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { fontPlusJakartaSans } from '../(global)/layout'
+import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
+import { ModuleNavbar } from '../../components/Navbar/ModuleNavbar/ModuleNavbar'
 import './../globals.css'
-
-const font = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
 export const metadata = {
     title: 'Beyond Life',
@@ -10,8 +10,10 @@ export const metadata = {
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
     return <html lang="en">
-        <body className={font.className}>
+        <body className={`flex flex-col min-h-screen ${fontPlusJakartaSans.className}`}>
+            <ModuleNavbar />
             {children}
+            <GlobalFooter />
         </body>
     </html>
 }
