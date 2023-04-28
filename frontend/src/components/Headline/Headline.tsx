@@ -1,3 +1,5 @@
+import { fontArbutusSlab } from "../../app/(global)/layout"
+
 type HeadlineProps = {
     /** Content of Headline. */
     children: React.ReactNode
@@ -17,7 +19,7 @@ type HeadlineProps = {
 
 /** Defines the classes for each size level */
 export const textSizes: { [K in Required<HeadlineProps>["level"]]: string } = {
-    1: "text-xl",
+    1: "text-2xl",
     2: "text-xl",
     3: "text-lg",
     4: "text-base md:text-lg",
@@ -33,7 +35,7 @@ export const Headline: React.FC<HeadlineProps> = ({ level = 1, children, size, t
     const CustomTag = `h${level}` as keyof JSX.IntrinsicElements
 
     return (
-        <CustomTag title={title} className={`${size ?? textSizes[level]} font-bold ${hasMargin ? "mb-2" : ""} ${className}`}>
+        <CustomTag title={title} className={`${size ?? textSizes[level]} ${level === 1 && fontArbutusSlab.className} font-bold ${hasMargin ? "mb-2" : ""} ${className}`}>
             {children}
         </CustomTag>
     )

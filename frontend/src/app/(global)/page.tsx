@@ -8,6 +8,11 @@ import { routes } from "../../services/routes"
 const Home = () => {
     return <div className="container">
         <Headline>Haupt Startseite</Headline>
+        <div className="flex gap-3">
+            <div className="bg-yellow h-10 w-10" />
+            <div className="bg-red h-10 w-10" />
+            <div className="bg-dark h-10 w-10" />
+        </div>
         <ul>
             <li><Link href={routes.account.login}>Login</Link></li>
             <li><Link href={routes.account.register}>Register</Link></li>
