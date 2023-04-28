@@ -1,4 +1,4 @@
-import "..//app/globals.css"
+import "../../app/globals.css"
 import { Headline, textSizes } from "./Headline"
 
 const LEVEL = 2
