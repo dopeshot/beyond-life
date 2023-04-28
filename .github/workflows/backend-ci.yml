@@ -115,6 +115,8 @@ jobs:
           token: ${{ secrets.BOT_PAT }}
           ref: ${{ github.head_ref }}
 
+      - run: echo ${{ needs.update-types.outputs.old-hash }} ${{ needs.update-types.outputs.new-hash }} 
+
       - name: Load cache
         id: cache
         uses: actions/cache@v3

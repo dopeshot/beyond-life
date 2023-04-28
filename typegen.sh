@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ( cd backend && npm run gen:types )
 ls backend
 ls
