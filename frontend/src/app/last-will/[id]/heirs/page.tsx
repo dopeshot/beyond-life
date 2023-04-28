@@ -1,17 +1,17 @@
 import { Headline } from "../../../../components/Headline/Headline"
 
 export const metadata = {
-    title: 'Register | Beyond Life',
+    title: 'Erben | Beyond Life',
     description: 'Handle your death.',
 }
 
 /**
- * Register Page
+ * Heirs Page
  */
-const Register = () => {
+const Heirs = () => {
     return <div className="container">
-        <Headline>Register</Headline>
+        <Headline>Erben</Headline>
     </div>
 }
 
-export default Register
+export default Heirs

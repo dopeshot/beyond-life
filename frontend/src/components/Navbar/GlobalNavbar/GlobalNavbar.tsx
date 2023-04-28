@@ -1,3 +1,6 @@
+import Link from "next/link"
+import { routes } from "../../../services/routes"
+
 /**
  * Display Navbar with Logo and Links.
  * @example <GlobalNavbar />
@@ -6,7 +9,7 @@ export const GlobalNavbar: React.FC = () => {
     return <nav>
         <div className="container flex my-5">
             <div className="flex items-center flex-shrink-0 mr-6">
-                <span className="font-semibold">Beyond Life</span>
+                <Link href={routes.index} className="font-semibold">Beyond Life</Link>
             </div>
 
             <ul className="flex gap-3 items-center">

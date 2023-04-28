@@ -1,5 +1,10 @@
 import { Headline } from "../../../../components/Headline/Headline"
 
+export const metadata = {
+    title: 'Login | Beyond Life',
+    description: 'Handle your death.',
+}
+
 /**
  * Login Page
  */
