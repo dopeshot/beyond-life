@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Exclude, Expose } from 'class-transformer'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 /**
  * @description Entity with all user information
@@ -13,7 +13,7 @@ export class UserEntity {
   @Expose()
   @PrimaryGeneratedColumn({ type: 'integer', name: 'pk_user_id' })
   @ApiProperty({ description: 'User ID', example: 1 })
-  pkUserId: number;
+  pkUserId: number
 
   @Expose()
   @Column('character varying', { name: 'username', unique: true, length: 24 })
@@ -21,7 +21,7 @@ export class UserEntity {
     description: 'Public username of user',
     example: 'CoffeeLover',
   })
-  username: string;
+  username: string
 
   @Expose({ groups: ['self'] })
   @Column('character varying', { name: 'email', unique: true, length: 128 })
@@ -29,11 +29,11 @@ export class UserEntity {
     description: 'Email of the user. Only exposed to self',
     example: 'test@test.test',
   })
-  email: string;
+  email: string
 
   @Exclude()
   @Column('text', { name: 'password', nullable: true })
-  password: string | null;
+  password: string | null
 
   @Expose({ groups: ['self'] })
   @Column('timestamp with time zone', { name: 'last_login', nullable: true })
@@ -41,7 +41,7 @@ export class UserEntity {
     description: 'Last login for the user. Only exposed to self',
     example: Date.now(),
   })
-  lastLogin: Date | null;
+  lastLogin: Date | null
 
   @Expose()
   @Column({
@@ -52,5 +52,5 @@ export class UserEntity {
     description: 'Creation date of user',
     example: Date.now(),
   })
-  createdAt: Date;
+  createdAt: Date
 }

@@ -1,3 +1,3 @@
-import { UserEntity } from "./users.entity";
+import { UserEntity } from './users.entity'
 
 export const ENTITIES = [UserEntity]

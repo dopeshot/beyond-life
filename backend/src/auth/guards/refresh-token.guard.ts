@@ -1,4 +1,4 @@
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@nestjs/passport'
 
 /**
  * @description Guard used for validating refresh token

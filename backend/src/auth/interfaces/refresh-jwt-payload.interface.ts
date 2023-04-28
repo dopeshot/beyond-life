@@ -5,9 +5,9 @@ export interface RefreshJWTPayload {
   /**
    * @description Userid
    */
-  id: number;
+  id: number
   /**
    * @description User email
    */
-  email: string;
+  email: string
 }

@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { RefreshJWTPayload } from '../interfaces/refresh-jwt-payload.interface';
-import { UserService } from '../../db/services/user.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { PassportStrategy } from '@nestjs/passport'
+import { ExtractJwt, Strategy } from 'passport-jwt'
+import { RefreshJWTPayload } from '../interfaces/refresh-jwt-payload.interface'
+import { UserService } from '../../db/services/user.service'
 
 /**
  * @description Strategy for validating long living refresh tokens
@@ -20,14 +20,14 @@ export class RefreshTokenStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get<string>('JWT_REFRESH_SECRET'),
-    });
+    })
   }
 
   async validate(payload: RefreshJWTPayload) {
-    const user = await this.userService.findOneById(payload.id);
+    const user = await this.userService.findOneById(payload.id)
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException()
     }
-    return user;
+    return user
   }
 }

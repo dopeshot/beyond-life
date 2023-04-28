@@ -1,17 +1,17 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
       transformOptions: { enableImplicitConversion: true },
     }),
-  );
+  )
 
   // Swagger
   if (process.env.NODE_ENV === 'development') {
@@ -35,17 +35,17 @@ async function bootstrap() {
         },
         'refresh_token',
       )
-      .build();
+      .build()
     const document = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: false,
-    });
+    })
 
-    SwaggerModule.setup('swagger', app, document);
+    SwaggerModule.setup('swagger', app, document)
   }
 
-  app.enableCors();
+  app.enableCors()
 
-  await app.listen(process.env.PORT || 3001);
+  await app.listen(process.env.PORT || 3001)
 }
 
-bootstrap();
+bootstrap()

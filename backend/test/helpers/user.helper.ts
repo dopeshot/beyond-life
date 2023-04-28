@@ -1,11 +1,7 @@
-import { faker } from '@faker-js/faker';
-import { hash } from 'bcrypt';
-import {
-  DataSource,
-  DeleteResult,
-  Repository,
-} from 'typeorm';
-import { UserEntity } from '../../src/db/entities/users.entity';
+import { faker } from '@faker-js/faker'
+import { hash } from 'bcrypt'
+import { DataSource, DeleteResult, Repository } from 'typeorm'
+import { UserEntity } from '../../src/db/entities/users.entity'
 
 /**
  * @description Create user in provided datasource. Use defaults that can be overwritten
@@ -18,11 +14,11 @@ export async function createUser(
     username: faker.lorem.word(),
     password: faker.lorem.word(),
     email: faker.internet.email(),
-  };
-  Object.assign(user, valueOverride);
-  user.password = await hash(user.password, 10);
+  }
+  Object.assign(user, valueOverride)
+  user.password = await hash(user.password, 10)
   return (await getRepository<UserEntity>(dataSource, UserEntity).insert(user))
-    .generatedMaps[0] as UserEntity;
+    .generatedMaps[0] as UserEntity
 }
 
 /**
@@ -34,7 +30,7 @@ export async function deleteUserByAttribute(
 ): Promise<DeleteResult> {
   return await getRepository<UserEntity>(dataSource, UserEntity).delete(
     identifier,
-  );
+  )
 }
 
 /**
@@ -46,12 +42,12 @@ export async function getUserByAttribute(
 ): Promise<UserEntity> {
   return await getRepository<UserEntity>(dataSource, UserEntity).findOneBy(
     identifier,
-  );
+  )
 }
 
 /**
  * @description Get Repository for Entity
  */
 function getRepository<T>(dataSource, entity): Repository<T> {
-  return dataSource.getRepository(entity) as Repository<T>;
+  return dataSource.getRepository(entity) as Repository<T>
 }
