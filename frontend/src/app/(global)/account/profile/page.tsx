@@ -6,11 +6,11 @@ export const metadata = {
 }
 
 /**
- * Profile/Dashboard Page
+ * Profile Page
  */
 const Profile = () => {
     return <div className="container">
-        <Headline>Profile/Dashboard</Headline>
+        <Headline>Profile</Headline>
     </div>
 }
 
