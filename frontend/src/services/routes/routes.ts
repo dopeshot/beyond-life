@@ -8,13 +8,31 @@ export const routes = {
     lastWill: {
         index: "/last-will",
         start: "/last-will/start",
-        auth: (options?: { id: string }) => !options ? "/last-will/auth" : `/last-will/auth?id=${options.id}`,
+        auth: (options?: { id: string }) => {
+            if (!options)
+                return "/last-will/auth"
+
+            const queryString = new URLSearchParams({
+                ...(options.id && { id: options.id }),
+            }).toString()
+
+            return `/last-will/auth${queryString !== "" ? `?${queryString}` : ""}`
+        },
         testator: (id: string) => `/last-will/${id}/testator`,
         marriageStatus: (id: string) => `/last-will/${id}/marriage-status`,
         heirs: (id: string) => `/last-will/${id}/heirs`,
         inheritance: (id: string) => `/last-will/${id}/inheritance`,
         succession: (id: string) => `/last-will/${id}/succession`,
-        buy: (options?: { id: string }) => !options ? "/last-will/buy" : `/last-will/buy?id=${options.id}`,
+        buy: (options?: { id: string }) => {
+            if (!options)
+                return "/last-will/buy"
+
+            const queryString = new URLSearchParams({
+                ...(options.id && { id: options.id }),
+            }).toString()
+
+            return `/last-will/buy${queryString !== "" ? `?${queryString}` : ""}`
+        },
         final: (id: string) => `/last-will/${id}/final`
     },
     misc: {

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Headline } from "../../components/Headline/Headline"
-import { routes } from "../../services/routes"
+import { routes } from "../../services/routes/routes"
 
 /**
  * Index Page

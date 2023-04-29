@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { routes } from "../../../services/routes"
+import { routes } from "../../../services/routes/routes"
 
 /**
  * Display Navbar with Logo and Links for single modules with sidebar.
