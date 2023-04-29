@@ -1,6 +1,6 @@
-import { fontPlusJakartaSans } from '../(global)/layout'
 import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { ModuleNavbar } from '../../components/Navbar/ModuleNavbar/ModuleNavbar'
+import { fontPlusJakartaSans } from '../../services/font/font'
 import './../globals.css'
 
 export const metadata = {

@@ -1,10 +1,7 @@
-import { Arbutus_Slab, Plus_Jakarta_Sans } from 'next/font/google'
 import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { GlobalNavbar } from '../../components/Navbar/GlobalNavbar/GlobalNavbar'
+import { fontPlusJakartaSans } from '../../services/font/font'
 import './../globals.css'
-
-export const fontPlusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
-export const fontArbutusSlab = Arbutus_Slab({ weight: "400", subsets: ['latin'] })
 
 export const metadata = {
     title: 'Beyond Life',

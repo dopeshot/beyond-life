@@ -1,4 +1,4 @@
-import { fontArbutusSlab } from "../../app/(global)/layout"
+import { fontArbutusSlab } from "../../services/font/font"
 
 type HeadlineProps = {
     /** Content of Headline. */
