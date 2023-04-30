@@ -1,43 +1,49 @@
-import { Dispatch, createContext, useContext, useReducer } from "react"
-import { Testament, TestamentActionKind, TestamentActions } from "./types"
+'use client'
+import { Dispatch, createContext, useCallback, useContext, useEffect, useReducer } from "react"
+import { exampleFetch } from "../../services/api/example"
+import { Testament } from "../../types/testament"
+import { TestamentActionKind, TestamentActions, initalTestamentState, testamentReducer } from "./reducer"
 
-const initalTestamentState: { testament: Testament, dispatch: Dispatch<TestamentActions> } = {
-    testament: {
-        testator: {
-            name: '',
-            surname: '',
-        },
-        marriageStatus: '',
-        heirs: "",
-        inheritance: "",
-        succession: "",
-    },
-    dispatch: () => { }
+interface TestamentContextType {
+    testament: Testament
+    dispatch: Dispatch<TestamentActions>
+    onReloadNeeded: () => void
 }
 
-const TestamentContext = createContext(initalTestamentState)
-
-const testamentReducer = (state: Testament, action: TestamentActions): Testament => {
-    switch (action.type) {
-        case TestamentActionKind.SET_TESTATOR:
-            return {
-                ...state,
-                testator: action.payload
-            }
-        default:
-            return state
-    }
-}
+// Create the context
+const TestamentContext = createContext({} as TestamentContextType)
 
 /**
  * Handles the Testament object where we hold all data.
  */
 export const TestamentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [testament, dispatch] = useReducer(testamentReducer, initalTestamentState.testament)
+    const [testament, dispatch] = useReducer(testamentReducer, initalTestamentState)
 
-    return <TestamentContext.Provider value={{ testament, dispatch }}>
+    /**
+     * Reload fetches the data from the backend and updates the context.
+     */
+    const onReloadNeeded = useCallback(async () => {
+        const example = await exampleFetch()
+        dispatch({
+            type: TestamentActionKind.SET_TESTATOR,
+            payload: {
+                name: example.title,
+                surname: example.title,
+            }
+        })
+    }, [])
+
+    // Call onReloadNeeded on mount
+    useEffect(() => {
+        onReloadNeeded()
+    }, [onReloadNeeded])
+
+    return <TestamentContext.Provider value={{ testament, dispatch, onReloadNeeded }}>
         {children}
     </TestamentContext.Provider>
 }
 
+/**
+ * Use this hook to access the TestamentContext and its data.
+ */
 export const useTestamentContext = () => useContext(TestamentContext)
