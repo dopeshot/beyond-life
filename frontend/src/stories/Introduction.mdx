@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Introduction" />
+
+# Welcome
+
+### Run
+To run storybook locally, run:
+`npm run storybook`
+
+### Build
+To build storybook, run:
+`npm run build-storybook`
+
+### Create new story
+* Create a new stories file in the component directory with the pattern: `component.stories.tsx`
+* Add the following code to the file and configure as needed:
+
+```ts
+import type { Meta, StoryObj } from '@storybook/react'
+import { Component } from './Component'
+
+const meta: Meta<typeof Component> = {
+    title: 'Design System/Component',
+    component: Component,
+}
+
+export default meta
+type Story = StoryObj<typeof Component>
+
+export const Component: Story = {
+    args: {
+        children: "Component",
+    },
+}
+```
