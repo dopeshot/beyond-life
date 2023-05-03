@@ -23,6 +23,8 @@ services:
     restart: "always"
     ports:
       - 3000:3000
+    links:
+      - backend:backend
 
   db:
     image: postgres:15
