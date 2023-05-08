@@ -21,12 +21,12 @@ Default.args = {
 
 export const WithPlaceholderText = Template.bind({})
 WithPlaceholderText.args = {
-  placeholder: 'Placeholder Text',
+  placeholder: 'Placeholder',
 }
 
 export const WithLabel = Template.bind({})
 WithLabel.args = {
-  label: 'Label',
+  labelText: 'Label',
 }
 
 export const WithFixedWidth = Template.bind({})
@@ -34,21 +34,15 @@ WithFixedWidth.args = {
   width: 'w-80',
 }
 
-export const WithDescription = Template.bind({})
-WithDescription.args = {
-  description: 'Description',
-}
-
-export const WithErrorMessage = Template.bind({})
-WithErrorMessage.args = {
-  errorMessage: 'Error Message',
+export const WithHelperText = Template.bind({})
+WithHelperText.args = {
+  helperText: 'Helper Text',
 }
 
 export const WithAll = Template.bind({})
 WithAll.args = {
-  label: 'Label',
-  description: 'Description',
-  errorMessage: 'Error Message',
-  placeholder: 'Placeholder Text',
+  labelText: 'Label',
+  helperText: 'Error Message',
+  placeholder: 'Placeholder',
   width: 'w-80',
 }

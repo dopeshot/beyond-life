@@ -4,10 +4,9 @@ import { TextInput } from "./TextInput"
 
 const data = {
   name: "test",
-  label: "Test",
+  labelText: "Test",
   placeholder: "Placeholder",
-  description: "Description",
-  errorMessage: "Error Message",
+  helperText: "Error Message",
 }
 
 const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -25,7 +24,7 @@ describe("TextInput", () => {
     beforeEach(() => {
       cy.mount(
         <Wrapper>
-          <TextInput name={data.name} label={data.label} description={data.description} errorMessage={data.errorMessage} />
+          <TextInput name={data.name} labelText={data.labelText} placeholder={data.placeholder} helperText={data.helperText} />
         </Wrapper>
       )
     })
@@ -40,6 +39,10 @@ describe("TextInput", () => {
 
     it("should display input with correct placeholder", () => {
       cy.get("input").should("have.attr", "placeholder", "Placeholder")
+    })
+
+    it("should display helper text", () => {
+      cy.contains("Error Message").should("be.visible")
     })
   })
 })
