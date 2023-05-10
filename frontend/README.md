@@ -27,6 +27,12 @@ npm run te:cli
 npm run tc:cli
 ```
 
+### Design Guidelines
+
+Entwurf 1: https://xd.adobe.com/view/2ab1e96c-ee16-4089-b7a6-39cb1e78a9d8-7fe2/
+
+Entwurf 2: https://xd.adobe.com/view/59069299-3ece-4bf1-b5b1-45dd53a5bab8-0c55/
+
 ### Development Guidelines
 
 - Naming Conventions i18n keys with snake_case, e.g.: `back_to_home`, `settings`, `settings_display_username`
