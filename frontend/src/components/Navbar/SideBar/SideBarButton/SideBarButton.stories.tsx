@@ -1,13 +1,13 @@
 import { Meta, StoryFn } from '@storybook/react'
-import { SideNavBarButton, SideNavBarButtonProps } from './SideNavBarButton'
+import { SideBarButton, SideBarButtonProps } from './SideBarButton'
 
 export default {
-  component: SideNavBarButton,
-  title: 'Design System/Navbar/SideNavBar/SideNavBarButton',
+  component: SideBarButton,
+  title: 'Design System/Navbar/SideBar/SideBarButton',
 } as Meta
 
-const Template: StoryFn<SideNavBarButtonProps> = (args: any) => (
-  <SideNavBarButton {...args} />
+const Template: StoryFn<SideBarButtonProps> = (args: any) => (
+  <SideBarButton {...args} />
 )
 
 export const Default = Template.bind({})
