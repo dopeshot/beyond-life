@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import { fontPlusJakartaSans } from "../../../../services/font/font"
 import { SideBarElementId } from "../LastWillSideBar/LastWillSideBar"
@@ -7,7 +8,7 @@ export type SideBarButtonProps = {
   title: string,
   description?: string,
   isActive: "active" | "inactive" | "disabled",
-  onClick: (id: SideBarElementId) => void,
+  setActiveElement: (id: SideBarElementId) => void,
 }
 
 export const SideBarButton: React.FC<SideBarButtonProps> = ({
@@ -15,10 +16,16 @@ export const SideBarButton: React.FC<SideBarButtonProps> = ({
   title,
   description,
   isActive,
-  onClick
+  setActiveElement
 }: SideBarButtonProps) => {
+
+  const handleClick = (id: SideBarElementId) => {
+    // if (isActive === "disabled") return  // TODO: implement disabled
+    setActiveElement(id)
+  }
+
   return (
-    <div className={`flex justify-between items-center px-6 py-3 select-none ${isActive === "active" ? "bg-black text-white" : isActive === "inactive" ? "text-black" : "text-black text-opacity-50"} ${fontPlusJakartaSans.className}`} onClick={() => onClick(id)}>
+    <div onClick={() => handleClick(id)} className={`flex justify-between items-center px-6 py-3 select-none ${isActive === "active" ? "bg-black text-white" : isActive === "inactive" ? "text-black" : "text-black text-opacity-50"} ${fontPlusJakartaSans.className}`}>
       <div className={`flex flex-col gap-1 w-5/6`}>
         <div className="text-base font-bold h-5">
           {title}

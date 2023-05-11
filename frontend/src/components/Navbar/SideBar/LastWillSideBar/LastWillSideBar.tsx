@@ -5,7 +5,7 @@ import logo from '../../../../assets/logo/logo.png'
 import { SideBarButton } from "../SideBarButton/SideBarButton"
 
 export type SideBarElementId =
-  "testator" | "marriage-status" | "heirs" | "inheritance" | "succession" | "final"
+  "testator" | "marriageStatus" | "heirs" | "inheritance" | "succession" | "final"
 
 export type LastWillSideBarProps = {
   activeElement: SideBarElementId,
@@ -25,7 +25,7 @@ const sideBarElements: {
       disabled: false,
     },
     {
-      id: "marriage-status",
+      id: "marriageStatus",
       title: "Familienstand",
       description: "Beziehungsstatus, Art des Testaments, Daten des Ehepartners",
       disabled: true,
@@ -63,12 +63,19 @@ export const LastWillSideBar: React.FC<LastWillSideBarProps> = ({
 
   return (
     <div className="w-80 bg-yellow h-screen">
-      <div className="px-8 pt-4 pb-20" >
+      <div className="px-6 pt-4 pb-20" >
         <Image src={logo} alt="logo" width={160} />
       </div>
       <div className="flex flex-col">
         {sideBarElements.map((element, index) => (
-          <SideBarButton key={index} id={element.id} title={element.title} description={element.description} isActive={activeElement === element.id ? "active" : element.disabled ? "disabled" : "inactive"} onClick={(id: SideBarElementId) => setActiveElement(id)} />
+          <SideBarButton
+            key={index}
+            id={element.id}
+            title={element.title}
+            description={element.description}
+            isActive={activeElement === element.id ? "active" : element.disabled ? "disabled" : "inactive"}
+            setActiveElement={setActiveElement}
+          />
         ))}
       </div>
     </div>
