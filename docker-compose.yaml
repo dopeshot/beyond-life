@@ -17,6 +17,14 @@ services:
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
     links:
       - db:db
+        
+  frontend:
+    image: ghcr.io/dopeshot/beyond-life/frontend:main
+    restart: "always"
+    ports:
+      - 3000:3000
+    links:
+      - backend:backend
 
   db:
     image: postgres:15
