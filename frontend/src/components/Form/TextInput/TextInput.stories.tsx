@@ -1,5 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react'
 import { Form, Formik } from 'formik'
+import searchIcon from '../../../assets/icons/search/search.svg'
 import { TextInput, TextInputProps } from './TextInput'
 
 export default {
@@ -29,6 +30,11 @@ WithLabel.args = {
   labelText: 'Label',
 }
 
+export const WithIcon = Template.bind({})
+WithIcon.args = {
+  icon: searchIcon,
+}
+
 export const WithFixedWidth = Template.bind({})
 WithFixedWidth.args = {
   width: 'w-80',
@@ -42,7 +48,9 @@ WithHelperText.args = {
 export const WithAll = Template.bind({})
 WithAll.args = {
   labelText: 'Label',
-  helperText: 'Error Message',
+  helperText: 'Helper Text',
   placeholder: 'Placeholder',
+  icon: searchIcon,
+  iconOnClick: () => { console.log("CLICKED") },
   width: 'w-80',
 }
