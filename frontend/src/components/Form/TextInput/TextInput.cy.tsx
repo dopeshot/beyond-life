@@ -24,17 +24,17 @@ describe("TextInput", () => {
     beforeEach(() => {
       cy.mount(
         <Wrapper>
-          <TextInput name={data.name} labelText={data.labelText} placeholder={data.placeholder} helperText={data.helperText} />
+          <TextInput name={data.name} labelText={data.labelText} inputRequired placeholder={data.placeholder} helperText={data.helperText} />
         </Wrapper>
       )
     })
 
-    it("should display label", () => {
-      cy.contains("Test").should("be.visible")
-    })
-
     it("should display input", () => {
       cy.get("input").should("be.visible")
+    })
+
+    it("should display label", () => {
+      cy.contains("Test").should("be.visible")
     })
 
     it("should display input with correct placeholder", () => {
@@ -43,6 +43,10 @@ describe("TextInput", () => {
 
     it("should display helper text", () => {
       cy.contains("Error Message").should("be.visible")
+    })
+
+    it("should display required icon", () => {
+      cy.get("label").contains("*").should("be.visible")
     })
   })
 })
