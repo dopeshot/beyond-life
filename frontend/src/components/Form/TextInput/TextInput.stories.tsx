@@ -8,8 +8,8 @@ export default {
   title: 'Components/TextInput',
 } as Meta
 
-const Template: StoryFn<TextInputProps> = (args: any) => (
-  <Formik initialValues={{ name: "Test" }} onSubmit={() => { }}>
+const Template: StoryFn<TextInputProps> = (args: TextInputProps) => (
+  <Formik initialValues={{}} onSubmit={() => { }}>
     <Form>
       <TextInput {...args} />
     </Form>

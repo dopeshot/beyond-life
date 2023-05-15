@@ -21,7 +21,7 @@ export const Label: React.FC<LabelProps> = ({
     'data-cy': datacy
 }) => {
     return (
-        <label data-cy={datacy} htmlFor={name} className="block text-sm">
+        <label data-cy={datacy} htmlFor={name}>
             {labelText}
             {inputRequired && <span data-cy={`${datacy}-required`} className="text-red-500 ml-1">*</span>}
         </label>

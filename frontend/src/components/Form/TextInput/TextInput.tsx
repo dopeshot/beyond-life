@@ -38,16 +38,17 @@ export const TextInput: React.FC<TextInputProps> = ({
         {(fieldProps: FieldProps<string | number>) => (
           <div className="relative gap-1 flex flex-col justify-center my-1">
             {labelText && <Label data-cy={`textinput-${name}-label`} name={name} labelText={labelText} inputRequired={inputRequired} />}
-            <div className={`flex items-center rounded-lg h-12 px-4 py-2 border w-full text-sm bg-gray-200 placeholder:text-gray-500`}>
+            <div className={`flex items-center rounded-lg px-4 py-2 border w-full bg-gray-200 ${fieldProps.meta.touched && fieldProps.meta.error ? "border-red-500 bg-red-50" : ""
+              }`}>
               <input
                 type={type}
                 {...fieldProps.field}
                 {...props}
                 className="w-full h-full bg-transparent outline-none"
               />
-              {icon && <Image className={`h-3/4 w-auto ${iconOnClick ? "cursor-pointer" : ""}`} src={icon} alt={"Icon"} onClick={iconOnClick} />}
+              {icon && <Image className={`h-6 w-auto ${iconOnClick ? "cursor-pointer" : ""}`} src={icon} alt={"Icon"} onClick={iconOnClick} />}
             </div>
-            {helperText && <p data-cy={`textinput-${name}-helpertext`} className="text-sm">{helperText}</p>}
+            {helperText && <p data-cy={`textinput-${name}-helpertext`}>{helperText}</p>}
           </div>
         )}
       </Field>
