@@ -1,25 +1,25 @@
 "use client"
 import React from "react"
 import { fontPlusJakartaSans } from "../../../../services/font/font"
-import { SideBarElementId } from "../LastWillSideBar/LastWillSideBar"
+import { SidebarElementId } from "../LastWillSidebar/LastWillSidebar"
 
-export type SideBarButtonProps = {
-  id: SideBarElementId,
+export type SidebarButtonProps = {
+  id: SidebarElementId,
   title: string,
   description?: string,
   isActive: "active" | "inactive" | "disabled",
-  setActiveElement: (id: SideBarElementId) => void,
+  setActiveElement: (id: SidebarElementId) => void,
 }
 
-export const SideBarButton: React.FC<SideBarButtonProps> = ({
+export const SidebarButton: React.FC<SidebarButtonProps> = ({
   id,
   title,
   description,
   isActive,
   setActiveElement
-}: SideBarButtonProps) => {
+}: SidebarButtonProps) => {
 
-  const handleClick = (id: SideBarElementId) => {
+  const handleClick = (id: SidebarElementId) => {
     // if (isActive === "disabled") return  // TODO: implement disabled
     setActiveElement(id)
   }

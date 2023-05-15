@@ -2,18 +2,18 @@
 import Image from "next/image"
 import React from "react"
 import logo from '../../../../assets/logo/logo.png'
-import { SideBarButton } from "../SideBarButton/SideBarButton"
+import { SidebarButton } from "../SidebarButton/SidebarButton"
 
-export type SideBarElementId =
+export type SidebarElementId =
   "testator" | "marriageStatus" | "heirs" | "inheritance" | "succession" | "final"
 
-export type LastWillSideBarProps = {
-  activeElement: SideBarElementId,
-  setActiveElement: (id: SideBarElementId) => void,
+export type LastWillSidebarProps = {
+  activeElement: SidebarElementId,
+  setActiveElement: (id: SidebarElementId) => void,
 }
 
-const sideBarElements: {
-  id: SideBarElementId,
+const sidebarElements: {
+  id: SidebarElementId,
   title: string,
   description?: string,
   disabled: boolean,
@@ -56,19 +56,19 @@ const sideBarElements: {
     }
   ]
 
-export const LastWillSideBar: React.FC<LastWillSideBarProps> = ({
+export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({
   activeElement,
   setActiveElement = (activeId) => { }
 }) => {
 
   return (
-    <div className="w-80 bg-yellow h-screen">
+    <div className="w-80 bg-yellow h-auto">
       <div className="px-6 pt-4 pb-20" >
         <Image src={logo} alt="logo" width={160} />
       </div>
       <div className="flex flex-col">
-        {sideBarElements.map((element, index) => (
-          <SideBarButton
+        {sidebarElements.map((element, index) => (
+          <SidebarButton
             key={index}
             id={element.id}
             title={element.title}
