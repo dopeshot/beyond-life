@@ -1,4 +1,4 @@
-import { Field } from "formik"
+import { Field } from 'formik'
 
 type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
