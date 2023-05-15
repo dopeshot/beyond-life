@@ -1,7 +1,7 @@
-import React from 'react';
-import { Meta, StoryFn } from '@storybook/react'
+import React from 'react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { Form, Formik } from 'formik'
-import { Toggle, ToggleProps } from './Toggle';
+import { Toggle, ToggleProps } from './Toggle'
 
 export default {
   title: 'Components/Toggle',
@@ -16,7 +16,7 @@ export default {
   },
 } as Meta
 
-const Template: StoryFn<ToggleProps> = (args: any) => (
+const Template: StoryFn<ToggleProps> = (args: ToggleProps) => (
   <Formik initialValues={{ exampleToggle: false }} onSubmit={() => {}}>
     <Form>
       <Toggle {...args} />

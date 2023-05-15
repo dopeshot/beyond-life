@@ -1,32 +1,33 @@
 import { Form, Formik } from "formik"
-import 'tailwindcss/tailwind.css'
+import "../../app/globals.css"
 import { Toggle } from './Toggle'
 
 const initialValues = {
     title: ""
 }
 
-const submitForm = (values: typeof initialValues) => {
-    console.log(values);
-}
-
 const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return <Formik initialValues={initialValues} onSubmit={submitForm} >
-        {(formik) => (
-            <Form>
-                {children}
-            </Form>
-        )}
-    </Formik>
+    const onSubmitSpy = cy.spy()
+    
+    return (
+        <Formik initialValues={initialValues} onSubmit={onSubmitSpy}>
+            {() => (
+                <Form>
+                    {children}
+                </Form>
+            )}
+        </Formik>
+    );
 }
 
-describe('Text Input', () => {
+
+describe('Toggle', () => {
     const data = {
         name: "toggle",
-        labelText: "Ist das Gericht gerade verfügbar?",
-        helperText: "Wenn du diese Option setzt, hast du die option gesetzt.",
-        labelOff: "nicht aktiv",
-        labelOn: "aktiv"
+        labelText: "Möchten Sie ein Berliner Testament erstellen?",
+        helperText: "Das Berliner Testament ist ein gemeinschaftliches Testament von Ehegatten oder Lebenspartnern.",
+        labelOff: "Nein",
+        labelOn: "Ja"
     }
 
     beforeEach(() => {
