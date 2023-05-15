@@ -9,7 +9,7 @@ export default {
 } as Meta
 
 const Template: StoryFn<TextInputProps> = (args: any) => (
-  <Formik initialValues={{}} onSubmit={() => { }}>
+  <Formik initialValues={{ name: "Test" }} onSubmit={() => { }}>
     <Form>
       <TextInput {...args} />
     </Form>
@@ -18,6 +18,7 @@ const Template: StoryFn<TextInputProps> = (args: any) => (
 
 export const InputField = Template.bind({})
 InputField.args = {
+  name: 'name',
   labelText: 'Label',
   helperText: 'Helper Text',
   placeholder: 'Placeholder',

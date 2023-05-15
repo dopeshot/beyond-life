@@ -6,6 +6,8 @@ type LabelProps = {
     labelText: string
     /** When true, a * character is added to the labelText */
     inputRequired?: boolean
+    /** For testing */
+    'data-cy'?: string
 }
 
 /**
@@ -16,11 +18,12 @@ export const Label: React.FC<LabelProps> = ({
     name,
     labelText,
     inputRequired: inputRequired = false,
+    'data-cy': datacy
 }) => {
     return (
-        <label htmlFor={name} className="block text-sm font-medium">
+        <label data-cy={datacy} htmlFor={name} className="block text-sm">
             {labelText}
-            {inputRequired && <span className="text-red-500 ml-1">*</span>}
+            {inputRequired && <span data-cy={`${datacy}-required`} className="text-red-500 ml-1">*</span>}
         </label>
     )
 }
