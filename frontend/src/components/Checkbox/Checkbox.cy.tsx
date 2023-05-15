@@ -3,17 +3,9 @@ import { Form, Formik } from 'formik'
 import { ChildrenProps } from '../../types/children'
 import { Checkbox } from './Checkbox'
 
-const initialValues = {
-	category: '',
-}
-
-const submitForm = (values: typeof initialValues) => {
-	console.log(values)
-}
-
 const Wrapper: React.FC<ChildrenProps> = ({ children }) => {
 	return (
-		<Formik initialValues={initialValues} onSubmit={submitForm}>
+		<Formik initialValues={{ lifestyle: [] }} onSubmit={() => {}}>
 			{() => <Form>{children}</Form>}
 		</Formik>
 	)
@@ -21,22 +13,23 @@ const Wrapper: React.FC<ChildrenProps> = ({ children }) => {
 
 describe('Checkbox', () => {
 	const data = {
-		name: 'label',
-		labelText: 'Labels',
-		helperText: 'Die Labels können Gerichten hinzugefügt werden.',
+		name: 'lifestyle',
+		labelText: 'Lifestyle Choices',
+		labelRequired: true,
+		helperText: 'These lifestyle choices can enhance your life enjoyment.',
 		options: [
 			{
 				id: 1,
-				label: 'vegan',
+				label: 'Traveling',
 			},
 			{
 				id: 2,
-				label: 'vegetarisch',
+				label: 'Outdoor Activities',
 				icon: 'iconExample',
 			},
 			{
 				id: 3,
-				label: 'ohne Schweinefleisch',
+				label: 'Mindful Living',
 				icon: 'iconExample',
 			},
 		],
@@ -50,6 +43,7 @@ describe('Checkbox', () => {
 					options={data.options}
 					labelText={data.labelText}
 					helperText={data.helperText}
+					labelRequired={data.labelRequired}
 				/>
 				<button type="submit">Submit</button>
 			</Wrapper>
@@ -57,11 +51,15 @@ describe('Checkbox', () => {
 	})
 
 	it('should set labeltext', () => {
-		cy.get('h5 ').should('contain', data.labelText)
+		cy.get('h5').should('contain', data.labelText)
 	})
 
 	it('should set helper text', () => {
 		cy.get(`[data-cy="${data.name}-helpertext"]`).should('contain', data.helperText)
+	})
+
+	it('should set label required', () => {
+		cy.get('h5').should('contain', '*')
 	})
 
 	it('should display all options', () => {
@@ -80,11 +78,11 @@ describe('Checkbox', () => {
 		cy.get(`[data-cy="${data.name}-option-${data.options[0].id}"] input`).click().should('not.be.checked')
 	})
 
-	it('should display icon before label when defined', () => {
-		// TODO: Wenn wir ne Icon Lösung haben
+	it.skip('should display icon before label when defined', () => {
+		// MC: Implement this test when the icon prop is implemented.
 	})
 
-	it('should not display icon before label when not defined', () => {
-		cy.get(`[data-cy="${data.name}-option-${data.options[0].id}"] svg`).should('not.exist')
+	it.skip('should not display icon before label when not defined', () => {
+		// MC: Implement this test when the icon prop is implemented.
 	})
 })

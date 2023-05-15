@@ -1,4 +1,5 @@
 import { Field } from 'formik'
+import { SelectableOption } from '../../types/forms'
 
 type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -6,24 +7,25 @@ type CheckboxProps = {
 	/** Provide a label to provide a description of the Checkbox input that you are exposing to the user. */
 	labelText: string
 	/** A list of options to choose from. */
-	options: ComponentOptions[]
+	options: SelectableOption[]
 	/** Provides assistance on how to fill out a field. */
 	helperText?: string
-}
-
-export type ComponentOptions = {
-	id: number | string
-	label: string
-	icon?: string
+	/** When set to true, a '*' symbol will be displayed next to the label, indicating that the field is required. */
+	labelRequired?: boolean
 }
 
 /**
  * Checkbox, can only be used with Formik
  */
-export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options }) => {
+
+// MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
+export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
 	return (
 		<>
-			<h5 className="block text-darkgrey text-sm font-semibold">{labelText}</h5>
+			<h5 className="block text-darkgrey text-sm font-semibold">
+				{labelText}
+				{labelRequired && <span className="ml-1 text-yellow-500">*</span>}
+			</h5>
 			{options.map((option) => (
 				<label data-cy={`${name}-option-${option.id}`} key={option.id} className="block my-1 cursor-pointer">
 					<Field type="checkbox" className="mr-1" name={name} value={`${option.id}`} />
