@@ -1,5 +1,6 @@
 import { mount } from 'cypress/react'
 import { Form, Formik } from 'formik'
+import 'tailwindcss/tailwind.css'
 import { ChildrenProps } from '../../types/children'
 import { Checkbox } from './Checkbox'
 
