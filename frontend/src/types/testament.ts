@@ -1,4 +1,4 @@
-export interface Testament {
+export type Testament = {
     testator: {
         name: string,
         surname: string,

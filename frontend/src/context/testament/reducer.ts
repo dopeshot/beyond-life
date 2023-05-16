@@ -4,7 +4,7 @@ export enum TestamentActionKind {
     SET_TESTATOR = 'SET_TESTATOR'
 }
 
-export interface TestamentActions {
+export type TestamentActions = {
     type: TestamentActionKind
     payload: {
         name: string
