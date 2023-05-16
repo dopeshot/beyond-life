@@ -21,6 +21,7 @@
     "autoprefixer": "10.4.14",
     "eslint-config-next": "^13.3.1",
     "formik": "^2.2.9",
+    "material-symbols": "^0.5.5",
     "next": "^13.3.1",
     "postcss": "^8.4.23",
     "react": "18.2.0",
@@ -30,18 +31,18 @@
     "yup": "^1.1.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.0.7",
-    "@storybook/addon-interactions": "^7.0.7",
-    "@storybook/addon-links": "^7.0.7",
-    "@storybook/blocks": "^7.0.7",
-    "@storybook/nextjs": "^7.0.7",
-    "@storybook/react": "^7.0.7",
-    "@storybook/testing-library": "^0.0.14-next.2",
+    "@storybook/addon-essentials": "^7.0.12",
+    "@storybook/addon-interactions": "^7.0.12",
+    "@storybook/addon-links": "^7.0.12",
+    "@storybook/blocks": "^7.0.12",
+    "@storybook/nextjs": "^7.0.12",
+    "@storybook/react": "^7.0.12",
+    "@storybook/testing-library": "^0.1.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "cypress": "^12.9.0",
     "eslint": "^8.38.0",
-    "eslint-plugin-storybook": "^0.6.11",
+    "eslint-plugin-storybook": "^0.6.12",
     "serve": "^14.2.0",
-    "storybook": "^7.0.7"
+    "storybook": "^7.0.12"
   }
 }

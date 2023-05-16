@@ -1,3 +1,4 @@
+import "material-symbols/rounded.css"
 import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { GlobalNavbar } from '../../components/Navbar/GlobalNavbar/GlobalNavbar'
 import { fontPlusJakartaSans } from '../../services/font/font'
