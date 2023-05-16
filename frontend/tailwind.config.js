@@ -5,6 +5,12 @@ module.exports = {
         './src/components/**/*.{js,ts,jsx,tsx,mdx}',
         './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     ],
+    safelist: [
+        {
+            pattern: /text-(.*)-(500|600|700|800)/,
+            variants: ["hover", "focus"],
+        },
+    ],
     theme: {
         container: {
             center: true,
@@ -26,8 +32,8 @@ module.exports = {
                     300: '#FFD352',
                     400: '#FFC929',
                     500: '#FFBF00',
-                    600: '#C79500',
-                    700: '#8F6B00',
+                    600: '#FAB005',
+                    700: '#F2A305',
                     800: '#574100',
                     900: '#1F1700',
                     950: '#030200'
