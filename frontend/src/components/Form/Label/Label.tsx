@@ -1,29 +1,32 @@
-
 type LabelProps = {
-    /** Uniquie name of the input field */
-    name: string
-    /** Label text describing the input field */
-    labelText: string
-    /** When true, a * character is added to the labelText */
-    inputRequired?: boolean
-    /** For testing */
-    'data-cy'?: string
+	/** Uniquie name of the input field. */
+	name: string
+	/** Label text describing the input field. */
+	labelText: string
+	/** When true, a * character is added to the labelText. */
+	inputRequired?: boolean
+	/** For testing. */
+	datacy?: string
 }
 
 /**
- * Label for various Input Fields
- * @example <Label name="email" labelText="Email" labelRequired />
+ * Label for various Input Fields.
  */
-export const Label: React.FC<LabelProps> = ({
-    name,
-    labelText,
-    inputRequired: inputRequired = false,
-    'data-cy': datacy
-}) => {
-    return (
-        <label data-cy={datacy} htmlFor={name}>
-            {labelText}
-            {inputRequired && <span data-cy={`${datacy}-required`} className="text-red-500 ml-1">*</span>}
-        </label>
-    )
+export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired: inputRequired = false, datacy }) => {
+	return (
+		<label
+			data-cy={`${datacy || name}-label`}
+			htmlFor={name}
+		>
+			{labelText}
+			{inputRequired && (
+				<span
+					data-cy={`${datacy || name}-label-required`}
+					className="text-yellow ml-1"
+				>
+					*
+				</span>
+			)}
+		</label>
+	)
 }

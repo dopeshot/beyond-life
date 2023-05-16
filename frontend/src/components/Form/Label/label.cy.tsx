@@ -1,23 +1,48 @@
 import { Label } from './Label'
 
+const data = {
+	name: 'test',
+	labelText: 'Test'
+}
+
 describe('Label', () => {
-  describe("Basic Props", () => {
-    beforeEach(() => {
-      cy.mount(
-        <Label name="test" labelText="Test" inputRequired />
-      )
-    })
+	describe('Basic Props', () => {
+		beforeEach(() => {
+			cy.mount(
+				<Label
+					name={data.name}
+					labelText={data.labelText}
+					inputRequired
+				/>
+			)
+		})
 
-    it("should display label text", () => {
-      cy.contains("Test").should("be.visible")
-    })
+		it('should display label text', () => {
+			cy.get(`[data-cy="${data.name}-label"]`).should('be.visible')
+			cy.get(`[data-cy="${data.name}-label"]`).should('contain.text', data.labelText)
+		})
 
-    it("should display required char", () => {
-      cy.contains("*").should("be.visible")
-    })
+		it('should display required icon', () => {
+			cy.get(`[data-cy="${data.name}-label-required"]`).should('be.visible')
+		})
 
-    it("should have correct name", () => {
-      cy.get("label").should("have.attr", "for", "test")
-    })
-  })
+		it('should have correct name', () => {
+			cy.get(`[data-cy="${data.name}-label"]`).should('have.attr', 'for', 'test')
+		})
+	})
+
+	describe('Reqiured icon not visible', () => {
+		beforeEach(() => {
+			cy.mount(
+				<Label
+					name={data.name}
+					labelText={data.labelText}
+				/>
+			)
+		})
+
+		it('should not display required icon', () => {
+			cy.get(`[data-cy="textinput-${data.name}-label-required"]`).should('not.exist')
+		})
+	})
 })
