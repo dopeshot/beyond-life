@@ -1,8 +1,6 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import * as fs from 'fs'
-import * as yaml from 'yaml'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -21,13 +19,26 @@ async function bootstrap() {
       .setTitle('BeyondLife Api')
       .setDescription('The BeyondLife Api')
       .setVersion('0.1')
+      .addBearerAuth(
+        {
+          description: `Please enter access token in following format: Bearer <JWT>`,
+          scheme: 'Bearer',
+          type: 'http',
+        },
+        'access_token',
+      )
+      .addBearerAuth(
+        {
+          description: `Please enter refresh token in following format: Bearer <JWT>`,
+          scheme: 'Bearer',
+          type: 'http',
+        },
+        'refresh_token',
+      )
       .build()
     const document = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: false,
     })
-
-    const yamlString: string = yaml.stringify(document, {})
-    fs.writeFileSync('../api.yaml', yamlString)
 
     SwaggerModule.setup('swagger', app, document)
   }
