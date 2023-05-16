@@ -55,7 +55,7 @@ export const Button: React.FC<ButtonProps> = ({
 	const tertiaryColor = isColored ? "red" : "gray"
 
 	// Base Classes
-	const buttonBaseClasses = "flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-8 w-full md:w-max"
+	const buttonBaseClasses = "flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-10 w-full md:w-max"
 	const linkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-500`
 
 	// Disable state classes
@@ -66,7 +66,7 @@ export const Button: React.FC<ButtonProps> = ({
 
 	// Kind classes
 	const primaryClasses = `bg-yellow border border-transparent text-dark ${disabledPrimary}`
-	const secondaryClasses = `border bg-dark border border-transparent text-yellow ${disabledSecondary}`
+	const secondaryClasses = `border bg-dark border border-transparent text-white ${disabledSecondary}`
 
 	const innerContent = <>
 		{icon && iconSlot === "start" && (loading ? <Icon datacy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
