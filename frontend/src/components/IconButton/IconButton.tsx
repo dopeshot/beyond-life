@@ -38,7 +38,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
     color = "gray",
     dimOpacityWhenDisabled = true,
 }) => {
-    const innerIcon = <Icon className={`${disabled && dimOpacityWhenDisabled ? "text-opacity-50 " : ""}text-${color}-600 ${iconClassName}`}>{icon}</Icon>
+    const innerIcon = <Icon datacy={`${datacy}-inner-icon`} className={`${disabled && dimOpacityWhenDisabled ? "text-opacity-50 " : ""}text-${color}-600 ${iconClassName}`}>{icon}</Icon>
     const classes = `text-center ${disabled ? "cursor-default" : `cursor-pointer hover:bg-${color}-200 focus:bg-${color}-300`} rounded-full w-10 h-10 flex items-center justify-center ${className}`
 
     return (

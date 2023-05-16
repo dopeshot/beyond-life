@@ -19,7 +19,7 @@ describe("NavbarLink", () => {
         })
 
         it('prevents click when link is active', () => {
-            cy.mount(<NavbarLink datacy="navbar-link" to="/home" isActive={true}>Home</NavbarLink>)
+            cy.mount(<NavbarLink datacy="navbar-link" to="/home" isActive>Home</NavbarLink>)
             cy.datacy("navbar-link").click().should('have.attr', 'href', '')
         })
     })
@@ -31,14 +31,14 @@ describe("NavbarLink", () => {
         })
 
         it('disables button when link is active', () => {
-            cy.mount(<NavbarLink datacy="navbar-link" onClick={() => console.log("Clicked!")} isActive={true}>Click me</NavbarLink>)
+            cy.mount(<NavbarLink datacy="navbar-link" onClick={() => console.log("Clicked!")} isActive>Click me</NavbarLink>)
             cy.datacy("navbar-link").should('be.disabled')
         })
     })
 
     describe("IsActive Prop", () => {
         it('renders an active link', () => {
-            cy.mount(<NavbarLink datacy="navbar-link" to="/home" isActive={true}>Home</NavbarLink>)
+            cy.mount(<NavbarLink datacy="navbar-link" to="/home" isActive>Home</NavbarLink>)
             cy.datacy("navbar-link").should('have.class', 'font-bold').and('have.class', 'text-red-700')
         })
 
