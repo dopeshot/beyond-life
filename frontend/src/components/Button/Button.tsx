@@ -6,7 +6,7 @@ export type ButtonProps = {
 	children: string
 	/** Which type of button we want, tertiary has the style of a link. */
 	kind?: "primary" | "secondary" | "tertiary"
-	/** Force color. */
+	/** Force color for linnk. */
 	isColored?: boolean
 	/** Button type default is "button". */
 	type?: "button" | "reset" | "submit"
@@ -14,8 +14,6 @@ export type ButtonProps = {
 	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 	/** Link to go when you click button. */
 	to?: string
-	/** Enable next Shallow routing.  */
-	shallow?: boolean
 	/** Optional prop to specify icon. */
 	icon?: string
 	/** Specify the location of the icon. */
@@ -50,7 +48,6 @@ export const Button: React.FC<ButtonProps> = ({
 	onClick,
 	isColored = false,
 	type = "button",
-	shallow = false,
 }) => {
 	// When loading should be disabled
 	disabled = loading ? true : disabled
@@ -64,7 +61,7 @@ export const Button: React.FC<ButtonProps> = ({
 	// Disable state classes
 	const disabledClassesPrimarySecondary = `${dimOpacityWhenDisabled ? "text-opacity-75 opacity-80" : ""} cursor-default`
 	const disabledPrimary = disabled ? disabledClassesPrimarySecondary : "hover:bg-yellow-600 focus:bg-yellow-700"
-	const disabledSecondary = disabled ? disabledClassesPrimarySecondary : "hover:bg-dark-400 focus:bg-dark-300"
+	const disabledSecondary = disabled ? disabledClassesPrimarySecondary : "hover:bg-dark-600 focus:bg-dark-700"
 	const disabledTertiary = disabled ? disabledClassesPrimarySecondary : `hover:text-${tertiaryColor}-800`
 
 	// Kind classes
@@ -72,13 +69,13 @@ export const Button: React.FC<ButtonProps> = ({
 	const secondaryClasses = `border bg-dark text-yellow ${disabledSecondary}`
 
 	const innerContent = <>
-		{icon && iconSlot === "start" && loading ? <Icon className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "start" && (loading ? <Icon className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon className="text-xl mr-1">{icon}</Icon>}
+		</Icon> : <Icon className="text-xl mr-1">{icon}</Icon>)}
 		{children}
-		{icon && iconSlot === "end" && loading ? <Icon className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "end" && (loading ? <Icon className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon className="text-xl ml-2">{icon}</Icon>}
+		</Icon> : <Icon className="text-xl ml-2">{icon}</Icon>)}
 	</>
 
 	return <>
@@ -91,7 +88,6 @@ export const Button: React.FC<ButtonProps> = ({
 				tabIndex={disabled ? -1 : 0}
 				className={`${buttonBaseClasses} ${kind === "primary" ? primaryClasses : secondaryClasses
 					} ${className}`}
-				shallow={shallow}
 			>
 				{innerContent}
 			</Link>
@@ -119,7 +115,6 @@ export const Button: React.FC<ButtonProps> = ({
 				onClick={disabled ? (event) => event.preventDefault() : () => ""}
 				tabIndex={disabled ? -1 : 0}
 				className={`${linkBaseClasses} w-max ${disabledTertiary} ${className}`}
-				shallow={shallow}
 			>
 				{innerContent}
 			</Link>

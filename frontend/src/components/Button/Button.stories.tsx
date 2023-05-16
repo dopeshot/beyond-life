@@ -12,6 +12,7 @@ type Story = StoryObj<typeof Button>
 export const ButtonPrimary: Story = {
     args: {
         children: "Button",
-        to: "/"
+        to: "/",
+        icon: "person",
     },
 }
