@@ -18,7 +18,6 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     )
 }
 
-
 describe('Toggle', () => {
     const data = {
         name: "toggle",
