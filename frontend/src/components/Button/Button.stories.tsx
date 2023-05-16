@@ -16,3 +16,21 @@ export const ButtonPrimary: Story = {
         icon: "person",
     },
 }
+
+export const ButtonSecondary: Story = {
+    args: {
+        children: "Button",
+        kind: "secondary",
+        to: "/",
+        icon: "person",
+    },
+}
+
+export const ButtonTertiary: Story = {
+    args: {
+        children: "Button",
+        kind: "tertiary",
+        to: "/",
+        icon: "person",
+    },
+}
