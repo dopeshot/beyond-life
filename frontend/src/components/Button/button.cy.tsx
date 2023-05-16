@@ -4,7 +4,7 @@ import { Button } from "./Button"
 
 const primaryButtonClass = "bg-yellow"
 const secondaryButtonClass = "bg-dark"
-const tertiaryButtonClass = "text-gray-600"
+const tertiaryButtonClass = "text-gray-500"
 
 describe("Button", () => {
     describe("Primary Button", () => {
