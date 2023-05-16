@@ -8,12 +8,59 @@ export interface paths {
   "/": {
     get: operations["AppController_getHello"];
   };
+  "/auth/register": {
+    /** Register new user */
+    post: operations["AuthController_register"];
+  };
+  "/auth/login": {
+    /** Login existing user */
+    post: operations["AuthController_login"];
+  };
+  "/auth/refresh": {
+    /** Fetch new access token using refresh token */
+    post: operations["AuthController_getAuthViaRefreshToken"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    RegisterDTO: {
+      /**
+       * @description Email of the user 
+       * @example test@test.test
+       */
+      email: string;
+      /**
+       * @description Password for user 
+       * @example verySecurePasswordAlsoUsedByThePentagon
+       */
+      password: string;
+      /**
+       * @description Username for the user 
+       * @example CoffeeLover
+       */
+      username: string;
+    };
+    TokenResponse: {
+      /** @description JWT access_token used for direct access to protected endpoints */
+      access_token: string;
+      /** @description JWT refresh_token used for refreshing the access_token */
+      refresh_token: string;
+    };
+    LoginDTO: {
+      /**
+       * @description Email of the user 
+       * @example test@test.test
+       */
+      email: string;
+      /**
+       * @description Password for user 
+       * @example verySecurePasswordAlsoUsedByThePentagon
+       */
+      password: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -34,6 +81,57 @@ export interface operations {
           "application/json": string;
         };
       };
+    };
+  };
+  /** Register new user */
+  AuthController_register: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterDTO"];
+      };
+    };
+    responses: {
+      /** @description User has been created */
+      201: {
+        content: {
+          "application/json": components["schemas"]["TokenResponse"];
+        };
+      };
+      /** @description Malformed dto passed */
+      400: never;
+      /** @description User properties already in use */
+      409: never;
+    };
+  };
+  /** Login existing user */
+  AuthController_login: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginDTO"];
+      };
+    };
+    responses: {
+      /** @description Authorized */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenResponse"];
+        };
+      };
+      /** @description User credentials are invalid/User has been banned */
+      401: never;
+    };
+  };
+  /** Fetch new access token using refresh token */
+  AuthController_getAuthViaRefreshToken: {
+    responses: {
+      /** @description Valid refresh token. */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenResponse"];
+        };
+      };
+      /** @description Invalid refresh token */
+      401: never;
     };
   };
 }

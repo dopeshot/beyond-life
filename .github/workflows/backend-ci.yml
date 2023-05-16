@@ -81,7 +81,7 @@ jobs:
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
       - name: Generate types
-        run: sh typegen.sh
+        run: ( cd backend && npm run gen:types ) && cp backend/schema.ts frontend/src/generated
 
       - name: Cache
         id: cache
