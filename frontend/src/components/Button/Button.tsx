@@ -6,7 +6,7 @@ export type ButtonProps = {
 	children: string
 	/** Which type of button we want, tertiary has the style of a link. */
 	kind?: "primary" | "secondary" | "tertiary"
-	/** Force color for linnk. */
+	/** Force color for link. */
 	isColored?: boolean
 	/** Button type default is "button". */
 	type?: "button" | "reset" | "submit"
@@ -31,7 +31,7 @@ export type ButtonProps = {
 }
 
 /**
- *  Button component (with link and button functionality), can look like a link when kind tertiary
+ * Button component (with link and button functionality), can look like a link when kind tertiary.
  * @example <Button kind="primary" to="/home">Home</Button>
  */
 export const Button: React.FC<ButtonProps> = ({
@@ -56,7 +56,7 @@ export const Button: React.FC<ButtonProps> = ({
 
 	// Base Classes
 	const buttonBaseClasses = "flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-8 w-full md:w-max"
-	const linkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-600`
+	const linkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-500`
 
 	// Disable state classes
 	const disabledClassesPrimarySecondary = `${dimOpacityWhenDisabled ? "text-opacity-75 opacity-80" : ""} cursor-default`
@@ -66,7 +66,7 @@ export const Button: React.FC<ButtonProps> = ({
 
 	// Kind classes
 	const primaryClasses = `bg-yellow border border-transparent text-dark ${disabledPrimary}`
-	const secondaryClasses = `border bg-dark text-yellow ${disabledSecondary}`
+	const secondaryClasses = `border bg-dark border border-transparent text-yellow ${disabledSecondary}`
 
 	const innerContent = <>
 		{icon && iconSlot === "start" && (loading ? <Icon datacy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
