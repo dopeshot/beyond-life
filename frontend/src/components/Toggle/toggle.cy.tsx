@@ -11,13 +11,11 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmitSpy}>
-            {() => (
-                <Form>
-                    {children}
-                </Form>
-            )}
+            <Form>
+                {children}
+            </Form>
         </Formik>
-    );
+    )
 }
 
 
