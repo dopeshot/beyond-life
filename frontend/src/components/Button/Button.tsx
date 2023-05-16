@@ -27,7 +27,7 @@ export type ButtonProps = {
 	/** Loading state when set to true button is loading. */
 	loading?: boolean
 	/** Use this to select element for testing. */
-	dataCy?: string
+	datacy?: string
 }
 
 /**
@@ -39,7 +39,7 @@ export const Button: React.FC<ButtonProps> = ({
 	disabled,
 	dimOpacityWhenDisabled = true,
 	icon,
-	dataCy,
+	datacy,
 	iconSlot = "start",
 	loading,
 	className,
@@ -69,20 +69,20 @@ export const Button: React.FC<ButtonProps> = ({
 	const secondaryClasses = `border bg-dark text-yellow ${disabledSecondary}`
 
 	const innerContent = <>
-		{icon && iconSlot === "start" && (loading ? <Icon dataCy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "start" && (loading ? <Icon datacy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon dataCy="icon-start" className="text-xl mr-1">{icon}</Icon>)}
+		</Icon> : <Icon datacy="icon-start" className="text-xl mr-1">{icon}</Icon>)}
 		{children}
-		{icon && iconSlot === "end" && (loading ? <Icon dataCy="icon-end-loading" className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "end" && (loading ? <Icon datacy="icon-end-loading" className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon dataCy="icon-end" className="text-xl ml-2">{icon}</Icon>)}
+		</Icon> : <Icon datacy="icon-end" className="text-xl ml-2">{icon}</Icon>)}
 	</>
 
 	return <>
 		{/* Primary or Secondary as link */}
 		{kind !== "tertiary" && to && (
 			<Link
-				dataCy={dataCy}
+				datacy={datacy}
 				href={disabled ? "" : to}
 				onClick={disabled ? (event) => event.preventDefault() : () => ""}
 				tabIndex={disabled ? -1 : 0}
@@ -96,7 +96,7 @@ export const Button: React.FC<ButtonProps> = ({
 		{/* Primary or Secondary as button */}
 		{kind !== "tertiary" && !to && (
 			<button
-				dataCy={dataCy}
+				datacy={datacy}
 				disabled={disabled}
 				onClick={disabled ? () => "" : onClick}
 				type={type}
@@ -110,7 +110,7 @@ export const Button: React.FC<ButtonProps> = ({
 		{/* Tertiary (link style) as link */}
 		{kind === "tertiary" && to && (
 			<Link
-				dataCy={dataCy}
+				datacy={datacy}
 				href={disabled ? "" : to}
 				onClick={disabled ? (event) => event.preventDefault() : () => ""}
 				tabIndex={disabled ? -1 : 0}
@@ -123,7 +123,7 @@ export const Button: React.FC<ButtonProps> = ({
 		{/* Tertiary (link style) as button */}
 		{kind === "tertiary" && !to && (
 			<button
-				dataCy={dataCy}
+				datacy={datacy}
 				disabled={disabled}
 				onClick={disabled ? () => "" : onClick}
 				type={type}

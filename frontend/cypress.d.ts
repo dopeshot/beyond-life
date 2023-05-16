@@ -9,10 +9,10 @@ declare global {
             mount: typeof mount
             /**
              * Helper for easier selecting tags with datacy.
-             * @param dataCy the dataCy attribute name of the tag we want to select
+             * @param datacy the datacy attribute name of the tag we want to select
              * @param customSelector add custom child selector, is used like css selectors
              */
-            dataCy(dataCy: string, customSelector?: string): Chainable<void>
+            datacy(datacy: string, customSelector?: string): Chainable<void>
         }
     }
 }

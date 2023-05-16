@@ -6,15 +6,15 @@ type IconProps = {
     /** Custom classes. */
     className?: string
     /** Use this to select element for testing. */
-    dataCy?: string
+    datacy?: string
 }
 
 /**
  * The `Icon` component is used to display a material icon.
  * @example <Icon>add</Icon>
  */
-export const Icon: React.FC<IconProps> = ({ children, isFilled = false, dataCy, className }) => (
-    <i dataCy={dataCy} style={isFilled ? { fontVariationSettings: "'FILL' 1" } : {}} className={`material-symbols-rounded ${className}`}>
+export const Icon: React.FC<IconProps> = ({ children, isFilled = false, datacy, className }) => (
+    <i datacy={datacy} style={isFilled ? { fontVariationSettings: "'FILL' 1" } : {}} className={`material-symbols-rounded ${className}`}>
         {children}
     </i>
 )
