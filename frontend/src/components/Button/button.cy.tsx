@@ -10,61 +10,70 @@ describe("Button", () => {
     describe("Primary Button", () => {
         it("should display primary button", () => {
             cy.mount(
-                <Button kind="primary" onClick={() => ""}>
+                <Button dataCy="button" kind="primary" onClick={() => ""}>
                     Test
                 </Button>
             )
-            cy.get("button").should("have.class", primaryButtonClass)
+            cy.dataCy("button").should("have.class", primaryButtonClass)
         })
 
         describe("Icon", () => {
-            it("should display icon", () => {
+            it("should display icon start", () => {
                 cy.mount(
                     <Button kind="primary" icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
-                cy.get("button i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
+            })
+
+            it("should display icon end", () => {
+                cy.mount(
+                    <Button kind="primary" icon="face" iconSlot="end" onClick={() => ""}>
+                        Test
+                    </Button>
+                )
+                cy.dataCy("icon-end").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="primary" loading icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="primary" loading icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should disable button when loading", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
-                cy.get("button").should("be.disabled")
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("be.disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("button i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="primary" disabled icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="primary" disabled icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should have disabled attribute", () => {
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should have disabled classes", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
             })
         })
     })
@@ -72,11 +81,11 @@ describe("Button", () => {
     describe("Primary Link", () => {
         it("should display primary link", () => {
             cy.mount(
-                <Button kind="primary" to="/">
+                <Button dataCy="link" kind="primary" to="/">
                     Test
                 </Button>
             )
-            cy.get("a").should("have.class", primaryButtonClass)
+            cy.dataCy("link").should("have.class", primaryButtonClass)
         })
 
         describe("Icon", () => {
@@ -86,46 +95,46 @@ describe("Button", () => {
                         Test
                     </Button>
                 )
-                cy.get("a i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="primary" to="/" loading icon="face">
+                    <Button dataCy="link" kind="primary" to="/" loading icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should disable link when loading", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("a i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="primary" to="/" disabled icon="face">
+                    <Button dataCy="link" kind="primary" to="/" disabled icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should have empty href", () => {
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should have disabled classes", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
             })
         })
     })
@@ -133,11 +142,11 @@ describe("Button", () => {
     describe("Secondary button", () => {
         it("should display secondary button", () => {
             cy.mount(
-                <Button kind="secondary" onClick={() => ""}>
+                <Button dataCy="button" kind="secondary" onClick={() => ""}>
                     Test
                 </Button>
             )
-            cy.get("button").should("have.class", secondaryButtonClass)
+            cy.dataCy("button").should("have.class", secondaryButtonClass)
         })
 
         describe("Icon", () => {
@@ -147,47 +156,47 @@ describe("Button", () => {
                         Test
                     </Button>
                 )
-                cy.get("button i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="secondary" loading icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="secondary" loading icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should disable button when loading", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
-                cy.get("button").should("be.disabled")
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("be.disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("button i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="secondary" disabled icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="secondary" disabled icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should have disabled attribute", () => {
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should have disabled classes", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
             })
         })
     })
@@ -195,11 +204,11 @@ describe("Button", () => {
     describe("Secondary link", () => {
         it("should display secondary link", () => {
             cy.mount(
-                <Button kind="secondary" to="/">
+                <Button dataCy="link" kind="secondary" to="/">
                     Test
                 </Button>
             )
-            cy.get("a").should("have.class", secondaryButtonClass)
+            cy.dataCy("link").should("have.class", secondaryButtonClass)
         })
 
         describe("Icon", () => {
@@ -209,46 +218,46 @@ describe("Button", () => {
                         Test
                     </Button>
                 )
-                cy.get("a i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="secondary" to="/" loading icon="face">
+                    <Button dataCy="link" kind="secondary" to="/" loading icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should disable link when loading", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("a i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="secondary" to="/" disabled icon="face">
+                    <Button dataCy="link" kind="secondary" to="/" disabled icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should have empty href", () => {
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should have disabled classes", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
             })
         })
     })
@@ -256,11 +265,11 @@ describe("Button", () => {
     describe("Tertiary button", () => {
         it("should display tertiary button", () => {
             cy.mount(
-                <Button kind="tertiary" onClick={() => ""}>
+                <Button dataCy="button" kind="tertiary" onClick={() => ""}>
                     Test
                 </Button>
             )
-            cy.get("button").should("have.class", tertiaryButtonClass)
+            cy.dataCy("button").should("have.class", tertiaryButtonClass)
         })
 
         describe("Icon", () => {
@@ -270,47 +279,47 @@ describe("Button", () => {
                         Test
                     </Button>
                 )
-                cy.get("button i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="tertiary" loading icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="tertiary" loading icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should disable button when loading", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
-                cy.get("button").should("be.disabled")
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("be.disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("button i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="tertiary" disabled icon="face" onClick={() => ""}>
+                    <Button dataCy="button" kind="tertiary" disabled icon="face" onClick={() => ""}>
                         Test
                     </Button>
                 )
             })
 
             it("should have disabled attribute", () => {
-                cy.get("button").should("have.attr", "disabled")
+                cy.dataCy("button").should("have.attr", "disabled")
             })
 
             it("should have disabled classes", () => {
-                cy.get("button").should("have.class", "text-opacity-75")
-                cy.get("button").should("have.class", "opacity-80")
+                cy.dataCy("button").should("have.class", "text-opacity-75")
+                cy.dataCy("button").should("have.class", "opacity-80")
             })
         })
     })
@@ -318,11 +327,11 @@ describe("Button", () => {
     describe("Tertiary link", () => {
         it("should display tertiary link", () => {
             cy.mount(
-                <Button kind="tertiary" to="/">
+                <Button dataCy="link" kind="tertiary" to="/">
                     Test
                 </Button>
             )
-            cy.get("a").should("have.class", tertiaryButtonClass)
+            cy.dataCy("link").should("have.class", tertiaryButtonClass)
         })
 
         describe("Icon", () => {
@@ -332,46 +341,46 @@ describe("Button", () => {
                         Test
                     </Button>
                 )
-                cy.get("a i").should("be.visible")
+                cy.dataCy("icon-start").should("be.visible")
             })
         })
 
         describe("Loading", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="tertiary" to="/" loading icon="face">
+                    <Button dataCy="link" kind="tertiary" to="/" loading icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should disable link when loading", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should show loading icon when loading", () => {
-                cy.get("a i").should("contain", "sync")
+                cy.dataCy("icon-start-loading").should("contain", "sync")
             })
         })
 
         describe("Disabled", () => {
             beforeEach(() => {
                 cy.mount(
-                    <Button kind="tertiary" to="/" disabled icon="face">
+                    <Button dataCy="link" kind="tertiary" to="/" disabled icon="face">
                         Test
                     </Button>
                 )
             })
 
             it("should have empty href", () => {
-                cy.get("a").invoke("attr", "href").should("eq", "")
+                cy.dataCy("link").invoke("attr", "href").should("eq", "")
             })
 
             it("should have disabled classes", () => {
-                cy.get("a").should("have.class", "text-opacity-75")
-                cy.get("a").should("have.class", "opacity-80")
+                cy.dataCy("link").should("have.class", "text-opacity-75")
+                cy.dataCy("link").should("have.class", "opacity-80")
             })
         })
     })

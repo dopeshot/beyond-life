@@ -69,13 +69,13 @@ export const Button: React.FC<ButtonProps> = ({
 	const secondaryClasses = `border bg-dark text-yellow ${disabledSecondary}`
 
 	const innerContent = <>
-		{icon && iconSlot === "start" && (loading ? <Icon className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "start" && (loading ? <Icon dataCy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon className="text-xl mr-1">{icon}</Icon>)}
+		</Icon> : <Icon dataCy="icon-start" className="text-xl mr-1">{icon}</Icon>)}
 		{children}
-		{icon && iconSlot === "end" && (loading ? <Icon className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
+		{icon && iconSlot === "end" && (loading ? <Icon dataCy="icon-end-loading" className={`text-xl ml-2 ${loading ? "animate-spin" : ""}`}>
 			sync
-		</Icon> : <Icon className="text-xl ml-2">{icon}</Icon>)}
+		</Icon> : <Icon dataCy="icon-end" className="text-xl ml-2">{icon}</Icon>)}
 	</>
 
 	return <>

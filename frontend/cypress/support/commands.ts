@@ -1,3 +1,6 @@
 /// <reference types="cypress" />
 
-// Custom Commands here
+/**** Command Helper ****/
+Cypress.Commands.add("dataCy", (dataCy, customSelector = "") => {
+    cy.get(`[datacy=${dataCy}]${customSelector}`)
+})
