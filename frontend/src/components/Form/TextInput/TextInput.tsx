@@ -54,13 +54,14 @@ export const TextInput: React.FC<TextInputProps> = ({
 								type={type}
 								{...fieldProps.field}
 								{...props}
-								className={`flex items-center rounded-lg p-2 px-4 border w-full bg-gray-200 active:border-yellow-500 ${
-									icon && 'pr-12'
-								} ${fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''}`}
+								className={`flex items-center rounded-lg p-2 px-4 border w-full bg-gray-200 ${icon && 'pr-12'} ${
+									fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''
+								}`}
 							/>
 							{icon && (
 								<div className={'w-0'}>
 									<button
+										type="submit"
 										onClick={iconOnClick}
 										className={'h-full w-6 relative flex items-center -left-10'}
 									>
@@ -76,7 +77,12 @@ export const TextInput: React.FC<TextInputProps> = ({
 						</div>
 						{helperText && <p data-cy={`textinput-${name}-helpertext`}>{helperText}</p>}
 						{fieldProps.meta.touched && fieldProps.meta.error && (
-							<p data-cy={`textinput-${name}-errortext`}>{fieldProps.meta.error}</p>
+							<p
+								data-cy={`textinput-${name}-errortext`}
+								className={'text-red'}
+							>
+								{fieldProps.meta.error}
+							</p>
 						)}
 					</div>
 				)}
