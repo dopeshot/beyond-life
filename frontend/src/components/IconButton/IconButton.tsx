@@ -3,23 +3,23 @@ import { Color } from "../../types/color"
 import { Icon } from "../Icon/Icon"
 
 type IconButtonProps = {
-    /** Specify the icon */
+    /** Specify the icon. */
     icon: string
-    /** Optional property to set the color of the icon button */
+    /** Optional property to set the color of the icon button. */
     color?: Color
-    /** Optional specify an href for your Button to become an `<a>` element */
+    /** Optional specify an href for your Button to become an `<a>` element. */
     to?: string
-    /** Optional callback function to handle click events on the icon button */
+    /** Optional callback function to handle click events on the icon button. */
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-    /** Optional class name for custom styling of the icon button */
+    /** Optional class name for custom styling of the icon button. */
     className?: string
     /** Optional class name for custom styling of the icon. */
     iconClassName?: string
-    /** Specify whether the Button should be disabled, or not */
+    /** Specify whether the Button should be disabled, or not. */
     disabled?: boolean
-    /** Optional property to dim the opacity of the icon button when it is disabled */
+    /** Optional property to dim the opacity of the icon button when it is disabled. */
     dimOpacityWhenDisabled?: boolean
-    /** Optional property to set the data-cy attribute for testing purposes */
+    /** Optional property to set the data-cy attribute for testing purposes. */
     datacy?: string
 }
 
