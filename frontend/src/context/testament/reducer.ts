@@ -1,11 +1,11 @@
 import { Testament } from "../../types/testament"
 
-export enum TestamentActionKind {
+export enum TestamentActionType {
     SET_TESTATOR = 'SET_TESTATOR'
 }
 
 export type TestamentActions = {
-    type: TestamentActionKind
+    type: TestamentActionType
     payload: {
         name: string
         surname: string
@@ -25,7 +25,7 @@ export const initalTestamentState: Testament = {
 
 export const testamentReducer = (state: Testament, action: TestamentActions): Testament => {
     switch (action.type) {
-        case TestamentActionKind.SET_TESTATOR:
+        case TestamentActionType.SET_TESTATOR:
             return {
                 ...state,
                 testator: action.payload
