@@ -4,6 +4,7 @@ import React from 'react'
 import { fontPlusJakartaSans } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
 import { SidebarElementIds } from '../../../../types/sidebarElementIds'
+import { Placeholder } from '../../../Placeholder/Placeholder'
 
 export type SidebarButtonProps = {
 	id: SidebarElementIds
@@ -34,7 +35,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 				<div className="text-base font-bold h-5">{title}</div>
 				<div className="text-xs font-medium h-8">{description}</div>
 			</div>
-			{isActive == 'inactive' && <div className={`h-6 w-6 bg-gray-500`} />}
+			{isActive == 'inactive' && <Placeholder name="EditIcon" className={`h-6 w-6 p-0 bg-gray-400`} />}
 		</Link>
 	)
 }
