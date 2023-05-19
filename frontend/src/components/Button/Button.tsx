@@ -55,18 +55,18 @@ export const Button: React.FC<ButtonProps> = ({
 	const tertiaryColor = isColored ? "red" : "gray"
 
 	// Base Classes
-	const buttonBaseClasses = "flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-10 w-full md:w-max"
-	const linkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-500`
+	const twButtonBaseClasses = "flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-10 w-full md:w-max"
+	const twLinkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-500`
 
 	// Disable state classes
-	const disabledClassesPrimarySecondary = `${dimOpacityWhenDisabled ? "text-opacity-75 opacity-80" : ""} cursor-default`
-	const disabledPrimary = disabled ? disabledClassesPrimarySecondary : "hover:bg-yellow-600 focus:bg-yellow-700"
-	const disabledSecondary = disabled ? disabledClassesPrimarySecondary : "hover:bg-dark-600 focus:bg-dark-700"
-	const disabledTertiary = disabled ? disabledClassesPrimarySecondary : `hover:text-${tertiaryColor}-800`
+	const twDisabledClassesPrimarySecondary = `${dimOpacityWhenDisabled ? "text-opacity-75 opacity-80" : ""} cursor-default`
+	const twDisabledPrimary = disabled ? twDisabledClassesPrimarySecondary : "hover:bg-yellow-600 focus:bg-yellow-700"
+	const twDisabledSecondary = disabled ? twDisabledClassesPrimarySecondary : "hover:bg-dark-600 focus:bg-dark-700"
+	const twDisabledTertiary = disabled ? twDisabledClassesPrimarySecondary : `hover:text-${tertiaryColor}-800`
 
 	// Kind classes
-	const primaryClasses = `bg-yellow border border-transparent text-dark ${disabledPrimary}`
-	const secondaryClasses = `border bg-dark border border-transparent text-white ${disabledSecondary}`
+	const twPrimaryClasses = `bg-yellow border border-transparent text-dark ${twDisabledPrimary}`
+	const twSecondaryClasses = `border bg-dark border border-transparent text-white ${twDisabledSecondary}`
 
 	const innerContent = <>
 		{icon && iconSlot === "start" && (loading ? <Icon datacy="icon-start-loading" className={`text-xl mr-2 ${loading ? "animate-spin" : ""}`}>
@@ -86,7 +86,7 @@ export const Button: React.FC<ButtonProps> = ({
 				href={disabled ? "" : to}
 				onClick={disabled ? (event) => event.preventDefault() : () => ""}
 				tabIndex={disabled ? -1 : 0}
-				className={`${buttonBaseClasses} ${kind === "primary" ? primaryClasses : secondaryClasses
+				className={`${twButtonBaseClasses} ${kind === "primary" ? twPrimaryClasses : twSecondaryClasses
 					} ${className}`}
 			>
 				{innerContent}
@@ -100,7 +100,7 @@ export const Button: React.FC<ButtonProps> = ({
 				disabled={disabled}
 				onClick={disabled ? () => "" : onClick}
 				type={type}
-				className={`${buttonBaseClasses} ${kind === "primary" ? primaryClasses : secondaryClasses
+				className={`${twButtonBaseClasses} ${kind === "primary" ? twPrimaryClasses : twSecondaryClasses
 					} ${className}`}
 			>
 				{innerContent}
@@ -114,7 +114,7 @@ export const Button: React.FC<ButtonProps> = ({
 				href={disabled ? "" : to}
 				onClick={disabled ? (event) => event.preventDefault() : () => ""}
 				tabIndex={disabled ? -1 : 0}
-				className={`${linkBaseClasses} w-max ${disabledTertiary} ${className}`}
+				className={`${twLinkBaseClasses} w-max ${twDisabledTertiary} ${className}`}
 			>
 				{innerContent}
 			</Link>
@@ -127,7 +127,7 @@ export const Button: React.FC<ButtonProps> = ({
 				disabled={disabled}
 				onClick={disabled ? () => "" : onClick}
 				type={type}
-				className={`${linkBaseClasses} ${disabledTertiary} ${className}`}
+				className={`${twLinkBaseClasses} ${twDisabledTertiary} ${className}`}
 			>
 				{innerContent}
 			</button>
