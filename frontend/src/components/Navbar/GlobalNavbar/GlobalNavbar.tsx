@@ -45,7 +45,7 @@ export const GlobalNavbar: React.FC = () => {
             </div>
 
             {/* Navlinks */}
-            <ul className={`${isNavMobileOpen ? "block" : "hidden"} flex flex-col md:flex-row md:items-center gap-4 w-full py-5 md:py-0`}>
+            <ul className={`${isNavMobileOpen ? "flex" : "hidden"} md:flex flex-col md:flex-row md:items-center gap-4 w-full py-5 md:py-0`}>
                 {/* Navlinks Start */}
                 {navLinks.map(navLink => <li key={navLink.text}>
                     <NavbarLink isActive={"to" in navLink && navLink.to === pathname} {...navLink}>{navLink.text}</NavbarLink>
