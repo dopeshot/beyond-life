@@ -29,9 +29,7 @@ export const Toggle: React.FC<ToggleProps> = ({
 }) => {
 	return (
 		<div className="mb-4">
-			{labelText && (
-				<Label datacy={`textinput-${name}`} name={name} labelText={labelText} inputRequired={inputRequired} />
-			)}
+			{labelText && <Label datacy={`${name}`} name={name} labelText={labelText} inputRequired={inputRequired} />}
 			<Field name={name}>
 				{(props: FieldProps<boolean>) => (
 					<div
