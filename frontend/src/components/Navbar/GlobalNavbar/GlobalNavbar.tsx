@@ -41,18 +41,18 @@ export const GlobalNavbar: React.FC = () => {
                 </Link>
 
                 {/* Mobile menu button */}
-                <IconButton className="block md:hidden" aria-label="Open mobile navigation" onClick={() => setIsNavMobileOpen((isNavMobileOpen) => !isNavMobileOpen)} icon="menu" />
+                <IconButton color="black" className="block md:hidden" aria-label="Open mobile navigation" onClick={() => setIsNavMobileOpen((isNavMobileOpen) => !isNavMobileOpen)} icon="menu" />
             </div>
 
             {/* Navlinks */}
-            <ul className={`${isNavMobileOpen ? "block" : "hidden"} md:flex items-center gap-4 w-full py-5 md:py-0`}>
+            <ul className={`${isNavMobileOpen ? "block" : "hidden"} flex flex-col md:flex-row md:items-center gap-4 w-full py-5 md:py-0`}>
                 {/* Navlinks Start */}
-                {navLinks.map(navLink => <li key={navLink.text} className="mb-3 md:mb-0">
+                {navLinks.map(navLink => <li key={navLink.text}>
                     <NavbarLink isActive={"to" in navLink && navLink.to === pathname} {...navLink}>{navLink.text}</NavbarLink>
                 </li>)}
 
                 {/* Navlinks End */}
-                <li className="ml-auto mb-3 md:mb-0">
+                <li className="order-1 md:order-none md:ml-auto">
                     <Button kind="secondary" to={routes.account.login}>Login</Button>
                 </li>
                 <li>
