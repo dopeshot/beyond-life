@@ -4,7 +4,7 @@ import { exampleFetch } from "../../services/api/example"
 import { Testament } from "../../types/testament"
 import { TestamentActionType, TestamentActions, initalTestamentState, testamentReducer } from "./reducer"
 
-interface TestamentContextType {
+type TestamentContextType = {
     testament: Testament
     dispatch: Dispatch<TestamentActions>
     reloadData: () => void
@@ -33,7 +33,7 @@ export const TestamentContextProvider: React.FC<{ children: React.ReactNode }> =
         })
     }, [])
 
-    // Call onReloadNeeded on mount
+    // Reload data on mount
     useEffect(() => {
         reloadData()
     }, [reloadData])
