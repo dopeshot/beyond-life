@@ -1,13 +1,12 @@
 'use client'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 import logo from '../../../../assets/logo/logo.png'
 import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from '../SidebarButton/SidebarButton'
 
-export type LastWillSidebarProps = {
-	path: string
-}
+export type LastWillSidebarProps = {}
 
 const sidebarElements: {
 	id: SidebarElementIds
@@ -46,7 +45,8 @@ const sidebarElements: {
 	}
 ]
 
-export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path = '' }) => {
+export const LastWillSidebar: React.FC<LastWillSidebarProps> = () => {
+	const path = usePathname()
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (

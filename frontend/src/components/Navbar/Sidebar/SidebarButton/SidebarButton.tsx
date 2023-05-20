@@ -23,7 +23,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 }: SidebarButtonProps) => {
 	return (
 		<Link
-			onClick={handleClick}
+			onClick={handleClick} // TODO: triggert schneller als Navigation und muss anders implementiert werden. Ist aber erst wichtig, wenn die State Updates funktionieren
 			href={routes.lastWill[id]('1')}
 			className={`flex justify-between items-center px-6 py-3 select-none ${
 				state === 'active' ? 'bg-black text-white' : state === 'inactive' ? 'text-black' : 'text-black text-opacity-50'
