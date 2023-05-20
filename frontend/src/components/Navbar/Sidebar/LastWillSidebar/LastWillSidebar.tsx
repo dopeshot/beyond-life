@@ -13,55 +13,46 @@ const sidebarElements: {
 	id: SidebarElementIds
 	title: string
 	description?: string
-	disabled: boolean
 }[] = [
 	{
 		id: 'testator',
 		title: 'Erblasser',
-		description: 'Persönliche Daten des Erblassers',
-		disabled: false
+		description: 'Persönliche Daten des Erblassers'
 	},
 	{
 		id: 'marriage',
 		title: 'Familienstand',
-		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
-		disabled: true
+		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners'
 	},
 	{
 		id: 'heirs',
 		title: 'Erben',
-		description: 'Erben und deren Anteile',
-		disabled: true
+		description: 'Erben und deren Anteile'
 	},
 	{
 		id: 'inheritance',
 		title: 'Erbschaft',
-		description: 'Erbschaftsgegenstände',
-		disabled: true
+		description: 'Erbschaftsgegenstände'
 	},
 	{
 		id: 'succession',
 		title: 'Erbfolge',
-		description: 'Stammbaum und Verteilung',
-		disabled: true
+		description: 'Stammbaum und Verteilung'
 	},
 	{
 		id: 'final',
 		title: 'Zusammenfassung',
-		description: 'Überprüfung und Abschreiben',
-		disabled: true
+		description: 'Überprüfung und Abschreiben'
 	}
 ]
 
 export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path = '' }) => {
+	// const { testament, setProgressId } = useTestamentContext()
+
 	return (
 		<div className="w-80 bg-yellow h-auto">
 			<div className="px-6 pt-4 pb-20">
-				<Image
-					src={logo}
-					alt="logo"
-					width={160}
-				/>
+				<Image src={logo} alt="logo" width={160} />
 			</div>
 			<div className="flex flex-col">
 				{sidebarElements.map((element, index) => (
@@ -70,7 +61,14 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path = '' }) =
 						id={element.id}
 						title={element.title}
 						description={element.description}
-						isActive={path.includes(element.id) ? 'active' : element.disabled ? 'disabled' : 'inactive'}
+						state={
+							path.includes(element.id)
+								? 'active'
+								: true //: testament.common.progressIds.includes(element.id)
+								? 'inactive'
+								: 'disabled'
+						}
+						// handleClick={() => setProgressId(element.id)}
 					/>
 				))}
 			</div>
