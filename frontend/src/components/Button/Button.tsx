@@ -78,7 +78,7 @@ export const Button: React.FC<ButtonProps> = ({
 				(loading ? (
 					<Icon datacy="icon-start-loading" className={`mr-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
 				) : (
-					<Icon datacy="icon-start" className="mr-1 text-xl" icon={icon} />
+					<Icon datacy="icon-start" className="mr-2 text-xl" icon={icon} />
 				))}
 			{children}
 			{icon &&
