@@ -18,7 +18,7 @@ export const Icon: React.FC<IconProps> = ({ icon, isFilled = false, datacy, clas
 	<i
 		datacy={datacy}
 		style={isFilled ? { fontVariationSettings: "'FILL' 1" } : {}}
-		className={`material-symbols-rounded ${className}`}
+		className={`material-symbols-rounded${className ? ` ${className}` : ''}`}
 	>
 		{icon}
 	</i>
