@@ -36,13 +36,13 @@ export type ButtonProps = {
  */
 export const Button: React.FC<ButtonProps> = ({
 	kind = 'primary',
-	disabled,
+	disabled = false,
 	dimOpacityWhenDisabled = true,
 	icon,
 	datacy,
 	iconSlot = 'start',
-	loading,
-	className,
+	loading = false,
+	className = '',
 	children,
 	to,
 	onClick,
@@ -71,6 +71,9 @@ export const Button: React.FC<ButtonProps> = ({
 	const twPrimaryClasses = `bg-yellow border border-transparent text-dark ${twDisabledPrimary}`
 	const twSecondaryClasses = `border bg-dark border border-transparent text-white ${twDisabledSecondary}`
 
+	// Add space to classNames
+	className = className ? ` ${className}` : ''
+
 	const innerContent = (
 		<>
 			{icon &&
@@ -97,12 +100,11 @@ export const Button: React.FC<ButtonProps> = ({
 			{kind !== 'tertiary' && to && (
 				<Link
 					datacy={datacy}
-					href={disabled ? '' : to}
-					onClick={disabled ? (event) => event.preventDefault() : () => ''}
+					href={disabled ? '#' : to}
 					tabIndex={disabled ? -1 : 0}
-					className={`${twButtonBaseClasses} ${
-						kind === 'primary' ? twPrimaryClasses : twSecondaryClasses
-					} ${className}`}
+					className={`${twButtonBaseClasses} ${kind === 'primary' ? twPrimaryClasses : twSecondaryClasses}${
+						disabled ? ' pointer-events-none' : ''
+					}${className}`}
 				>
 					{innerContent}
 				</Link>
@@ -113,11 +115,9 @@ export const Button: React.FC<ButtonProps> = ({
 				<button
 					datacy={datacy}
 					disabled={disabled}
-					onClick={disabled ? () => '' : onClick}
+					onClick={onClick}
 					type={type}
-					className={`${twButtonBaseClasses} ${
-						kind === 'primary' ? twPrimaryClasses : twSecondaryClasses
-					} ${className}`}
+					className={`${twButtonBaseClasses} ${kind === 'primary' ? twPrimaryClasses : twSecondaryClasses}${className}`}
 				>
 					{innerContent}
 				</button>
@@ -128,9 +128,10 @@ export const Button: React.FC<ButtonProps> = ({
 				<Link
 					datacy={datacy}
 					href={disabled ? '' : to}
-					onClick={disabled ? (event) => event.preventDefault() : () => ''}
 					tabIndex={disabled ? -1 : 0}
-					className={`${twLinkBaseClasses} w-max ${twDisabledTertiary} ${className}`}
+					className={`${twLinkBaseClasses} w-max ${twDisabledTertiary}${
+						disabled ? ' pointer-events-none' : ''
+					}${className}`}
 				>
 					{innerContent}
 				</Link>
@@ -141,9 +142,9 @@ export const Button: React.FC<ButtonProps> = ({
 				<button
 					datacy={datacy}
 					disabled={disabled}
-					onClick={disabled ? () => '' : onClick}
+					onClick={onClick}
 					type={type}
-					className={`${twLinkBaseClasses} ${twDisabledTertiary} ${className}`}
+					className={`${twLinkBaseClasses} ${twDisabledTertiary}${className ? ` ${className}` : ''}`}
 				>
 					{innerContent}
 				</button>
