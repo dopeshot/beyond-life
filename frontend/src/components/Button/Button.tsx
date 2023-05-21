@@ -2,7 +2,7 @@ import { MaterialSymbol } from 'material-symbols'
 import Link from 'next/link'
 import { Icon } from '../Icon/Icon'
 
-export type ButtonProps = {
+type CommonProps = {
 	/** The content inside the Button. */
 	children: string
 	/** Which type of button we want, tertiary has the style of a link. */
@@ -11,10 +11,6 @@ export type ButtonProps = {
 	isColoredTertiary?: boolean
 	/** Button type default is "button". */
 	type?: 'button' | 'reset' | 'submit'
-	/** Function that happens when you click button. */
-	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-	/** Link to go when you click button. */
-	to?: string
 	/** Optional prop to specify icon. */
 	icon?: MaterialSymbol
 	/** Specify the location of the icon. */
@@ -31,10 +27,24 @@ export type ButtonProps = {
 	datacy?: string
 }
 
+type ButtonProps = CommonProps & {
+	/** Function that happens when you click button. */
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+	to?: never
+}
+
+type LinkProps = CommonProps & {
+	/** Link to go when you click button. */
+	to: string
+	onClick?: never
+}
+
+type ButtonLinkProps = ButtonProps | LinkProps
+
 /**
  * Button component (with link and button functionality), can look like a link when kind tertiary.
  */
-export const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonLinkProps> = ({
 	kind = 'primary',
 	disabled = false,
 	dimOpacityWhenDisabled = true,
