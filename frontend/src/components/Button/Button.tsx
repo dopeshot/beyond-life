@@ -7,8 +7,8 @@ export type ButtonProps = {
 	children: string
 	/** Which type of button we want, tertiary has the style of a link. */
 	kind?: 'primary' | 'secondary' | 'tertiary'
-	/** Force color for link. */
-	isColored?: boolean
+	/** Force color for tertiary. */
+	isColoredTertiary?: boolean
 	/** Button type default is "button". */
 	type?: 'button' | 'reset' | 'submit'
 	/** Function that happens when you click button. */
@@ -46,13 +46,13 @@ export const Button: React.FC<ButtonProps> = ({
 	children,
 	to,
 	onClick,
-	isColored = false,
+	isColoredTertiary = false,
 	type = 'button',
 }) => {
 	// When loading should be disabled
 	disabled = loading ? true : disabled
 
-	const tertiaryColor = isColored ? 'red' : 'gray'
+	const tertiaryColor = isColoredTertiary ? 'red' : 'gray'
 
 	// Base Classes
 	const twButtonBaseClasses =
