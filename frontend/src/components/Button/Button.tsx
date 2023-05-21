@@ -1,3 +1,4 @@
+import { MaterialSymbol } from 'material-symbols'
 import Link from 'next/link'
 import { Icon } from '../Icon/Icon'
 
@@ -15,7 +16,7 @@ export type ButtonProps = {
 	/** Link to go when you click button. */
 	to?: string
 	/** Optional prop to specify icon. */
-	icon?: string
+	icon?: MaterialSymbol
 	/** Specify the location of the icon. */
 	iconSlot?: 'start' | 'end'
 	/** Can add classes to customize margins for example. */
@@ -75,25 +76,17 @@ export const Button: React.FC<ButtonProps> = ({
 			{icon &&
 				iconSlot === 'start' &&
 				(loading ? (
-					<Icon datacy="icon-start-loading" className={`mr-2 text-xl ${loading ? 'animate-spin' : ''}`}>
-						sync
-					</Icon>
+					<Icon datacy="icon-start-loading" className={`mr-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
 				) : (
-					<Icon datacy="icon-start" className="mr-1 text-xl">
-						{icon}
-					</Icon>
+					<Icon datacy="icon-start" className="mr-1 text-xl" icon={icon} />
 				))}
 			{children}
 			{icon &&
 				iconSlot === 'end' &&
 				(loading ? (
-					<Icon datacy="icon-end-loading" className={`ml-2 text-xl ${loading ? 'animate-spin' : ''}`}>
-						sync
-					</Icon>
+					<Icon datacy="icon-end-loading" className={`ml-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
 				) : (
-					<Icon datacy="icon-end" className="ml-2 text-xl">
-						{icon}
-					</Icon>
+					<Icon datacy="icon-end" className="ml-2 text-xl" icon={icon} />
 				))}
 		</>
 	)
