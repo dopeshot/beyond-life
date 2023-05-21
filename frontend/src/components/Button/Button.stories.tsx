@@ -10,27 +10,27 @@ export default meta
 type Story = StoryObj<typeof Button>
 
 export const ButtonPrimary: Story = {
+	argTypes: { onClick: { action: 'clicked' } },
 	args: {
 		children: 'Button',
-		to: '/',
 		icon: 'person',
 	},
 }
 
 export const ButtonSecondary: Story = {
+	argTypes: { onClick: { action: 'clicked' } },
 	args: {
 		children: 'Button',
 		kind: 'secondary',
-		to: '/',
 		icon: 'person',
 	},
 }
 
 export const ButtonTertiary: Story = {
+	argTypes: { onClick: { action: 'clicked' } },
 	args: {
 		children: 'Button',
 		kind: 'tertiary',
-		to: '/',
 		icon: 'person',
 	},
 }
