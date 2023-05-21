@@ -1,16 +1,14 @@
 import { MaterialSymbol } from 'material-symbols'
-import Link from 'next/link'
+import Link, { LinkProps } from 'next/link'
 import { Icon } from '../Icon/Icon'
 
 type CommonProps = {
-	/** The content inside the Button. */
-	children: string
+	/** The content of the button. */
+	children: React.ReactNode
 	/** Which type of button we want, tertiary has the style of a link. */
 	kind?: 'primary' | 'secondary' | 'tertiary'
 	/** Force color for tertiary. */
 	isColoredTertiary?: boolean
-	/** Button type default is "button". */
-	type?: 'button' | 'reset' | 'submit'
 	/** Optional prop to specify icon. */
 	icon?: MaterialSymbol
 	/** Specify the location of the icon. */
@@ -27,24 +25,10 @@ type CommonProps = {
 	datacy?: string
 }
 
-type ButtonProps = CommonProps & {
-	/** Function that happens when you click button. */
-	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
-	to?: never
-}
+type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+type AnchorLinkProps = CommonProps & LinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>
 
-type LinkProps = CommonProps & {
-	/** Link to go when you click button. */
-	to: string
-	onClick?: never
-}
-
-type ButtonLinkProps = ButtonProps | LinkProps
-
-/**
- * Button component (with link and button functionality), can look like a link when kind tertiary.
- */
-export const Button: React.FC<ButtonLinkProps> = ({
+export const AnchorLink: React.FC<AnchorLinkProps> = ({
 	kind = 'primary',
 	disabled = false,
 	dimOpacityWhenDisabled = true,
@@ -54,11 +38,148 @@ export const Button: React.FC<ButtonLinkProps> = ({
 	loading = false,
 	className = '',
 	children,
-	to,
+	href,
+	isColoredTertiary = false,
+	...props
+}) => {
+	const calculatedProps = navigationElementService({
+		disabled,
+		isColoredTertiary,
+		loading,
+		dimOpacityWhenDisabled,
+		className,
+	})
+	return (
+		<>
+			{/* Primary or Secondary as link */}
+			{kind !== 'tertiary' && (
+				<Link
+					datacy={datacy}
+					href={calculatedProps.disabled ? '#' : href}
+					tabIndex={calculatedProps.disabled ? -1 : 0}
+					className={`${calculatedProps.twButtonBaseClasses} ${
+						kind === 'primary' ? calculatedProps.twPrimaryClasses : calculatedProps.twSecondaryClasses
+					}${calculatedProps.disabled ? ' pointer-events-none' : ''}${calculatedProps.className}`}
+					{...props}
+				>
+					<InnerContent icon={icon} iconSlot={iconSlot} loading={loading}>
+						{children}
+					</InnerContent>
+				</Link>
+			)}
+			{/* Tertiary (link style) as link */}
+			{kind === 'tertiary' && (
+				<Link
+					datacy={datacy}
+					href={calculatedProps.disabled ? '' : href}
+					tabIndex={calculatedProps.disabled ? -1 : 0}
+					className={`${calculatedProps.twLinkBaseClasses} w-max ${calculatedProps.twDisabledTertiary}${
+						calculatedProps.disabled ? ' pointer-events-none' : ''
+					}${calculatedProps.className}`}
+					{...props}
+				>
+					<InnerContent icon={icon} iconSlot={iconSlot} loading={loading}>
+						{children}
+					</InnerContent>
+				</Link>
+			)}
+		</>
+	)
+}
+
+export const Button: React.FC<ButtonProps> = ({
+	kind = 'primary',
+	disabled = false,
+	dimOpacityWhenDisabled = true,
+	icon,
+	datacy,
+	iconSlot = 'start',
+	loading = false,
+	className = '',
+	children,
 	onClick,
 	isColoredTertiary = false,
 	type = 'button',
+	...props
 }) => {
+	const calculatedProps = navigationElementService({
+		disabled,
+		isColoredTertiary,
+		loading,
+		dimOpacityWhenDisabled,
+		className,
+	})
+
+	return (
+		<>
+			{/* Primary or Secondary as button */}
+			{kind !== 'tertiary' && (
+				<button
+					datacy={datacy}
+					disabled={calculatedProps.disabled}
+					onClick={onClick}
+					type={type}
+					className={`${calculatedProps.twButtonBaseClasses} ${
+						kind === 'primary' ? calculatedProps.twPrimaryClasses : calculatedProps.twSecondaryClasses
+					}${calculatedProps.className}`}
+					{...props}
+				>
+					<InnerContent icon={icon} iconSlot={iconSlot} loading={loading}>
+						{children}
+					</InnerContent>
+				</button>
+			)}
+
+			{/* Tertiary (link style) as button */}
+			{kind === 'tertiary' && (
+				<button
+					datacy={datacy}
+					disabled={calculatedProps.disabled}
+					onClick={onClick}
+					type={type}
+					className={`${calculatedProps.twLinkBaseClasses} ${calculatedProps.twDisabledTertiary}${calculatedProps.className}`}
+					{...props}
+				>
+					<InnerContent icon={icon} iconSlot={iconSlot} loading={loading}>
+						{children}
+					</InnerContent>
+				</button>
+			)}
+		</>
+	)
+}
+
+export const InnerContent: React.FC<Pick<CommonProps, 'icon' | 'iconSlot' | 'loading' | 'children'>> = ({
+	icon,
+	iconSlot,
+	loading,
+	children,
+}) => {
+	return (
+		<>
+			{icon &&
+				iconSlot === 'start' &&
+				(loading ? (
+					<Icon datacy="icon-start-loading" className={`mr-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
+				) : (
+					<Icon datacy="icon-start" className="mr-2 text-xl" icon={icon} />
+				))}
+			{children}
+			{icon &&
+				iconSlot === 'end' &&
+				(loading ? (
+					<Icon datacy="icon-end-loading" className={`ml-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
+				) : (
+					<Icon datacy="icon-end" className="ml-2 text-xl" icon={icon} />
+				))}
+		</>
+	)
+}
+
+export const navigationElementService = (
+	props: Pick<CommonProps, 'disabled' | 'isColoredTertiary' | 'loading' | 'dimOpacityWhenDisabled' | 'className'>
+) => {
+	let { disabled, loading, isColoredTertiary, dimOpacityWhenDisabled, className } = props
 	// When loading should be disabled
 	disabled = loading ? true : disabled
 
@@ -84,81 +205,13 @@ export const Button: React.FC<ButtonLinkProps> = ({
 	// Add space to classNames
 	className = className ? ` ${className}` : ''
 
-	const innerContent = (
-		<>
-			{icon &&
-				iconSlot === 'start' &&
-				(loading ? (
-					<Icon datacy="icon-start-loading" className={`mr-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
-				) : (
-					<Icon datacy="icon-start" className="mr-2 text-xl" icon={icon} />
-				))}
-			{children}
-			{icon &&
-				iconSlot === 'end' &&
-				(loading ? (
-					<Icon datacy="icon-end-loading" className={`ml-2 text-xl ${loading ? 'animate-spin' : ''}`} icon="sync" />
-				) : (
-					<Icon datacy="icon-end" className="ml-2 text-xl" icon={icon} />
-				))}
-		</>
-	)
-
-	return (
-		<>
-			{/* Primary or Secondary as link */}
-			{kind !== 'tertiary' && to && (
-				<Link
-					datacy={datacy}
-					href={disabled ? '#' : to}
-					tabIndex={disabled ? -1 : 0}
-					className={`${twButtonBaseClasses} ${kind === 'primary' ? twPrimaryClasses : twSecondaryClasses}${
-						disabled ? ' pointer-events-none' : ''
-					}${className}`}
-				>
-					{innerContent}
-				</Link>
-			)}
-
-			{/* Primary or Secondary as button */}
-			{kind !== 'tertiary' && !to && (
-				<button
-					datacy={datacy}
-					disabled={disabled}
-					onClick={onClick}
-					type={type}
-					className={`${twButtonBaseClasses} ${kind === 'primary' ? twPrimaryClasses : twSecondaryClasses}${className}`}
-				>
-					{innerContent}
-				</button>
-			)}
-
-			{/* Tertiary (link style) as link */}
-			{kind === 'tertiary' && to && (
-				<Link
-					datacy={datacy}
-					href={disabled ? '' : to}
-					tabIndex={disabled ? -1 : 0}
-					className={`${twLinkBaseClasses} w-max ${twDisabledTertiary}${
-						disabled ? ' pointer-events-none' : ''
-					}${className}`}
-				>
-					{innerContent}
-				</Link>
-			)}
-
-			{/* Tertiary (link style) as button */}
-			{kind === 'tertiary' && !to && (
-				<button
-					datacy={datacy}
-					disabled={disabled}
-					onClick={onClick}
-					type={type}
-					className={`${twLinkBaseClasses} ${twDisabledTertiary}${className ? ` ${className}` : ''}`}
-				>
-					{innerContent}
-				</button>
-			)}
-		</>
-	)
+	return {
+		disabled,
+		twButtonBaseClasses,
+		twLinkBaseClasses,
+		twDisabledTertiary,
+		twPrimaryClasses,
+		twSecondaryClasses,
+		className,
+	}
 }
