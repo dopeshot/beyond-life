@@ -1,6 +1,6 @@
 import 'material-symbols'
 import '../../app/globals.css'
-import { Button } from './Button'
+import { AnchorLink, Button } from './Button'
 
 const primaryButtonClass = 'bg-yellow'
 const secondaryButtonClass = 'bg-dark'
@@ -81,9 +81,9 @@ describe('Button', () => {
 	describe('Primary Link', () => {
 		it('should display primary link', () => {
 			cy.mount(
-				<Button datacy="link" kind="primary" to="/">
+				<AnchorLink datacy="link" kind="primary" href="/">
 					Test
-				</Button>
+				</AnchorLink>
 			)
 			cy.datacy('link').should('have.class', primaryButtonClass)
 		})
@@ -91,9 +91,9 @@ describe('Button', () => {
 		describe('Icon', () => {
 			it('should display icon', () => {
 				cy.mount(
-					<Button kind="primary" icon="face" to="/">
+					<AnchorLink kind="primary" icon="face" href="/">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 				cy.datacy('icon-start').should('be.visible')
 			})
@@ -102,16 +102,16 @@ describe('Button', () => {
 		describe('Loading', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="primary" to="/" loading icon="face">
+					<AnchorLink datacy="link" kind="primary" href="/" loading icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
 			it('should disable link when loading', () => {
 				cy.datacy('link').should('have.class', 'text-opacity-75')
 				cy.datacy('link').should('have.class', 'opacity-80')
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should show loading icon when loading', () => {
@@ -122,14 +122,14 @@ describe('Button', () => {
 		describe('Disabled', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="primary" to="/" disabled icon="face">
+					<AnchorLink datacy="link" kind="primary" href="/" disabled icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
-			it('should have empty href', () => {
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+			it('should have pointer event none', () => {
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should have disabled classes', () => {
@@ -204,9 +204,9 @@ describe('Button', () => {
 	describe('Secondary link', () => {
 		it('should display secondary link', () => {
 			cy.mount(
-				<Button datacy="link" kind="secondary" to="/">
+				<AnchorLink datacy="link" kind="secondary" href="/">
 					Test
-				</Button>
+				</AnchorLink>
 			)
 			cy.datacy('link').should('have.class', secondaryButtonClass)
 		})
@@ -214,9 +214,9 @@ describe('Button', () => {
 		describe('Icon', () => {
 			it('should display icon', () => {
 				cy.mount(
-					<Button kind="secondary" icon="face" to="/">
+					<AnchorLink kind="secondary" icon="face" href="/">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 				cy.datacy('icon-start').should('be.visible')
 			})
@@ -225,16 +225,16 @@ describe('Button', () => {
 		describe('Loading', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="secondary" to="/" loading icon="face">
+					<AnchorLink datacy="link" kind="secondary" href="/" loading icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
 			it('should disable link when loading', () => {
 				cy.datacy('link').should('have.class', 'text-opacity-75')
 				cy.datacy('link').should('have.class', 'opacity-80')
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should show loading icon when loading', () => {
@@ -245,14 +245,14 @@ describe('Button', () => {
 		describe('Disabled', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="secondary" to="/" disabled icon="face">
+					<AnchorLink datacy="link" kind="secondary" href="/" disabled icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
-			it('should have empty href', () => {
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+			it('should have pointer event none', () => {
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should have disabled classes', () => {
@@ -327,9 +327,9 @@ describe('Button', () => {
 	describe('Tertiary link', () => {
 		it('should display tertiary link', () => {
 			cy.mount(
-				<Button datacy="link" kind="tertiary" to="/">
+				<AnchorLink datacy="link" kind="tertiary" href="/">
 					Test
-				</Button>
+				</AnchorLink>
 			)
 			cy.datacy('link').should('have.class', tertiaryButtonClass)
 		})
@@ -337,9 +337,9 @@ describe('Button', () => {
 		describe('Icon', () => {
 			it('should display icon', () => {
 				cy.mount(
-					<Button kind="tertiary" icon="face" to="/">
+					<AnchorLink kind="tertiary" icon="face" href="/">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 				cy.datacy('icon-start').should('be.visible')
 			})
@@ -348,9 +348,9 @@ describe('Button', () => {
 		describe('Loading', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="tertiary" to="/" loading icon="face">
+					<AnchorLink datacy="link" kind="tertiary" href="/" loading icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
@@ -368,9 +368,9 @@ describe('Button', () => {
 		describe('Disabled', () => {
 			beforeEach(() => {
 				cy.mount(
-					<Button datacy="link" kind="tertiary" to="/" disabled icon="face">
+					<AnchorLink datacy="link" kind="tertiary" href="/" disabled icon="face">
 						Test
-					</Button>
+					</AnchorLink>
 				)
 			})
 
