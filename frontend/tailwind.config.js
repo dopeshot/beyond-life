@@ -7,7 +7,7 @@ module.exports = {
     ],
     safelist: [
         {
-            pattern: /text-(.*)-(500|600|700|800)/,
+            pattern: /text-(red|gray)-(500|600|700|800)/,
             variants: ["hover", "focus"],
         },
     ],
