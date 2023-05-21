@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary-color: #ffbf00;
-}
-
-:focus-visible {
-  outline: var(--primary-color) auto 2px;
-}
-
-::selection {
-  /* WebKit/Blink Browsers */
-  background: var(--primary-color);
-}
-
-::-moz-selection {
-  /* Gecko Browsers */
-  background: var(--primary-color);
-}
+/*
+Try to always use tailwinds utility classes instead of writing your own css.
+*/
