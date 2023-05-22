@@ -5,7 +5,7 @@ import { InnerContent } from '../InnerContent/InnerContent'
 type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 /**
- * Button component that can be used as a link.
+ * Button component
  */
 export const Button: React.FC<ButtonProps> = ({
 	kind = 'primary',
@@ -17,9 +17,7 @@ export const Button: React.FC<ButtonProps> = ({
 	loading = false,
 	className = '',
 	children,
-	onClick,
 	isColoredTertiary = false,
-	type = 'button',
 	...props
 }) => {
 	const calculatedProps = buttonsAndLinksService({
@@ -36,8 +34,6 @@ export const Button: React.FC<ButtonProps> = ({
 			<button
 				datacy={datacy}
 				disabled={calculatedProps.disabled}
-				onClick={onClick}
-				type={type}
 				className={`${calculatedProps.twButtonBaseClasses} ${
 					kind === 'primary' ? calculatedProps.twPrimaryClasses : calculatedProps.twSecondaryClasses
 				}${calculatedProps.className}`}
@@ -54,8 +50,6 @@ export const Button: React.FC<ButtonProps> = ({
 			<button
 				datacy={datacy}
 				disabled={calculatedProps.disabled}
-				onClick={onClick}
-				type={type}
 				className={`${calculatedProps.twLinkBaseClasses} ${calculatedProps.twDisabledTertiary}${calculatedProps.className}`}
 				{...props}
 			>

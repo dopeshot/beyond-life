@@ -6,7 +6,7 @@ import { InnerContent } from '../InnerContent/InnerContent'
 type RouteProps = CommonProps & LinkProps & React.AnchorHTMLAttributes<HTMLAnchorElement>
 
 /**
- * Link component that can be used as a button.
+ * Link component
  */
 export const Route: React.FC<RouteProps> = ({
 	kind = 'primary',
@@ -52,7 +52,7 @@ export const Route: React.FC<RouteProps> = ({
 		return (
 			<Link
 				datacy={datacy}
-				href={calculatedProps.disabled ? '' : href}
+				href={calculatedProps.disabled ? '#' : href}
 				tabIndex={calculatedProps.disabled ? -1 : 0}
 				className={`${calculatedProps.twLinkBaseClasses} w-max ${calculatedProps.twDisabledTertiary}${
 					calculatedProps.disabled ? ' pointer-events-none' : ''
