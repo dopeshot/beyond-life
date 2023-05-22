@@ -4,8 +4,8 @@ import searchIcon from '../../../assets/icons/search/search.svg'
 import { TextInput, TextInputProps } from './TextInput'
 
 const meta: Meta<typeof TextInput> = {
-	title: 'Components/TextInput',
-	component: TextInput
+	title: 'Design System/TextInput',
+	component: TextInput,
 }
 
 export default meta
@@ -14,16 +14,13 @@ type Story = StoryObj<TextInputProps>
 const Template: Story = {
 	render: (args) => {
 		return (
-			<Formik
-				initialValues={{ name: '' }}
-				onSubmit={() => {}}
-			>
+			<Formik initialValues={{ name: '' }} onSubmit={() => {}}>
 				<Form>
 					<TextInput {...args} />
 				</Form>
 			</Formik>
 		)
-	}
+	},
 }
 
 export const TextInputDefault = {
@@ -33,8 +30,8 @@ export const TextInputDefault = {
 		labelText: 'Label',
 		helperText: 'Helper Text',
 		placeholder: 'Placeholder',
-		width: 'w-80'
-	}
+		width: 'w-80',
+	},
 }
 
 export const TextInputWithIcon = {
@@ -46,6 +43,6 @@ export const TextInputWithIcon = {
 		placeholder: 'Placeholder',
 		width: 'w-80',
 		icon: searchIcon,
-		iconOnClick: () => console.log('Icon Clicked')
-	}
+		iconOnClick: () => console.log('Icon Clicked'),
+	},
 }
