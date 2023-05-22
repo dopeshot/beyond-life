@@ -1,5 +1,5 @@
 import "../../app/globals.css"
-import { Headline, textSizes } from "./Headline"
+import { Headline, twTextSizes } from "./Headline"
 
 const LEVEL = 2
 
@@ -14,7 +14,7 @@ describe("Headline", () => {
         })
 
         it("should display correct class when set level", () => {
-            cy.get(`h${LEVEL}`).should("have.class", textSizes[LEVEL])
+            cy.get(`h${LEVEL}`).should("have.class", twTextSizes[LEVEL])
         })
 
         it("should display margin when set hasMargin is set to true", () => {
