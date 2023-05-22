@@ -1,7 +1,7 @@
 import { Field } from 'formik'
 import { SelectableOption } from '../../types/forms'
 
-type CheckboxProps = {
+export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
 	name: string
 	/** Provide a label to provide a description of the Checkbox input that you are exposing to the user. */
@@ -22,18 +22,18 @@ type CheckboxProps = {
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
 	return (
 		<>
-			<h5 className="block text-darkgrey text-sm font-semibold">
+			<h5 className="text-darkgrey block text-sm font-semibold">
 				{labelText}
 				{labelRequired && <span className="ml-1 text-yellow-500">*</span>}
 			</h5>
 			{options.map((option) => (
-				<label data-cy={`${name}-option-${option.id}`} key={option.id} className="block my-1 cursor-pointer">
+				<label data-cy={`${name}-option-${option.id}`} key={option.id} className="my-1 block cursor-pointer">
 					<Field type="checkbox" className="mr-1" name={name} value={`${option.id}`} />
 					{option.icon && <span>{option.icon}</span>}
 					<span className="text-darkgrey text-sm font-semibold">{option.label}</span>
 				</label>
 			))}
-			<p data-cy={`${name}-helpertext`} className="text-lightgrey text-sm mb-4">
+			<p data-cy={`${name}-helpertext`} className="text-lightgrey mb-4 text-sm">
 				{helperText}
 			</p>
 		</>
