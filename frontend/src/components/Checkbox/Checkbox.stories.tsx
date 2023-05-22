@@ -48,8 +48,8 @@ Required.args = {
 	labelRequired: true,
 }
 
-export const LongLabel = Template.bind({})
-LongLabel.args = {
+export const HelperText = Template.bind({})
+HelperText.args = {
 	...Default.args,
-	labelText: 'Welche Früchte mögen Sie? Hier ist ein Beispiel für einen sehr langen Label-Text.',
+	helperText: 'Please select all that apply.',
 }
