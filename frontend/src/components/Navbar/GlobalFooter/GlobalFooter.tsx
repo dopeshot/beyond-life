@@ -1,6 +1,6 @@
 /**
  * Display Footer with copyright and legal links.
- * @example <GlobalNavbar />
+ * @example <GlobalFooter />
  */
 export const GlobalFooter: React.FC = () => {
 	return (
