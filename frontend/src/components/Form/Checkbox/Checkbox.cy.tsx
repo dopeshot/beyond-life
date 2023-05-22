@@ -2,7 +2,7 @@ import { mount } from 'cypress/react'
 import { Form, Formik } from 'formik'
 import 'material-symbols'
 import 'tailwindcss/tailwind.css'
-import { ChildrenProps } from '../../types/children'
+import { ChildrenProps } from '../../../types/children'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const data: CheckboxProps = {

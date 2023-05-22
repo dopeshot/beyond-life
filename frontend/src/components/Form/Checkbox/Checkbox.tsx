@@ -1,6 +1,6 @@
 import { Field } from 'formik'
-import { SelectableOption } from '../../types/forms'
-import { Icon } from '../Icon/Icon'
+import { SelectableOption } from '../../../types/forms'
+import { Icon } from '../../Icon/Icon'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
