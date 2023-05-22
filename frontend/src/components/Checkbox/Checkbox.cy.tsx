@@ -1,41 +1,42 @@
 import { mount } from 'cypress/react'
 import { Form, Formik } from 'formik'
+import 'material-symbols'
 import 'tailwindcss/tailwind.css'
 import { ChildrenProps } from '../../types/children'
-import { Checkbox } from './Checkbox'
+import { Checkbox, CheckboxProps } from './Checkbox'
+
+const data: CheckboxProps = {
+	name: 'food',
+	labelText: 'What food do you like?',
+	labelRequired: true,
+	helperText: 'Please select all that apply.',
+	options: [
+		{
+			id: 1,
+			label: 'Icecream',
+		},
+		{
+			id: 2,
+			label: 'Cake',
+			icon: 'cake',
+		},
+		{
+			id: 3,
+			label: 'Egg',
+			icon: 'egg',
+		},
+	],
+}
 
 const Wrapper: React.FC<ChildrenProps> = ({ children }) => {
 	return (
-		<Formik initialValues={{ lifestyle: [] }} onSubmit={() => {}}>
+		<Formik initialValues={{ [data.name]: [] }} onSubmit={() => {}}>
 			{() => <Form>{children}</Form>}
 		</Formik>
 	)
 }
 
 describe('Checkbox', () => {
-	const data = {
-		name: 'lifestyle',
-		labelText: 'Lifestyle Choices',
-		labelRequired: true,
-		helperText: 'These lifestyle choices can enhance your life enjoyment.',
-		options: [
-			{
-				id: 1,
-				label: 'Traveling',
-			},
-			{
-				id: 2,
-				label: 'Outdoor Activities',
-				icon: 'iconExample',
-			},
-			{
-				id: 3,
-				label: 'Mindful Living',
-				icon: 'iconExample',
-			},
-		],
-	}
-
 	beforeEach(() => {
 		mount(
 			<Wrapper>
@@ -79,11 +80,11 @@ describe('Checkbox', () => {
 		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').click().should('not.be.checked')
 	})
 
-	it.skip('should display icon before label when defined', () => {
-		// MC: Implement this test when the icon prop is implemented.
+	it('should display icon before label when defined', () => {
+		cy.datacy(`checkbox-${data.name}-option-${data.options[1].id}`, ' i').should('exist')
 	})
 
-	it.skip('should not display icon before label when not defined', () => {
-		// MC: Implement this test when the icon prop is implemented.
+	it('should not display icon before label when not defined', () => {
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' i').should('not.exist')
 	})
 })
