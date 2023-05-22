@@ -57,7 +57,7 @@ describe('Route', () => {
 				)
 			})
 
-			it('should have pointer event none', () => {
+			it('should not be clickable', () => {
 				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
@@ -118,7 +118,7 @@ describe('Route', () => {
 				)
 			})
 
-			it('should have pointer event none', () => {
+			it('should not be clickable', () => {
 				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
@@ -162,7 +162,7 @@ describe('Route', () => {
 			it('should disable link when loading', () => {
 				cy.datacy('link').should('have.class', 'text-opacity-75')
 				cy.datacy('link').should('have.class', 'opacity-80')
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should show loading icon when loading', () => {
@@ -179,8 +179,8 @@ describe('Route', () => {
 				)
 			})
 
-			it('should have empty href', () => {
-				cy.datacy('link').invoke('attr', 'href').should('eq', '')
+			it('should not be clickable', () => {
+				cy.datacy('link').should('have.css', 'pointer-events', 'none')
 			})
 
 			it('should have disabled classes', () => {
