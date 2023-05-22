@@ -10,7 +10,7 @@ export const metadata = {
  */
 const TestamentStart = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Testament Start/Legal</Headline>
 		</div>
 	)

@@ -10,7 +10,7 @@ export const metadata = {
  */
 const Final = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Abschreiben</Headline>
 		</div>
 	)

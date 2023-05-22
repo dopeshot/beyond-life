@@ -10,7 +10,7 @@ export const metadata = {
  */
 const Buy = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Paywall</Headline>
 		</div>
 	)

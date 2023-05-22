@@ -9,7 +9,7 @@ export const metadata = {
  */
 const Succession = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Erbfolge</Headline>
 		</div>
 	)

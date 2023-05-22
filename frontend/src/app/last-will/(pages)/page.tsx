@@ -11,7 +11,7 @@ export const metadata = {
  */
 const Home = () => {
 	return (
-		<div style={{ backgroundImage: `url(${headerBackground.src})` }} className="bg-cover">
+		<div style={{ backgroundImage: `url(${headerBackground.src})` }} className="min-h-screen">
 			<div className="container">
 				<Headline>Testament Start/Legal</Headline>
 			</div>

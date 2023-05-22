@@ -10,7 +10,7 @@ export const metadata = {
  */
 const Heirs = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Erben</Headline>
 		</div>
 	)

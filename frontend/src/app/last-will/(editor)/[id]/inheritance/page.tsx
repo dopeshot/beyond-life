@@ -10,7 +10,7 @@ export const metadata = {
  */
 const Inheritance = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Erbe</Headline>
 		</div>
 	)

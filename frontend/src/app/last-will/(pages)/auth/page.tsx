@@ -10,7 +10,7 @@ export const metadata = {
  */
 const Auth = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Login/Register mit Werbung für Testament</Headline>
 		</div>
 	)
