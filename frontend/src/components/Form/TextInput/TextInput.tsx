@@ -1,6 +1,6 @@
 import { Field, FieldProps } from 'formik'
-import Image from 'next/image'
 import React from 'react'
+import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
 export type TextInputProps = {
@@ -57,11 +57,10 @@ export const TextInput: React.FC<TextInputProps> = ({
 										onClick={iconOnClick}
 										className={'relative -left-10 flex h-full w-6 items-center'}
 									>
-										<Image
+										<Icon
 											datacy={`textinput-${name}-icon`}
 											className={`h-full w-auto ${iconOnClick ? 'cursor-pointer' : ''}`}
-											src={icon}
-											alt={'Icon'}
+											icon="search"
 										/>
 									</button>
 								</div>

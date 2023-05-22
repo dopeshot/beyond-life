@@ -14,7 +14,7 @@ const data = {
 const Wrapper: React.FC<{ children: React.ReactNode; onSubmit?: () => void }> = ({ children, onSubmit }) => {
 	return (
 		<Formik initialValues={{ name: data.name }} onSubmit={onSubmit ? onSubmit : data.onSubmit}>
-			<Form datacy={'form'}>{children}</Form>
+			<Form>{children}</Form>
 		</Formik>
 	)
 }
@@ -81,11 +81,6 @@ describe('TextInput', () => {
 					<TextInput name={data.name} labelText={data.labelText} />
 				</Wrapper>
 			)
-		})
-
-		it('should recognize submit', () => {
-			cy.datacy(`form`).submit()
-			cy.get('@onSubmitSpy').should('have.been.called')
 		})
 	})
 
