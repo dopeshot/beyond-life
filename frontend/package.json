@@ -42,7 +42,10 @@
     "cypress": "^12.9.0",
     "eslint": "^8.38.0",
     "eslint-plugin-storybook": "^0.6.12",
+    "eslint-config-prettier": "^8.8.0",
+	"prettier": "^2.8.8",
+	"prettier-plugin-tailwindcss": "^0.3.0",
     "serve": "^14.2.0",
-    "storybook": "^7.0.12"
+    "storybook": "^7.0.12",
   }
 }

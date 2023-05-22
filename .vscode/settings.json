@@ -8,7 +8,5 @@
     "files.associations": {
         "*.css": "tailwindcss"
     }, 
-    "tailwindCSS.experimental.classRegex": [
-        "([a-zA-Z0-9\\-:]+)"
-    ]
+    "tailwindCSS.classAttributes": ["class", "className", "tw.*"]
 }
