@@ -52,31 +52,31 @@ describe('Checkbox', () => {
 	})
 
 	it('should set labeltext', () => {
-		cy.get('h5').should('contain', data.labelText)
-	})
-
-	it('should set helper text', () => {
-		cy.get(`[data-cy="${data.name}-helpertext"]`).should('contain', data.helperText)
+		cy.datacy(`checkbox-${data.name}-label`).should('contain', data.labelText)
 	})
 
 	it('should set label required', () => {
-		cy.get('h5').should('contain', '*')
+		cy.datacy(`checkbox-${data.name}-label`).should('contain', '*')
+	})
+
+	it('should set helper text', () => {
+		cy.datacy(`checkbox-${data.name}-helpertext`).should('contain', data.helperText)
 	})
 
 	it('should display all options', () => {
 		data.options.forEach((option) => {
-			cy.get(`[data-cy="${data.name}-option-${option.id}"]`).should('contain', option.label)
+			cy.datacy(`checkbox-${data.name}-option-${option.id}`).should('contain', option.label)
 		})
 	})
 
 	it('should check box when click on it', () => {
-		cy.get(`[data-cy="${data.name}-option-${data.options[0].id}"] input`).check().should('be.checked')
-		cy.get(`[data-cy="${data.name}-option-${data.options[1].id}"] input`).should('not.be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').check().should('be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[1].id}`, ' input').should('not.be.checked')
 	})
 
 	it('should uncheck box when click on it after it is checked', () => {
-		cy.get(`[data-cy="${data.name}-option-${data.options[0].id}"] input`).check().should('be.checked')
-		cy.get(`[data-cy="${data.name}-option-${data.options[0].id}"] input`).click().should('not.be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').check().should('be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').click().should('not.be.checked')
 	})
 
 	it.skip('should display icon before label when defined', () => {
