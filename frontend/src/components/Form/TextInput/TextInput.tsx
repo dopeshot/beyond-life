@@ -34,27 +34,19 @@ export const TextInput: React.FC<TextInputProps> = ({
 }) => {
 	return (
 		<div className={`${width} mb-2 md:mb-4`}>
-			<Field
-				type={type}
-				name={name}
-			>
+			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
-					<div className="relative gap-1 flex flex-col justify-center my-1">
+					<div className="relative my-1 flex flex-col justify-center gap-1">
 						{labelText && (
-							<Label
-								datacy={`textinput-${name}`}
-								name={name}
-								labelText={labelText}
-								inputRequired={inputRequired}
-							/>
+							<Label datacy={`textinput-${name}`} name={name} labelText={labelText} inputRequired={inputRequired} />
 						)}
 						<div className={`flex items-center`}>
 							<input
-								data-cy={`textinput-${name}-input`}
+								datacy={`textinput-${name}-input`}
 								type={type}
 								{...fieldProps.field}
 								{...props}
-								className={`flex items-center rounded-lg p-2 px-4 border w-full bg-gray-200 ${icon && 'pr-12'} ${
+								className={`flex w-full items-center rounded-lg border bg-gray-200 p-2 px-4 ${icon && 'pr-12'} ${
 									fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''
 								}`}
 							/>
@@ -63,10 +55,10 @@ export const TextInput: React.FC<TextInputProps> = ({
 									<button
 										type="submit"
 										onClick={iconOnClick}
-										className={'h-full w-6 relative flex items-center -left-10'}
+										className={'relative -left-10 flex h-full w-6 items-center'}
 									>
 										<Image
-											data-cy={`textinput-${name}-icon`}
+											datacy={`textinput-${name}-icon`}
 											className={`h-full w-auto ${iconOnClick ? 'cursor-pointer' : ''}`}
 											src={icon}
 											alt={'Icon'}
@@ -75,12 +67,9 @@ export const TextInput: React.FC<TextInputProps> = ({
 								</div>
 							)}
 						</div>
-						{helperText && <p data-cy={`textinput-${name}-helpertext`}>{helperText}</p>}
+						{helperText && <p datacy={`textinput-${name}-helpertext`}>{helperText}</p>}
 						{fieldProps.meta.touched && fieldProps.meta.error && (
-							<p
-								data-cy={`textinput-${name}-errortext`}
-								className={'text-red'}
-							>
+							<p datacy={`textinput-${name}-errortext`} className={'text-red'}>
 								{fieldProps.meta.error}
 							</p>
 						)}

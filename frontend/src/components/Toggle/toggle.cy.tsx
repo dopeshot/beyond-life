@@ -3,7 +3,7 @@ import '../../app/globals.css'
 import { Toggle } from './Toggle'
 
 const initialValues = {
-	title: ''
+	title: '',
 }
 
 const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -22,7 +22,7 @@ describe('Toggle', () => {
 		labelText: 'Möchten Sie ein Berliner Testament erstellen?',
 		helperText: 'Das Berliner Testament ist ein gemeinschaftliches Testament von Ehegatten oder Lebenspartnern.',
 		labelOff: 'Nein',
-		labelOn: 'Ja'
+		labelOn: 'Ja',
 	}
 
 	beforeEach(() => {
@@ -40,15 +40,15 @@ describe('Toggle', () => {
 	})
 
 	it('should set name in label attribute', () => {
-		cy.get(`[data-cy="${data.name}-label"]`).invoke('attr', 'for').should('contain', data.name)
+		cy.datacy(`${data.name}-label`).invoke('attr', 'for').should('contain', data.name)
 	})
 
 	it('should set labeltext', () => {
-		cy.get(`[data-cy="${data.name}-label"]`).should('contain', data.labelText)
+		cy.datacy(`${data.name}-label`).should('contain', data.labelText)
 	})
 
 	it('should set label star when label required', () => {
-		cy.get(`[data-cy="${data.name}-label-required"]`).should('not.exist')
+		cy.datacy(`${data.name}-label-required`).should('not.exist')
 		cy.mount(
 			<Wrapper>
 				<Toggle
@@ -65,22 +65,22 @@ describe('Toggle', () => {
 	})
 
 	it('should set helper text', () => {
-		cy.get(`[data-cy="${data.name}-helpertext"]`).should('contain', data.helperText)
+		cy.datacy(`${data.name}-helpertext`).should('contain', data.helperText)
 	})
 
 	it('should change label text when toggle button', () => {
-		cy.get(`[data-cy="${data.name}-labeltext"]`).should('contain', data.labelOff)
-		cy.get(`[data-cy="${data.name}-clickdiv"]`).click()
-		cy.get(`[data-cy="${data.name}-labeltext"]`).should('contain', data.labelOn)
+		cy.datacy(`${data.name}-labeltext`).should('contain', data.labelOff)
+		cy.datacy(`${data.name}-clickdiv`).click()
+		cy.datacy(`${data.name}-labeltext`).should('contain', data.labelOn)
 	})
 
 	it('should set label off text on default', () => {
-		cy.get(`[data-cy="${data.name}-labeltext"]`).should('contain', data.labelOff)
+		cy.datacy(`${data.name}-labeltext`).should('contain', data.labelOff)
 	})
 
 	it('should translate ball when toggle', () => {
-		cy.get(`[data-cy="${data.name}-ball"]`).should('not.have.class', 'translate-x-7')
-		cy.get(`[data-cy="${data.name}-clickdiv"]`).click()
-		cy.get(`[data-cy="${data.name}-ball"]`).should('have.class', 'translate-x-7')
+		cy.datacy(`${data.name}-ball`).should('not.have.class', 'translate-x-7')
+		cy.datacy(`${data.name}-clickdiv`).click()
+		cy.datacy(`${data.name}-ball`).should('have.class', 'translate-x-7')
 	})
 })

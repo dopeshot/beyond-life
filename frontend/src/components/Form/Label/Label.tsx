@@ -14,16 +14,10 @@ type LabelProps = {
  */
 export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired: inputRequired = false, datacy }) => {
 	return (
-		<label
-			data-cy={`${datacy || name}-label`}
-			htmlFor={name}
-		>
+		<label datacy={`${datacy || name}-label`} htmlFor={name}>
 			{labelText}
 			{inputRequired && (
-				<span
-					data-cy={`${datacy || name}-label-required`}
-					className="text-yellow ml-1"
-				>
+				<span datacy={`${datacy || name}-label-required`} className="ml-1 text-yellow">
 					*
 				</span>
 			)}

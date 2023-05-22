@@ -8,16 +8,13 @@ const data = {
 	labelText: 'Test',
 	placeholder: 'Placeholder',
 	helperText: 'Helper Text',
-	onSubmit: () => console.log('Submit')
+	onSubmit: () => console.log('Submit'),
 }
 
 const Wrapper: React.FC<{ children: React.ReactNode; onSubmit?: () => void }> = ({ children, onSubmit }) => {
 	return (
-		<Formik
-			initialValues={{ name: data.name }}
-			onSubmit={onSubmit ? onSubmit : data.onSubmit}
-		>
-			<Form data-cy={'form'}>{children}</Form>
+		<Formik initialValues={{ name: data.name }} onSubmit={onSubmit ? onSubmit : data.onSubmit}>
+			<Form datacy={'form'}>{children}</Form>
 		</Formik>
 	)
 }
@@ -27,26 +24,23 @@ describe('TextInput', () => {
 		beforeEach(() => {
 			cy.mount(
 				<Wrapper>
-					<TextInput
-						name={data.name}
-						labelText={data.labelText}
-					/>
+					<TextInput name={data.name} labelText={data.labelText} />
 				</Wrapper>
 			)
 		})
 
 		it('should have correct name', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).should('have.attr', 'name', data.name)
-			cy.get(`[data-cy="textinput-${data.name}-label"]`).should('have.attr', 'for', data.name)
+			cy.datacy(`textinput-${data.name}-input`).should('have.attr', 'name', data.name)
+			cy.datacy(`textinput-${data.name}-label`).should('have.attr', 'for', data.name)
 		})
 
 		it('should display input', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).should('be.visible')
+			cy.datacy(`textinput-${data.name}-input`).should('be.visible')
 		})
 
 		it('should display label but not required icon', () => {
-			cy.get(`[data-cy="textinput-${data.name}-label"]`).should('be.visible')
-			cy.get(`[data-cy="textinput-${data.name}-label-required"]`).should('not.exist')
+			cy.datacy(`textinput-${data.name}-label`).should('be.visible')
+			cy.datacy(`textinput-${data.name}-label-required`).should('not.exist')
 		})
 	})
 
@@ -66,15 +60,15 @@ describe('TextInput', () => {
 		})
 
 		it('should display placeholder', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).should('have.attr', 'placeholder', 'Placeholder')
+			cy.datacy(`textinput-${data.name}-input`).should('have.attr', 'placeholder', 'Placeholder')
 		})
 
 		it('should display helper text', () => {
-			cy.get(`[data-cy="textinput-${data.name}-helpertext"]`).should('be.visible')
+			cy.datacy(`textinput-${data.name}-helpertext`).should('be.visible')
 		})
 
 		it('should display * on label', () => {
-			cy.get(`[data-cy="textinput-${data.name}-label-required"]`).should('be.visible')
+			cy.datacy(`textinput-${data.name}-label-required`).should('be.visible')
 		})
 	})
 
@@ -84,16 +78,13 @@ describe('TextInput', () => {
 
 			cy.mount(
 				<Wrapper onSubmit={onSubmitSpy}>
-					<TextInput
-						name={data.name}
-						labelText={data.labelText}
-					/>
+					<TextInput name={data.name} labelText={data.labelText} />
 				</Wrapper>
 			)
 		})
 
 		it('should recognize submit', () => {
-			cy.get(`[data-cy="form"]`).submit()
+			cy.datacy(`form`).submit()
 			cy.get('@onSubmitSpy').should('have.been.called')
 		})
 	})
@@ -104,22 +95,17 @@ describe('TextInput', () => {
 
 			cy.mount(
 				<Wrapper>
-					<TextInput
-						name={data.name}
-						labelText={data.labelText}
-						icon={searchIcon}
-						iconOnClick={iconOnClickSpy}
-					/>
+					<TextInput name={data.name} labelText={data.labelText} icon={searchIcon} iconOnClick={iconOnClickSpy} />
 				</Wrapper>
 			)
 		})
 
 		it('should display icon', () => {
-			cy.get(`[data-cy="textinput-${data.name}-icon"]`).should('be.visible')
+			cy.datacy(`textinput-${data.name}-icon`).should('be.visible')
 		})
 
 		it('should recognize icon onClick', () => {
-			cy.get(`[data-cy="textinput-${data.name}-icon"]`).click()
+			cy.datacy(`textinput-${data.name}-icon`).click()
 			cy.get('@iconOnClickSpy').should('have.been.called')
 		})
 	})
@@ -128,27 +114,24 @@ describe('TextInput', () => {
 		beforeEach(() => {
 			cy.mount(
 				<Wrapper>
-					<TextInput
-						name={data.name}
-						labelText={data.labelText}
-					/>
+					<TextInput name={data.name} labelText={data.labelText} />
 				</Wrapper>
 			)
 		})
 
 		it('should type in input', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).type('Test')
+			cy.datacy(`textinput-${data.name}-input`).type('Test')
 		})
 
 		it('should type in input and check if the text is correct', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).type('Test')
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).should('have.value', 'Test')
+			cy.datacy(`textinput-${data.name}-input`).type('Test')
+			cy.datacy(`textinput-${data.name}-input`).should('have.value', 'Test')
 		})
 
 		it('should type in input and clear the text', () => {
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).type('Test')
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).clear()
-			cy.get(`[data-cy="textinput-${data.name}-input"]`).should('have.value', '')
+			cy.datacy(`textinput-${data.name}-input`).type('Test')
+			cy.datacy(`textinput-${data.name}-input`).clear()
+			cy.datacy(`textinput-${data.name}-input`).should('have.value', '')
 		})
 	})
 })

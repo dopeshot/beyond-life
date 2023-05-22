@@ -25,7 +25,7 @@ export const Toggle: React.FC<ToggleProps> = ({
 	labelOn,
 	labelOff,
 	helperText,
-	inputRequired = false
+	inputRequired = false,
 }) => {
 	return (
 		<div className="mb-4">
@@ -33,29 +33,29 @@ export const Toggle: React.FC<ToggleProps> = ({
 			<Field name={name}>
 				{(props: FieldProps<boolean>) => (
 					<div
-						data-cy={`${name}-clickdiv`}
+						datacy={`${name}-clickdiv`}
 						onClick={() => props.form.setFieldValue(name, !props.field.value)}
-						className="inline-flex items-center cursor-pointer"
+						className="inline-flex cursor-pointer items-center"
 					>
 						<div
-							className={`w-14 h-7 flex items-center ${
+							className={`flex h-7 w-14 items-center ${
 								props.field.value ? 'bg-yellow-500' : 'bg-gray-300'
-							} rounded-full p-1 duration-300 ease-in-out my-1`}
+							} my-1 rounded-full p-1 duration-300 ease-in-out`}
 						>
 							<div
-								data-cy={`${name}-ball`}
-								className={`bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out ${
+								datacy={`${name}-ball`}
+								className={`h-5 w-5 transform rounded-full bg-white shadow-md duration-300 ease-in-out ${
 									props.field.value ? 'translate-x-7' : ''
 								}`}
 							></div>
 						</div>
-						<p data-cy={`${name}-labeltext`} className="text-sm font-semibold pl-2">
+						<p datacy={`${name}-labeltext`} className="pl-2 text-sm font-semibold">
 							{props.field.value ? labelOn : labelOff}
 						</p>
 					</div>
 				)}
 			</Field>
-			<p data-cy={`${name}-helpertext`} className="text-sm text-gray-500">
+			<p datacy={`${name}-helpertext`} className="text-sm text-gray-500">
 				{helperText}
 			</p>
 		</div>
