@@ -34,11 +34,11 @@ const Template: StoryFn<CheckboxProps> = (args) => (
 export const Default = Template.bind({})
 Default.args = {
 	name: 'checkbox',
-	labelText: 'Welche Früchte mögen Sie?',
+	labelText: 'What food do you like?',
 	options: [
-		{ id: '1', label: 'Apfel', icon: '🍎' },
-		{ id: '2', label: 'Banane', icon: '🍌' },
-		{ id: '3', label: 'Traube', icon: '🍇' },
+		{ id: 1, label: 'Icecream', icon: 'icecream' },
+		{ id: 2, label: 'Cake', icon: 'cake' },
+		{ id: 3, label: 'Egg', icon: 'egg' },
 	],
 }
 
