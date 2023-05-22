@@ -1,9 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-        './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+        './src/pages/**/*.{ts,tsx,mdx}',
+        './src/components/**/*.{ts,tsx,mdx}',
+        './src/app/**/*.{ts,tsx,mdx}',
+        './src/services/**/*.{ts,tsx,mdx}'
+    ],
+    safelist: [
+        {
+            pattern: /text-(red|gray)-(500|600|700|800)/,
+            variants: ["hover", "focus"],
+        },
     ],
     theme: {
         container: {
@@ -26,8 +33,8 @@ module.exports = {
                     300: '#FFD352',
                     400: '#FFC929',
                     500: '#FFBF00',
-                    600: '#C79500',
-                    700: '#8F6B00',
+                    600: '#FAB005',
+                    700: '#F2A305',
                     800: '#574100',
                     900: '#1F1700',
                     950: '#030200'
