@@ -1,5 +1,5 @@
 type LabelProps = {
-	/** Uniquie name of the input field. */
+	/** Unique name of the input field. */
 	name: string
 	/** Label text describing the input field. */
 	labelText: string
@@ -12,7 +12,7 @@ type LabelProps = {
 /**
  * Label for various Input Fields.
  */
-export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired: inputRequired = false, datacy }) => {
+export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired = false, datacy }) => {
 	return (
 		<label datacy={`${datacy || name}-label`} htmlFor={name}>
 			{labelText}

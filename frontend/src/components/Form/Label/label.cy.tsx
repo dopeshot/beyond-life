@@ -25,13 +25,13 @@ describe('Label', () => {
 		})
 	})
 
-	describe('Reqiured icon not visible', () => {
+	describe('Required icon not visible', () => {
 		beforeEach(() => {
 			cy.mount(<Label name={data.name} labelText={data.labelText} />)
 		})
 
 		it('should not display required icon', () => {
-			cy.datacy(`textinput-${data.name}-label-required`).should('not.exist')
+			cy.datacy(`${data.name}-label-required`).should('not.exist')
 		})
 	})
 })

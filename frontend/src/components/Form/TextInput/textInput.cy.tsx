@@ -72,18 +72,6 @@ describe('TextInput', () => {
 		})
 	})
 
-	describe('Listen to submit', () => {
-		beforeEach(() => {
-			const onSubmitSpy = cy.spy().as('onSubmitSpy')
-
-			cy.mount(
-				<Wrapper onSubmit={onSubmitSpy}>
-					<TextInput name={data.name} labelText={data.labelText} />
-				</Wrapper>
-			)
-		})
-	})
-
 	describe('Icon Props', () => {
 		beforeEach(() => {
 			const iconOnClickSpy = cy.spy().as('iconOnClickSpy')
@@ -112,19 +100,14 @@ describe('TextInput', () => {
 					<TextInput name={data.name} labelText={data.labelText} />
 				</Wrapper>
 			)
-		})
-
-		it('should type in input', () => {
 			cy.datacy(`textinput-${data.name}-input`).type('Test')
 		})
 
 		it('should type in input and check if the text is correct', () => {
-			cy.datacy(`textinput-${data.name}-input`).type('Test')
 			cy.datacy(`textinput-${data.name}-input`).should('have.value', 'Test')
 		})
 
 		it('should type in input and clear the text', () => {
-			cy.datacy(`textinput-${data.name}-input`).type('Test')
 			cy.datacy(`textinput-${data.name}-input`).clear()
 			cy.datacy(`textinput-${data.name}-input`).should('have.value', '')
 		})

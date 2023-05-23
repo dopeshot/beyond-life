@@ -1,4 +1,5 @@
 import { Field, FieldProps } from 'formik'
+import { MaterialSymbol } from 'material-symbols'
 import React from 'react'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
@@ -13,9 +14,9 @@ export type TextInputProps = {
 	/** Provides help on how to fill in the field. */
 	helperText?: string
 	/** Icon at the end of the field. */
-	icon?: string
+	icon?: MaterialSymbol
 	/** Click handler for the icon. */
-	iconOnClick?: () => void
+	iconOnClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 /**
@@ -60,7 +61,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 										<Icon
 											datacy={`textinput-${name}-icon`}
 											className={`h-full w-auto ${iconOnClick ? 'cursor-pointer' : ''}`}
-											icon="search"
+											icon={icon}
 										/>
 									</button>
 								</div>
