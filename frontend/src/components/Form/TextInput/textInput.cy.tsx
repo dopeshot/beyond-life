@@ -1,6 +1,5 @@
 import { Form, Formik } from 'formik'
 import React from 'react'
-import searchIcon from '../../../assets/icons/search/search.svg'
 import { TextInput } from './TextInput'
 
 const data = {
@@ -78,7 +77,7 @@ describe('TextInput', () => {
 
 			cy.mount(
 				<Wrapper>
-					<TextInput name={data.name} labelText={data.labelText} icon={searchIcon} iconOnClick={iconOnClickSpy} />
+					<TextInput name={data.name} labelText={data.labelText} icon={'search'} iconOnClick={iconOnClickSpy} />
 				</Wrapper>
 			)
 		})
