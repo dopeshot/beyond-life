@@ -7,15 +7,15 @@ import './../globals.css'
 
 export const metadata = {
 	title: 'Beyond Life',
-	description: 'Handle your death.'
+	description: 'Handle your death.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={`flex flex-row min-h-screen ${fontPlusJakartaSans.className}`}>
+			<body className={`flex min-h-screen flex-row ${fontPlusJakartaSans.className}`}>
 				<LastWillSidebar />
-				<div className="flex flex-col flex-grow">
+				<div className="flex flex-grow flex-col">
 					<ModuleNavbar />
 					{children}
 					<GlobalFooter />

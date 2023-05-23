@@ -12,8 +12,8 @@ type PlaceholderProps = {
  */
 export const Placeholder: React.FC<PlaceholderProps> = ({ name, className = '', datacy }) => {
 	return (
-		<div className={`bg-gray-400 text-center ${className ? ` ${className}` : ''}`} data-cy={`${name} ${datacy}`}>
-			P
+		<div className={`bg-green-500 text-center p-2${className ? ` ${className}` : ''}`} datacy={datacy}>
+			{name}
 		</div>
 	)
 }
