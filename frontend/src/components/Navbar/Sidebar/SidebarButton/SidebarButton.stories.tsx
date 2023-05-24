@@ -9,12 +9,36 @@ const meta: Meta<typeof SidebarButton> = {
 export default meta
 type Story = StoryObj<SidebarButtonProps>
 
-export const SidebarButtonDefault: Story = {
+export const SidebarButtonActive: Story = {
 	args: {
 		id: 'testator',
 		title: 'Erblasser',
 		description: 'Persönliche Daten des Erblassers',
 		state: 'active',
+		handleClick: () => {
+			console.log('Clicked!')
+		},
+	},
+}
+
+export const SidebarButtonInactive: Story = {
+	args: {
+		id: 'testator',
+		title: 'Erblasser',
+		description: 'Persönliche Daten des Erblassers',
+		state: 'inactive',
+		handleClick: () => {
+			console.log('Clicked!')
+		},
+	},
+}
+
+export const SidebarButtonDisabled: Story = {
+	args: {
+		id: 'testator',
+		title: 'Erblasser',
+		description: 'Persönliche Daten des Erblassers',
+		state: 'disabled',
 		handleClick: () => {
 			console.log('Clicked!')
 		},
