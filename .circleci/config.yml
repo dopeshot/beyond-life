@@ -26,9 +26,21 @@ jobs:
       - run:
           command:  npm audit --omit dev
           name: Audit
+  audit-migration-tool: 
+    executor: node/default 
+    working_directory: ~/beyond-life/db
+    steps:
+      - checkout:
+          path: ~/beyond-life
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command:  npm audit --omit dev
+          name: Audit
 
 workflows:
   audit-workflow:
     jobs:
       - audit-frontend
       - audit-backend
+      - audit-migration-tool
