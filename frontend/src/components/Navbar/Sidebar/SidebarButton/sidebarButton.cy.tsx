@@ -1,3 +1,4 @@
+import '../../../../app/globals.css'
 import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from './SidebarButton'
 
