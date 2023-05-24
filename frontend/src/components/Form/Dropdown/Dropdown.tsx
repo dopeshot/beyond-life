@@ -41,6 +41,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 
 					{/* Input */}
 					<button
+						datacy={`${name}-dropdown-button`}
 						className={`relative flex items-center justify-between rounded-lg mr-5 sm:mb-0 py-2 px-5 my-1 w-full border-2 ${isOpen ? "outline-2 outline outline-red outline-offset-2" : ""} ${light ? "bg-gray-100 border-gray-100" : "bg-gray-200 border-gray-200"
 							} ${!props.field.value ? "text-gray-500" : "text-gray-800"}`}
 						type="button"
@@ -57,11 +58,13 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 					{/* Options */}
 					{isOpen && (
 						<div
+							datacy={`${name}-dropdown-menu`}
 							className="absolute bg-white rounded-lg shadow-[-10px_10px_10px_rgba(203,210,217,0.10),10px_10px_10px_rgba(203,210,217,0.10)] z-10 w-full py-2"
 							tabIndex={-1}
 						>
 							{options.map((option) => (
 								<button
+									datacy={`${name}-dropdown-option-${option.value}`}
 									type="button"
 									key={option.value + ""}
 									onClick={() => {
