@@ -4,7 +4,7 @@ import React from 'react'
 import { fontPlusJakartaSans } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
 import { SidebarElementIds } from '../../../../types/sidebarElementIds'
-import { Placeholder } from '../../../Placeholder/Placeholder'
+import { IconButton } from '../../../IconButton/IconButton'
 
 export type SidebarButtonProps = {
 	/** Id for identification in sidebar. */
@@ -39,14 +39,14 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 			} ${fontPlusJakartaSans.className}`}
 		>
 			<div className={`flex w-5/6 flex-col gap-1`}>
-				<div datacy={`${datacy}-title`} className="h-5 text-base font-bold">
+				<div datacy={`${datacy}-title`} className="h-5 text-base font-bold ">
 					{title}
 				</div>
-				<div datacy={`${datacy}-description`} className="h-8 text-xs font-medium">
+				<div datacy={`${datacy}-description`} className="text-xs font-medium">
 					{description}
 				</div>
 			</div>
-			{state == 'inactive' && <Placeholder datacy={`${datacy}-icon`} name="EditIcon" className={`h-6 w-6`} />}
+			{state == 'inactive' && <IconButton datacy={`${datacy}-icon`} icon="edit_square" iconClassName="text-[18px]" />}
 		</Link>
 	)
 }
