@@ -1,20 +1,22 @@
-import { Meta, StoryFn } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import { SidebarButton, SidebarButtonProps } from './SidebarButton'
 
-export default {
+const meta: Meta<typeof SidebarButton> = {
 	component: SidebarButton,
 	title: 'Design System/Navbar/Sidebar/SidebarButton',
-} as Meta
+}
 
-const Template: StoryFn<SidebarButtonProps> = (args: any) => <SidebarButton {...args} />
+export default meta
+type Story = StoryObj<SidebarButtonProps>
 
-export const Default = Template.bind({})
-Default.args = {
-	id: 'testator',
-	title: 'Erblasser',
-	description: 'Persönliche Daten des Erblassers',
-	state: 'active',
-	handleClick: () => {
-		console.log('Clicked!')
+export const SidebarButtonDefault: Story = {
+	args: {
+		id: 'testator',
+		title: 'Erblasser',
+		description: 'Persönliche Daten des Erblassers',
+		state: 'active',
+		handleClick: () => {
+			console.log('Clicked!')
+		},
 	},
 }

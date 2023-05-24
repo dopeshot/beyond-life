@@ -6,7 +6,10 @@ import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from '../SidebarButton/SidebarButton'
 
 export type LastWillSidebarProps = {
+	/** Path of the current page. */
 	path: string
+	/** Datacy attribute for testing. */
+	datacy?: string
 }
 
 const sidebarElements: {
@@ -50,13 +53,14 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (
-		<div className="h-auto w-80 bg-yellow">
+		<div datacy={'lastwillsidebar'} className="h-auto w-80 bg-yellow">
 			<div className="px-6 pb-20 pt-4">
-				<Image src={logo} alt="logo" width={160} />
+				<Image datacy={'lastwillsidebar-logo'} src={logo} alt="logo" width={160} />
 			</div>
 			<div className="flex flex-col">
 				{sidebarElements.map((element, index) => (
 					<SidebarButton
+						datacy={`lastwillsidebar-button-${element.id}`}
 						key={index}
 						id={element.id}
 						title={element.title}
