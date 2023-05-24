@@ -34,7 +34,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 			datacy={datacy}
 			onClick={handleClick} // TODO: triggert schneller als Navigation und muss anders implementiert werden. Ist aber erst wichtig, wenn die State Updates funktionieren
 			href={routes.lastWill[id]('1')}
-			className={`flex select-none items-center justify-between px-6 py-3 ${
+			className={`flex select-none items-center justify-between p-3 pl-6 pr-2 ${
 				state === 'active' ? 'bg-black text-white' : state === 'inactive' ? 'text-black' : 'text-black text-opacity-50'
 			} ${fontPlusJakartaSans.className}`}
 		>
@@ -42,11 +42,19 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 				<div datacy={`${datacy}-title`} className="h-5 text-base font-bold ">
 					{title}
 				</div>
-				<div datacy={`${datacy}-description`} className="text-xs font-medium">
+				<div datacy={`${datacy}-description`} className="h-8 text-xs font-medium">
 					{description}
 				</div>
 			</div>
-			{state == 'inactive' && <IconButton datacy={`${datacy}-icon`} icon="edit_square" iconClassName="text-[18px]" />}
+			{state == 'inactive' && (
+				<IconButton
+					datacy={`${datacy}-icon`}
+					icon="edit_square"
+					className=""
+					iconClassName="text-[18px]"
+					color="black"
+				/>
+			)}
 		</Link>
 	)
 }
