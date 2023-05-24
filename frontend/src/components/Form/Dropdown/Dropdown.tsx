@@ -1,18 +1,18 @@
 "use-client"
 import { Field, FieldProps } from "formik"
 import { useState } from "react"
-import { ComponentOptions } from "../../../types/options"
+import { ComponentOptions } from "../../../types/dropdownOptions"
 import { Icon } from "../../Icon/Icon"
 import { Label } from "../Label/Label"
 
-type DropdownProps = {
+export type DropdownProps = {
 	/** Gives the dropdown a unique name. */
 	name: string
 	/** Text that informs the user what to expect in the list of dropdown options. */
 	placeholder?: string
 	/** Inform users what the corresponding input fields mean. */
 	labelText?: string
-	/** When set Required * will be seen.  */
+	/** When set Required * will be seen. */
 	inputRequired?: boolean
 	/** A list of options to choose from. */
 	options: readonly ComponentOptions[]
@@ -37,13 +37,12 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 					{isOpen && <div className="fixed cursor-pointer inset-0 h-full w-full z-10" aria-hidden="true" onClick={() => setIsOpen(false)}></div>}
 
 					{/* Label */}
-					{labelText && <Label name={name} labelText={labelText} inputRequired={inputRequired}/>}
+					{labelText && <Label name={name} labelText={labelText} inputRequired={inputRequired} />}
 
 					{/* Input */}
 					<button
-						className={`relative flex items-center justify-between rounded-lg mr-5 sm:mb-0 py-2 px-5 my-1 w-full border-2 ${
-							light ? "bg-gray-100 border-gray-100" : "bg-gray-200 border-gray-200"
-						} ${!props.field.value ? "text-gray-500" : "text-gray-800"}`}
+						className={`relative flex items-center justify-between rounded-lg mr-5 sm:mb-0 py-2 px-5 my-1 w-full border-2 ${isOpen ? "outline-2 outline outline-red outline-offset-2" : ""} ${light ? "bg-gray-100 border-gray-100" : "bg-gray-200 border-gray-200"
+							} ${!props.field.value ? "text-gray-500" : "text-gray-800"}`}
 						type="button"
 						onClick={() => setIsOpen(!isOpen)}
 					>
@@ -52,7 +51,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 						) : (
 							<span>{placeholder}</span>
 						)}
-						<Icon icon="expand_more"  className={`transform-gpu transition-transform duration-200 ease-linear ml-6 ${isOpen ? "-rotate-180" : "rotate-0"}`}></Icon>
+						<Icon icon="expand_more" className={`transform-gpu transition-transform duration-200 ease-linear ml-6 ${isOpen ? "-rotate-180" : "rotate-0"}`}></Icon>
 					</button>
 
 					{/* Options */}
@@ -71,7 +70,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 									}}
 									className={`flex items-center hover:text-red-500 w-full px-5 py-2 ${props.field.value === option.value ? "text-red-500" : "text-gray-700"}`}
 								>
-									{option.icon && <Icon icon={option.icon} className="mr-2"/>}
+									{option.icon && <Icon icon={option.icon} className="mr-2" />}
 									<span className="truncate pr-1">{option.label}</span>
 								</button>
 							))}
