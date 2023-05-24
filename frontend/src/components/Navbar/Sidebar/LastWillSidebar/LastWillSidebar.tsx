@@ -1,12 +1,13 @@
 'use client'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 import logo from '../../../../assets/logo/logo.png'
 import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from '../SidebarButton/SidebarButton'
 
-export type LastWillSidebarProps = {}
+export type LastWillSidebarProps = {
+	path: string
+}
 
 const sidebarElements: {
 	id: SidebarElementIds
@@ -16,42 +17,41 @@ const sidebarElements: {
 	{
 		id: 'testator',
 		title: 'Erblasser',
-		description: 'Persönliche Daten des Erblassers'
+		description: 'Persönliche Daten des Erblassers',
 	},
 	{
 		id: 'marriage',
 		title: 'Familienstand',
-		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners'
+		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
 	},
 	{
 		id: 'heirs',
 		title: 'Erben',
-		description: 'Erben und deren Anteile'
+		description: 'Erben und deren Anteile',
 	},
 	{
 		id: 'inheritance',
 		title: 'Erbschaft',
-		description: 'Erbschaftsgegenstände'
+		description: 'Erbschaftsgegenstände',
 	},
 	{
 		id: 'succession',
 		title: 'Erbfolge',
-		description: 'Stammbaum und Verteilung'
+		description: 'Stammbaum und Verteilung',
 	},
 	{
 		id: 'final',
 		title: 'Zusammenfassung',
-		description: 'Überprüfung und Abschreiben'
-	}
+		description: 'Überprüfung und Abschreiben',
+	},
 ]
 
-export const LastWillSidebar: React.FC<LastWillSidebarProps> = () => {
-	const path = usePathname()
+export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (
-		<div className="w-80 bg-yellow h-auto">
-			<div className="px-6 pt-4 pb-20">
+		<div className="h-auto w-80 bg-yellow">
+			<div className="px-6 pb-20 pt-4">
 				<Image src={logo} alt="logo" width={160} />
 			</div>
 			<div className="flex flex-col">
