@@ -1,6 +1,7 @@
 import headerBackground from '../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../components/Headline/Headline'
+import { Banner } from '../../../components/Layout/Banner/Banner'
 import { CardWithIcon, CardWithIconProps } from '../../../components/Layout/CardWithIcon/CardWithIcon'
 import { routes } from '../../../services/routes/routes'
 
@@ -54,23 +55,30 @@ const Home = () => {
 
             {/* Content */}
             <main>
+                {/* Section: Features */}
                 <div className="container mb-5 md:mb-10">
-                    {/* Section: Features */}
+                    {/* Header */}
                     <div className="flex flex-col items-center text-center mb-4 md:mb-5">
                         <Headline level={2} size="text-xl md:text-3xl">
                             Ganz einfach und sicher Ihr Testament erstellen
                         </Headline>
                         <p>Gestalten Sie Ihr Erbe - Wir machen es Ihnen leicht, sicher und individuell anpassbar.</p>
                     </div>
+
                     {/* Card */}
                     <div className="grid md:grid-cols-2 gap-2 md:gap-4">
                         {cardContent.map((card, index) => (
                             <CardWithIcon key={index} {...card} />
                         ))}
                     </div>
-                    {/* Card end */}
-                    {/* Section: Features end */}
                 </div>
+                {/* Section: Features end */}
+
+                {/* Section: Banner */}
+                <div className="mb-5 md:mb-10">
+                    <Banner title="Nehmen Sie Ihre Zukunft selbst in die Hand" description="Beginnen Sie jetzt mit der sicheren und einfachen Gestaltung Ihres Testaments. Ihre Zukunft und Ihr Erbe sind nur einen Klick entfernt." button={<Route href={routes.lastWill.start} kind="secondary">Jetzt Testament erstellen</Route>} />
+                </div>
+                {/* Section: Banner end */}
             </main>
             {/* Content end */}
         </>
