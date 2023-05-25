@@ -9,7 +9,7 @@ const meta: Meta<typeof LastWillSidebar> = {
 export default meta
 type Story = StoryObj<LastWillSidebarProps>
 
-export const LastWillSideBar: Story = {
+export const LastWillSidebarDefault: Story = {
 	args: {
 		path: '/testator',
 	},
