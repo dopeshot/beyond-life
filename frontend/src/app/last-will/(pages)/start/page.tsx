@@ -1,19 +1,15 @@
 'use client'
-import { Headline } from "../../../../components/Headline/Headline"
-import { useTestamentContext } from "../../../../context/testament/TestamentContext"
+import { Headline } from '../../../../components/Headline/Headline'
 
 /**
  * Testament Start Page for Legal Stuff.
  */
 const TestamentStart = () => {
-    const { testament, reloadData } = useTestamentContext()
-
-    return <div className="container">
-        <Headline>Testament Start/Legal</Headline>
-        {/* TODO: Ref this to own component that we can use metadata */}
-        <p>Testator: {testament.testator.name} {testament.testator.surname}</p>
-        <button onClick={() => reloadData()}>Reload</button>
-    </div>
+	return (
+		<div className="container mt-5">
+			<Headline>Testament Start/Legal</Headline>
+		</div>
+	)
 }
 
 export default TestamentStart
