@@ -10,15 +10,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	const path = usePathname()
 
 	return (
-		<html lang="en">
-			<div className={`flex min-h-screen flex-row ${fontPlusJakartaSans.className}`}>
-				<LastWillSidebar path={path} />
-				<div className="flex flex-grow flex-col">
-					<ModuleNavbar />
-					{children}
-					<GlobalFooter />
-				</div>
+		<div className={`flex min-h-screen flex-row ${fontPlusJakartaSans.className}`}>
+			<LastWillSidebar path={path} />
+			<div className="flex flex-grow flex-col">
+				<ModuleNavbar />
+				{children}
+				<GlobalFooter />
 			</div>
-		</html>
+		</div>
 	)
 }
