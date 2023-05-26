@@ -42,10 +42,10 @@ export const Step: React.FC<StepProps> = ({ title, description, image, currentSt
             {/* Buttons */}
             <div className="flex gap-2">
                 {/* Button Left */}
-                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep > 1 ? currentStep = currentStep - 1 : currentStep)} icon="chevron_left" color="black" backgroundColor="yellow" />
+                <IconButton disabled={currentStep === 1} dimOpacityWhenDisabled onClick={() => setCurrentStep((currentStep) => currentStep > 1 ? currentStep = currentStep - 1 : currentStep)} icon="chevron_left" color="black" backgroundColor="yellow" />
 
                 {/* Button Right */}
-                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep <= stepsCount ? currentStep = currentStep + 1 : currentStep)} icon="chevron_right" color="black" backgroundColor="yellow" />
+                <IconButton disabled={currentStep > stepsCount} dimOpacityWhenDisabled onClick={() => setCurrentStep((currentStep) => currentStep <= stepsCount ? currentStep = currentStep + 1 : currentStep)} icon="chevron_right" color="black" backgroundColor="yellow" />
             </div>
         </div>
     </div>
