@@ -9,11 +9,6 @@ import { CardWithIcon, CardWithIconProps } from '../../../components/Layout/Card
 import { Step } from '../../../components/Layout/Step/Step'
 import { routes } from '../../../services/routes/routes'
 
-export const metadata = {
-    title: 'Start | Beyond Life',
-    description: 'Handle your death.',
-}
-
 const cardContent: CardWithIconProps[] = [
     {
         icon: 'history_edu',
