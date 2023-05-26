@@ -45,3 +45,27 @@ export const tutorialSteps = [
         description: 'Basierend auf Ihren Angaben erstellt unser System Ihr individuelles Testament. Sie müssen es nur noch selbst abschreiben und unterschreiben. Wir machen es Ihnen so leicht wie möglich.',
     },
 ]
+
+export const clientCards: CardWithIconProps[] = [
+    {
+        icon: "format_quote",
+        children: <div className="flex flex-col justify-between h-full">
+            <p className="mb-2 md:mb-4">Einfacher als gedacht. Der Fragebogen führt Schritt für Schritt durch die Erstellung. Top!</p>
+            <p className="font-bold">Markus S., Hamburg</p>
+        </div>,
+    },
+    {
+        icon: "format_quote",
+        children: <div className="flex flex-col justify-between h-full">
+            <p className="mb-2 md:mb-4">Fühlte mich sehr sicher beim Nutzen der Webseite, alles scheint gut verschlüsselt zu sein. Sehr zufrieden.</p>
+            <p className="font-bold">Lena H., Stuttgart</p>
+        </div>,
+    },
+    {
+        icon: "format_quote",
+        children: <div className="flex flex-col justify-between h-full">
+            <p className="mb-2 md:mb-4">Praktisch, dass man sein Testament jederzeit ändern kann. Sehr nutzerfreundlich und leicht zu handhaben.</p>
+            <p className="font-bold">Andreas B., Frankfurt</p>
+        </div>,
+    }
+]

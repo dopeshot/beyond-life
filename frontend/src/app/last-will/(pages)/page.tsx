@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { cardContent, tutorialSteps } from '../../../../content/lastWill'
+import { cardContent, clientCards, tutorialSteps } from '../../../../content/lastWill'
 import headerBackground from '../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../components/Headline/Headline'
@@ -71,6 +71,20 @@ const Home: React.FC = () => {
                 {tutorialSteps.map((step, index) => currentStep === step.stepNumber && <Step key={index} {...step} stepsCount={tutorialSteps.length - 1} currentStep={currentStep} setCurrentStep={setCurrentStep} />)}
             </div>
             {/* Section: Step by step tutorial end */}
+
+            {/* Section: Clients */}
+            <div className="container grid rid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 mb-5 md:mb-10">
+                {/* Headline */}
+                <Headline level={2} size="text-xl md:text-3xl">
+                    Das sagen unsere zufriedenen Kunden
+                </Headline>
+
+                {/* Clients */}
+                {clientCards.map((card, index) => (
+                    <CardWithIcon key={index} {...card} />
+                ))}
+            </div>
+            {/* Section: Clients end */}
         </main>
         {/* Content end */}
     </>
