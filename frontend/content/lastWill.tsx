@@ -24,6 +24,7 @@ export const cardContent: CardWithIconProps[] = [
     }
 ]
 
+// TODO(Zoe-Bot): Replace with actual images
 export const tutorialSteps = [
     {
         stepNumber: 1,
