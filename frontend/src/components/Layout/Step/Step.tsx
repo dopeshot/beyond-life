@@ -25,14 +25,14 @@ type StepProps = {
  * One Step of the a step by step tutorial.
  */
 export const Step: React.FC<StepProps> = ({ title, description, image, currentStep, setCurrentStep, stepsCount }) => {
-    return <div className="flex items-center gap-3 md:gap-10">
+    return <div className="md:flex items-center gap-3 md:gap-10">
         {/* Image */}
-        <div className="w-1/2">
+        <div className="md:w-1/2">
             <Image src={image} alt={`Schritt ${currentStep}`} />
         </div>
 
         {/* Content */}
-        <div className="w-1/2">
+        <div className="md:w-1/2">
             <p className="text-sm">Schritt {currentStep}</p>
             <Headline level={4}>
                 {title}
@@ -42,10 +42,10 @@ export const Step: React.FC<StepProps> = ({ title, description, image, currentSt
             {/* Buttons */}
             <div className="flex gap-2">
                 {/* Button Left */}
-                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep > 1 ? currentStep = currentStep - 1 : currentStep)} icon="chevron_left" color="black" className="bg-yellow hover:bg-yellow-600 hover:bg-opacity-100 focus:bg-yellow-700 focus:bg-opacity-100" />
+                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep > 1 ? currentStep = currentStep - 1 : currentStep)} icon="chevron_left" color="black" backgroundColor="yellow" />
 
                 {/* Button Right */}
-                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep <= stepsCount ? currentStep = currentStep + 1 : currentStep)} icon="chevron_right" color="black" className="bg-yellow hover:bg-yellow-600 hover:bg-opacity-100 focus:bg-yellow-700 focus:bg-opacity-100" />
+                <IconButton onClick={() => setCurrentStep((currentStep) => currentStep <= stepsCount ? currentStep = currentStep + 1 : currentStep)} icon="chevron_right" color="black" backgroundColor="yellow" />
             </div>
         </div>
     </div>
