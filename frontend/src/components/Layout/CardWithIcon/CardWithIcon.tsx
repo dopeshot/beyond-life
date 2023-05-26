@@ -6,7 +6,7 @@ export type CardWithIconProps = {
     /** Icon to display. */
     icon: MaterialSymbol
     /** Title of card. */
-    title: string
+    title?: string
     /** Content of card. */
     children: React.ReactNode
 }
@@ -20,7 +20,7 @@ export const CardWithIcon: React.FC<CardWithIconProps> = ({ icon, title, childre
             <Icon icon={icon} />
         </div>
         <div>
-            <Headline level={4}>{title}</Headline>
+            {title && <Headline level={4}>{title}</Headline>}
             {children}
         </div>
     </div>
