@@ -85,6 +85,12 @@ const Home: React.FC = () => {
                 ))}
             </div>
             {/* Section: Clients end */}
+
+            {/* Section: Banner */}
+            <div className="mb-5 md:mb-10">
+                <Banner title="Überzeugen Sie sich selbst" description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann." button={<Route href={routes.lastWill.start} kind="secondary">Jetzt Testament erstellen</Route>} />
+            </div>
+            {/* Section: Banner end */}
         </main>
         {/* Content end */}
     </>
