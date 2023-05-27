@@ -20,10 +20,10 @@ const Home: React.FC = () => {
         {/* Header With Image */}
         <header style={{ backgroundImage: `url(${headerBackground.src})` }} className="h-[calc(100vh_-_66px)] min-h-[calc(100vh_-_66px)] bg-black bg-opacity-50 bg-cover bg-center bg-blend-darken mb-4 md:mb-8">
             <div className="container flex h-full flex-col justify-center">
-                <Headline size="text-5xl" className="text-yellow xl:w-2/3 mb-5">
+                <Headline size="text-3xl md:text-5xl" className="text-yellow xl:w-2/3 mb-5">
                     Die Gewissheit, dass Ihre Wünsche respektiert werden
                 </Headline>
-                <p className="text-xl text-white xl:w-1/2 mb-5">
+                <p className="text-lg md:text-xl text-white xl:w-1/2 mb-5">
                     Erstellen Sie Ihr Testament in nur wenigen Schritten und hinterlassen Sie ein Vermächtnis, das zählt.
                 </p>
                 <Route href={routes.lastWill.start}>Jetzt Testament erstellen</Route>
