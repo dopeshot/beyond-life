@@ -19,10 +19,10 @@ type HeadlineProps = {
 
 /** Defines the classes for each size level */
 export const twTextSizes: { [K in Required<HeadlineProps>['level']]: string } = {
-    1: 'text-2xl',
-    2: 'text-xl',
-    3: 'text-lg',
-    4: 'text-base md:text-lg',
+    1: 'text-4xl',
+    2: 'text-2xl md:text-3xl',
+    3: 'text-xl md:text-2xl',
+    4: 'text-lg md:text-xl',
     5: 'text-base md:text-lg',
     6: '',
 }

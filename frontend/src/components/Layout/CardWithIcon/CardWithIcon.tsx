@@ -20,7 +20,7 @@ export const CardWithIcon: React.FC<CardWithIconProps> = ({ icon, title, childre
             <Icon icon={icon} />
         </div>
         <div>
-            {title && <Headline level={4}>{title}</Headline>}
+            {title && <Headline level={5}>{title}</Headline>}
             {children}
         </div>
     </div>

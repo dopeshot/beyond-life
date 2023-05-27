@@ -4,6 +4,7 @@ import { cardContent, clientCards, tutorialSteps } from '../../../../content/las
 import headerBackground from '../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../components/Headline/Headline'
+import { Icon } from '../../../components/Icon/Icon'
 import { Banner } from '../../../components/Layout/Banner/Banner'
 import { CardWithIcon } from '../../../components/Layout/CardWithIcon/CardWithIcon'
 import { Step } from '../../../components/Layout/Step/Step'
@@ -36,7 +37,7 @@ const Home: React.FC = () => {
             <div className="container mb-5 md:mb-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-4 md:mb-5">
-                    <Headline level={2} size="text-xl md:text-3xl">
+                    <Headline level={2}>
                         Ganz einfach und sicher Ihr Testament erstellen
                     </Headline>
                     <p>Gestalten Sie Ihr Erbe - Wir machen es Ihnen leicht, sicher und individuell anpassbar.</p>
@@ -61,7 +62,7 @@ const Home: React.FC = () => {
             <div className="container mb-5 md:mb-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-4 md:mb-5">
-                    <Headline level={2} size="text-xl md:text-3xl">
+                    <Headline level={2}>
                         Mit drei einfachen Schritten zum Ziel
                     </Headline>
                     <p>Gestalten Sie Ihr Testament in nur wenigen Klicks - Sicher, intuitiv und individuell.</p>
@@ -75,7 +76,7 @@ const Home: React.FC = () => {
             {/* Section: Clients */}
             <div className="container grid rid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 mb-5 md:mb-10">
                 {/* Headline */}
-                <Headline level={2} size="text-xl md:text-3xl">
+                <Headline level={2}>
                     Das sagen unsere zufriedenen Kunden
                 </Headline>
 
@@ -91,6 +92,62 @@ const Home: React.FC = () => {
                 <Banner title="Überzeugen Sie sich selbst" description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann." button={<Route href={routes.lastWill.start} kind="secondary">Jetzt Testament erstellen</Route>} />
             </div>
             {/* Section: Banner end */}
+
+            {/* Section: Pricing */}
+            <div className="container mb-5 md:mb-10">
+                {/* Header */}
+                <div className="flex flex-col items-center text-center mb-4 md:mb-5">
+                    <Headline level={2}>
+                        Einfaches Preismodell
+                    </Headline>
+                    <p>Transparente Kosten, keine versteckten Gebühren - Ihr Testament zu einem fairen Preis.</p>
+                </div>
+
+                {/* Pricing Box */}
+                <div className="lg:flex items-center border border-gray-300 rounded-xl gap-8 p-6">
+                    {/* Start/Left Content */}
+                    <div className="lg:w-2/3 mb-4 lg:mb-0">
+                        {/* Header */}
+                        <Headline level={4}>
+                            Zählt ein Leben lang
+                        </Headline>
+                        <p className="mb-2 md:mb-4">Bezahlen Sie einmal, genießen Sie lebenslangen Zugang und Flexibilität für Ihr Testament.</p>
+
+                        {/* List of features */}
+                        <div className="flex items-center after:content-[''] after:border-t after:border-gray-300 after:flex-[1_0_auto] mb-2">
+                            <Headline level={5} size="text-base" className="pr-3" hasMargin={false}>Was bekomme ich?</Headline>
+                        </div>
+
+                        <ul className="grid md:grid-cols-2 gap-2">
+                            <li className="flex items-center">
+                                <Icon icon="check" className="text-yellow-700 mr-2" />
+                                <span>Selbstständige Testamentserstellung</span>
+                            </li>
+                            <li className="flex items-center">
+                                <Icon icon="check" className="text-yellow-700 mr-2" />
+                                <span>Flexibler Erbschaftseditor</span>
+                            </li>
+                            <li className="flex items-center">
+                                <Icon icon="check" className="text-yellow-700 mr-2" />
+                                <span>Sicherer Datenschutz</span>
+                            </li>
+                            <li className="flex items-center">
+                                <Icon icon="check" className="text-yellow-700 mr-2" />
+                                <span>Jederzeit anpassbar</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* End/Right Content */}
+                    <div className="flex flex-col justify-center items-center bg-gray-100 text-center rounded-xl p-6 lg:w-1/3">
+                        <Headline level={5}>Einmal zahlen, lebenslang nutzen</Headline>
+                        <span className="text-3xl font-bold mb-2 md:mb-4">20€</span>
+                        <Route href={routes.lastWill.start} className="mb-2">Jetzt Testament erstellen</Route>
+                        <small className="text-gray-600">Erst probieren, dann zahlen: Geben Sie Ihre Daten ein und testen Sie den Editor vor dem Zahlvorgang.</small>
+                    </div>
+                </div>
+            </div>
+            {/* Section: Pricing end */}
         </main>
         {/* Content end */}
     </>

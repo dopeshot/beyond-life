@@ -17,7 +17,7 @@ export const Banner: React.FC<BannerProps> = ({ title, description, button }) =>
         <div className="container flex flex-col justify-center items-center">
             {/* Content Text */}
             <div className="md:w-2/3 xl:w-1/2 text-center mb-2 md:mb-4">
-                <Headline level={3}>{title}</Headline>
+                <Headline level={4}>{title}</Headline>
                 <p>{description}</p>
             </div>
 
