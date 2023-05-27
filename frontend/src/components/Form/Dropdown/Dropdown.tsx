@@ -24,14 +24,13 @@ export type DropdownProps = {
 
 /**
  * Dropdown, can only be used with Formik.
- * @example <Dropdown name="Wähle dein Geschlecht" labelText="Geschlecht" options={[{ value: "1", label: "Männlich" }, { value: "2", label: "Weiblich" }]} />
  */
 export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText, inputRequired, light = false, hasMargin = false, options }) => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
 		<Field name={name}>
-			{(props: FieldProps<any>) => (
+			{(props: FieldProps<string | number | boolean>) => (
 				<div className={`relative ${hasMargin ? "mb-4" : ""}`}>
 					{/* When dropdown open click outside close it. */}
 					{isOpen && <div className="fixed cursor-pointer inset-0 h-full w-full z-10" aria-hidden="true" onClick={() => setIsOpen(false)}></div>}
@@ -71,7 +70,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ name, placeholder, labelText
 										props.form.setFieldValue(props.field.name, option.value)
 										setIsOpen(false)
 									}}
-									className={`flex items-center hover:text-red-500 w-full px-5 py-2 ${props.field.value === option.value ? "text-red-500" : "text-gray-700"}`}
+									className={`flex items-center hover:text-red w-full px-5 py-2 ${props.field.value === option.value ? "text-red" : "text-gray-700"}`}
 								>
 									{option.icon && <Icon icon={option.icon} className="mr-2" />}
 									<span className="truncate pr-1">{option.label}</span>

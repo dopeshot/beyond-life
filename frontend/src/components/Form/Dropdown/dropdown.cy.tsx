@@ -2,11 +2,11 @@ import { Form, Formik } from "formik"
 import "material-symbols"
 import React from "react"
 import "../../../app/globals.css"
-import { Dropdown } from "./Dropdown"
 import { ComponentOptions } from "../../../types/dropdownOptions"
+import { Dropdown } from "./Dropdown"
 
 const initialValues = {
-	filter: "",
+	gender: "",
 }
 
 const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -20,7 +20,7 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 }
 
 const data = {
-	name: "filter",
+	name: "gender",
 	placeholder: "Choose a filter...",
 	options: [{ value: "1", label: "Männlich", icon: "person" }, { value: "2", label: "Weiblich", icon: "person" }] as ComponentOptions[]
 }
@@ -29,7 +29,7 @@ describe("Dropdown", () => {
 	beforeEach(() => {
 		cy.mount(
 			<Wrapper>
-				<Dropdown name={data.name} options={data.options} placeholder={data.placeholder} />
+				<Dropdown {...data} />
 			</Wrapper>
 		)
 	})
