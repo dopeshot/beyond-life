@@ -51,7 +51,9 @@ export const IconButton: React.FC<IconButtonProps> = ({
 	)
 	const classes = `text-center ${
 		disabled
-			? `cursor-default ${dimOpacityWhenDisabled && backgroundColor ? `bg-${backgroundColor}-500 bg-opacity-30` : ''}`
+			? `cursor-default ${
+					backgroundColor ? `bg-${backgroundColor}-500 ${dimOpacityWhenDisabled ? `bg-opacity-30` : ``}` : ''
+			  }`
 			: `cursor-pointer ${
 					backgroundColor
 						? `bg-${backgroundColor}-500 hover:bg-${backgroundColor}-600 focus:bg-${backgroundColor}-700`
