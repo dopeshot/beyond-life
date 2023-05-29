@@ -93,7 +93,7 @@ const Home: React.FC = () => {
 				{/* Section: Step by step tutorial end */}
 
 				{/* Section: Clients */}
-				<div className="rid-cols-2 container mb-5 grid gap-2 md:mb-10 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
+				<div className="container mb-5 grid gap-2 md:mb-10 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
 					{/* Headline */}
 					<Headline level={2}>Das sagen unsere zufriedenen Kunden</Headline>
 
