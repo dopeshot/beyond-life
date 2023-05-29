@@ -131,7 +131,9 @@ const Home: React.FC = () => {
 						{/* Start/Left Content */}
 						<div className="mb-4 lg:mb-0 lg:w-2/3">
 							{/* Header */}
-							<Headline level={4}>Zählt ein Leben lang</Headline>
+							<Headline level={3} className="text-lg md:text-xl">
+								Zählt ein Leben lang
+							</Headline>
 							<p className="mb-2 md:mb-4">
 								Bezahlen Sie einmal, genießen Sie lebenslangen Zugang und Flexibilität für Ihr Testament.
 							</p>
