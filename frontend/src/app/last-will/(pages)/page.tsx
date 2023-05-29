@@ -21,7 +21,7 @@ const Home: React.FC = () => {
 			{/* Header With Image */}
 			<header
 				style={{ backgroundImage: `url(${headerBackground.src})` }}
-				className="mb-4 h-[calc(100vh_-_66px)] min-h-[calc(100vh_-_66px)] bg-black bg-opacity-50 bg-cover bg-center bg-blend-darken md:mb-8"
+				className="mb-4 h-[calc(100vh_-_66px)] min-h-[calc(100vh_-_66px)] bg-black bg-opacity-50 bg-cover bg-top bg-no-repeat bg-blend-darken md:mb-8"
 			>
 				<div className="container flex h-full flex-col justify-center">
 					<Headline size="text-3xl md:text-5xl" className="mb-5 text-yellow xl:w-2/3">
