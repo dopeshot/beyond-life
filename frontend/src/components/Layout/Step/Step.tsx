@@ -5,19 +5,19 @@ import { Headline } from '../../Headline/Headline'
 import { IconButton } from '../../IconButton/IconButton'
 
 type StepProps = {
-	/** The title of the step */
+	/** The title of the step. */
 	title: string
-	/** The description of the step */
+	/** The description of the step. */
 	description: string
-	/** The image of the step */
+	/** The image of the step. */
 	image: StaticImageData
-	/** The step number */
+	/** The step number. */
 	stepNumber: number
-	/** The current step */
+	/** The current step. */
 	currentStep: number
-	/** The total amount of steps */
+	/** The total amount of steps. */
 	stepsCount: number
-	/** The function to set the current step */
+	/** The function to set the current step. */
 	setCurrentStep: Dispatch<SetStateAction<number>>
 }
 
