@@ -2,10 +2,10 @@
 import Image from 'next/image'
 import React from 'react'
 import logo from '../../../../assets/logo/logo.png'
-import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
-import { SidebarButton, SidebarButtonState } from '../SidebarButton/SidebarButton'
+import { SidebarElementTypes } from '../../../types/sidebarElementTypes'
+import { SidebarButton, SidebarButtonState } from './SidebarButton/SidebarButton'
 
-export type LastWillSidebarProps = {
+export type SidebarProps = {
 	/** Path of the current page. */
 	path: string
 }
@@ -50,20 +50,20 @@ const sidebarElements: SidebarElement[] = [
 ]
 
 /**
- * LastWillSidebar component for navigation
+ * Sidebar component for navigation
  */
-export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (
-		<div datacy={'lastwillsidebar'} className="h-auto w-80 min-w-[20rem] bg-yellow">
+		<div datacy={'sidebar'} className="h-auto w-80 min-w-[20rem] bg-yellow">
 			<div className="px-6 pb-20 pt-4">
-				<Image datacy={'lastwillsidebar-logo'} src={logo} alt="logo" width={160} />
+				<Image datacy={'sidebar-logo'} src={logo} alt="logo" width={160} />
 			</div>
 			<div className="flex flex-col">
 				{sidebarElements.map((element) => (
 					<SidebarButton
-						datacy={`lastwillsidebar-button-${element.type}`}
+						datacy={`sidebar-button-${element.type}`}
 						key={element.type}
 						type={element.type}
 						title={element.title}
