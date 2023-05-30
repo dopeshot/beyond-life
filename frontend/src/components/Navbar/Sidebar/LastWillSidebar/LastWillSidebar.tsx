@@ -12,13 +12,13 @@ export type LastWillSidebarProps = {
 	datacy?: string
 }
 
-type SidebarElementType = {
+type SidebarElement = {
 	type: SidebarElementTypes
 	title: string
 	description?: string
 }
 
-const sidebarElements: SidebarElementType[] = [
+const sidebarElements: SidebarElement[] = [
 	{
 		type: 'testator',
 		title: 'Erblasser',
