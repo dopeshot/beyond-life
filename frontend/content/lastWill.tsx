@@ -58,14 +58,14 @@ export const tutorialSteps = [
 		image: example,
 		title: 'Erbschaftseditor',
 		description:
-			'Mit den von Ihnen bereitgestellten Informationen erzeugen wir automatisch Ihren persönlichen Erbschaftseditor. Hier können Sie Ihr Erbe frei an Ihre Erben verteilen - mit intuitiver Benutzeroberfläche und klarem Design.',
+			'Mit den von Ihnen bereitgestellten Informationen erzeugen wir automatisch Ihren persönlichen Erbschaftseditor. Hier können Sie Ihr Erbe frei an Ihre Erben verteilen.',
 	},
 	{
 		stepNumber: 3,
 		image: example,
 		title: 'Erstellung Ihres Testaments',
 		description:
-			'Basierend auf Ihren Angaben erstellt unser System Ihr individuelles Testament. Sie müssen es nur noch selbst abschreiben und unterschreiben. Wir machen es Ihnen so leicht wie möglich.',
+			'Basierend auf Ihren Angaben erstellt unser System Ihr individuelles Testament. Sie müssen es nur noch selbst abschreiben und unterschreiben.',
 	},
 ]
 
