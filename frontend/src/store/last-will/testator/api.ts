@@ -1,6 +1,5 @@
-export type TestatorFormPayload = {
-	name: string
-}
+import { TestatorFormPayload } from './actions'
+
 export type TestatorResponse = {
 	name: string
 }

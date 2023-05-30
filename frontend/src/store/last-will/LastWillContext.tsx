@@ -10,12 +10,11 @@ import { LastWillContextType } from './types'
 export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
 
-	const reloadData = useCallback(async () => {}, [])
-
+	const initLastWill = useCallback(async () => {}, [])
 	// Reload data on mount
 	useEffect(() => {
-		reloadData()
-	}, [reloadData])
+		initLastWill()
+	}, [initLastWill])
 
 	// Global State Services
 	const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(

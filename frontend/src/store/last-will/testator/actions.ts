@@ -1,16 +1,18 @@
 import { Dispatch } from 'react'
-import { TestatorFormPayload, saveTestator } from './api'
+import { saveTestator } from './api'
 
 export type TestatorActions =
 	| {
 			type: 'EFFECT_SET_TESTATOR'
-			payload: {
-				name: string
-			}
+			payload: TestatorFormPayload
 	  }
 	| {
 			type: 'PRE_SET_TESTATOR'
 	  }
+
+export type TestatorFormPayload = {
+	name: string
+}
 
 export const submitTestatorAction = async (dispatch: Dispatch<TestatorActions>, payload: TestatorFormPayload) => {
 	// Prepare

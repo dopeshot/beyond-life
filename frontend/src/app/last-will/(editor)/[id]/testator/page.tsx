@@ -15,7 +15,7 @@ const Testator = () => {
 		<div className="container mt-5">
 			<Headline>{lastWill.testator.name}</Headline>
 			<Button
-				loading={lastWill.testator.isLoading}
+				loading={lastWill.common.isLoading}
 				icon="save"
 				onClick={() => services.submitTestator({ name: 'michael' + Math.random() })}
 			>

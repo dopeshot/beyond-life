@@ -1,7 +1,9 @@
-import { TestatorFormPayload } from './testator/api'
+import { CommonState } from './common/state'
+import { TestatorFormPayload } from './testator/actions'
 import { TestatorState } from './testator/state'
 
 export type LastWill = {
+	common: CommonState
 	testator: TestatorState
 	marriageStatus: string
 	heirs: string
