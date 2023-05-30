@@ -1,19 +1,22 @@
 import { LastWill } from './types'
 
-export enum TestamentActionType {
+export enum LastWillActionType {
 	PRE_SET_TESTATOR = 'PRE_SET_TESTATOR',
-	EFFECT_SET_TESTATOR = 'SET_TESTATOR',
+	EFFECT_SET_TESTATOR = 'EFFECT_SET_TESTATOR',
 }
 
-export type TestamentActions = {
-	type: TestamentActionType
-	payload: {
-		isLoading: boolean
-		name: string
-	}
-}
+export type LastWillActions =
+	| {
+			type: LastWillActionType.EFFECT_SET_TESTATOR
+			payload: {
+				name: string
+			}
+	  }
+	| {
+			type: LastWillActionType.PRE_SET_TESTATOR
+	  }
 
-export const initalTestamentState: LastWill = {
+export const initalLastWillState: LastWill = {
 	testator: {
 		name: '',
 		isLoading: false,
@@ -24,17 +27,23 @@ export const initalTestamentState: LastWill = {
 	succession: '',
 }
 
-export const testamentReducer = (state: LastWill, action: TestamentActions): LastWill => {
+export const lastWillReducer = (state: LastWill, action: LastWillActions): LastWill => {
 	switch (action.type) {
-		case TestamentActionType.EFFECT_SET_TESTATOR:
+		case LastWillActionType.EFFECT_SET_TESTATOR:
 			return {
 				...state,
-				testator: action.payload,
+				testator: {
+					...action.payload,
+					isLoading: false,
+				},
 			}
-		case TestamentActionType.PRE_SET_TESTATOR:
+		case LastWillActionType.PRE_SET_TESTATOR:
 			return {
 				...state,
-				testator: action.payload,
+				testator: {
+					...state.testator,
+					isLoading: true,
+				},
 			}
 		default:
 			return state

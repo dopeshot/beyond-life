@@ -1,41 +1,38 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
-import { exampleFetch } from './api'
-import { TestamentActionType, initalTestamentState, testamentReducer } from './reducer'
+import { saveTestator } from './api'
+import { LastWillActionType, initalLastWillState, lastWillReducer } from './reducer'
 import { LastWill } from './types'
 
 type LastWillContextType = {
 	lastWill: LastWill
 	services: {
-		submitPosts: () => void
+		submitTestator: (payload: { name: string }) => void
 	}
 }
 
-// Create the context
 const LastWillContext = createContext({} as LastWillContextType)
 
 /**
  * Handles the Testament object where we hold all data.
  */
 export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [testament, dispatch] = useReducer(testamentReducer, initalTestamentState)
+	const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
 
 	/**
 	 * Reload fetches the data from the backend and updates the context.
 	 */
-	const reloadData = useCallback(async () => {
-		const example = await exampleFetch()
-	}, [])
+	const reloadData = useCallback(async () => {}, [])
 
-	const submitPosts = useCallback(async () => {
+	const submitTestator = useCallback(async (payload: { name: string }) => {
 		// Prepare
-		dispatch({ type: TestamentActionType.PRE_SET_TESTATOR, payload: { name: '', isLoading: true } })
+		dispatch({ type: LastWillActionType.PRE_SET_TESTATOR })
 		// Fetch
-		const example = await exampleFetch()
+		const example = await saveTestator(payload)
 		// Effect
 		dispatch({
-			type: TestamentActionType.EFFECT_SET_TESTATOR,
-			payload: { name: example.title, isLoading: false },
+			type: LastWillActionType.EFFECT_SET_TESTATOR,
+			payload: { name: example.name },
 		})
 	}, [])
 
@@ -47,9 +44,9 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 	return (
 		<LastWillContext.Provider
 			value={{
-				lastWill: testament,
+				lastWill,
 				services: {
-					submitPosts,
+					submitTestator,
 				},
 			}}
 		>
@@ -58,7 +55,4 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 	)
 }
 
-/**
- * Use this hook to access the TestamentContext and its data.
- */
-export const useTestamentContext = () => useContext(LastWillContext)
+export const useLastWillContext = () => useContext(LastWillContext)

@@ -1,7 +1,7 @@
 export type LastWill = {
 	testator: {
-		isLoading: boolean
 		name: string
+		isLoading: boolean
 	}
 	marriageStatus: string
 	heirs: string
