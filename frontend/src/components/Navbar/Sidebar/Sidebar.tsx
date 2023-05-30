@@ -56,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (
-		<div datacy={'sidebar'} className="h-auto w-80 min-w-[20rem] bg-yellow">
+		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
 			<div className="px-6 pb-20 pt-4">
 				<Image datacy={'sidebar-logo'} src={logo} alt="logo" width={160} />
 			</div>
