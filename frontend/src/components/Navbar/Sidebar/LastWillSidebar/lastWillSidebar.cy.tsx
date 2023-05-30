@@ -1,4 +1,5 @@
-import '../../../../app/globals.css'
+import 'material-symbols'
+import '../../../app/globals.css'
 import { LastWillSidebar } from './LastWillSidebar'
 
 const data = {

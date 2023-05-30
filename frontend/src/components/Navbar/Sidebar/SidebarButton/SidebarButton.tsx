@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
-import { fontPlusJakartaSans } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
 import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
 import { IconButton } from '../../../IconButton/IconButton'

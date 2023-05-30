@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { SidebarButton, SidebarButtonProps } from './SidebarButton'
 import { SidebarButton, SidebarButtonProps, SidebarButtonState } from './SidebarButton'
 
 const meta: Meta<typeof SidebarButton> = {
