@@ -12,7 +12,6 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 
 /**
  * Display Navbar with Logo and Links.
- * @example <GlobalNavbar />
  */
 export const GlobalNavbar: React.FC = () => {
 	const pathname = usePathname()
