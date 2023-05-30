@@ -20,9 +20,9 @@ const Home: React.FC = () => {
 	return (
 		<>
 			{/* Header With Image */}
-			<header className="mb-4 h-[calc(100vh_-_64px)] min-h-[calc(100vh_-_64px)] bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken md:mb-8">
+			<header className="mb-10 h-[calc(80vh_-_64px)] min-h-[420px] bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken md:mb-20">
 				<Image
-					className="absolute -z-10 h-[calc(100vh_-_64px)] min-h-[calc(100vh_-_64px)] object-cover object-top"
+					className="absolute -z-10 h-[calc(80vh_-_64px)] min-h-[420px] object-cover object-top"
 					src={headerBackground}
 					alt="Couple"
 					placeholder="blur"
@@ -34,7 +34,9 @@ const Home: React.FC = () => {
 					<p className="mb-5 text-lg text-white md:text-xl xl:w-1/2">
 						Erstellen Sie Ihr Testament in nur wenigen Schritten und hinterlassen Sie ein Vermächtnis, das zählt.
 					</p>
-					<Route href={routes.lastWill.start}>Jetzt Testament erstellen</Route>
+					<Route icon="history_edu" href={routes.lastWill.start}>
+						Jetzt Testament erstellen
+					</Route>
 				</div>
 			</header>
 			{/* Header with image end */}
@@ -42,9 +44,9 @@ const Home: React.FC = () => {
 			{/* Content */}
 			<main>
 				{/* Section: Features */}
-				<div className="container mb-5 md:mb-10">
+				<div className="container mb-16 md:mb-20">
 					{/* Header */}
-					<div className="mb-4 flex flex-col items-center text-center md:mb-5">
+					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Ganz einfach und sicher Ihr Testament erstellen</Headline>
 						<p>Gestalten Sie Ihr Erbe - Wir machen es Ihnen leicht, sicher und individuell anpassbar.</p>
 					</div>
@@ -59,12 +61,12 @@ const Home: React.FC = () => {
 				{/* Section: Features end */}
 
 				{/* Section: Banner */}
-				<div className="mb-5 md:mb-10">
+				<div className="mb-16 md:mb-20">
 					<Banner
 						title="Nehmen Sie Ihre Zukunft selbst in die Hand"
 						description="Beginnen Sie jetzt mit der sicheren und einfachen Gestaltung Ihres Testaments. Ihre Zukunft und Ihr Erbe sind nur einen Klick entfernt."
 						button={
-							<Route href={routes.lastWill.start} kind="secondary">
+							<Route icon="history_edu" href={routes.lastWill.start} kind="secondary">
 								Jetzt Testament erstellen
 							</Route>
 						}
@@ -73,9 +75,9 @@ const Home: React.FC = () => {
 				{/* Section: Banner end */}
 
 				{/* Section: Step by step tutorial */}
-				<div className="container mb-5 md:mb-10">
+				<div className="container mb-16 md:mb-24">
 					{/* Header */}
-					<div className="mb-4 flex flex-col items-center text-center md:mb-5">
+					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Mit drei einfachen Schritten zum Ziel</Headline>
 						<p>Gestalten Sie Ihr Testament in nur wenigen Klicks - Sicher, intuitiv und individuell.</p>
 					</div>
@@ -97,7 +99,7 @@ const Home: React.FC = () => {
 				{/* Section: Step by step tutorial end */}
 
 				{/* Section: Clients */}
-				<div className="container mb-5 grid gap-2 md:mb-10 md:grid-cols-2 md:gap-5 2xl:grid-cols-4">
+				<div className="container mb-16 grid gap-2 md:mb-20 md:grid-cols-2 md:gap-5 2xl:grid-cols-4">
 					{/* Headline */}
 					<Headline level={2}>Das sagen unsere zufriedenen Kunden</Headline>
 
@@ -109,12 +111,12 @@ const Home: React.FC = () => {
 				{/* Section: Clients end */}
 
 				{/* Section: Banner */}
-				<div className="mb-5 md:mb-10">
+				<div className="mb-16 md:mb-20">
 					<Banner
 						title="Überzeugen Sie sich selbst"
 						description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
 						button={
-							<Route href={routes.lastWill.start} kind="secondary">
+							<Route icon="history_edu" href={routes.lastWill.start} kind="secondary">
 								Jetzt Testament erstellen
 							</Route>
 						}
@@ -123,9 +125,9 @@ const Home: React.FC = () => {
 				{/* Section: Banner end */}
 
 				{/* Section: Pricing */}
-				<div className="container mb-5 md:mb-10">
+				<div className="container mb-16 md:mb-20">
 					{/* Header */}
-					<div className="mb-4 flex flex-col items-center text-center md:mb-5">
+					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Einfaches Preismodell</Headline>
 						<p>Transparente Kosten, keine versteckten Gebühren - Ihr Testament zu einem fairen Preis.</p>
 					</div>
