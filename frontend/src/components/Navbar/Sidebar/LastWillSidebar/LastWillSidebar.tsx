@@ -56,7 +56,7 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 
 	return (
-		<div datacy={'lastwillsidebar'} className="h-auto w-80 bg-yellow">
+		<div datacy={'lastwillsidebar'} className="h-auto w-80 min-w-[20rem] bg-yellow">
 			<div className="px-6 pb-20 pt-4">
 				<Image datacy={'lastwillsidebar-logo'} src={logo} alt="logo" width={160} />
 			</div>
