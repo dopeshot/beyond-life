@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
 import { saveTestator } from './api'
-import { LastWillActionType, initalLastWillState, lastWillReducer } from './reducer'
+import { initalLastWillState, lastWillReducer } from './reducer'
 import { LastWill } from './types'
 
 type LastWillContextType = {
@@ -26,12 +26,12 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 
 	const submitTestator = useCallback(async (payload: { name: string }) => {
 		// Prepare
-		dispatch({ type: LastWillActionType.PRE_SET_TESTATOR })
+		dispatch({ type: 'PRE_SET_TESTATOR' })
 		// Fetch
 		const example = await saveTestator(payload)
 		// Effect
 		dispatch({
-			type: LastWillActionType.EFFECT_SET_TESTATOR,
+			type: 'EFFECT_SET_TESTATOR',
 			payload: { name: example.name },
 		})
 	}, [])
