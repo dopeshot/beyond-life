@@ -6,9 +6,9 @@ export const metadata = {
 }
 
 /**
- * Marriage Status Page
+ * Marriage Page
  */
-const MarriageStatus = () => {
+const Marriage = () => {
 	return (
 		<div className="container mt-5">
 			<Headline>Familienstand</Headline>
@@ -16,4 +16,4 @@ const MarriageStatus = () => {
 	)
 }
 
-export default MarriageStatus
+export default Marriage
