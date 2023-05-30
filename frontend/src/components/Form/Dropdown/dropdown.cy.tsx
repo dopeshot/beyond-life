@@ -21,7 +21,7 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const data = {
 	name: 'gender',
-	placeholder: 'Choose a filter...',
+	placeholder: 'Choose a gender...',
 	options: [
 		{ value: '1', label: 'Männlich', icon: 'person' },
 		{ value: '2', label: 'Weiblich', icon: 'person' },
