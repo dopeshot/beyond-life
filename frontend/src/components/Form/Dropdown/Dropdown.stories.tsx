@@ -13,7 +13,7 @@ type Story = StoryObj<DropdownProps>
 const Template: Story = {
 	render: (args) => {
 		return (
-			<Formik initialValues={{ gender: '' }} onSubmit={() => { }}>
+			<Formik initialValues={{ gender: '' }} onSubmit={() => {}}>
 				<Form>
 					<Dropdown {...args} />
 				</Form>
@@ -29,6 +29,10 @@ export const DropdownDefault = {
 		labelText: 'Label',
 		helperText: 'Helper Text',
 		placeholder: 'Placeholder',
-		options: [{ value: "1", label: "Männlich" }, { value: "2", label: "Weiblich" }, { value: "3", label: "Divers" }],
+		options: [
+			{ value: '1', label: 'Männlich' },
+			{ value: '2', label: 'Weiblich' },
+			{ value: '3', label: 'Divers' },
+		],
 	},
 }
