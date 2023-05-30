@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { saveTestator } from '../api'
+import { saveTestator } from './api'
 import { TesatatorFormPayload } from './payload'
 
 export type TestatorActions =

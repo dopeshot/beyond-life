@@ -1,4 +1,4 @@
-import { TesatatorFormPayload, TestatorResponse } from './testator/payload'
+import { TesatatorFormPayload, TestatorResponse } from './payload'
 
 export const saveTestator = async (payload: TesatatorFormPayload) => {
 	// simulate async request
