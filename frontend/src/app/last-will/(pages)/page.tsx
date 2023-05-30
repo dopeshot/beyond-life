@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import { useState } from 'react'
 import { cardContent, clientCards, tutorialSteps } from '../../../../content/lastWill'
 import headerBackground from '../../../assets/images/layout/headerBackground.jpg'
@@ -19,10 +20,13 @@ const Home: React.FC = () => {
 	return (
 		<>
 			{/* Header With Image */}
-			<header
-				style={{ backgroundImage: `url(${headerBackground.src})` }}
-				className="mb-4 h-[calc(100vh_-_66px)] min-h-[calc(100vh_-_66px)] bg-black bg-opacity-50 bg-cover bg-top bg-no-repeat bg-blend-darken md:mb-8"
-			>
+			<header className="mb-4 h-[calc(100vh_-_64px)] min-h-[calc(100vh_-_64px)] bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken md:mb-8">
+				<Image
+					className="absolute -z-10 h-[calc(100vh_-_64px)] min-h-[calc(100vh_-_64px)] object-cover object-top"
+					src={headerBackground}
+					alt="Couple"
+					placeholder="blur"
+				/>
 				<div className="container flex h-full flex-col justify-center">
 					<Headline size="text-3xl md:text-5xl" className="mb-5 text-yellow xl:w-2/3">
 						Die Gewissheit, dass Ihre Wünsche respektiert werden
