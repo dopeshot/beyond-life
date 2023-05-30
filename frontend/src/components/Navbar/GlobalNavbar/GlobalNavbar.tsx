@@ -23,7 +23,7 @@ export const GlobalNavbar: React.FC = () => {
 	const navLinks: NavLink[] = [
 		{
 			to: routes.index,
-			text: 'Discover',
+			text: 'Startseite',
 		},
 		{
 			to: routes.lastWill.index,
