@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 	return (
 		<>
 			{/* Header With Image */}
-			<header className="mb-10 h-[calc(80vh_-_64px)] min-h-[420px] bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken md:mb-20">
+			<header className="mb-10 h-[calc(80vh_-_64px)] min-h-[420px] bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken md:mb-16">
 				<Image
 					className="absolute -z-10 h-[calc(80vh_-_64px)] min-h-[420px] object-cover object-top"
 					src={headerBackground}
@@ -75,7 +75,7 @@ const Home: React.FC = () => {
 				{/* Section: Banner end */}
 
 				{/* Section: Step by step tutorial */}
-				<div className="container mb-16 md:mb-24">
+				<div className="container mb-16 md:mb-28">
 					{/* Header */}
 					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Mit drei einfachen Schritten zum Ziel</Headline>
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
 				{/* Section: Step by step tutorial end */}
 
 				{/* Section: Clients */}
-				<div className="container mb-16 grid gap-2 md:mb-20 md:grid-cols-2 md:gap-5 2xl:grid-cols-4">
+				<div className="container mb-16 grid gap-2 md:grid-cols-2 md:gap-5 2xl:grid-cols-4">
 					{/* Headline */}
 					<Headline level={2}>Das sagen unsere zufriedenen Kunden</Headline>
 
@@ -111,7 +111,7 @@ const Home: React.FC = () => {
 				{/* Section: Clients end */}
 
 				{/* Section: Banner */}
-				<div className="mb-16 md:mb-20">
+				<div className="mb-16 md:mb-24">
 					<Banner
 						title="Überzeugen Sie sich selbst"
 						description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
@@ -125,7 +125,7 @@ const Home: React.FC = () => {
 				{/* Section: Banner end */}
 
 				{/* Section: Pricing */}
-				<div className="container mb-16 md:mb-20">
+				<div className="container mb-16 md:mb-28">
 					{/* Header */}
 					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Einfaches Preismodell</Headline>
