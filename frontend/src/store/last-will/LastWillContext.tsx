@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useReducer } from 'r
 import { initalLastWillState, lastWillReducer } from './reducer'
 import { submitTestatorAction } from './testator/actions'
 import { TesatatorFormPayload } from './testator/payload'
-import { LastWill } from './types'
+import { LastWill } from './type'
 
 type LastWillContextType = {
 	lastWill: LastWill
