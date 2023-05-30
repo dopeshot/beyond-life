@@ -1,9 +1,9 @@
 import '../../../../app/globals.css'
-import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from './SidebarButton'
+import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
 
 const data = {
-	id: 'testator' as SidebarElementIds,
+	type: 'testator' as SidebarElementTypes,
 	title: 'Erblasser',
 	description: 'Persönliche Daten des Erblassers',
 	handleClick: () => console.log('clicked'),

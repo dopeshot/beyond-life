@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import React from 'react'
 import logo from '../../../../assets/logo/logo.png'
-import { SidebarElementIds } from '../../../../types/sidebarElementIds'
 import { SidebarButton } from '../SidebarButton/SidebarButton'
+import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
 
 export type LastWillSidebarProps = {
 	/** Path of the current page. */
@@ -13,39 +13,39 @@ export type LastWillSidebarProps = {
 }
 
 type SidebarElementType = {
-	id: SidebarElementIds
+	type: SidebarElementTypes
 	title: string
 	description?: string
 }
 
 const sidebarElements: SidebarElementType[] = [
 	{
-		id: 'testator',
+		type: 'testator',
 		title: 'Erblasser',
 		description: 'Persönliche Daten des Erblassers',
 	},
 	{
-		id: 'marriage',
+		type: 'marriage',
 		title: 'Familienstand',
 		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
 	},
 	{
-		id: 'heirs',
+		type: 'heirs',
 		title: 'Erben',
 		description: 'Erben und deren Anteile',
 	},
 	{
-		id: 'inheritance',
+		type: 'inheritance',
 		title: 'Erbschaft',
 		description: 'Erbschaftsgegenstände',
 	},
 	{
-		id: 'succession',
+		type: 'succession',
 		title: 'Erbfolge',
 		description: 'Stammbaum und Verteilung',
 	},
 	{
-		id: 'final',
+		type: 'final',
 		title: 'Zusammenfassung',
 		description: 'Überprüfung und Abschreiben',
 	},
@@ -62,14 +62,15 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 			<div className="flex flex-col">
 				{sidebarElements.map((element, index) => (
 					<SidebarButton
-						datacy={`lastwillsidebar-button-${element.id}`}
-						key={index}
-						id={element.id}
+						datacy={`lastwillsidebar-button-${element.type}`}
+						key={element.type}
+						type={element.type}
 						title={element.title}
 						description={element.description}
 						state={
-							path.includes(element.id)
 								? 'active'
+							// TODO: state aus dem global store holen
+							path.includes(element.type)
 								: true //: testament.common.progressIds.includes(element.id)
 								? 'inactive'
 								: 'disabled'
