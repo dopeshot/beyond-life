@@ -1,5 +1,5 @@
-import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
-import { ModuleNavbar } from '../../components/Navbar/ModuleNavbar/ModuleNavbar'
+import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
+import { ModuleNavbar } from '../../../components/Navbar/ModuleNavbar/ModuleNavbar'
 
 export const metadata = {
 	title: 'Beyond Life',
