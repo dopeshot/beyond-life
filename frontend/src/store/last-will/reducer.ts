@@ -1,6 +1,6 @@
 import { TestatorActions } from './testator/actions'
 import { initialTestatorState } from './testator/state'
-import { LastWill } from './type'
+import { LastWill } from './types'
 
 // Add other actions with pipe operator
 export type LastWillActions = TestatorActions
