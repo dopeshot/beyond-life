@@ -8,8 +8,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	const path = usePathname()
 
 	return (
-			<LastWillSidebar path={path} />
 		<div className={`flex min-h-screen flex-row`}>
+			<LastWillSidebar path={path} />
 			<div className="flex flex-grow flex-col">
 				<ModuleNavbar />
 				{children}
