@@ -40,12 +40,13 @@ export const Headline: React.FC<HeadlineProps> = ({
 }) => {
 	const CustomTag = `h${level}` as keyof JSX.IntrinsicElements
 
+	const hasSerifFont = level === 1 || level === 2
+	const fontStyle = hasSerifFont ? ` ${fontArbutusSlab.className} ` : ' '
+
 	return (
 		<CustomTag
 			title={title}
-			className={`${size ?? twTextSizes[level]} ${
-				(level === 1 || level === 2) && fontArbutusSlab.className
-			} font-bold ${hasMargin ? 'mb-2' : ''} ${className}`}
+			className={`${size ?? twTextSizes[level]}${fontStyle}font-bold ${hasMargin ? 'mb-2' : ''} ${className}`}
 		>
 			{children}
 		</CustomTag>
