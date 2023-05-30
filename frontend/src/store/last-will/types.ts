@@ -1,8 +1,7 @@
+import { TestatorState } from './testator/state'
+
 export type LastWill = {
-	testator: {
-		name: string
-		isLoading: boolean
-	}
+	testator: TestatorState
 	marriageStatus: string
 	heirs: string
 	inheritance: string

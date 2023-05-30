@@ -1,13 +1,14 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
-import { saveTestator } from './api'
 import { initalLastWillState, lastWillReducer } from './reducer'
+import { submitTestatorAction } from './testator/actions'
+import { TesatatorFormPayload } from './testator/payload'
 import { LastWill } from './types'
 
 type LastWillContextType = {
 	lastWill: LastWill
 	services: {
-		submitTestator: (payload: { name: string }) => void
+		submitTestator: (payload: TesatatorFormPayload) => void
 	}
 }
 
@@ -24,17 +25,10 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 	 */
 	const reloadData = useCallback(async () => {}, [])
 
-	const submitTestator = useCallback(async (payload: { name: string }) => {
-		// Prepare
-		dispatch({ type: 'PRE_SET_TESTATOR' })
-		// Fetch
-		const example = await saveTestator(payload)
-		// Effect
-		dispatch({
-			type: 'EFFECT_SET_TESTATOR',
-			payload: { name: example.name },
-		})
-	}, [])
+	const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(
+		(payload) => submitTestatorAction(dispatch, payload),
+		[]
+	)
 
 	// Reload data on mount
 	useEffect(() => {

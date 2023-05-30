@@ -1,21 +1,12 @@
+import { TestatorActions } from './testator/actions'
+import { initialTestatorState } from './testator/state'
 import { LastWill } from './types'
 
-export type LastWillActions =
-	| {
-			type: 'EFFECT_SET_TESTATOR'
-			payload: {
-				name: string
-			}
-	  }
-	| {
-			type: 'PRE_SET_TESTATOR'
-	  }
+// Add other actions with pipe operator
+export type LastWillActions = TestatorActions
 
 export const initalLastWillState: LastWill = {
-	testator: {
-		name: '',
-		isLoading: false,
-	},
+	testator: initialTestatorState,
 	marriageStatus: '',
 	heirs: '',
 	inheritance: '',
