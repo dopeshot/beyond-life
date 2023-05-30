@@ -1,18 +1,13 @@
 import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { ModuleNavbar } from '../../../components/Navbar/ModuleNavbar/ModuleNavbar'
-import { TestamentContextProvider } from '../../../context/testament/TestamentContext'
-
-export const metadata = {
-	title: 'Beyond Life',
-	description: 'Handle your death.',
-}
+import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<TestamentContextProvider>
+		<LastWillContextProvider>
 			<ModuleNavbar />
 			{children}
 			<GlobalFooter />
-		</TestamentContextProvider>
+		</LastWillContextProvider>
 	)
 }

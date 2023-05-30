@@ -1,17 +1,23 @@
+'use client'
+import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
-
-export const metadata = {
-	title: 'Erblasser | Beyond Life',
-	description: 'Handle your death.',
-}
+import { routes } from '../../../../../services/routes/routes'
+import { useTestamentContext } from '../../../../../store/last-will/LastWillContext'
 
 /**
  * Testator Page
  */
 const Testator = () => {
+	const { lastWill, services } = useTestamentContext()
+
 	return (
 		<div className="container mt-5">
-			<Headline>Erblasser</Headline>
+			<Headline>{lastWill.testator.name}</Headline>
+			<Button loading={lastWill.testator.isLoading} icon="save" onClick={() => services.submitPosts()}>
+				Submit
+			</Button>
+			<Route href={routes.lastWill.final('1')}>Final page</Route>
 		</div>
 	)
 }
