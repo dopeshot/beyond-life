@@ -7,7 +7,7 @@ import { routes } from '../../services/routes/routes'
  */
 const Home = () => {
 	return (
-		<div className="container">
+		<div className="container mt-5">
 			<Headline>Haupt Startseite</Headline>
 			<div className="flex gap-3">
 				<div className="h-10 w-10 bg-yellow" />

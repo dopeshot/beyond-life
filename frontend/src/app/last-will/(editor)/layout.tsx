@@ -1,8 +1,13 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
-import { ModuleNavbar } from '../../components/Navbar/ModuleNavbar/ModuleNavbar'
-import { Sidebar } from '../../components/Navbar/Sidebar/Sidebar'
+import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
+import { ModuleNavbar } from '../../../components/Navbar/ModuleNavbar/ModuleNavbar'
+import { Sidebar } from '../../../components/Navbar/Sidebar/Sidebar'
+
+export const metadata = {
+	title: 'Beyond Life',
+	description: 'Handle your death.',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()
