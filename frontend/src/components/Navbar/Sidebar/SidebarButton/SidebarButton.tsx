@@ -6,6 +6,12 @@ import { routes } from '../../../../services/routes/routes'
 import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
 import { IconButton } from '../../../IconButton/IconButton'
 
+export enum SidebarButtonState {
+	ACTIVE = 'active',
+	DEFAULT = 'default',
+	DISABLED = 'disabled',
+}
+
 export type SidebarButtonProps = {
 	/** Id for identification in sidebar. */
 	type: SidebarElementTypes
@@ -14,7 +20,7 @@ export type SidebarButtonProps = {
 	/** Description text shown in button. */
 	description?: string
 	/** State of button. */
-	state: 'active' | 'inactive' | 'disabled'
+	state: SidebarButtonState
 	/** Function to be called when button is clicked. */
 	handleClick?: () => void
 	/** Datacy attribute for testing. */

@@ -1,6 +1,6 @@
 import '../../../../app/globals.css'
-import { SidebarButton } from './SidebarButton'
 import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
+import { SidebarButton, SidebarButtonState } from './SidebarButton'
 
 const data = {
 	type: 'testator' as SidebarElementTypes,
@@ -12,7 +12,7 @@ const data = {
 describe('SidebarButton', () => {
 	describe('Basic Render', () => {
 		beforeEach(() => {
-			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state="active" />)
+			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.ACTIVE} />)
 		})
 
 		it('should render correctly', () => {
@@ -32,21 +32,21 @@ describe('SidebarButton', () => {
 
 	describe('Active State', () => {
 		it('should not display icon', () => {
-			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state="active" />)
+			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.ACTIVE} />)
 			cy.datacy('sidebarbutton-icon').should('not.exist')
 		})
 	})
 
 	describe('Inactive State', () => {
 		it('should display icon', () => {
-			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state="inactive" />)
+			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.DEFAULT} />)
 			cy.datacy('sidebarbutton-icon').should('be.visible')
 		})
 	})
 
 	describe('Disabled State', () => {
 		it('should not display icon', () => {
-			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state="disabled" />)
+			cy.mount(<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.DISABLED} />)
 			cy.datacy('sidebarbutton-icon').should('not.exist')
 		})
 	})

@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import React from 'react'
 import logo from '../../../../assets/logo/logo.png'
-import { SidebarButton } from '../SidebarButton/SidebarButton'
 import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
+import { SidebarButton, SidebarButtonState } from '../SidebarButton/SidebarButton'
 
 export type LastWillSidebarProps = {
 	/** Path of the current page. */
@@ -68,12 +68,12 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 						title={element.title}
 						description={element.description}
 						state={
-								? 'active'
 							// TODO: state aus dem global store holen
 							path.includes(element.type)
+								? SidebarButtonState.ACTIVE
 								: true //: testament.common.progressIds.includes(element.id)
-								? 'inactive'
-								: 'disabled'
+								? SidebarButtonState.DEFAULT
+								: SidebarButtonState.DISABLED
 						}
 						// handleClick={() => setProgressId(element.id)}
 					/>
