@@ -17,7 +17,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		reloadData()
 	}, [reloadData])
 
-	// Global State Services 
+	// Global State Services
 	const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(
 		(payload) => submitTestatorAction(dispatch, payload),
 		[]
