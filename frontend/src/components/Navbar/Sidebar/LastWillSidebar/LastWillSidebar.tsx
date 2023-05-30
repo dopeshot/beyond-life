@@ -49,6 +49,9 @@ const sidebarElements: SidebarElement[] = [
 	},
 ]
 
+/**
+ * LastWillSidebar component for navigation
+ */
 export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 	// const { testament, setProgressId } = useTestamentContext()
 

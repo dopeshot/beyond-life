@@ -26,6 +26,9 @@ export type SidebarButtonProps = {
 	datacy?: string
 }
 
+/**
+ * Sidebar button component to be used in Sidebar.
+ */
 export const SidebarButton: React.FC<SidebarButtonProps> = ({
 	type,
 	title,
@@ -48,7 +51,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 			}`}
 		>
 			<div className={`flex w-5/6 flex-col gap-1`}>
-				<div datacy={`${datacy}-title`} className="h-5 text-base font-bold ">
+				<div datacy={`${datacy}-title`} className="h-5 text-base font-bold">
 					{title}
 				</div>
 				<div datacy={`${datacy}-description`} className="h-8 text-xs font-medium">
