@@ -8,7 +8,7 @@ const data = {
 describe('LastWillSidebar', () => {
 	describe('Basic Render', () => {
 		beforeEach(() => {
-			cy.mount(<LastWillSidebar datacy="lastwillsidebar" {...data} />)
+			cy.mount(<LastWillSidebar {...data} />)
 		})
 
 		it('should render correctly', () => {

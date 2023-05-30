@@ -8,8 +8,6 @@ import { SidebarButton, SidebarButtonState } from '../SidebarButton/SidebarButto
 export type LastWillSidebarProps = {
 	/** Path of the current page. */
 	path: string
-	/** Datacy attribute for testing. */
-	datacy?: string
 }
 
 type SidebarElement = {
@@ -60,7 +58,7 @@ export const LastWillSidebar: React.FC<LastWillSidebarProps> = ({ path }) => {
 				<Image datacy={'lastwillsidebar-logo'} src={logo} alt="logo" width={160} />
 			</div>
 			<div className="flex flex-col">
-				{sidebarElements.map((element, index) => (
+				{sidebarElements.map((element) => (
 					<SidebarButton
 						datacy={`lastwillsidebar-button-${element.type}`}
 						key={element.type}
