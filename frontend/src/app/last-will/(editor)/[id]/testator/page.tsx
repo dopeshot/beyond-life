@@ -1,9 +1,5 @@
+'use client'
 import { Headline } from '../../../../../components/Headline/Headline'
-
-export const metadata = {
-	title: 'Erblasser | Beyond Life',
-	description: 'Handle your death.',
-}
 
 /**
  * Testator Page
