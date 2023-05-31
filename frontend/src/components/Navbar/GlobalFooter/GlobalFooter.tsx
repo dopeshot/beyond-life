@@ -1,6 +1,5 @@
 /**
  * Display Footer with copyright and legal links.
- * @example <GlobalFooter />
  */
 export const GlobalFooter: React.FC = () => {
 	return (
