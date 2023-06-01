@@ -1,18 +1,12 @@
 import { action } from '@storybook/addon-actions'
 import { Meta, StoryFn } from '@storybook/react'
 import { Form, Formik } from 'formik'
+import * as yup from 'yup'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const meta: Meta<typeof Checkbox> = {
 	title: 'Design System/Checkbox',
 	component: Checkbox,
-	argTypes: {
-		name: { control: 'text' },
-		labelText: { control: 'text' },
-		helperText: { control: 'text' },
-		options: { control: 'object' },
-		labelRequired: { control: 'boolean' },
-	},
 }
 export default meta
 
@@ -24,6 +18,9 @@ const Template: StoryFn<CheckboxProps> = (args) => (
 		onSubmit={(values) => {
 			action(`form submitted`)(values)
 		}}
+		validationSchema={yup.object().shape({
+			checkbox: yup.array().of(yup.number().min(2)),
+		})}
 	>
 		<Form>
 			<Checkbox {...args} />
