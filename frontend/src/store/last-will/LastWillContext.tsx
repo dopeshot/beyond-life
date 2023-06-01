@@ -11,7 +11,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 	const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
 
 	const initLastWill = useCallback(async () => {}, [])
-	// Init data on mount (if edit mode, load from backend)
+	// MC: Do this here for now later we can use Prodiver.value to pass the data in edit mode
 	useEffect(() => {
 		initLastWill()
 	}, [initLastWill])
