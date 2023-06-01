@@ -5,13 +5,13 @@ import { submitTestatorAction } from './testator/actions'
 import { LastWillContextType } from './types'
 
 /**
- * Handles the Testament object where we hold all data.
+ * All data for the form which is saved is stored in this context.
  */
 export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
 
 	const initLastWill = useCallback(async () => {}, [])
-	// Reload data on mount
+	// Init data on mount (if edit mode, load from backend)
 	useEffect(() => {
 		initLastWill()
 	}, [initLastWill])
