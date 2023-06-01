@@ -2,7 +2,6 @@ import { mount } from 'cypress/react'
 import { Form, Formik } from 'formik'
 import 'material-symbols'
 import 'tailwindcss/tailwind.css'
-import { ChildrenProps } from '../../../types/children'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const data: CheckboxProps = {
@@ -28,7 +27,7 @@ const data: CheckboxProps = {
 	],
 }
 
-const Wrapper: React.FC<ChildrenProps> = ({ children }) => {
+const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	return (
 		<Formik initialValues={{ [data.name]: [] }} onSubmit={() => {}}>
 			{() => <Form>{children}</Form>}
