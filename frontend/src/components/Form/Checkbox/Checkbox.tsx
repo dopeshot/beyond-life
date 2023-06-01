@@ -1,6 +1,7 @@
 import { ErrorMessage, Field } from 'formik'
 import { SelectableOption } from '../../../types/forms'
 import { Icon } from '../../Icon/Icon'
+import { Label } from '../Label/Label'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -23,10 +24,7 @@ export type CheckboxProps = {
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
 	return (
 		<>
-			<h5 className="text-darkgrey block text-sm font-semibold" datacy={`checkbox-${name}-label`}>
-				{labelText}
-				{labelRequired && <span className="ml-1 text-yellow-500">*</span>}
-			</h5>
+			<Label isLegend name={`checkbox-${name}`} labelText={labelText} inputRequired={labelRequired} />
 			{options.map((option) => (
 				<label
 					datacy={`checkbox-${name}-option-${option.id}`}
