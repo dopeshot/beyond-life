@@ -1,11 +1,7 @@
+'use client'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata = {
-	title: 'Abschreiben | Beyond Life',
-	description: 'Handle your death.',
-}
 
 /**
  * Final Page for copy last will.

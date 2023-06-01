@@ -28,7 +28,6 @@ type IconButtonProps = {
 
 /**
  * Button only as Icon. Can be used as a link or with an onClick function.
- * @example <IconButton icon="home" to="/home" />
  */
 export const IconButton: React.FC<IconButtonProps> = ({
 	icon,

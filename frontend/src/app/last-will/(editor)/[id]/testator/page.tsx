@@ -1,9 +1,13 @@
 'use client'
+<<<<<<< HEAD
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
+=======
+import { Headline } from '../../../../../components/Headline/Headline'
+>>>>>>> 90abe8ae3bc9bc8ef9eb7f889cc8f326b476b2af
 
 /**
  * Testator Page
