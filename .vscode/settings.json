@@ -1,12 +1,12 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true,
-        "source.fixAll.eslint": true
-    },
-    "typescript.preferences.importModuleSpecifier": "relative",
-    "files.associations": {
-        "*.css": "tailwindcss"
-    }, 
-    "tailwindCSS.classAttributes": ["class", "className", "tw.*"]
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll.eslint": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.classAttributes": ["class", ".*className*.", "tw.*"]
 }
