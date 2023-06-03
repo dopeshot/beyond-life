@@ -1,5 +1,5 @@
 import { Form, Formik } from 'formik'
-import React from 'react'
+import '../../../app/globals.css'
 import { TextInput } from './TextInput'
 
 const data = {
