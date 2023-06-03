@@ -2,14 +2,8 @@
 import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
-import { SidebarElementTypes } from '../../../../types/sidebar'
+import { SidebarButtonState, SidebarElementTypes } from '../../../../types/sidebar'
 import { IconButton } from '../../../IconButton/IconButton'
-
-export enum SidebarButtonState {
-	ACTIVE = 'active',
-	DEFAULT = 'default',
-	DISABLED = 'disabled',
-}
 
 export type SidebarButtonProps = {
 	/** Id for identification in sidebar. */

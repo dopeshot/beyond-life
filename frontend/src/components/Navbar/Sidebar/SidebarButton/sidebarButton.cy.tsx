@@ -1,6 +1,6 @@
 import '../../../../app/globals.css'
-import { SidebarElementTypes } from '../../../../types/sidebar'
-import { SidebarButton, SidebarButtonState } from './SidebarButton'
+import { SidebarButtonState, SidebarElementTypes } from '../../../../types/sidebar'
+import { SidebarButton } from './SidebarButton'
 
 const data = {
 	type: 'testator' as SidebarElementTypes,
