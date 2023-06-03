@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React from 'react'
 import logo from '../../../assets/logo/logo.png'
-import { SidebarElementTypes } from '../../../types/sidebarElementTypes'
+import { SidebarElementTypes } from '../../../types/sidebar'
 import { SidebarButton, SidebarButtonState } from './SidebarButton/SidebarButton'
 
 export type SidebarProps = {

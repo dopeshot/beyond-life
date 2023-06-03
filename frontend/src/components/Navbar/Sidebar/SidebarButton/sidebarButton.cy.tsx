@@ -1,5 +1,5 @@
 import '../../../../app/globals.css'
-import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
+import { SidebarElementTypes } from '../../../../types/sidebar'
 import { SidebarButton, SidebarButtonState } from './SidebarButton'
 
 const data = {

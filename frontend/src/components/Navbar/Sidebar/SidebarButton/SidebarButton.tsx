@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
-import { SidebarElementTypes } from '../../../../types/sidebarElementTypes'
+import { SidebarElementTypes } from '../../../../types/sidebar'
 import { IconButton } from '../../../IconButton/IconButton'
 
 export enum SidebarButtonState {
