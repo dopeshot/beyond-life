@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
 import { SidebarButtonState } from '../../../../types/sidebar'
 import { SidebarButton, SidebarButtonProps } from './SidebarButton'
@@ -15,7 +16,7 @@ const data: SidebarButtonProps = {
 	title: 'Erblasser',
 	description: 'Persönliche Daten des Erblassers',
 	handleClick: () => {
-		console.log('Clicked!')
+		action('sidebar button clicked')
 	},
 	state: SidebarButtonState.ACTIVE,
 }
