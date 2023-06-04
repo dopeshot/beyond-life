@@ -2,9 +2,9 @@
 import { Headline } from '../../../../../components/Headline/Headline'
 
 /**
- * Marriage Status Page
+ * Marriage Page
  */
-const MarriageStatus = () => {
+const Marriage = () => {
 	return (
 		<div className="container mt-5">
 			<Headline>Familienstand</Headline>
@@ -12,4 +12,4 @@ const MarriageStatus = () => {
 	)
 }
 
-export default MarriageStatus
+export default Marriage
