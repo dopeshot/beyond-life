@@ -1,16 +1,28 @@
+'use client'
+import { Form, Formik } from 'formik'
 import Image from 'next/image'
 import image from '../../../../assets/images/layout/headerBackground.jpg'
+import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
 
-export const metadata = {
-    title: 'Start | Beyond Life',
-    description: 'Handle your death.',
+type LastWillStart = {
+    germanCitizenship?: boolean
+    germanRightOfInheritance?: boolean
 }
 
 /**
- * Testament Start Page for Legal Stuff.
+ * Last Will Start Page for Legal Stuff.
  */
-const TestamentStart = () => {
+const Start = () => {
+    const initalFormValues: LastWillStart = {
+        germanCitizenship: undefined,
+        germanRightOfInheritance: undefined
+    }
+
+    const onSubmit = (values: LastWillStart) => {
+        console.log(values)
+    }
+
     return (
         <div className="container lg:flex mt-5">
             <header className="flex relative bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken rounded-2xl lg:w-1/3">
@@ -29,8 +41,17 @@ const TestamentStart = () => {
                     </p>
                 </div>
             </header>
+
+            <Formik initialValues={initalFormValues} onSubmit={onSubmit}>
+                <Form>
+                    <Label name="germanCitizenship" labelText="Besitzen Sie die Deutsche Staatsbürgerschaft?" inputRequired />
+                    <div className="border border-gray-300">
+
+                    </div>
+                </Form>
+            </Formik>
         </div>
     )
 }
 
-export default TestamentStart
+export default Start
