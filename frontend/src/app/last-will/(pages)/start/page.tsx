@@ -1,7 +1,8 @@
 'use client'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import image from '../../../../assets/images/layout/headerBackground.jpg'
+import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
 
@@ -43,12 +44,15 @@ const Start = () => {
             </header>
 
             <Formik initialValues={initalFormValues} onSubmit={onSubmit}>
-                <Form>
-                    <Label name="germanCitizenship" labelText="Besitzen Sie die Deutsche Staatsbürgerschaft?" inputRequired />
-                    <div className="border border-gray-300">
-
-                    </div>
-                </Form>
+                {({ values, setFieldValue }: FormikProps<LastWillStart>) =>
+                    <Form className="pl-10 lg:w-1/2">
+                        <Label name="germanCitizenship" className="font-semibold block mb-2" labelText="Besitzen Sie die Deutsche Staatsbürgerschaft?" inputRequired />
+                        <div className="grid grid-cols-2 gap-3">
+                            <CustomSelectionButton active={values.germanCitizenship === true} activeColor="green" onClick={() => setFieldValue("germanCitizenship", true)} headline="Ja" description="Ich besitze die Deutsche Staatsbürgerschaft." />
+                            <CustomSelectionButton active={values.germanCitizenship === false} activeColor="red" activeIcon="cancel" onClick={() => setFieldValue("germanCitizenship", false)} headline="Nein" description="Ich besitze eine Ausländische Staatsbürgerschaft." />
+                        </div>
+                    </Form>
+                }
             </Formik>
         </div>
     )
