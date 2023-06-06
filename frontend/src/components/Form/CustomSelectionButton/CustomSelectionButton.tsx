@@ -30,11 +30,11 @@ export const CustomSelectionButton: React.FC<CustomSelectionButtonProps> = ({ ac
             onClick={onClick}
             disabled={active}
             className={`flex items-center flex-col border-2 transition duration-200 ease-in-out ${active ? `border-${activeColor}-500` : "border-gray-100"
-                } rounded-lg pt-1 pb-3 px-4`}
+                } rounded-lg pt-2 md:pt-3 pb-5 md:pb-6 px-3 md:px-4`}
         >
             {active ? <Icon icon={activeIcon} className={`text-${activeColor}-500 h-4 ml-auto`} /> : <Icon icon="circle" className="text-gray-200 h-4 ml-auto" />}
             <h6 className="mt-1 md:mt-0 font-medium">{headline}</h6>
-            <p className="text-gray-600">{description}</p>
+            <p className="text-sm text-gray-600">{description}</p>
         </button>
     )
 }
