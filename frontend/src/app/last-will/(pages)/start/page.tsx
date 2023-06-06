@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../assets/images/layout/headerBackground.jpg'
 import { Alert } from '../../../../components/Alert/Alert'
@@ -11,33 +12,38 @@ import { CustomSelectionButton } from '../../../../components/Form/CustomSelecti
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
-
-type LastWillStart = {
-    germanCitizenship?: boolean
-    germanRightOfInheritance?: boolean
-}
+import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { StartLegal } from '../../../../store/last-will/start/state'
 
 /**
  * Last Will Start Page for Legal Stuff.
  */
 const Start = () => {
     const router = useRouter()
+    const { lastWill, services } = useLastWillContext()
 
-    const initalFormValues: LastWillStart = {
+    const initalFormValues: StartLegal = {
         germanCitizenship: undefined,
         germanRightOfInheritance: undefined
     }
 
-    const formValidation: ObjectSchema<LastWillStart> = object().shape({
+    const formValidation: ObjectSchema<StartLegal> = object().shape({
         germanCitizenship: boolean().required("Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus."),
         germanRightOfInheritance: boolean().required("Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.")
     })
 
     const onSubmit = () => {
         // Update global state
+        services.approveStartLegalRules()
 
         router.push(routes.lastWill.testator("1"))
     }
+
+    useEffect(() => {
+        if (lastWill.startLegal.germanCitizenship && lastWill.startLegal.germanRightOfInheritance) {
+            router.push(routes.lastWill.testator("1"))
+        }
+    }, [lastWill, router])
 
     return (
         <div className="container items-center lg:flex mt-8 lg:mt-[30px] lg:h-[calc(100vh-130px-60px)]">
@@ -65,7 +71,7 @@ const Start = () => {
 
             {/* Form Fields */}
             <Formik initialValues={initalFormValues} validationSchema={formValidation} onSubmit={onSubmit}>
-                {({ values, setFieldValue, dirty }: FormikProps<LastWillStart>) =>
+                {({ values, setFieldValue, dirty }: FormikProps<StartLegal>) =>
                     <Form className="h-full flex flex-col lg:pl-10 xl:w-1/2 mb-5 md:mb-0">
                         {/* German Citizenship Field */}
                         <div className="mb-5 lg:my-10">
