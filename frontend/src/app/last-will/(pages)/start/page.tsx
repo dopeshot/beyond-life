@@ -1,6 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../assets/images/layout/headerBackground.jpg'
 import { Alert } from '../../../../components/Alert/Alert'
@@ -9,6 +10,7 @@ import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
+import { routes } from '../../../../services/routes/routes'
 
 type LastWillStart = {
     germanCitizenship?: boolean
@@ -19,6 +21,8 @@ type LastWillStart = {
  * Last Will Start Page for Legal Stuff.
  */
 const Start = () => {
+    const router = useRouter()
+
     const initalFormValues: LastWillStart = {
         germanCitizenship: undefined,
         germanRightOfInheritance: undefined
@@ -29,8 +33,10 @@ const Start = () => {
         germanRightOfInheritance: boolean().required("Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.")
     })
 
-    const onSubmit = (values: LastWillStart) => {
-        console.log(values)
+    const onSubmit = () => {
+        // Update global state
+
+        router.push(routes.lastWill.testator("1"))
     }
 
     return (
@@ -65,8 +71,8 @@ const Start = () => {
                         <div className="mb-5 lg:my-10">
                             <Label name="germanCitizenship" className="font-semibold block mb-2" labelText="Besitzen Sie die Deutsche Staatsbürgerschaft?" inputRequired />
                             <div className="grid grid-cols-2 gap-3 mb-2">
-                                <CustomSelectionButton active={values.germanCitizenship === true} activeColor="green" onClick={() => setFieldValue("germanCitizenship", true)} headline="Ja" description="Ich besitze die Deutsche Staatsbürgerschaft." />
-                                <CustomSelectionButton active={values.germanCitizenship === false} activeColor="red" activeIcon="cancel" onClick={() => setFieldValue("germanCitizenship", false)} headline="Nein" description="Ich besitze eine Ausländische Staatsbürgerschaft." />
+                                <CustomSelectionButton datacy="field-germanCitizenship-true" active={values.germanCitizenship === true} activeColor="green" onClick={() => setFieldValue("germanCitizenship", true)} headline="Ja" description="Ich besitze die Deutsche Staatsbürgerschaft." />
+                                <CustomSelectionButton datacy="field-germanCitizenship-false" active={values.germanCitizenship === false} activeColor="red" activeIcon="cancel" onClick={() => setFieldValue("germanCitizenship", false)} headline="Nein" description="Ich besitze eine Ausländische Staatsbürgerschaft." />
                             </div>
                             <FormError fieldName="germanCitizenship" />
                         </div>
@@ -75,17 +81,17 @@ const Start = () => {
                         <div className="mb-5 md:mb-10">
                             <Label name="germanRightOfInheritance" className="font-semibold block mb-2" labelText="Soll das Testament nach Deutschem Erbrecht verfasst werden?" inputRequired />
                             <div className="grid grid-cols-2 gap-3 mb-2">
-                                <CustomSelectionButton active={values.germanRightOfInheritance === true} activeColor="green" onClick={() => setFieldValue("germanRightOfInheritance", true)} headline="Ja" description="Das Testament soll nach Deutschem Erbrecht verfasst werden." />
-                                <CustomSelectionButton active={values.germanRightOfInheritance === false} activeColor="red" activeIcon="cancel" onClick={() => setFieldValue("germanRightOfInheritance", false)} headline="Nein" description="Das Testament soll nach einem anderen Erbrecht verfasst werden." />
+                                <CustomSelectionButton datacy="field-germanRightOfInheritance-true" active={values.germanRightOfInheritance === true} activeColor="green" onClick={() => setFieldValue("germanRightOfInheritance", true)} headline="Ja" description="Das Testament soll nach Deutschem Erbrecht verfasst werden." />
+                                <CustomSelectionButton datacy="field-germanRightOfInheritance-false" active={values.germanRightOfInheritance === false} activeColor="red" activeIcon="cancel" onClick={() => setFieldValue("germanRightOfInheritance", false)} headline="Nein" description="Das Testament soll nach einem anderen Erbrecht verfasst werden." />
                             </div>
                             <FormError fieldName="germanRightOfInheritance" />
                         </div>
 
                         {/* Alert */}
-                        {dirty && (values.germanCitizenship === false || values.germanRightOfInheritance === false) && <Alert headline="Nutzung nicht möglich" description="Der Editor kann nur genutzt werden wenn man die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll." />}
+                        {dirty && (values.germanCitizenship === false || values.germanRightOfInheritance === false) && <Alert datacy="alert" headline="Nutzung nicht möglich" description="Der Editor kann nur genutzt werden wenn man die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll." />}
 
                         {/* Submit Button */}
-                        <Button type="submit" icon="arrow_forward" disabled={values.germanCitizenship === false || values.germanRightOfInheritance === false} className="ml-auto mt-auto">Nächster Schritt</Button>
+                        <Button datacy='button-submit' type="submit" icon="arrow_forward" disabled={values.germanCitizenship === false || values.germanRightOfInheritance === false} className="ml-auto mt-auto">Nächster Schritt</Button>
                     </Form>
                 }
             </Formik>
