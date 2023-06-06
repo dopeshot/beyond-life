@@ -1,9 +1,5 @@
+'use client'
 import { Headline } from '../../../../components/Headline/Headline'
-
-export const metadata = {
-	title: 'Start | Beyond Life',
-	description: 'Handle your death.',
-}
 
 /**
  * Testament Start Page for Legal Stuff.
