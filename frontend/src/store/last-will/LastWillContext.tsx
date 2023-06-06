@@ -9,35 +9,35 @@ import { LastWillContextType } from './types'
  * All data for the form which is saved is stored in this context.
  */
 export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
+	const [lastWill, dispatch] = useReducer(lastWillReducer, initalLastWillState)
 
-    const initLastWill = useCallback(async () => { }, [])
-    // MC: Do this here for now later we can use Prodiver.value to pass the data in edit mode
-    useEffect(() => {
-        initLastWill()
-    }, [initLastWill])
+	const initLastWill = useCallback(async () => {}, [])
+	// MC: Do this here for now later we can use Prodiver.value to pass the data in edit mode
+	useEffect(() => {
+		initLastWill()
+	}, [initLastWill])
 
-    // Global State Services
-    const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(
-        (payload) => submitTestatorAction(dispatch, payload),
-        []
-    )
+	// Global State Services
+	const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(
+		(payload) => submitTestatorAction(dispatch, payload),
+		[]
+	)
 
-    const approveStartLegalRules = useCallback(() => approveStartLegalRulesAction(dispatch), [])
+	const approveStartLegalRules = useCallback(() => approveStartLegalRulesAction(dispatch), [])
 
-    return (
-        <LastWillContext.Provider
-            value={{
-                lastWill,
-                services: {
-                    submitTestator,
-                    approveStartLegalRules
-                },
-            }}
-        >
-            {children}
-        </LastWillContext.Provider>
-    )
+	return (
+		<LastWillContext.Provider
+			value={{
+				lastWill,
+				services: {
+					submitTestator,
+					approveStartLegalRules,
+				},
+			}}
+		>
+			{children}
+		</LastWillContext.Provider>
+	)
 }
 
 const LastWillContext = createContext({} as LastWillContextType)
