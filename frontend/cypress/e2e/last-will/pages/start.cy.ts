@@ -23,12 +23,14 @@ describe('Last Will Start Page', () => {
 
         it("should display alert when form is dirty and germanCitizenship is false", () => {
             cy.datacy("field-germanCitizenship-false").click()
+            cy.datacy("field-germanCitizenship-false").should("have.class", "border-red-500")
 
             cy.datacy("alert").should("be.visible")
         })
 
         it("should display alert when form is dirty and germanRightOfInheritance is false", () => {
             cy.datacy("field-germanRightOfInheritance-false").click()
+            cy.datacy("field-germanRightOfInheritance-false").should("have.class", "border-red-500")
 
             cy.datacy("alert").should("be.visible")
         })
