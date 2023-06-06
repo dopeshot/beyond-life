@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik'
 import { Dropdown, DropdownProps } from './Dropdown'
 
 const meta: Meta<typeof Dropdown> = {
-	title: 'Design System/Dropdown',
+	title: 'Design System/Form/Dropdown',
 	component: Dropdown,
 }
 

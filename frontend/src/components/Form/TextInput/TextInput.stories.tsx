@@ -4,7 +4,7 @@ import searchIcon from '../../../assets/icons/search/search.svg'
 import { TextInput, TextInputProps } from './TextInput'
 
 const meta: Meta<typeof TextInput> = {
-	title: 'Design System/TextInput',
+	title: 'Design System/Form/TextInput',
 	component: TextInput,
 }
 
