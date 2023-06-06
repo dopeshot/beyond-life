@@ -3,7 +3,7 @@ import { Color } from '../../types/color'
 import { Headline } from '../Headline/Headline'
 import { Icon } from '../Icon/Icon'
 
-type AlertProps = {
+export type AlertProps = {
     /** Headline of the alert. */
     headline: string
     /** Short description of the alert. */
@@ -12,18 +12,20 @@ type AlertProps = {
     color?: Color
     /** Custom icon. */
     icon?: MaterialSymbol
+    /** Use this to select element for testing. */
+    datacy?: string
 }
 
 /**
  * Notification box, to display important informations.
  */
-export const Alert: React.FC<AlertProps> = ({ color = "red", icon = "notifications", headline, description }) => {
+export const Alert: React.FC<AlertProps> = ({ color = "red", icon = "notifications", headline, description, datacy }) => {
     return (
-        <div className={`flex rounded-xl border-2 border-${color} p-4 md:p-6`}>
-            <Icon icon={icon} className={`flex items-center text-${color} h-8 w-8 min-w-[32px] mr-2`} />
+        <div datacy={datacy} className={`flex rounded-xl border-2 border-${color} p-4 md:p-6`}>
+            <Icon datacy={`${datacy}-icon`} icon={icon} className={`flex items-center text-${color} h-8 w-8 min-w-[32px] mr-2`} />
             <div>
-                <Headline level={5} className={`text-${color}`}>{headline}</Headline>
-                <p className="text-sm text-gray-600">{description}</p>
+                <Headline datacy={`${datacy}-headline`} level={5} className={`text-${color}`}>{headline}</Headline>
+                <p datacy={`${datacy}-description`} className="text-sm text-gray-600">{description}</p>
             </div>
         </div>
     )
