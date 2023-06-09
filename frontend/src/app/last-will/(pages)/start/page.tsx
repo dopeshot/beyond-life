@@ -2,7 +2,6 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../assets/images/layout/headerBackground.jpg'
 import { Alert } from '../../../../components/Alert/Alert'
@@ -12,15 +11,17 @@ import { CustomSelectionButton } from '../../../../components/Form/CustomSelecti
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { StartLegal } from '../../../../store/last-will/start/state'
+
+type StartLegal = {
+	germanCitizenship?: boolean
+	germanRightOfInheritance?: boolean
+}
 
 /**
  * Last Will Start Page for Legal Stuff.
  */
 const Start = () => {
 	const router = useRouter()
-	const { lastWill, services } = useLastWillContext()
 
 	const initalFormValues: StartLegal = {
 		germanCitizenship: undefined,
@@ -33,17 +34,9 @@ const Start = () => {
 	})
 
 	const onSubmit = () => {
-		// Update global state
-		services.approveStartLegalRules()
-
+		// Redirect to Testator Page
 		router.push(routes.lastWill.testator('1'))
 	}
-
-	useEffect(() => {
-		if (lastWill.startLegal.germanCitizenship && lastWill.startLegal.germanRightOfInheritance) {
-			router.push(routes.lastWill.testator('1'))
-		}
-	}, [lastWill, router])
 
 	return (
 		<div className="container mt-8 items-center lg:mt-[30px] lg:flex lg:h-[calc(100vh-130px-60px)]">

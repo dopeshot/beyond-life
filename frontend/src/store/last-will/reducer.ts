@@ -1,17 +1,14 @@
 import { CommonActions } from './common/actions'
 import { initialCommonState } from './common/state'
-import { StartLegalActions } from './start/actions'
-import { initialStartLegalState } from './start/state'
 import { TestatorActions } from './testator/actions'
 import { initialTestatorState } from './testator/state'
 import { LastWill } from './types'
 
 // Add other actions with pipe operator
-export type LastWillActions = TestatorActions | CommonActions | StartLegalActions
+export type LastWillActions = TestatorActions | CommonActions
 
 export const initalLastWillState: LastWill = {
 	common: initialCommonState,
-	startLegal: initialStartLegalState,
 	testator: initialTestatorState,
 	marriageStatus: '',
 	heirs: '',
@@ -54,16 +51,6 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 					id: action.payload.id,
 					isLoading: false,
 					progressKeys: [],
-				},
-			}
-		}
-
-		case 'APPROVE_START_LEGAL_RULES': {
-			return {
-				...state,
-				startLegal: {
-					germanCitizenship: true,
-					germanRightOfInheritance: true,
 				},
 			}
 		}
