@@ -2,12 +2,12 @@
 import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
-import { SidebarButtonState, SidebarElementTypes } from '../../../../types/sidebar'
+import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { IconButton } from '../../../IconButton/IconButton'
 
 export type SidebarButtonProps = {
 	/** Id for identification in sidebar. */
-	type: SidebarElementTypes
+	type: SidebarPages
 	/** Title text shown in button. */
 	title: string
 	/** Description text shown in button. */

@@ -2,7 +2,8 @@
 import Image from 'next/image'
 import React from 'react'
 import logo from '../../../assets/logo/logo.png'
-import { SidebarButtonState, SidebarElementTypes } from '../../../types/sidebar'
+import { useLastWillContext } from '../../../store/last-will/LastWillContext'
+import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
 import { SidebarButton } from './SidebarButton/SidebarButton'
 
 export type SidebarProps = {
@@ -11,39 +12,39 @@ export type SidebarProps = {
 }
 
 type SidebarElement = {
-	type: SidebarElementTypes
+	type: SidebarPages
 	title: string
 	description?: string
 }
 
 const sidebarElements: SidebarElement[] = [
 	{
-		type: 'testator',
+		type: SidebarPages.TESTATOR,
 		title: 'Erblasser',
 		description: 'Persönliche Daten des Erblassers',
 	},
 	{
-		type: 'marriage',
+		type: SidebarPages.MARRIAGE,
 		title: 'Familienstand',
 		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
 	},
 	{
-		type: 'heirs',
+		type: SidebarPages.HEIRS,
 		title: 'Erben',
 		description: 'Erben und deren Anteile',
 	},
 	{
-		type: 'inheritance',
+		type: SidebarPages.INHERITANCE,
 		title: 'Erbschaft',
 		description: 'Erbschaftsgegenstände',
 	},
 	{
-		type: 'succession',
+		type: SidebarPages.SUCCESSION,
 		title: 'Erbfolge',
 		description: 'Stammbaum und Verteilung',
 	},
 	{
-		type: 'final',
+		type: SidebarPages.FINAL,
 		title: 'Zusammenfassung',
 		description: 'Überprüfung und Abschreiben',
 	},
@@ -53,7 +54,7 @@ const sidebarElements: SidebarElement[] = [
  * Sidebar component for navigation
  */
 export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
-	// const { testament, setProgressId } = useTestamentContext()
+	const { lastWill, services } = useLastWillContext()
 
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
@@ -72,11 +73,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 							// TODO: state aus dem global store holen
 							path.includes(element.type)
 								? SidebarButtonState.ACTIVE
-								: true //: testament.common.progressIds.includes(element.id)
+								: lastWill.common.progressKeys.includes(element.type)
 								? SidebarButtonState.DEFAULT
 								: SidebarButtonState.DISABLED
 						}
-						// handleClick={() => setProgressId(element.id)}
+						handleClick={() => services.addProgressKey({ progressKey: element.type })}
 					/>
 				))}
 			</div>
