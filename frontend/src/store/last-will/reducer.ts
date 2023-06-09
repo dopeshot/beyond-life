@@ -54,6 +54,18 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				},
 			}
 		}
+
+		case 'ADD_UNIQUE_PROGRESS_KEY': {
+			if (state.common.progressKeys.find((key) => key === action.payload.progressKey)) return state
+
+			return {
+				...state,
+				common: {
+					...state.common,
+					progressKeys: [...state.common.progressKeys, action.payload.progressKey],
+				},
+			}
+		}
 		default:
 			return state
 	}

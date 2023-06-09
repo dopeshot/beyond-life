@@ -77,7 +77,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 								? SidebarButtonState.DEFAULT
 								: SidebarButtonState.DISABLED
 						}
-						handleClick={() => services.addProgressKey({ progressKey: element.type })}
+						handleClick={() => services.addUniqueProgressKey({ progressKey: element.type })}
 					/>
 				))}
 			</div>

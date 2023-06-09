@@ -1,5 +1,6 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
+import { addUniqueProgressKeyService } from './common/actions'
 import { initalLastWillState, lastWillReducer } from './reducer'
 import { submitTestatorAction } from './testator/actions'
 import { LastWillContextType } from './types'
@@ -22,12 +23,18 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
+	const addUniqueProgressKey = useCallback<LastWillContextType['services']['addUniqueProgressKey']>(
+		(payload) => addUniqueProgressKeyService(dispatch, payload),
+		[]
+	)
+
 	return (
 		<LastWillContext.Provider
 			value={{
 				lastWill,
 				services: {
 					submitTestator,
+					addUniqueProgressKey,
 				},
 			}}
 		>
