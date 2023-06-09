@@ -31,7 +31,7 @@ describe('Alert', () => {
 		})
 
 		it('should have correct color', () => {
-			cy.datacy(`${data.datacy}`).should('have.class', `border-${data.color}`)
+			cy.datacy(`${data.datacy}`).should('have.class', `border-${data.color}-500`)
 		})
 	})
 })
