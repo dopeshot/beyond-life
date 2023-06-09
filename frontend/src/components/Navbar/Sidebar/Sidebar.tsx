@@ -12,39 +12,39 @@ export type SidebarProps = {
 }
 
 type SidebarElement = {
-	type: SidebarPages
+	page: SidebarPages
 	title: string
 	description?: string
 }
 
 const sidebarElements: SidebarElement[] = [
 	{
-		type: SidebarPages.TESTATOR,
+		page: SidebarPages.TESTATOR,
 		title: 'Erblasser',
 		description: 'Persönliche Daten des Erblassers',
 	},
 	{
-		type: SidebarPages.MARRIAGE,
+		page: SidebarPages.MARRIAGE,
 		title: 'Familienstand',
 		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
 	},
 	{
-		type: SidebarPages.HEIRS,
+		page: SidebarPages.HEIRS,
 		title: 'Erben',
 		description: 'Erben und deren Anteile',
 	},
 	{
-		type: SidebarPages.INHERITANCE,
+		page: SidebarPages.INHERITANCE,
 		title: 'Erbschaft',
 		description: 'Erbschaftsgegenstände',
 	},
 	{
-		type: SidebarPages.SUCCESSION,
+		page: SidebarPages.SUCCESSION,
 		title: 'Erbfolge',
 		description: 'Stammbaum und Verteilung',
 	},
 	{
-		type: SidebarPages.FINAL,
+		page: SidebarPages.FINAL,
 		title: 'Zusammenfassung',
 		description: 'Überprüfung und Abschreiben',
 	},
@@ -54,7 +54,7 @@ const sidebarElements: SidebarElement[] = [
  * Sidebar component for navigation
  */
 export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
-	const { lastWill, services } = useLastWillContext()
+	const { lastWill } = useLastWillContext()
 
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
@@ -64,20 +64,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 			<div className="flex flex-col">
 				{sidebarElements.map((element) => (
 					<SidebarButton
-						datacy={`sidebar-button-${element.type}`}
-						key={element.type}
-						type={element.type}
+						datacy={`sidebar-button-${element.page}`}
+						key={element.page}
+						type={element.page}
 						title={element.title}
 						description={element.description}
 						state={
-							// TODO: state aus dem global store holen
-							path.includes(element.type)
+							path.includes(element.page) // button is active if url contains the page name
 								? SidebarButtonState.ACTIVE
-								: lastWill.common.progressKeys.includes(element.type)
-								? SidebarButtonState.DEFAULT
-								: SidebarButtonState.DISABLED
+								: lastWill.common.progressKeys.includes(element.page)
+								? SidebarButtonState.DEFAULT // button is default if page was visited yet
+								: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 						}
-						handleClick={() => services.addUniqueProgressKey({ progressKey: element.type })}
 					/>
 				))}
 			</div>
