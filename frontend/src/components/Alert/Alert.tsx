@@ -27,7 +27,7 @@ export const Alert: React.FC<AlertProps> = ({
 	datacy,
 }) => {
 	return (
-		<div datacy={datacy} className={`flex rounded-xl border-2 border-${color} p-4 md:p-6`}>
+		<div datacy={datacy} className={`flex rounded-xl border-2 border-${color}-500 p-4 md:p-6`}>
 			<Icon
 				datacy={`${datacy}-icon`}
 				icon={icon}
