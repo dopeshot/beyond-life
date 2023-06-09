@@ -69,7 +69,7 @@ const Start = () => {
 							<Label
 								name="germanCitizenship"
 								className="mb-2 block font-semibold"
-								labelText="Besitzen Sie die Deutsche Staatsbürgerschaft?"
+								labelText="Besitzt der Erblasser die Deutsche Staatsbürgerschaft?"
 								inputRequired
 							/>
 							<div className="mb-2 grid grid-cols-2 gap-3">
@@ -79,7 +79,7 @@ const Start = () => {
 									activeColor="green"
 									onClick={() => setFieldValue('germanCitizenship', true)}
 									headline="Ja"
-									description="Ich besitze die Deutsche Staatsbürgerschaft."
+									description="Der Erblasser besitzt die Deutsche Staatsbürgerschaft."
 								/>
 								<CustomSelectionButton
 									datacy="field-germanCitizenship-false"
@@ -88,7 +88,7 @@ const Start = () => {
 									activeIcon="cancel"
 									onClick={() => setFieldValue('germanCitizenship', false)}
 									headline="Nein"
-									description="Ich besitze eine Ausländische Staatsbürgerschaft."
+									description="Er besitzt eine Ausländische Staatsbürgerschaft."
 								/>
 							</div>
 							<FormError fieldName="germanCitizenship" />
@@ -129,7 +129,7 @@ const Start = () => {
 							<Alert
 								datacy="alert"
 								headline="Nutzung nicht möglich"
-								description="Der Editor kann nur genutzt werden wenn man die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
+								description="Der Editor kann nur genutzt werden wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
 							/>
 						)}
 
