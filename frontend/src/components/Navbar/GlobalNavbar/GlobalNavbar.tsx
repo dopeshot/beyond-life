@@ -12,7 +12,6 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 
 /**
  * Display Navbar with Logo and Links.
- * @example <GlobalNavbar />
  */
 export const GlobalNavbar: React.FC = () => {
 	const pathname = usePathname()
@@ -23,7 +22,7 @@ export const GlobalNavbar: React.FC = () => {
 	const navLinks: NavLink[] = [
 		{
 			to: routes.index,
-			text: 'Discover',
+			text: 'Startseite',
 		},
 		{
 			to: routes.lastWill.index,
@@ -32,7 +31,7 @@ export const GlobalNavbar: React.FC = () => {
 	]
 
 	return (
-		<div className="mb-5 bg-yellow-400 py-3">
+		<div className="bg-yellow-400 py-3">
 			<nav className="container md:flex">
 				<div className="flex items-center justify-between md:mr-5">
 					{/* Logo */}

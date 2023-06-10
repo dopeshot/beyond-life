@@ -1,4 +1,3 @@
-import 'material-symbols'
 import '../../../app/globals.css'
 import { Label } from './Label'
 

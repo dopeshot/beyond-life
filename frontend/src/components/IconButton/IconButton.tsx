@@ -8,6 +8,8 @@ type IconButtonProps = {
 	icon: MaterialSymbol
 	/** Optional property to set the color of the icon button. */
 	color?: Color
+	/** Optional property to set the background color of the icon button. */
+	backgroundColor?: Color
 	/** Optional specify an href for your Button to become an `<a>` element. */
 	to?: string
 	/** Optional callback function to handle click events on the icon button. */
@@ -26,7 +28,6 @@ type IconButtonProps = {
 
 /**
  * Button only as Icon. Can be used as a link or with an onClick function.
- * @example <IconButton icon="home" to="/home" />
  */
 export const IconButton: React.FC<IconButtonProps> = ({
 	icon,
@@ -37,6 +38,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
 	disabled = false,
 	className = '',
 	color = 'gray',
+	backgroundColor,
 	dimOpacityWhenDisabled = true,
 }) => {
 	const innerIcon = (
@@ -47,7 +49,15 @@ export const IconButton: React.FC<IconButtonProps> = ({
 		/>
 	)
 	const classes = `text-center ${
-		disabled ? 'cursor-default' : `cursor-pointer hover:bg-${color}-500 hover:bg-opacity-10 focus:bg-opacity-20`
+		disabled
+			? `cursor-default ${
+					backgroundColor ? `bg-${backgroundColor}-500 ${dimOpacityWhenDisabled ? `bg-opacity-30` : ``}` : ''
+			  }`
+			: `cursor-pointer ${
+					backgroundColor
+						? `bg-${backgroundColor}-500 hover:bg-${backgroundColor}-600 focus:bg-${backgroundColor}-700`
+						: `hover:bg-${color}-500 hover:bg-opacity-10 focus:bg-opacity-20`
+			  }`
 	} rounded-full w-10 h-10 flex items-center justify-center ${className}`
 
 	return (
