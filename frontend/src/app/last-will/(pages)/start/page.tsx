@@ -63,7 +63,7 @@ const Start = () => {
 			{/* Form Fields */}
 			<Formik initialValues={initalFormValues} validationSchema={formValidation} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
-					<Form className="mb-5 flex h-full flex-col md:mb-0 lg:pl-10 xl:w-1/2">
+					<Form className="mb-5 flex h-full flex-col lg:mb-0 lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}
 						<div className="mb-5 lg:my-10">
 							<Label
@@ -128,6 +128,7 @@ const Start = () => {
 						{dirty && (values.germanCitizenship === false || values.germanRightOfInheritance === false) && (
 							<Alert
 								datacy="alert"
+								className="mb-5"
 								headline="Nutzung nicht möglich"
 								description="Der Editor kann nur genutzt werden, wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
 							/>
