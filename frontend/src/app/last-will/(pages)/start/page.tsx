@@ -18,7 +18,7 @@ type StartLegal = {
 }
 
 /**
- * Last Will Start Page for Legal Stuff.
+ * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
