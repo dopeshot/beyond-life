@@ -129,7 +129,7 @@ const Start = () => {
 							<Alert
 								datacy="alert"
 								headline="Nutzung nicht möglich"
-								description="Der Editor kann nur genutzt werden wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
+								description="Der Editor kann nur genutzt werden, wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
 							/>
 						)}
 
