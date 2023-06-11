@@ -34,7 +34,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	...props
 }) => {
 	return (
-		<div className={`${width} mb-2 md:mb-4`}>
+		<div className={`${width}`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
 					<div className="relative my-1 flex flex-col justify-center gap-1">
@@ -68,11 +68,6 @@ export const TextInput: React.FC<TextInputProps> = ({
 							)}
 						</div>
 						{helperText && <p datacy={`textinput-${name}-helpertext`}>{helperText}</p>}
-						{fieldProps.meta.touched && fieldProps.meta.error && (
-							<p datacy={`textinput-${name}-errortext`} className={'text-red'}>
-								{fieldProps.meta.error}
-							</p>
-						)}
 					</div>
 				)}
 			</Field>
