@@ -1,8 +1,7 @@
 'use client'
-import Image from 'next/image'
 import React from 'react'
-import logo from '../../../assets/logo/logo.png'
 import { SidebarButtonState, SidebarElementTypes } from '../../../types/sidebar'
+import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 import { SidebarButton } from './SidebarButton/SidebarButton'
 
 export type SidebarProps = {
@@ -57,9 +56,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
-			<div className="px-6 pb-20 pt-4">
-				<Image datacy={'sidebar-logo'} src={logo} alt="logo" width={160} />
+			{/* Logo */}
+			<div className="px-6 pb-10 pt-[19px]">
+				<NavbarLogo />
 			</div>
+
+			{/* Nav Elements */}
 			<div className="flex flex-col">
 				{sidebarElements.map((element) => (
 					<SidebarButton
