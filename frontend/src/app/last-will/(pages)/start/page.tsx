@@ -39,9 +39,9 @@ const Start = () => {
 	}
 
 	return (
-		<div className="container mt-8 items-center lg:mt-[30px] lg:flex lg:h-[calc(100vh-130px-60px)]">
+		<div className="container mb-5 mt-8 lg:mt-[30px] lg:flex lg:min-h-[calc(100vh-130px-60px)]">
 			{/* Left Image with Text */}
-			<header className="relative mb-5 flex rounded-2xl bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken lg:mb-0 lg:h-[calc(100vh-130px-60px)] lg:w-1/2 xl:w-1/3">
+			<header className="relative mb-5 rounded-2xl bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken lg:mb-0 lg:w-1/2 xl:w-1/3">
 				{/* Image absolute */}
 				<Image
 					className="absolute -z-10 h-full rounded-2xl object-cover object-center"
@@ -63,7 +63,7 @@ const Start = () => {
 			{/* Form Fields */}
 			<Formik initialValues={initalFormValues} validationSchema={formValidation} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
-					<Form className="mb-5 flex h-full flex-col lg:mb-0 lg:pl-10 xl:w-1/2">
+					<Form className="flex h-full flex-col lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}
 						<div className="mb-5 lg:my-10">
 							<Label
