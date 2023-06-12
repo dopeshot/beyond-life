@@ -57,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
 			{/* Logo */}
-			<div className="px-6 pb-10 pt-[19px]">
+			<div datacy="sidebar-logo" className="px-6 pb-10 pt-[19px]">
 				<NavbarLogo />
 			</div>
 
