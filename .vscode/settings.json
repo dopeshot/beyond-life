@@ -7,6 +7,5 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "files.associations": {
     "*.css": "tailwindcss"
-  },
-  "tailwindCSS.classAttributes": ["class", ".*className*.", "tw.*"]
+  }
 }
