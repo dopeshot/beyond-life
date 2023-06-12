@@ -30,7 +30,7 @@ const data: CheckboxProps = {
 const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	return (
 		<Formik initialValues={{ [data.name]: [] }} onSubmit={() => {}}>
-			{() => <Form>{children}</Form>}
+			<Form>{children}</Form>
 		</Formik>
 	)
 }
