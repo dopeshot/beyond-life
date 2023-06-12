@@ -10,7 +10,7 @@ import { SidebarPages } from '../../../../../types/sidebar'
  * Inheritance Page
  */
 const Inheritance = () => {
-	const { lastWill, services } = useLastWillContext()
+	const { services } = useLastWillContext()
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
@@ -19,7 +19,7 @@ const Inheritance = () => {
 	return (
 		<div className="container mt-5">
 			<Headline>Erbschaft</Headline>
-			<Route href={routes.lastWill.succession("1")}>
+			<Route href={routes.lastWill.succession('1')}>
 				<div>Next</div>
 			</Route>
 		</div>

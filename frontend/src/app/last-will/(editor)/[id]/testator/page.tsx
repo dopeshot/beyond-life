@@ -27,7 +27,7 @@ const Testator = () => {
 			>
 				Submit
 			</Button>
-			<Route href={routes.lastWill.marriage("1")}>
+			<Route href={routes.lastWill.marriage('1')}>
 				<div>Next</div>
 			</Route>
 		</div>

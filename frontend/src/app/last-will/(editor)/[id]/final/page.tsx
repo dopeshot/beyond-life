@@ -10,7 +10,7 @@ import { SidebarPages } from '../../../../../types/sidebar'
  * Final Page for copy last will.
  */
 const Final = () => {
-	const { lastWill, services } = useLastWillContext()
+	const { services } = useLastWillContext()
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.FINAL })

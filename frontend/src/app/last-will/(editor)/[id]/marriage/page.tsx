@@ -10,7 +10,7 @@ import { SidebarPages } from '../../../../../types/sidebar'
  * Marriage Page
  */
 const Marriage = () => {
-	const { lastWill, services } = useLastWillContext()
+	const { services } = useLastWillContext()
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.MARRIAGE })
@@ -19,7 +19,7 @@ const Marriage = () => {
 	return (
 		<div className="container mt-5">
 			<Headline>Familienstand</Headline>
-			<Route href={routes.lastWill.heirs("1")}>
+			<Route href={routes.lastWill.heirs('1')}>
 				<div>Next</div>
 			</Route>
 		</div>
