@@ -14,7 +14,7 @@ const Testator = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	useEffect(() => {
-		services.addUniqueProgressKey({ progressKey: SidebarPages.TESTATOR })
+		services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
 	}, [services])
 
 	return (

@@ -13,7 +13,7 @@ const Inheritance = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	useEffect(() => {
-		services.addUniqueProgressKey({ progressKey: SidebarPages.INHERITANCE })
+		services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
 	}, [services])
 
 	return (

@@ -23,7 +23,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
-	const addUniqueProgressKey = useCallback<LastWillContextType['services']['addUniqueProgressKey']>(
+	const setProgressKey = useCallback<LastWillContextType['services']['setProgressKey']>(
 		(payload) => setProgressKeyService(dispatch, payload),
 		[]
 	)
@@ -34,7 +34,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 				lastWill,
 				services: {
 					submitTestator,
-					addUniqueProgressKey,
+					setProgressKey,
 				},
 			}}
 		>

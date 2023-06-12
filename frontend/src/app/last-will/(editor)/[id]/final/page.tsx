@@ -13,7 +13,7 @@ const Final = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	useEffect(() => {
-		services.addUniqueProgressKey({ progressKey: SidebarPages.FINAL })
+		services.setProgressKey({ progressKey: SidebarPages.FINAL })
 	}, [services])
 
 	return (

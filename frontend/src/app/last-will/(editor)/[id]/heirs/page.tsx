@@ -13,7 +13,7 @@ const Heirs = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	useEffect(() => {
-		services.addUniqueProgressKey({ progressKey: SidebarPages.HEIRS })
+		services.setProgressKey({ progressKey: SidebarPages.HEIRS })
 	}, [services])
 
 	return (

@@ -13,7 +13,7 @@ const Marriage = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	useEffect(() => {
-		services.addUniqueProgressKey({ progressKey: SidebarPages.MARRIAGE })
+		services.setProgressKey({ progressKey: SidebarPages.MARRIAGE })
 	}, [services])
 
 	return (

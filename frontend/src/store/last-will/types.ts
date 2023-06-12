@@ -16,6 +16,6 @@ export type LastWillContextType = {
 	lastWill: LastWill
 	services: {
 		submitTestator: (payload: TestatorFormPayload) => void
-		addUniqueProgressKey: (payload: SetProgressKeyPayload) => void
+		setProgressKey: (payload: SetProgressKeyPayload) => void
 	}
 }
