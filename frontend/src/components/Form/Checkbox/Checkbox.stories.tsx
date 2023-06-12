@@ -27,7 +27,7 @@ const Template: StoryObj<CheckboxProps> = {
 				{(formik) => (
 					<Form>
 						<Checkbox {...args} />
-						<button disabled={!formik.isValid} type="submit">
+						<button disabled={!formik.isValid || !formik.dirty} type="submit">
 							Submit
 						</button>
 					</Form>
