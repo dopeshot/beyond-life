@@ -20,7 +20,7 @@ export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired = f
 		<LabelComponent datacy={`${datacy || name}-label`} htmlFor={!isLegend ? name : undefined}>
 			{labelText}
 			{inputRequired && (
-				<span datacy={`${datacy || name}-label-required`} className="ml-1 text-yellow">
+				<span datacy={`${datacy || name}-label-required`} className="ml-1 text-red">
 					*
 				</span>
 			)}

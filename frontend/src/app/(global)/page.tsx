@@ -34,7 +34,7 @@ const Home = () => {
 					<Link href={routes.lastWill.testator('1')}>Testament Erblasser</Link>
 				</li>
 				<li>
-					<Link href={routes.lastWill.marriageStatus('1')}>Testament Familienstand</Link>
+					<Link href={routes.lastWill.marriage('1')}>Testament Familienstand</Link>
 				</li>
 				<li>
 					<Link href={routes.lastWill.heirs('1')}>Testament Erben</Link>
