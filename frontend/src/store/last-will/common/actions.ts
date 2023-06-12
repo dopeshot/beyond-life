@@ -1,4 +1,5 @@
 import { Dispatch } from 'react'
+import { SidebarPages } from '../../../types/sidebar'
 
 export type CommonActions =
 	| {
@@ -15,7 +16,7 @@ export type InitLastWillPayload = {
 }
 
 export type SetProgressKeyPayload = {
-	progressKey: string
+	progressKey: SidebarPages
 }
 
 export const initLastWillService = async (dispatch: Dispatch<CommonActions>, payload: InitLastWillPayload) => {
