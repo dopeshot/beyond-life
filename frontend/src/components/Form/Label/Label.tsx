@@ -7,20 +7,23 @@ type LabelProps = {
 	inputRequired?: boolean
 	/** For testing. */
 	datacy?: string
+	/** When label is a label of a group */
+	isLegend?: boolean
 }
 
 /**
  * Label for various Input Fields.
  */
-export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired = false, datacy }) => {
+export const Label: React.FC<LabelProps> = ({ name, labelText, inputRequired = false, datacy, isLegend = false }) => {
+	const LabelComponent = isLegend ? 'p' : 'label'
 	return (
-		<label datacy={`${datacy || name}-label`} htmlFor={name}>
+		<LabelComponent datacy={`${datacy || name}-label`} htmlFor={!isLegend ? name : undefined}>
 			{labelText}
 			{inputRequired && (
 				<span datacy={`${datacy || name}-label-required`} className="ml-1 text-red">
 					*
 				</span>
 			)}
-		</label>
+		</LabelComponent>
 	)
 }
