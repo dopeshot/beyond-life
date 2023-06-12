@@ -6,15 +6,15 @@ export type CommonActions =
 			payload: InitLastWillPayload
 	  }
 	| {
-			type: 'ADD_UNIQUE_PROGRESS_KEY'
-			payload: AddUniqueProgressKeyPayload
+			type: 'SET_PROGRESS_KEY'
+			payload: SetProgressKeyPayload
 	  }
 
 export type InitLastWillPayload = {
 	id: string
 }
 
-export type AddUniqueProgressKeyPayload = {
+export type SetProgressKeyPayload = {
 	progressKey: string
 }
 
@@ -27,9 +27,9 @@ export const initLastWillService = async (dispatch: Dispatch<CommonActions>, pay
 	})
 }
 
-export const addUniqueProgressKeyService = async (dispatch: Dispatch<CommonActions>, payload: AddUniqueProgressKeyPayload) => {
+export const setProgressKeyService = async (dispatch: Dispatch<CommonActions>, payload: SetProgressKeyPayload) => {
 	dispatch({
-		type: 'ADD_UNIQUE_PROGRESS_KEY',
+		type: 'SET_PROGRESS_KEY',
 		payload: {
 			progressKey: payload.progressKey,
 		},
