@@ -1,6 +1,7 @@
 import { Field, FieldProps } from 'formik'
 import { MaterialSymbol } from 'material-symbols'
 import React from 'react'
+import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
@@ -68,11 +69,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 							)}
 						</div>
 						{helperText && <p datacy={`textinput-${name}-helpertext`}>{helperText}</p>}
-						{fieldProps.meta.touched && fieldProps.meta.error && (
-							<p datacy={`textinput-${name}-errortext`} className={'text-red'}>
-								{fieldProps.meta.error}
-							</p>
-						)}
+						<FormError fieldName={name} />
 					</div>
 				)}
 			</Field>

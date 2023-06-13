@@ -1,5 +1,6 @@
-import { ErrorMessage, Field } from 'formik'
+import { Field } from 'formik'
 import { SelectableOption } from '../../../types/forms'
+import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
@@ -39,13 +40,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 			<p datacy={`checkbox-${name}-helpertext`} className="text-lightgrey mb-4 text-sm">
 				{helperText}
 			</p>
-			<ErrorMessage name={name}>
-				{(errorMessage) => (
-					<p datacy={`checkbox-${name}-errortext`} className="text-red">
-						{errorMessage}
-					</p>
-				)}
-			</ErrorMessage>
+			<FormError fieldName={name} />
 		</>
 	)
 }
