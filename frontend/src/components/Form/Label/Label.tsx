@@ -25,6 +25,7 @@ export const Label: React.FC<LabelProps> = ({
 	isLegend = false,
 }) => {
 	const LabelComponent = isLegend ? 'p' : 'label'
+
 	return (
 		<LabelComponent datacy={`${datacy || name}-label`} className={className} htmlFor={!isLegend ? name : undefined}>
 			{labelText}
