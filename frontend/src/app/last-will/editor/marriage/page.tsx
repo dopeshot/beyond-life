@@ -14,9 +14,11 @@ import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { ComponentOptions } from '../../../../types/dropdownOptions'
+import { SelectableOption } from '../../../../types/forms'
 
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 type Gender = "male" | "female" | "divers"
+type MoreInfos = "partnerHandicapped" | "partnerInsolvent" | "partnerBerlinWill"
 
 type Marriage = {
     relationshipStatus?: RelationshipStatus
@@ -30,6 +32,7 @@ type Marriage = {
     partnerHouseNumber?: string
     partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
     partnerCity?: string
+    partnerMoreInfos?: string[]
 }
 
 const genderOptions: ComponentOptions[] = [
@@ -47,6 +50,21 @@ const genderOptions: ComponentOptions[] = [
         value: "divers",
         label: "Divers",
         icon: "transgender"
+    },
+]
+
+const partnerMoreInfosOptions: SelectableOption[] = [
+    {
+        id: "partnerHandicapped",
+        label: "Hat ihr Partner eine Behinderung?"
+    },
+    {
+        id: "partnerInsolvent",
+        label: "Ist ihr Partner insolvent?",
+    },
+    {
+        id: "partnerBerlinWill",
+        label: "Wollen Sie ein Berliner Testament?",
     },
 ]
 
@@ -69,6 +87,7 @@ const Marriage = () => {
         partnerHouseNumber: '',
         partnerZipCode: '',
         partnerCity: '',
+        partnerMoreInfos: [],
     }
 
     const validationSchema: ObjectSchema<Marriage> = object().shape({
@@ -103,6 +122,7 @@ const Marriage = () => {
             is: 'married',
             then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Stadt ein.'),
         }),
+        partnerMoreInfos: array<MoreInfos[]>(),
     })
 
     const onSubmit = (values: Marriage) => {
@@ -167,7 +187,7 @@ const Marriage = () => {
 
                         {/* Partner Personal Data */}
                         <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
-                            <Headline level={3} size='text-lg md:text-xl' className="mb-4">
+                            <Headline level={3} size='md:text-lg' className="mb-4">
                                 Persönliche Daten des Ehepartners
                             </Headline>
 
@@ -200,6 +220,12 @@ const Marriage = () => {
                                     <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
                                 </div>
                             </div>
+                        </div>
+                        {/* Partner Personal Data end */}
+
+                        {/* More Infos */}
+                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                            <Checkbox name="partnerMoreInfos" labelText='Weitere relevante Infos' labelRequired helperText='Diese Infos sind relevant um die Verteilung besser einschätzen zu können.' options={partnerMoreInfosOptions} />
                         </div>
 
                         {/* Form Steps Buttons */}
