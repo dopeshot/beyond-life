@@ -36,7 +36,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     return (
         <Field name={name}>
             {(props: FieldProps<string | number | boolean>) => (
-                <div className={`relative ${hasMargin ? 'mb-4' : ''}`}>
+                <div className={`relative ${hasMargin ? 'mb-2 md:mb-4' : ''}`}>
                     {/* When dropdown open click outside close it. */}
                     {isOpen && (
                         <div
@@ -47,7 +47,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                     )}
 
                     {/* Label */}
-                    {labelText && <Label name={name} labelText={labelText} inputRequired={inputRequired} />}
+                    {labelText && <Label name={name} labelText={labelText} isLegend inputRequired={inputRequired} />}
 
                     {/* Input */}
                     <button
