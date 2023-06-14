@@ -1,6 +1,7 @@
 import { Field, FieldProps } from 'formik'
 import { MaterialSymbol } from 'material-symbols'
 import React from 'react'
+import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
@@ -23,7 +24,7 @@ export type TextInputProps = {
  * Component can only be used in conjunction with formik. It must be nested in a <Form> component within a <Formik> component.
  */
 export const TextInput: React.FC<TextInputProps> = ({
-	name = 'field',
+	name,
 	type = 'text',
 	width,
 	labelText,
@@ -68,6 +69,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 							)}
 						</div>
 						{helperText && <p datacy={`textinput-${name}-helpertext`}>{helperText}</p>}
+						<FormError fieldName={name} />
 					</div>
 				)}
 			</Field>
