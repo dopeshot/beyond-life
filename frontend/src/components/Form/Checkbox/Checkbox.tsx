@@ -25,7 +25,7 @@ export type CheckboxProps = {
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
     return (
         <>
-            {labelText && <Label isLegend name={`checkbox-${name}`} labelText={labelText} inputRequired={labelRequired} />}
+            {labelText && <Label isLegend className="font-semibold" name={`checkbox-${name}`} labelText={labelText} inputRequired={labelRequired} />}
             {options.map((option) => (
                 <label
                     datacy={`checkbox-${name}-option-${option.id}`}
@@ -37,7 +37,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
                     <span>{option.label}</span>
                 </label>
             ))}
-            <p datacy={`checkbox-${name}-helpertext`} className="text-gray-400 mb-4 text-sm">
+            <p datacy={`checkbox-${name}-helpertext`} className="text-gray-500 text-sm">
                 {helperText}
             </p>
             <FormError fieldName={name} />
