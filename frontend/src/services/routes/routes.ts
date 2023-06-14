@@ -17,11 +17,11 @@ export const routes = {
 
 			return `/last-will/auth${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		testator: (id: string) => `/last-will/${id}/testator`,
-		marriage: (id: string) => `/last-will/${id}/marriage`,
-		heirs: (id: string) => `/last-will/${id}/heirs`,
-		inheritance: (id: string) => `/last-will/${id}/inheritance`,
-		succession: (id: string) => `/last-will/${id}/succession`,
+		testator: (id: string) => `/last-will/editor/testator?id=${id}`,
+		marriage: (id: string) => `/last-will/editor/marriage?id=${id}`,
+		heirs: (id: string) => `/last-will/editor/heirs?id=${id}`,
+		inheritance: (id: string) => `/last-will/editor/inheritance?id=${id}`,
+		succession: (id: string) => `/last-will/editor/succession?id=${id}`,
 		buy: (options?: { id: string }) => {
 			if (!options) return '/last-will/buy'
 
@@ -31,7 +31,7 @@ export const routes = {
 
 			return `/last-will/buy${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		final: (id: string) => `/last-will/${id}/final`,
+		final: (id: string) => `/last-will/editor/final?id=${id}`,
 	},
 	misc: {
 		privacy: '/misc/privacy-policy',
