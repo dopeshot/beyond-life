@@ -244,7 +244,7 @@ const Marriage = () => {
                                 isLegend
                                 inputRequired
                             />
-                            <div className="grid grid-cols-2 gap-3 mb-2 xl:w-1/2">
+                            <div className="grid md:grid-cols-2 gap-3 mb-2 xl:w-2/3 2xl:w-1/2">
                                 <CustomSelectionButton
                                     datacy="field-matrimonialProperty-communityOfGain"
                                     active={values.matrimonialProperty === 'communityOfGain'}
