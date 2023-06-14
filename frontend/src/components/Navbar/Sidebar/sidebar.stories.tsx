@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
+import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
 import { Sidebar, SidebarProps } from './Sidebar'
 
 const meta: Meta<typeof Sidebar> = {
@@ -9,7 +10,18 @@ const meta: Meta<typeof Sidebar> = {
 export default meta
 type Story = StoryObj<SidebarProps>
 
+const Template: Story = {
+	render: (args) => {
+		return (
+			<LastWillContextProvider>
+				<Sidebar {...args} />
+			</LastWillContextProvider>
+		)
+	},
+}
+
 export const SidebarDefault: Story = {
+	...Template,
 	args: {
 		path: '/testator',
 	},

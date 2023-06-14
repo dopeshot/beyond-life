@@ -2,20 +2,18 @@
 import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
-import { SidebarButtonState, SidebarElementTypes } from '../../../../types/sidebar'
+import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { IconButton } from '../../../IconButton/IconButton'
 
 export type SidebarButtonProps = {
 	/** Id for identification in sidebar. */
-	type: SidebarElementTypes
+	type: SidebarPages
 	/** Title text shown in button. */
 	title: string
 	/** Description text shown in button. */
 	description?: string
 	/** State of button. */
 	state: SidebarButtonState
-	/** Function to be called when button is clicked. */
-	handleClick?: () => void
 	/** Datacy attribute for testing. */
 	datacy?: string
 }
@@ -28,13 +26,11 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 	title,
 	description,
 	state,
-	handleClick,
 	datacy,
 }: SidebarButtonProps) => {
 	return (
 		<Link
 			datacy={datacy}
-			onClick={handleClick} // TODO: triggert schneller als Navigation und muss anders implementiert werden. Ist aber erst wichtig, wenn die State Updates funktionieren
 			href={routes.lastWill[type]('1')}
 			className={`flex h-[5rem] select-none items-center justify-between p-4 pl-6 pr-2 ${
 				state === SidebarButtonState.ACTIVE

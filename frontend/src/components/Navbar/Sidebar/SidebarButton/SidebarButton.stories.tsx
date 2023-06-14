@@ -1,6 +1,5 @@
-import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
-import { SidebarButtonState } from '../../../../types/sidebar'
+import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { SidebarButton, SidebarButtonProps } from './SidebarButton'
 
 const meta: Meta<typeof SidebarButton> = {
@@ -12,12 +11,9 @@ export default meta
 type Story = StoryObj<SidebarButtonProps>
 
 const data: SidebarButtonProps = {
-	type: 'testator',
+	type: SidebarPages.TESTATOR,
 	title: 'Erblasser',
 	description: 'Persönliche Daten des Erblassers',
-	handleClick: () => {
-		action('sidebar button clicked')
-	},
 	state: SidebarButtonState.ACTIVE,
 }
 
