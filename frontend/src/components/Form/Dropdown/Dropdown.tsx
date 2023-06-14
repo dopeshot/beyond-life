@@ -16,8 +16,6 @@ export type DropdownProps = {
     inputRequired?: boolean
     /** A list of options to choose from. */
     options: readonly ComponentOptions[]
-    /** Set to true when dropdown needs to fit to other inputs (have lighter color). */
-    light?: boolean
     /** When true add margin to dropdown like other inputs. */
     hasMargin?: boolean
 }
@@ -30,7 +28,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
     placeholder,
     labelText,
     inputRequired,
-    light = false,
     hasMargin = false,
     options,
 }) => {
