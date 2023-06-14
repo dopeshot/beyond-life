@@ -1,10 +1,10 @@
 'use client'
 import { useEffect } from 'react'
-import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
-import { Headline } from '../../../../../components/Headline/Headline'
-import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { SidebarPages } from '../../../../../types/sidebar'
+import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
+import { Headline } from '../../../../components/Headline/Headline'
+import { routes } from '../../../../services/routes/routes'
+import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { SidebarPages } from '../../../../types/sidebar'
 
 /**
  * Heirs Page

@@ -16,7 +16,11 @@ module.exports = {
             variants: ["hover", "focus"],
         },
         {
-            pattern: /text-(.*)-(600)/,
+            pattern: /text-(.*)-(500|600)/,
+            variants: ["hover", "focus"],
+        },
+        {
+            pattern: /border-(.*)-(500)/,
             variants: ["hover", "focus"],
         },
     ],
