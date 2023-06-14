@@ -1,5 +1,5 @@
 'use client'
-import { Headline } from '../../../../../components/Headline/Headline'
+import { Headline } from '../../../../components/Headline/Headline'
 
 /**
  * Marriage Page
