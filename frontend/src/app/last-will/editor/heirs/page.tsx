@@ -1,9 +1,9 @@
 'use client'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
-import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
-import { Headline } from '../../../../../components/Headline/Headline'
+import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
+import { TextInput } from '../../../../components/Form/TextInput/TextInput'
+import { Headline } from '../../../../components/Headline/Headline'
 
 type HeirsForm = {
 	heirs: string
@@ -21,7 +21,7 @@ const Heirs = () => {
 	})
 
 	const submitHeirs = (values: HeirsForm) => {
-		console.log("values:", values)
+		console.log('values:', values)
 	}
 	return (
 		<div className="container mt-5">

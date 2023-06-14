@@ -37,6 +37,7 @@ export const Headline: React.FC<HeadlineProps> = ({
 	title,
 	hasMargin = true,
 	className = '',
+	datacy,
 }) => {
 	const CustomTag = `h${level}` as keyof JSX.IntrinsicElements
 
@@ -45,6 +46,7 @@ export const Headline: React.FC<HeadlineProps> = ({
 
 	return (
 		<CustomTag
+			datacy={datacy}
 			title={title}
 			className={`${size ?? twTextSizes[level]}${fontStyle}font-bold ${hasMargin ? 'mb-2' : ''} ${className}`}
 		>
