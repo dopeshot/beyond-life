@@ -19,6 +19,7 @@ import { SelectableOption } from '../../../../types/forms'
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 type Gender = "male" | "female" | "divers"
 type MoreInfos = "partnerHandicapped" | "partnerInsolvent" | "partnerBerlinWill"
+type MatrimonialProperty = "communityOfGain" | "separationOfProperty"
 
 type Marriage = {
     relationshipStatus?: RelationshipStatus
@@ -32,7 +33,8 @@ type Marriage = {
     partnerHouseNumber?: string
     partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
     partnerCity?: string
-    partnerMoreInfos?: string[]
+    partnerMoreInfos?: MoreInfos[]
+    matrimonialProperty?: MatrimonialProperty
 }
 
 const genderOptions: ComponentOptions[] = [
@@ -88,6 +90,7 @@ const Marriage = () => {
         partnerZipCode: '',
         partnerCity: '',
         partnerMoreInfos: [],
+        matrimonialProperty: undefined,
     }
 
     const validationSchema: ObjectSchema<Marriage> = object().shape({
@@ -123,6 +126,10 @@ const Marriage = () => {
             then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Stadt ein.'),
         }),
         partnerMoreInfos: array<MoreInfos[]>(),
+        matrimonialProperty: string<MatrimonialProperty>().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+        }),
     })
 
     const onSubmit = (values: Marriage) => {
@@ -226,6 +233,34 @@ const Marriage = () => {
                         {/* More Infos */}
                         <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
                             <Checkbox name="partnerMoreInfos" labelText='Weitere relevante Infos' labelRequired helperText='Diese Infos sind relevant um die Verteilung besser einschätzen zu können.' options={partnerMoreInfosOptions} />
+                        </div>
+
+                        {/* Property Status */}
+                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                            <Label
+                                name="matrimonialProperty"
+                                className="mb-2 block font-semibold"
+                                labelText="Güterstand"
+                                isLegend
+                                inputRequired
+                            />
+                            <div className="grid grid-cols-2 gap-3 mb-2 xl:w-1/2">
+                                <CustomSelectionButton
+                                    datacy="field-matrimonialProperty-communityOfGain"
+                                    active={values.matrimonialProperty === 'communityOfGain'}
+                                    onClick={() => setFieldValue('matrimonialProperty', 'communityOfGain')}
+                                    headline="Zugewinngemeinschaft"
+                                    description="Der erwirtschaftete Vermögenszuwachs wird hälftig aufgeteilt."
+                                />
+                                <CustomSelectionButton
+                                    datacy="field-matrimonialProperty-separationOfProperty"
+                                    active={values.matrimonialProperty === 'separationOfProperty'}
+                                    onClick={() => setFieldValue('matrimonialProperty', 'separationOfProperty')}
+                                    headline="Gütertrennung"
+                                    description="Jeder Ehepartner behält sein eigenes Vermögen."
+                                />
+                            </div>
+                            <FormError fieldName="germanCitizenship" />
                         </div>
 
                         {/* Form Steps Buttons */}
