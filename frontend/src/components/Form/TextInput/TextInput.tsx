@@ -44,6 +44,7 @@ export const TextInput: React.FC<TextInputProps> = ({
                         )}
                         <div className={`flex items-center`}>
                             <input
+                                id={name}
                                 datacy={`textinput-${name}-input`}
                                 type={type}
                                 {...fieldProps.field}
