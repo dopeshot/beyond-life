@@ -34,10 +34,10 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
                 >
                     <Field type="checkbox" className="mr-2" name={name} value={`${option.id}`} />
                     {option.icon && <Icon icon={option.icon} />}
-                    <span className="text-darkgrey">{option.label}</span>
+                    <span>{option.label}</span>
                 </label>
             ))}
-            <p datacy={`checkbox-${name}-helpertext`} className="text-lightgrey mb-4 text-sm">
+            <p datacy={`checkbox-${name}-helpertext`} className="text-gray-400 mb-4 text-sm">
                 {helperText}
             </p>
             <FormError fieldName={name} />
