@@ -53,9 +53,9 @@ export const CustomSelectionButton: React.FC<CustomSelectionButtonProps> = ({
             <h6 datacy={`${datacy}-headline`} className="mt-1 font-medium md:mt-0">
                 {headline}
             </h6>
-            <p datacy={`${datacy}-description`} className="text-sm text-gray-600">
+            {description && <p datacy={`${datacy}-description`} className="text-sm text-gray-600">
                 {description}
-            </p>
+            </p>}
         </button>
     )
 }
