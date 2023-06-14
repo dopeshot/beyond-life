@@ -24,7 +24,7 @@ export type TextInputProps = {
  * Component can only be used in conjunction with formik. It must be nested in a <Form> component within a <Formik> component.
  */
 export const TextInput: React.FC<TextInputProps> = ({
-	name = 'field',
+	name,
 	type = 'text',
 	width,
 	labelText,
