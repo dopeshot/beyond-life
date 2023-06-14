@@ -3,6 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { ObjectSchema, mixed, object, string } from 'yup'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
+import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
@@ -87,6 +88,9 @@ const Marriage = () => {
                             <FormError fieldName="germanCitizenship" />
                         </div>
                         {/* Marriage Field end */}
+
+                        {/* Checkbox German Citizenship */}
+                        <Checkbox name='partnerGermanCitizenship' options={[{ id: 1, label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
                     </Form>
                 )}
             </Formik>
