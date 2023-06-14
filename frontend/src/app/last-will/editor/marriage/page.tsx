@@ -1,39 +1,108 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { ObjectSchema, mixed, object, string } from 'yup'
+import { useState } from 'react'
+import { ObjectSchema, array, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
+import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
 import { Label } from '../../../../components/Form/Label/Label'
+import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
+import { ComponentOptions } from '../../../../types/dropdownOptions'
 
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
+type Gender = "male" | "female" | "divers"
 
 type Marriage = {
     relationshipStatus?: RelationshipStatus
     partnerGermanCitizenship?: string[]
+    partnerFirstName?: string
+    partnerLastName?: string
+    partnerGender?: Gender
+    partnerDateOfBirth?: string
+    partnerPlaceOfBirth?: string
+    partnerStreet?: string
+    partnerHouseNumber?: string
+    partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
+    partnerCity?: string
 }
+
+const genderOptions: ComponentOptions[] = [
+    {
+        value: "male",
+        label: "Männlich",
+        icon: "male"
+    },
+    {
+        value: "female",
+        label: "Weiblich",
+        icon: "female"
+    },
+    {
+        value: "divers",
+        label: "Divers",
+        icon: "transgender"
+    },
+]
 
 /**
  * Marriage Page
  */
 const Marriage = () => {
     const router = useRouter()
+    const [showPartnerData, setShowPartnerData] = useState(false)
 
     const initalFormValues: Marriage = {
         relationshipStatus: undefined,
-        partnerGermanCitizenship: []
+        partnerGermanCitizenship: [],
+        partnerFirstName: '',
+        partnerLastName: '',
+        partnerGender: undefined,
+        partnerDateOfBirth: '',
+        partnerPlaceOfBirth: '',
+        partnerStreet: '',
+        partnerHouseNumber: '',
+        partnerZipCode: '',
+        partnerCity: '',
     }
 
     const validationSchema: ObjectSchema<Marriage> = object().shape({
         relationshipStatus: string<RelationshipStatus>().required(
             'Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'
         ),
-        partnerGermanCitizenship: mixed<string[]>()
+        partnerGermanCitizenship: array<string[]>(),
+        partnerFirstName: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie einen Vornamen ein.'),
+        }),
+        partnerLastName: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie einen Nachnamen ein.'),
+        }),
+        partnerGender: string<Gender>(),
+        partnerDateOfBirth: string(),
+        partnerPlaceOfBirth: string(),
+        partnerStreet: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Straße ein.'),
+        }),
+        partnerHouseNumber: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Hausnummer ein.'),
+        }),
+        partnerZipCode: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Postleitzahl ein.').min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.')
+        }),
+        partnerCity: string().when('relationshipStatus', {
+            is: 'married',
+            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Stadt ein.'),
+        }),
     })
 
     const onSubmit = (values: Marriage) => {
@@ -56,6 +125,7 @@ const Marriage = () => {
                                 name="relationshipStatus"
                                 className="mb-2 block font-semibold"
                                 labelText="Beziehungsstatus"
+                                isLegend
                                 inputRequired
                             />
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-2 xl:w-2/3">
@@ -93,9 +163,47 @@ const Marriage = () => {
                         {/* Marriage Field end */}
 
                         {/* Checkbox German Citizenship */}
-                        <Checkbox name='partnerGermanCitizenship' options={[{ id: 1, label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
+                        <Checkbox name='partnerGermanCitizenship' options={[{ id: "partnerGermanCitizenship", label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
 
-                        <div className="flex flex-col md:flex-row items-center justify-between mt-10">
+                        {/* Partner Personal Data */}
+                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                            <Headline level={3} size='text-lg md:text-xl' className="mb-4">
+                                Persönliche Daten des Ehepartners
+                            </Headline>
+
+                            <div className="2xl:w-2/3">
+                                {/* Name */}
+                                <div className='grid md:grid-cols-2 gap-x-3 mb-4 md:mb-0'>
+                                    <TextInput name="partnerFirstName" inputRequired labelText="Vorname" placeholder="Vorname" />
+                                    <TextInput name="partnerLastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+                                </div>
+
+                                {/* Gender and Birth */}
+                                <div className='grid md:grid-cols-3 gap-x-3 mb-4 md:mb-0'>
+                                    <Dropdown name="partnerGender" labelText="Geschlecht" placeholder="Wähle ein Geschlecht" hasMargin options={genderOptions} />
+                                    {/* // TODO(Zoe-Bot): Replace with datepicker */}
+                                    <TextInput name="partnerDateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+                                    <TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+                                </div>
+
+                                {/* Adress */}
+                                <div className="grid md:grid-cols-2 gap-x-3">
+                                    <TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
+                                    <div className="flex gap-2">
+                                        <div className="w-1/2">
+                                            <TextInput name="partnerHouseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+                                        </div>
+                                        <div className="w-1/2">
+                                            <TextInput name="partnerZipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+                                        </div>
+                                    </div>
+                                    <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Form Steps Buttons */}
+                        <div className="flex flex-col md:flex-row items-center justify-between mt-8 md:mt-10 mb-4 md:mb-5">
                             {/* Previous Step */}
                             <Route datacy="route-previous-Step" className="order-1 md:order-none" href={routes.lastWill.testator("1")} kind="tertiary">
                                 Vorheriger Schritt
