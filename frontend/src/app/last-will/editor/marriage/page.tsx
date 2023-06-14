@@ -2,11 +2,14 @@
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { ObjectSchema, mixed, object, string } from 'yup'
+import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../components/Form/Label/Label'
 import { Headline } from '../../../../components/Headline/Headline'
+import { routes } from '../../../../services/routes/routes'
 
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 
@@ -91,6 +94,18 @@ const Marriage = () => {
 
                         {/* Checkbox German Citizenship */}
                         <Checkbox name='partnerGermanCitizenship' options={[{ id: 1, label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
+
+                        <div className="flex flex-col md:flex-row items-center justify-between mt-10">
+                            {/* Previous Step */}
+                            <Route datacy="route-previous-Step" className="order-1 md:order-none" href={routes.lastWill.testator("1")} kind="tertiary">
+                                Vorheriger Schritt
+                            </Route>
+
+                            {/* Next Step - Submit Button */}
+                            <Button datacy="button-submit" type="submit" className="mb-4 md:mb-0" disabled={!(dirty && isValid)} icon="arrow_forward">
+                                Nächster Schritt
+                            </Button>
+                        </div>
                     </Form>
                 )}
             </Formik>
