@@ -9,7 +9,9 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 
 type NavbarProps = {
+	/** When true don't show logo. For modules. */
 	hideLogo?: boolean
+	/** When true has a transparent background. For modules. */
 	noBackground?: boolean
 }
 
