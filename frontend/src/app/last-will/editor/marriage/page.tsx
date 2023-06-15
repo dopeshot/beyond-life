@@ -3,12 +3,11 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
-import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
-import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
+import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Label } from '../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
@@ -264,17 +263,7 @@ const Marriage = () => {
                         </div>
 
                         {/* Form Steps Buttons */}
-                        <div className="flex flex-col md:flex-row items-center justify-between mt-8 md:mt-10 mb-4 md:mb-5">
-                            {/* Previous Step */}
-                            <Route datacy="route-previous-Step" className="order-1 md:order-none" href={routes.lastWill.testator("1")} kind="tertiary">
-                                Vorheriger Schritt
-                            </Route>
-
-                            {/* Next Step - Submit Button */}
-                            <Button datacy="button-submit" type="submit" className="mb-4 md:mb-0" disabled={!(dirty && isValid)} icon="arrow_forward">
-                                Nächster Schritt
-                            </Button>
-                        </div>
+                        <FormStepsButtons href={routes.lastWill.testator("1")} disabled={!(dirty && isValid)} />
                     </Form>
                 )}
             </Formik>
