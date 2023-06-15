@@ -1,7 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
@@ -27,9 +26,6 @@ const Marriage = () => {
 
     // Gloabl State
     const { lastWill, services } = useLastWillContext()
-
-    // Local State
-    const [showPartnerData, setShowPartnerData] = useState(false)
 
     // Formik
     const initalFormValues: MarriageFormPayload = {
@@ -134,79 +130,82 @@ const Marriage = () => {
                         </div>
                         {/* Marriage Field end */}
 
-                        {/* Checkbox German Citizenship */}
-                        <Checkbox name='partnerGermanCitizenship' options={[{ id: "partnerGermanCitizenship", label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
+                        {/* Married Partner Fields */}
+                        {values.relationshipStatus === 'married' && <>
+                            {/* Checkbox German Citizenship */}
+                            <Checkbox name='partnerGermanCitizenship' options={[{ id: "partnerGermanCitizenship", label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
 
-                        {/* Partner Personal Data */}
-                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
-                            <Headline level={3} size='md:text-lg' className="mb-4">
-                                Persönliche Daten des Ehepartners
-                            </Headline>
+                            {/* Partner Personal Data */}
+                            <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                                <Headline level={3} size='md:text-lg' className="mb-4">
+                                    Persönliche Daten des Ehepartners
+                                </Headline>
 
-                            <div className="2xl:w-2/3">
-                                {/* Name */}
-                                <div className='grid md:grid-cols-2 gap-x-3 mb-4 md:mb-0'>
-                                    <TextInput name="partnerFirstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-                                    <TextInput name="partnerLastName" inputRequired labelText="Nachname" placeholder="Nachname" />
-                                </div>
-
-                                {/* Gender and Birth */}
-                                <div className='grid md:grid-cols-3 gap-x-3 mb-4 md:mb-0'>
-                                    <Dropdown name="partnerGender" labelText="Geschlecht" placeholder="Wähle ein Geschlecht" hasMargin options={genderOptions} />
-                                    {/* // TODO(Zoe-Bot): Replace with datepicker */}
-                                    <TextInput name="partnerDateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
-                                    <TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
-                                </div>
-
-                                {/* Adress */}
-                                <div className="grid md:grid-cols-2 gap-x-3">
-                                    <TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
-                                    <div className="flex gap-2">
-                                        <div className="w-1/2">
-                                            <TextInput name="partnerHouseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
-                                        </div>
-                                        <div className="w-1/2">
-                                            <TextInput name="partnerZipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
-                                        </div>
+                                <div className="2xl:w-2/3">
+                                    {/* Name */}
+                                    <div className='grid md:grid-cols-2 gap-x-3 mb-4 md:mb-0'>
+                                        <TextInput name="partnerFirstName" inputRequired labelText="Vorname" placeholder="Vorname" />
+                                        <TextInput name="partnerLastName" inputRequired labelText="Nachname" placeholder="Nachname" />
                                     </div>
-                                    <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+
+                                    {/* Gender and Birth */}
+                                    <div className='grid md:grid-cols-3 gap-x-3 mb-4 md:mb-0'>
+                                        <Dropdown name="partnerGender" labelText="Geschlecht" placeholder="Wähle ein Geschlecht" hasMargin options={genderOptions} />
+                                        {/* // TODO(Zoe-Bot): Replace with datepicker */}
+                                        <TextInput name="partnerDateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+                                        <TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+                                    </div>
+
+                                    {/* Adress */}
+                                    <div className="grid md:grid-cols-2 gap-x-3">
+                                        <TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
+                                        <div className="flex gap-2">
+                                            <div className="w-1/2">
+                                                <TextInput name="partnerHouseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+                                            </div>
+                                            <div className="w-1/2">
+                                                <TextInput name="partnerZipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+                                            </div>
+                                        </div>
+                                        <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {/* Partner Personal Data end */}
+                            {/* Partner Personal Data end */}
 
-                        {/* More Infos */}
-                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
-                            <Checkbox name="partnerMoreInfos" labelText='Weitere relevante Infos' labelRequired helperText='Diese Infos sind relevant um die Verteilung besser einschätzen zu können.' options={partnerMoreInfosOptions} />
-                        </div>
-
-                        {/* Property Status */}
-                        <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
-                            <Label
-                                name="matrimonialProperty"
-                                className="mb-2 block font-semibold"
-                                labelText="Güterstand"
-                                isLegend
-                                inputRequired
-                            />
-                            <div className="grid md:grid-cols-2 gap-3 mb-2 xl:w-2/3 2xl:w-1/2">
-                                <CustomSelectionButton
-                                    datacy="field-matrimonialProperty-communityOfGain"
-                                    active={values.matrimonialProperty === 'communityOfGain'}
-                                    onClick={() => setFieldValue('matrimonialProperty', 'communityOfGain')}
-                                    headline="Zugewinngemeinschaft"
-                                    description="Der erwirtschaftete Vermögenszuwachs wird hälftig aufgeteilt."
-                                />
-                                <CustomSelectionButton
-                                    datacy="field-matrimonialProperty-separationOfProperty"
-                                    active={values.matrimonialProperty === 'separationOfProperty'}
-                                    onClick={() => setFieldValue('matrimonialProperty', 'separationOfProperty')}
-                                    headline="Gütertrennung"
-                                    description="Jeder Ehepartner behält sein eigenes Vermögen."
-                                />
+                            {/* More Infos */}
+                            <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                                <Checkbox name="partnerMoreInfos" labelText='Weitere relevante Infos' labelRequired helperText='Diese Infos sind relevant um die Verteilung besser einschätzen zu können.' options={partnerMoreInfosOptions} />
                             </div>
-                            <FormError fieldName="germanCitizenship" />
-                        </div>
+
+                            {/* Property Status */}
+                            <div className="border-2 border-gray-100 rounded-xl px-4 md:px-8 py-3 md:py-6 mt-5 md:mt-8">
+                                <Label
+                                    name="matrimonialProperty"
+                                    className="mb-2 block font-semibold"
+                                    labelText="Güterstand"
+                                    isLegend
+                                    inputRequired
+                                />
+                                <div className="grid md:grid-cols-2 gap-3 mb-2 xl:w-2/3 2xl:w-1/2">
+                                    <CustomSelectionButton
+                                        datacy="field-matrimonialProperty-communityOfGain"
+                                        active={values.matrimonialProperty === 'communityOfGain'}
+                                        onClick={() => setFieldValue('matrimonialProperty', 'communityOfGain')}
+                                        headline="Zugewinngemeinschaft"
+                                        description="Der erwirtschaftete Vermögenszuwachs wird hälftig aufgeteilt."
+                                    />
+                                    <CustomSelectionButton
+                                        datacy="field-matrimonialProperty-separationOfProperty"
+                                        active={values.matrimonialProperty === 'separationOfProperty'}
+                                        onClick={() => setFieldValue('matrimonialProperty', 'separationOfProperty')}
+                                        headline="Gütertrennung"
+                                        description="Jeder Ehepartner behält sein eigenes Vermögen."
+                                    />
+                                </div>
+                                <FormError fieldName="germanCitizenship" />
+                            </div>
+                        </>}
 
                         {/* Form Steps Buttons */}
                         <FormStepsButtons href={routes.lastWill.testator("1")} disabled={!(dirty && isValid)} />
