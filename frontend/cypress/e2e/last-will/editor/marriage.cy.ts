@@ -6,7 +6,7 @@ describe('Last Will Marriage Page', () => {
 	describe('Basic Flow', () => {
 		it('should fill out divorced and redirect to /last-will/editor/heirs?id=1 after submit', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(50)
+			cy.wait(200)
 
 			cy.datacy('field-relationshipStatus-divorced').click()
 
@@ -17,7 +17,7 @@ describe('Last Will Marriage Page', () => {
 
 		it('should fill out married and data from partner and redirect to /last-will/editor/heirs?id=1 after submit', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(50)
+			cy.wait(200)
 
 			// Relationship
 			cy.datacy('field-relationshipStatus-married').click()
@@ -59,7 +59,7 @@ describe('Last Will Marriage Page', () => {
 	describe('Personal Data Married', () => {
 		it('should hide personal data of partner when married is false', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(50)
+			cy.wait(200)
 
 			cy.datacy('field-relationshipStatus-married').click()
 			cy.datacy('field-relationshipStatus-divorced').click()
@@ -69,7 +69,7 @@ describe('Last Will Marriage Page', () => {
 
 		it('should show personal data of partner when married', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(50)
+			cy.wait(200)
 
 			cy.datacy('field-relationshipStatus-married').click()
 
