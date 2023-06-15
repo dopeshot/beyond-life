@@ -137,7 +137,7 @@ const Marriage = () => {
 									headline="Ledig"
 								/>
 							</div>
-							<FormError fieldName="germanCitizenship" />
+							<FormError fieldName="relationshipStatus" />
 						</div>
 						{/* Marriage Field end */}
 
@@ -247,7 +247,7 @@ const Marriage = () => {
 											description="Jeder Ehepartner behält sein eigenes Vermögen."
 										/>
 									</div>
-									<FormError fieldName="germanCitizenship" />
+									<FormError fieldName="matrimonialProperty" />
 								</div>
 							</div>
 						)}
