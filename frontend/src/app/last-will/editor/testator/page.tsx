@@ -44,7 +44,7 @@ const Testator = () => {
 		city: '',
 	}
 
-	const formValidation: ObjectSchema<TestatorForm> = object().shape({
+	const validationSchema: ObjectSchema<TestatorForm> = object().shape({
 		firstName: string().required('Bitte geben Sie einen Vornamen an.'),
 		lastName: string().required('Bitte geben Sie einen Nachnamen an.'),
 		gender: mixed<Gender>().required('Bitte geben Sie ein Geschlecht an.'),
@@ -66,7 +66,7 @@ const Testator = () => {
 			<Headline hasMargin={false}>Erblasser</Headline>
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
-			<Formik initialValues={initialFormValues} validationSchema={formValidation} onSubmit={onSubmit}>
+			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{({ isValid, dirty }: FormikProps<TestatorForm>) => (
 					<Form className="mb-2 mt-4 flex h-full w-full flex-1 flex-col md:mb-0">
 						<div className="flex w-full flex-1 flex-col">
