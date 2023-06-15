@@ -9,7 +9,7 @@ const meta: Meta<typeof NavbarLink> = {
 export default meta
 type Story = StoryObj<typeof NavbarLink>
 
-export const NavbarLinkasLink: Story = {
+export const Default: Story = {
 	args: {
 		children: 'NavbarLink as Link',
 	},

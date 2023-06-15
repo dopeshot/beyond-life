@@ -10,7 +10,7 @@ const meta: Meta<typeof Step> = {
 export default meta
 type Story = StoryObj<typeof Step>
 
-export const StepExample: Story = {
+export const Default: Story = {
 	args: {
 		title: 'Eingabe der notwendigen Daten',
 		description: 'Geben Sie die notwendigen Daten ein, um die Anfrage zu erstellen.',

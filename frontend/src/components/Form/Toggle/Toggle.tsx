@@ -1,5 +1,5 @@
 import { Field, FieldProps } from 'formik'
-import { Label } from '../Form/Label/Label'
+import { Label } from '../Label/Label'
 
 export type ToggleProps = {
 	/** Gives the toggle a unique name. */
