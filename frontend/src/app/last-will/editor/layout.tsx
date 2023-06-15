@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { ModuleNavbar } from '../../../components/Navbar/ModuleNavbar/ModuleNavbar'
 import { Sidebar } from '../../../components/Navbar/Sidebar/Sidebar'
 import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<div className="flex h-fit min-h-screen flex-grow flex-col">
 					<ModuleNavbar />
 					{children}
-					{/* <GlobalFooter /> */}
+					<GlobalFooter />
 				</div>
 			</div>
 		</LastWillContextProvider>
