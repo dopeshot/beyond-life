@@ -2,6 +2,7 @@ describe('Last Will Start Page', () => {
 	beforeEach(() => {
 		cy.visit('/last-will/start')
 	})
+
 	describe('Basic Flow', () => {
 		it('should redirect to last-will/1/testator when all filled with yes', () => {
 			cy.datacy('field-germanCitizenship-true').click()

@@ -131,7 +131,7 @@ const Marriage = () => {
                         {/* Marriage Field end */}
 
                         {/* Married Partner Fields */}
-                        {values.relationshipStatus === 'married' && <>
+                        {values.relationshipStatus === 'married' && <div datacy="partner-fields">
                             {/* Checkbox German Citizenship */}
                             <Checkbox name='partnerGermanCitizenship' options={[{ id: "partnerGermanCitizenship", label: "Besitzt ihr Partner die deutsche Staatsbürgerschaft?" }]} />
 
@@ -205,7 +205,7 @@ const Marriage = () => {
                                 </div>
                                 <FormError fieldName="germanCitizenship" />
                             </div>
-                        </>}
+                        </div>}
 
                         {/* Form Steps Buttons */}
                         <FormStepsButtons href={routes.lastWill.testator("1")} disabled={!(dirty && isValid)} />
