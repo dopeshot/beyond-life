@@ -8,10 +8,15 @@ import { IconButton } from '../../IconButton/IconButton'
 import { NavbarLink } from '../NavbarLink/NavbarLink'
 import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 
+type NavbarProps = {
+	hideLogo?: boolean
+	noBackground?: boolean
+}
+
 /**
- * Display Navbar with Logo and Links.
+ * Display Top Navbar.
  */
-export const GlobalNavbar: React.FC = () => {
+export const Navbar: React.FC<NavbarProps> = ({ hideLogo, noBackground }) => {
 	const pathname = usePathname()
 
 	// Local States
@@ -29,11 +34,11 @@ export const GlobalNavbar: React.FC = () => {
 	]
 
 	return (
-		<div className="bg-yellow-400 py-3">
+		<div className={`${noBackground ? '' : 'bg-yellow-400'} py-3`}>
 			<nav className="container md:flex">
-				<div className="flex items-center justify-between md:mr-5">
+				<div className={`flex ${hideLogo ? 'justify-end' : 'items-center justify-between md:mr-5'}`}>
 					{/* Logo */}
-					<NavbarLogo />
+					{!hideLogo && <NavbarLogo />}
 
 					{/* Mobile menu button */}
 					<IconButton
