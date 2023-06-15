@@ -18,7 +18,7 @@ export type LastWillContextType = {
 	lastWill: LastWill
 	services: {
 		submitTestator: (payload: TestatorFormPayload) => void
-		submitMarriage: (payload: MarriageFormPayload) => void
+		submitMarriage: (payload: MarriageFormPayload) => Promise<void>
 		setProgressKey: (payload: SetProgressKeyPayload) => void
 	}
 }
