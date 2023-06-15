@@ -3,6 +3,8 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
+import { partnerMoreInfosOptions } from '../../../../../content/checkboxOptions'
+import { genderOptions } from '../../../../../content/dropdownOptions'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
@@ -12,62 +14,8 @@ import { Label } from '../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
-import { ComponentOptions } from '../../../../types/dropdownOptions'
-import { SelectableOption } from '../../../../types/forms'
-
-type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
-type Gender = "male" | "female" | "divers"
-type MoreInfos = "partnerHandicapped" | "partnerInsolvent" | "partnerBerlinWill"
-type MatrimonialProperty = "communityOfGain" | "separationOfProperty"
-
-type Marriage = {
-    relationshipStatus?: RelationshipStatus
-    partnerGermanCitizenship?: string[]
-    partnerFirstName?: string
-    partnerLastName?: string
-    partnerGender?: Gender
-    partnerDateOfBirth?: string
-    partnerPlaceOfBirth?: string
-    partnerStreet?: string
-    partnerHouseNumber?: string
-    partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
-    partnerCity?: string
-    partnerMoreInfos?: MoreInfos[]
-    matrimonialProperty?: MatrimonialProperty
-}
-
-const genderOptions: ComponentOptions[] = [
-    {
-        value: "male",
-        label: "Männlich",
-        icon: "male"
-    },
-    {
-        value: "female",
-        label: "Weiblich",
-        icon: "female"
-    },
-    {
-        value: "divers",
-        label: "Divers",
-        icon: "transgender"
-    },
-]
-
-const partnerMoreInfosOptions: SelectableOption[] = [
-    {
-        id: "partnerHandicapped",
-        label: "Hat ihr Partner eine Behinderung?"
-    },
-    {
-        id: "partnerInsolvent",
-        label: "Ist ihr Partner insolvent?",
-    },
-    {
-        id: "partnerBerlinWill",
-        label: "Wollen Sie ein Berliner Testament?",
-    },
-]
+import { MarriageFormPayload } from '../../../../store/last-will/marriage/actions'
+import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
 
 /**
  * Marriage Page
@@ -76,7 +24,7 @@ const Marriage = () => {
     const router = useRouter()
     const [showPartnerData, setShowPartnerData] = useState(false)
 
-    const initalFormValues: Marriage = {
+    const initalFormValues: MarriageFormPayload = {
         relationshipStatus: undefined,
         partnerGermanCitizenship: [],
         partnerFirstName: '',
@@ -92,7 +40,7 @@ const Marriage = () => {
         matrimonialProperty: undefined,
     }
 
-    const validationSchema: ObjectSchema<Marriage> = object().shape({
+    const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
         relationshipStatus: string<RelationshipStatus>().required(
             'Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'
         ),
@@ -131,7 +79,7 @@ const Marriage = () => {
         }),
     })
 
-    const onSubmit = (values: Marriage) => {
+    const onSubmit = (values: MarriageFormPayload) => {
         console.log(values)
 
         // Redirect to Heirs Page
@@ -143,7 +91,7 @@ const Marriage = () => {
             <Headline className="md:mb-8">Familienstand</Headline>
 
             <Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-                {({ values, setFieldValue, isValid, dirty }: FormikProps<Marriage>) => (
+                {({ values, setFieldValue, isValid, dirty }: FormikProps<MarriageFormPayload>) => (
                     <Form>
                         {/* Marriage Field */}
                         <div className="mb-4">
