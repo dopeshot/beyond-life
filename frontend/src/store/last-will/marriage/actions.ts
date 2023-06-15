@@ -30,8 +30,11 @@ export const submitMarriageAction = async (dispatch: Dispatch<MarriageActions>, 
 	// Prepare
 	dispatch({ type: 'PRE_SET_MARRIAGE' })
 	// Fetch
-	//const example = await saveMarriage(payload)
-	// Effect
+	await new Promise<void>((resolve) => {
+		setTimeout(() => {
+			resolve()
+		}, 500)
+	})
 	dispatch({
 		type: 'EFFECT_SET_MARRIAGE',
 		payload,
