@@ -14,6 +14,7 @@ import { Label } from '../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
+import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { MarriageFormPayload } from '../../../../store/last-will/marriage/actions'
 import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
 
@@ -21,23 +22,19 @@ import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../.
  * Marriage Page
  */
 const Marriage = () => {
+    // Router
     const router = useRouter()
+
+    // Gloabl State
+    const { lastWill, services } = useLastWillContext()
+
+    // Local State
     const [showPartnerData, setShowPartnerData] = useState(false)
 
+    // Formik
     const initalFormValues: MarriageFormPayload = {
-        relationshipStatus: undefined,
-        partnerGermanCitizenship: [],
-        partnerFirstName: '',
-        partnerLastName: '',
-        partnerGender: undefined,
-        partnerDateOfBirth: '',
-        partnerPlaceOfBirth: '',
-        partnerStreet: '',
-        partnerHouseNumber: '',
-        partnerZipCode: '',
-        partnerCity: '',
-        partnerMoreInfos: [],
-        matrimonialProperty: undefined,
+        ...lastWill.marriage,
+        partnerGermanCitizenship: lastWill.marriage.partnerGermanCitizenship ? ["partnerGermanCitizenship"] : [],
     }
 
     const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
@@ -80,10 +77,11 @@ const Marriage = () => {
     })
 
     const onSubmit = (values: MarriageFormPayload) => {
-        console.log(values)
+        // Update marriage global state
+        services.submitMarriage(values)
 
         // Redirect to Heirs Page
-        //router.push(routes.lastWill.heirs('1'))
+        router.push(routes.lastWill.heirs('1'))
     }
 
     return (
