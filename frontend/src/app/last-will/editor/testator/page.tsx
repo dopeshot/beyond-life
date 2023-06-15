@@ -1,5 +1,4 @@
 'use client'
-import { useEffect } from 'react'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { ObjectSchema, date, mixed, object, string } from 'yup'
@@ -13,6 +12,7 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Gender } from '../../../../types/personalData'
+
 type TestatorForm = {
 	firstName: string
 	lastName: string
@@ -29,11 +29,37 @@ type TestatorForm = {
  * Testator Page
  */
 const Testator = () => {
+	const router = useRouter()
 	const { lastWill, services } = useLastWillContext()
 
-	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
-	}, [services])
+	const initialFormValues: TestatorForm = {
+		firstName: '',
+		lastName: '',
+		gender: undefined,
+		birthDate: undefined,
+		birthPlace: '',
+		address: '',
+		houseNumber: '',
+		postalCode: '',
+		city: '',
+	}
+
+	const formValidation: ObjectSchema<TestatorForm> = object().shape({
+		firstName: string().required('Bitte geben Sie einen Vornamen an.'),
+		lastName: string().required('Bitte geben Sie einen Nachnamen an.'),
+		gender: mixed<Gender>().required('Bitte geben Sie ein Geschlecht an.'),
+		birthDate: date().required('Bitte geben Sie ein Geburtsdatum an.'),
+		birthPlace: string().required('Bitte geben Sie einen Geburtsort an.'),
+		address: string().notRequired(),
+		houseNumber: string().notRequired(),
+		postalCode: string().notRequired(),
+		city: string().notRequired(),
+	})
+
+	const onSubmit = () => {
+		// TODO update last will context
+		router.push(routes.lastWill.marriage('1'))
+	}
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
