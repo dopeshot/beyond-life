@@ -1,5 +1,6 @@
 import 'material-symbols'
 import '../../../app/globals.css'
+import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
 import { Sidebar } from './Sidebar'
 
 const data = {
@@ -9,7 +10,11 @@ const data = {
 describe('Sidebar', () => {
 	describe('Basic Render', () => {
 		beforeEach(() => {
-			cy.mount(<Sidebar {...data} />)
+			cy.mount(
+				<LastWillContextProvider>
+					<Sidebar {...data} />
+				</LastWillContextProvider>
+			)
 		})
 
 		it('should render correctly', () => {

@@ -1,6 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
@@ -16,6 +17,7 @@ import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { MarriageFormPayload } from '../../../../store/last-will/marriage/actions'
 import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
+import { SidebarPages } from '../../../../types/sidebar'
 
 /**
  * Marriage Page
@@ -79,6 +81,11 @@ const Marriage = () => {
         // Redirect to Heirs Page
         router.push(routes.lastWill.heirs('1'))
     }
+
+    // Use to handle save current page
+    useEffect(() => {
+        services.setProgressKey({ progressKey: SidebarPages.MARRIAGE })
+    }, [services])
 
     return (
         <div className="container mt-5">

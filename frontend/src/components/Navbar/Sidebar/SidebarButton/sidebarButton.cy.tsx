@@ -1,9 +1,9 @@
 import '../../../../app/globals.css'
-import { SidebarButtonState, SidebarElementTypes } from '../../../../types/sidebar'
+import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { SidebarButton } from './SidebarButton'
 
 const data = {
-	type: 'testator' as SidebarElementTypes,
+	type: SidebarPages.TESTATOR,
 	title: 'Erblasser',
 	description: 'Persönliche Daten des Erblassers',
 	handleClick: () => console.log('clicked'),

@@ -1,3 +1,4 @@
+import { SetProgressKeyPayload } from './common/actions'
 import { CommonState } from './common/state'
 import { MarriageFormPayload } from './marriage/actions'
 import { MarriageState } from './marriage/state'
@@ -18,5 +19,6 @@ export type LastWillContextType = {
 	services: {
 		submitTestator: (payload: TestatorFormPayload) => void
 		submitMarriage: (payload: MarriageFormPayload) => void
+		setProgressKey: (payload: SetProgressKeyPayload) => void
 	}
 }

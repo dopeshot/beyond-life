@@ -57,6 +57,18 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 			}
 		}
 
+		case 'SET_PROGRESS_KEY': {
+			if (state.common.progressKeys.includes(action.payload.progressKey)) return state
+
+			return {
+				...state,
+				common: {
+					...state.common,
+					progressKeys: [...state.common.progressKeys, action.payload.progressKey],
+				},
+			}
+		}
+
 		case 'PRE_SET_MARRIAGE': {
 			return {
 				...state,
@@ -83,6 +95,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				},
 			}
 		}
+
 		default:
 			return state
 	}
