@@ -40,35 +40,35 @@ const Marriage = () => {
         partnerGermanCitizenship: array<string[]>(),
         partnerFirstName: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie einen Vornamen ein.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
         partnerLastName: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie einen Nachnamen ein.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
         partnerGender: string<Gender>(),
         partnerDateOfBirth: string(),
         partnerPlaceOfBirth: string(),
         partnerStreet: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Straße ein.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
         partnerHouseNumber: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Hausnummer ein.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
         partnerZipCode: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Postleitzahl ein.').min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.')
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.').min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.')
         }),
         partnerCity: string().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte geben Sie eine Stadt ein.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
         partnerMoreInfos: array<MoreInfos[]>(),
         matrimonialProperty: string<MatrimonialProperty>().when('relationshipStatus', {
             is: 'married',
-            then: (schema) => schema.required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+            then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
         }),
     })
 
@@ -157,17 +157,22 @@ const Marriage = () => {
                                     </div>
 
                                     {/* Adress */}
-                                    <div className="grid md:grid-cols-2 gap-x-3">
-                                        <TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
-                                        <div className="flex gap-2">
-                                            <div className="w-1/2">
-                                                <TextInput name="partnerHouseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
-                                            </div>
-                                            <div className="w-1/2">
-                                                <TextInput name="partnerZipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
-                                            </div>
+                                    <div className="flex gap-x-3">
+                                        <div className="w-2/3 md:w-3/4">
+                                            <TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
                                         </div>
-                                        <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+                                        <div className="w-1/3 md:w-1/4">
+                                            <TextInput name="partnerHouseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-x-3">
+                                        <div className="w-1/3 md:w-1/4">
+                                            <TextInput name="partnerZipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+                                        </div>
+                                        <div className="w-2/3 md:w-3/4">
+                                            <TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
