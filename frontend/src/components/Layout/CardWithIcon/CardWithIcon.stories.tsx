@@ -9,7 +9,7 @@ const meta: Meta<typeof CardWithIcon> = {
 export default meta
 type Story = StoryObj<typeof CardWithIcon>
 
-export const CardWithIconExample: Story = {
+export const Default: Story = {
 	args: {
 		icon: 'history_edu',
 		title: 'Erstellen Sie Ihr Testament selbstständig',

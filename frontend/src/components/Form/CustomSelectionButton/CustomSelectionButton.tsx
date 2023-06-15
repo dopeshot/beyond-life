@@ -9,12 +9,14 @@ export type CustomSelectionButtonProps = {
 	activeColor?: Color
 	/** The icon when active. */
 	activeIcon?: MaterialSymbol
+	/** The icon displayed above headline. */
+	icon?: MaterialSymbol
 	/** The function that is called when the button is clicked. */
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 	/** The headline in the button. */
 	headline: string
 	/** The description in the button. */
-	description: string
+	description?: string
 	/** For testing. */
 	datacy?: string
 }
@@ -26,6 +28,7 @@ export const CustomSelectionButton: React.FC<CustomSelectionButtonProps> = ({
 	active,
 	activeColor = 'yellow',
 	activeIcon = 'check_circle',
+	icon,
 	onClick,
 	headline,
 	datacy,
@@ -46,12 +49,15 @@ export const CustomSelectionButton: React.FC<CustomSelectionButtonProps> = ({
 			) : (
 				<Icon datacy={`${datacy}-inactive-icon`} icon="circle" className="ml-auto h-4 text-gray-200" />
 			)}
+			{icon && <Icon icon={icon} className={`${active ? `text-${activeColor}-500` : 'text-gray-300'} text-4xl`} />}
 			<h6 datacy={`${datacy}-headline`} className="mt-1 font-medium md:mt-0">
 				{headline}
 			</h6>
-			<p datacy={`${datacy}-description`} className="text-sm text-gray-600">
-				{description}
-			</p>
+			{description && (
+				<p datacy={`${datacy}-description`} className="text-sm text-gray-600">
+					{description}
+				</p>
+			)}
 		</button>
 	)
 }

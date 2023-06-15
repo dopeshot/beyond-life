@@ -16,8 +16,6 @@ export type DropdownProps = {
 	inputRequired?: boolean
 	/** A list of options to choose from. */
 	options: readonly ComponentOptions[]
-	/** Set to true when dropdown needs to fit to other inputs (have lighter color). */
-	light?: boolean
 	/** When true add margin to dropdown like other inputs. */
 	hasMargin?: boolean
 }
@@ -30,7 +28,6 @@ export const Dropdown: React.FC<DropdownProps> = ({
 	placeholder,
 	labelText,
 	inputRequired,
-	light = false,
 	hasMargin = false,
 	options,
 }) => {
@@ -39,7 +36,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 	return (
 		<Field name={name}>
 			{(props: FieldProps<string | number | boolean>) => (
-				<div className={`relative ${hasMargin ? 'mb-4' : ''}`}>
+				<div className={`relative ${hasMargin ? 'mb-2 md:mb-4' : ''}`}>
 					{/* When dropdown open click outside close it. */}
 					{isOpen && (
 						<div
@@ -50,23 +47,21 @@ export const Dropdown: React.FC<DropdownProps> = ({
 					)}
 
 					{/* Label */}
-					{labelText && <Label name={name} labelText={labelText} inputRequired={inputRequired} />}
+					{labelText && <Label name={name} labelText={labelText} isLegend inputRequired={inputRequired} />}
 
 					{/* Input */}
 					<button
 						datacy={`${name}-dropdown-button`}
-						className={`relative my-1 mr-5 flex w-full items-center justify-between rounded-lg border-2 px-5 py-2 sm:mb-0 ${
-							isOpen ? 'outline outline-2 outline-offset-2 outline-red' : ''
-						} ${light ? 'border-gray-100 bg-gray-100' : 'border-gray-200 bg-gray-200'} ${
-							!props.field.value ? 'text-gray-500' : 'text-gray-800'
-						}`}
+						className={`relative my-1 flex w-full items-center justify-between rounded-lg border border-gray-100 bg-gray-100 px-4 py-2 sm:mb-0 ${
+							isOpen ? 'outline outline-2 outline-offset-2 outline-black' : ''
+						} ${!props.field.value ? 'text-gray-500' : 'text-gray-800'}`}
 						type="button"
 						onClick={() => setIsOpen(!isOpen)}
 					>
-						{props.field.value !== '' ? (
+						{props.field.value !== '' && props.field.value !== undefined ? (
 							<span className="truncate">{options.find((option) => option.value === props.field.value)?.label}</span>
 						) : (
-							<span>{placeholder}</span>
+							<span className="text-gray-400">{placeholder}</span>
 						)}
 						<Icon
 							icon="expand_more"
@@ -80,7 +75,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 					{isOpen && (
 						<div
 							datacy={`${name}-dropdown-menu`}
-							className="absolute z-10 w-full rounded-lg bg-white py-2 shadow-[-10px_10px_10px_rgba(203,210,217,0.10),10px_10px_10px_rgba(203,210,217,0.10)]"
+							className="absolute z-10 mt-1 w-full rounded-lg bg-white py-2 shadow-[-10px_10px_10px_rgba(203,210,217,0.10),10px_10px_10px_rgba(203,210,217,0.10)]"
 							tabIndex={-1}
 						>
 							{options.map((option) => (

@@ -11,7 +11,7 @@ const meta: Meta<typeof Banner> = {
 export default meta
 type Story = StoryObj<typeof Banner>
 
-export const BannerExample: Story = {
+export const Default: Story = {
 	args: {
 		title: 'Nehmen Sie Ihre Zukunft selbst in die Hand',
 		description:

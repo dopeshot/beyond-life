@@ -23,7 +23,7 @@ const Template: Story = {
 	},
 }
 
-export const TextInputDefault = {
+export const Default: Story = {
 	...Template,
 	args: {
 		name: 'name',
@@ -34,7 +34,7 @@ export const TextInputDefault = {
 	},
 }
 
-export const TextInputWithIcon = {
+export const WithIcon: Story = {
 	...Template,
 	args: {
 		name: 'name',

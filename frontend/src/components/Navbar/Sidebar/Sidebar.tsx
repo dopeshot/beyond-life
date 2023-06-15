@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import { SidebarButtonState, SidebarElementTypes } from '../../../types/sidebar'
+import { useLastWillContext } from '../../../store/last-will/LastWillContext'
+import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
 import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 import { SidebarButton } from './SidebarButton/SidebarButton'
 
@@ -10,39 +11,39 @@ export type SidebarProps = {
 }
 
 type SidebarElement = {
-	type: SidebarElementTypes
+	page: SidebarPages
 	title: string
 	description?: string
 }
 
 const sidebarElements: SidebarElement[] = [
 	{
-		type: 'testator',
+		page: SidebarPages.TESTATOR,
 		title: 'Erblasser',
 		description: 'Persönliche Daten des Erblassers',
 	},
 	{
-		type: 'marriage',
+		page: SidebarPages.MARRIAGE,
 		title: 'Familienstand',
 		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
 	},
 	{
-		type: 'heirs',
+		page: SidebarPages.HEIRS,
 		title: 'Erben',
 		description: 'Erben und deren Anteile',
 	},
 	{
-		type: 'inheritance',
+		page: SidebarPages.INHERITANCE,
 		title: 'Erbschaft',
 		description: 'Erbschaftsgegenstände',
 	},
 	{
-		type: 'succession',
+		page: SidebarPages.SUCCESSION,
 		title: 'Erbfolge',
 		description: 'Stammbaum und Verteilung',
 	},
 	{
-		type: 'final',
+		page: SidebarPages.FINAL,
 		title: 'Zusammenfassung',
 		description: 'Überprüfung und Abschreiben',
 	},
@@ -52,10 +53,10 @@ const sidebarElements: SidebarElement[] = [
  * Sidebar component for navigation
  */
 export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
-	// const { testament, setProgressId } = useTestamentContext()
+	const { lastWill } = useLastWillContext()
 
 	return (
-		<div datacy={'sidebar'} className="sticky top-0 h-auto w-80 min-w-[20rem] bg-yellow-400">
+		<div datacy={'sidebar'} className="sticky top-0 hidden h-auto w-80 min-w-[20rem] bg-yellow-400 lg:block">
 			{/* Logo */}
 			<div datacy="sidebar-logo" className="px-6 pb-10 pt-[19px]">
 				<NavbarLogo />
@@ -65,20 +66,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 			<div className="flex flex-col">
 				{sidebarElements.map((element) => (
 					<SidebarButton
-						datacy={`sidebar-button-${element.type}`}
-						key={element.type}
-						type={element.type}
+						datacy={`sidebar-button-${element.page}`}
+						key={element.page}
+						type={element.page}
 						title={element.title}
 						description={element.description}
 						state={
-							// TODO: state aus dem global store holen
-							path.includes(element.type)
+							path.includes(element.page) // button is active if url contains the page name
 								? SidebarButtonState.ACTIVE
-								: true //: testament.common.progressIds.includes(element.id)
-								? SidebarButtonState.DEFAULT
-								: SidebarButtonState.DISABLED
+								: lastWill.common.progressKeys.includes(element.page)
+								? SidebarButtonState.DEFAULT // button is default if page was visited yet
+								: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 						}
-						// handleClick={() => setProgressId(element.id)}
 					/>
 				))}
 			</div>
