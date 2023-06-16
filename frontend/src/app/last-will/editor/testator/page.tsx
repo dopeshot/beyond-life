@@ -1,7 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { ObjectSchema, date, mixed, object, string } from 'yup'
+import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
@@ -11,19 +11,8 @@ import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { Gender } from '../../../../types/personalData'
-
-type TestatorForm = {
-	firstName: string
-	lastName: string
-	gender?: Gender
-	birthDate?: Date
-	birthPlace: string
-	address: string
-	houseNumber: string
-	postalCode: string
-	city: string
-}
+import { Gender } from '../../../../store/last-will/marriage/state'
+import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
 
 /**
  * Testator Page
@@ -32,28 +21,20 @@ const Testator = () => {
 	const router = useRouter()
 	const { lastWill, services } = useLastWillContext()
 
-	const initialFormValues: TestatorForm = {
-		firstName: '',
-		lastName: '',
-		gender: undefined,
-		birthDate: undefined,
-		birthPlace: '',
-		address: '',
-		houseNumber: '',
-		postalCode: '',
-		city: '',
+	const initialFormValues: TestatorFormPayload = {
+		...lastWill.testator,
 	}
 
-	const validationSchema: ObjectSchema<TestatorForm> = object().shape({
+	const validationSchema: ObjectSchema<TestatorFormPayload> = object().shape({
 		firstName: string().required('Bitte geben Sie einen Vornamen an.'),
 		lastName: string().required('Bitte geben Sie einen Nachnamen an.'),
-		gender: mixed<Gender>().required('Bitte geben Sie ein Geschlecht an.'),
-		birthDate: date().required('Bitte geben Sie ein Geburtsdatum an.'),
+		gender: string<Gender>(),
+		birthDate: string(),
 		birthPlace: string().required('Bitte geben Sie einen Geburtsort an.'),
-		address: string().notRequired(),
-		houseNumber: string().notRequired(),
-		postalCode: string().notRequired(),
-		city: string().notRequired(),
+		address: string(),
+		houseNumber: string(),
+		postalCode: string(),
+		city: string(),
 	})
 
 	const onSubmit = () => {
@@ -67,7 +48,7 @@ const Testator = () => {
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
 			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-				{({ isValid, dirty }: FormikProps<TestatorForm>) => (
+				{({ isValid, dirty }: FormikProps<TestatorFormPayload>) => (
 					<Form className="mb-2 mt-4 flex h-full w-full flex-1 flex-col md:mb-0">
 						<div className="flex w-full flex-1 flex-col">
 							<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
