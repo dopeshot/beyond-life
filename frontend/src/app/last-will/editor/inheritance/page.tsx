@@ -3,7 +3,7 @@ import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
-import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
+import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
@@ -46,11 +46,11 @@ const Inheritance = () => {
         legacy: [],
     }
 
-    const onSubmit = (values: InheritanceFormPayload) => {
+    const onSubmit = async (values: InheritanceFormPayload, href: string) => {
         console.log(values)
 
-        // Redirect to Heirs Page
-        router.push(routes.lastWill.succession('1'))
+        // Redirect to next or previous page
+        router.push(href)
     }
 
     // Use to handle sidebar display state and progress
@@ -62,8 +62,8 @@ const Inheritance = () => {
         <div className="container mt-5">
             <Headline>Erbschaft</Headline>
 
-            <Formik initialValues={initalFormValues} onSubmit={onSubmit}>
-                {({ values, setFieldValue, isValid, dirty }: FormikProps<InheritanceFormPayload>) => (
+            <Formik initialValues={initalFormValues} onSubmit={(values) => onSubmit(values, routes.lastWill.succession("1"))}>
+                {({ values }: FormikProps<InheritanceFormPayload>) => (
                     <Form>
                         <div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
                             <Headline level={3} size="md:text-lg">
@@ -105,18 +105,10 @@ const Inheritance = () => {
                             </FieldArray>
                         </div>
 
-                        {/* Form Step Buttons */}
-                        <div className="mb-4 mt-8 flex flex-col items-center justify-between md:mb-5 md:mt-10 md:flex-row">
-                            {/* Previous Step */}
-                            <Route datacy="route-previous-Step" className="order-1 md:order-none" href={routes.lastWill.heirs("1")} kind="tertiary">
-                                Vorheriger Schritt
-                            </Route>
-
-                            {/* Next Step - Submit Button */}
-                            <Button datacy="button-submit" type="submit" className="mb-4 md:mb-0" disabled={!(dirty && isValid)} icon="arrow_forward">
-                                Nächster Schritt
-                            </Button>
-                        </div>
+                        {/* Form Steps Buttons */}
+                        <FormStepsButtons
+                            previousOnClick={() => onSubmit(values, routes.lastWill.heirs('1'))}
+                        />
                     </Form>
                 )}
             </Formik>
