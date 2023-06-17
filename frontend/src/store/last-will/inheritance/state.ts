@@ -17,6 +17,19 @@ export type Item = {
 }
 
 export const initialInheritanceState: InheritanceState = {
-	financialAssets: [],
-	items: [],
+	financialAssets: [
+		{
+			id: 0,
+			where: '',
+			amount: '',
+			currency: '€',
+		},
+	],
+	items: [
+		{
+			id: 0,
+			name: '',
+			description: '',
+		},
+	],
 }
