@@ -11,173 +11,236 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { InheritanceFormPayload } from '../../../../store/last-will/inheritance/actions'
+import { FinancialAsset } from '../../../../store/last-will/inheritance/state'
 import { SidebarPages } from '../../../../types/sidebar'
 
-type InheritanceFormPayload = {
-    financialAssets: {
-        id?: number
-        where?: string
-        amount?: number | string
-        currency?: string
-    }[],
-    items: {
-        id?: number
-        name?: string
-        description?: string
-    }[]
-}
+const PREVIOUS_LINK = routes.lastWill.heirs('1')
+const NEXT_LINK = routes.lastWill.succession('1')
 
 /**
  * Inheritance Page
  */
 const Inheritance = () => {
-    const router = useRouter()
+	const router = useRouter()
 
-    // Global State
-    const { services } = useLastWillContext()
+	// Global State
+	const { lastWill, services } = useLastWillContext()
 
-    // Formik
-    const initalFormValues: InheritanceFormPayload = {
-        financialAssets: [
-            {
-                id: 1,
-                where: '',
-                amount: '',
-                currency: '€',
-            }
-        ],
-        items: [
-            {
-                id: 1,
-                name: '',
-                description: '',
-            }
-        ],
-    }
+	// Formik
+	const initalFormValues: InheritanceFormPayload = lastWill.inheritance
 
-    const onSubmit = async (values: InheritanceFormPayload, href: string) => {
-        console.log(values)
+	const onSubmit = async (values: InheritanceFormPayload, href: string) => {
+		try {
+			// Update inheritance global state only if values have changed
+			await services.submitInheritance(values)
 
-        // Redirect to next or previous page
-        router.push(href)
-    }
+			// Redirect to previous or next page
+			router.push(href)
+		} catch (error) {
+			console.error('An error occurred while submitting the form: ', error)
+		}
+	}
 
-    const validationSchema: ObjectSchema<InheritanceFormPayload> = object().shape({
-        financialAssets: array().of(object().shape({
-            id: number(),
-            where: string(),
-            amount: number().min(1, 'Betrag muss größer als 0 sein.'),
-            currency: string(),
-        })).required(),
-        items: array().of(object().shape({
-            id: number(),
-            name: string(),
-            description: string(),
-        })).required(),
-    })
+	const validationSchema: ObjectSchema<InheritanceFormPayload> = object().shape({
+		financialAssets: array()
+			.of(
+				object().shape({
+					id: number().required(),
+					where: string(),
+					amount: number().min(1, 'Betrag muss größer als 0 sein.'),
+					currency: string(),
+				})
+			)
+			.required(),
+		items: array()
+			.of(
+				object().shape({
+					id: number().required(),
+					name: string(),
+					description: string(),
+				})
+			)
+			.required(),
+	})
 
-    // Use to handle sidebar display state and progress
-    useEffect(() => {
-        services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
-    }, [services])
+	// Use to handle sidebar display state and progress
+	useEffect(() => {
+		services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
+	}, [services])
 
-    return (
-        <div className="container mt-5">
-            <Headline>Erbschaft</Headline>
+	return (
+		<div className="container mt-5">
+			<Headline>Erbschaft</Headline>
 
-            <Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={(values) => onSubmit(values, routes.lastWill.succession("1"))}>
-                {({ values }: FormikProps<InheritanceFormPayload>) => (
-                    <Form>
-                        {/* Financial Assets */}
-                        <div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
-                            <Headline level={3} size="md:text-lg">
-                                Geld Vermögen
-                            </Headline>
-                            <p className="text-gray-500 mb-2 md:mb-4">Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar,..?</p>
+			<Formik
+				initialValues={initalFormValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
+			>
+				{({ values, dirty }: FormikProps<InheritanceFormPayload>) => (
+					<Form>
+						{/* Financial Assets */}
+						<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
+							<Headline level={3} size="md:text-lg">
+								Geld Vermögen
+							</Headline>
+							<p className="mb-2 text-gray-500 md:mb-4">
+								Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar,..?
+							</p>
 
-                            <FieldArray name="financialAssets">
-                                {(arrayHelpers: ArrayHelpers) => (
-                                    <div className="2xl:w-2/3">
-                                        {values.financialAssets.map((financialAsset, index) => <Fragment key={financialAsset.id}>
-                                            {/* Financial Asset Field */}
-                                            <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] lg:gap-x-3">
-                                                <TextInput name={`financialAssets.${index}.where`} inputRequired labelText="Bank/Ort" placeholder="BW Bank Stuttgart, Bar,..." />
-                                                <div className="flex gap-x-3 row-start-2 col-start-1 col-end-4 lg:row-start-1 lg:col-start-2 lg:col-end-auto">
-                                                    <div className="w-2/3">
-                                                        <TextInput name={`financialAssets.${index}.amount`} type="number" min={1} inputRequired labelText="Betrag" placeholder="10.000" />
-                                                    </div>
-                                                    <div className="w-1/3">
-                                                        <TextInput name={`financialAssets.${index}.currency`} inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
-                                                    </div>
-                                                </div>
-                                                <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-3 mt-[30px] ml-2 lg:ml-0" disabled={values.financialAssets.length <= 1} onClick={() => values.financialAssets.length <= 1 ? "" : arrayHelpers.remove(index)} />
-                                            </div>
+							<FieldArray name="financialAssets">
+								{(arrayHelpers: ArrayHelpers<FinancialAsset[]>) => (
+									<div className="2xl:w-2/3">
+										{values.financialAssets.map((financialAsset, index) => (
+											<Fragment key={financialAsset.id}>
+												{/* Financial Asset Field */}
+												<div className="grid grid-cols-[1fr,auto,auto] lg:grid-cols-[2fr,3fr,auto] lg:grid-rows-1 lg:gap-x-3">
+													<TextInput
+														name={`financialAssets.${index}.where`}
+														inputRequired
+														labelText="Bank/Ort"
+														placeholder="BW Bank Stuttgart, Bar,..."
+													/>
+													<div className="col-start-1 col-end-4 row-start-2 flex gap-x-3 lg:col-start-2 lg:col-end-auto lg:row-start-1">
+														<div className="w-2/3">
+															<TextInput
+																name={`financialAssets.${index}.amount`}
+																type="number"
+																min={1}
+																inputRequired
+																labelText="Betrag"
+																placeholder="10.000"
+															/>
+														</div>
+														<div className="w-1/3">
+															<TextInput
+																name={`financialAssets.${index}.currency`}
+																inputRequired
+																labelText="Währung"
+																placeholder="€, Bitcoin,.."
+															/>
+														</div>
+													</div>
+													<IconButton
+														icon="delete"
+														className="col-start-2 row-start-1 ml-2 mt-[30px] lg:col-start-3 lg:ml-0"
+														disabled={values.financialAssets.length <= 1}
+														onClick={() => (values.financialAssets.length <= 1 ? '' : arrayHelpers.remove(index))}
+													/>
+												</div>
 
-                                            <hr className="border-gray-200 mt-3 mb-6" />
-                                        </Fragment>
-                                        )}
+												<hr className="mb-6 mt-3 border-gray-200" />
+											</Fragment>
+										))}
 
-                                        {/* Add Financial Asset Button */}
-                                        <Button datacy="button-add-financial-asset" onClick={() => arrayHelpers.push({
-                                            id: 'financial-assets' + Math.max(...values.financialAssets.map(financialAsset => financialAsset.id ?? 1)) + 1,
-                                            where: '',
-                                            amount: '',
-                                            currency: '€',
-                                        })} type="button" className="ml-auto mt-4 md:mt-0" kind="tertiary">
-                                            Geldvermögen hinzufügen
-                                        </Button>
-                                    </div>
-                                )}
-                            </FieldArray>
-                        </div>
+										{/* Add Financial Asset Button */}
+										<Button
+											datacy="button-add-financial-asset"
+											onClick={() =>
+												arrayHelpers.push({
+													id: Math.max(...values.financialAssets.map((financialAsset) => financialAsset.id)) + 1,
+													where: '',
+													amount: '',
+													currency: '€',
+												})
+											}
+											type="button"
+											className="ml-auto mt-4 md:mt-0"
+											kind="tertiary"
+										>
+											Geldvermögen hinzufügen
+										</Button>
+									</div>
+								)}
+							</FieldArray>
+						</div>
 
-                        {/* Items */}
-                        <div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
-                            <Headline level={3} size="md:text-lg">
-                                Gegenstände
-                            </Headline>
-                            <p className="text-gray-500 mb-2 md:mb-4">Hier erstellt man die Vermächtsnisse, die dann in der <Route kind="tertiary" className="inline-flex text-red hover:text-red-600" href={routes.lastWill.succession("1")}>Erbfolge</Route> zugewiesen werden können.</p>
+						{/* Items */}
+						<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
+							<Headline level={3} size="md:text-lg">
+								Gegenstände
+							</Headline>
+							<p className="mb-2 text-gray-500 md:mb-4">
+								Hier erstellt man die Vermächtsnisse, die dann in der{' '}
+								<Route
+									kind="tertiary"
+									className="inline-flex text-red hover:text-red-600"
+									href={routes.lastWill.succession('1')}
+								>
+									Erbfolge
+								</Route>{' '}
+								zugewiesen werden können.
+							</p>
 
-                            <FieldArray name="items">
-                                {(arrayHelpers: ArrayHelpers) => (
-                                    <div className="2xl:w-2/3">
-                                        {values.items.map((item, index) => <Fragment key={item.id}>
-                                            {/* Item Field */}
-                                            <div className="grid grid-cols-[1fr,auto] lg:grid-cols-[1fr,1fr,auto] lg:gap-x-3">
-                                                <TextInput name={`items.${index}.name`} inputRequired labelText="Name des Gegenstandes" placeholder="Ferienhaus in Italien" />
-                                                <div className="lg:row-start-1 col-start-1 col-end-3 lg:col-start-2">
-                                                    <TextInput name={`items.${index}.description`} inputRequired labelText="Beschreibung (Zweck)" placeholder="Begünstigte soll mein Grab pflegen." />
-                                                </div>
-                                                <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-4 mt-[30px] ml-2 lg:ml-0" disabled={values.items.length <= 1} onClick={() => values.items.length <= 1 ? "" : arrayHelpers.remove(index)} />
-                                            </div>
+							<FieldArray name="items">
+								{(arrayHelpers: ArrayHelpers) => (
+									<div className="2xl:w-2/3">
+										{values.items.map((item, index) => (
+											<Fragment key={item.id}>
+												{/* Item Field */}
+												<div className="grid grid-cols-[1fr,auto] lg:grid-cols-[1fr,1fr,auto] lg:gap-x-3">
+													<TextInput
+														name={`items.${index}.name`}
+														inputRequired
+														labelText="Name des Gegenstandes"
+														placeholder="Ferienhaus in Italien"
+													/>
+													<div className="col-start-1 col-end-3 lg:col-start-2 lg:row-start-1">
+														<TextInput
+															name={`items.${index}.description`}
+															inputRequired
+															labelText="Beschreibung (Zweck)"
+															placeholder="Begünstigte soll mein Grab pflegen."
+														/>
+													</div>
+													<IconButton
+														icon="delete"
+														className="col-start-2 row-start-1 ml-2 mt-[30px] lg:col-start-4 lg:ml-0"
+														disabled={values.items.length <= 1}
+														onClick={() => (values.items.length <= 1 ? '' : arrayHelpers.remove(index))}
+													/>
+												</div>
 
-                                            <hr className="border-gray-200 mt-3 mb-6" />
-                                        </Fragment>
-                                        )}
+												<hr className="mb-6 mt-3 border-gray-200" />
+											</Fragment>
+										))}
 
-                                        {/* Add Item Button */}
-                                        <Button datacy="button-add-item" onClick={() => arrayHelpers.push({
-                                            id: 'items' + Math.max(...values.items.map(items => items.id ?? 1)) + 1,
-                                            where: '',
-                                            amount: '',
-                                            currency: '€',
-                                        })} type="button" className="ml-auto mt-4 md:mt-0" kind="tertiary">
-                                            Gegenstand hinzufügen
-                                        </Button>
-                                    </div>
-                                )}
-                            </FieldArray>
-                        </div>
+										{/* Add Item Button */}
+										<Button
+											datacy="button-add-item"
+											onClick={() =>
+												arrayHelpers.push({
+													id: Math.max(...values.items.map((items) => items.id)) + 1,
+													where: '',
+													amount: '',
+													currency: '€',
+												})
+											}
+											type="button"
+											className="ml-auto mt-4 md:mt-0"
+											kind="tertiary"
+										>
+											Gegenstand hinzufügen
+										</Button>
+									</div>
+								)}
+							</FieldArray>
+						</div>
 
-                        {/* Form Steps Buttons */}
-                        <FormStepsButtons
-                            previousOnClick={() => onSubmit(values, routes.lastWill.heirs('1'))}
-                        />
-                    </Form>
-                )}
-            </Formik>
-        </div >
-    )
+						{/* Form Steps Buttons */}
+						<FormStepsButtons
+							loading={lastWill.common.isLoading}
+							dirty={dirty}
+							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
+							previousHref={PREVIOUS_LINK}
+							nextHref={NEXT_LINK}
+						/>
+					</Form>
+				)}
+			</Formik>
+		</div>
+	)
 }
 
 export default Inheritance
