@@ -38,7 +38,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 		<div className={`${width} mb-2 md:mb-4`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
-					<div className="relative my-1 flex flex-col justify-center gap-1">
+					<div className="relative flex flex-col justify-center gap-1">
 						{labelText && (
 							<Label datacy={`textinput-${name}`} name={name} labelText={labelText} inputRequired={inputRequired} />
 						)}
