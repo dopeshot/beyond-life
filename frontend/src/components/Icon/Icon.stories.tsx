@@ -9,14 +9,14 @@ const meta: Meta<typeof Icon> = {
 export default meta
 type Story = StoryObj<typeof Icon>
 
-export const IconNormal: Story = {
+export const Normal: Story = {
 	args: {
 		icon: 'person',
 		className: 'text-yellow',
 	},
 }
 
-export const IconFilled: Story = {
+export const Filled: Story = {
 	args: {
 		icon: 'person',
 		isFilled: true,

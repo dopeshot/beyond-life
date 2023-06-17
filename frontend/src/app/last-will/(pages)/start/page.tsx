@@ -28,7 +28,7 @@ const Start = () => {
 		germanRightOfInheritance: undefined,
 	}
 
-	const formValidation: ObjectSchema<StartLegal> = object().shape({
+	const validationSchema: ObjectSchema<StartLegal> = object().shape({
 		germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
 		germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
 	})
@@ -61,7 +61,7 @@ const Start = () => {
 			{/* Left Image with Text end */}
 
 			{/* Form Fields */}
-			<Formik initialValues={initalFormValues} validationSchema={formValidation} onSubmit={onSubmit}>
+			<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
 					<Form className="flex h-full flex-col lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}
@@ -70,6 +70,7 @@ const Start = () => {
 								name="germanCitizenship"
 								className="mb-2 block font-semibold"
 								labelText="Besitzt der Erblasser die Deutsche Staatsbürgerschaft?"
+								isLegend
 								inputRequired
 							/>
 							<div className="mb-2 grid grid-cols-2 gap-3">
@@ -100,6 +101,7 @@ const Start = () => {
 								name="germanRightOfInheritance"
 								className="mb-2 block font-semibold"
 								labelText="Soll das Testament nach Deutschem Erbrecht verfasst werden?"
+								isLegend
 								inputRequired
 							/>
 							<div className="mb-2 grid grid-cols-2 gap-3">

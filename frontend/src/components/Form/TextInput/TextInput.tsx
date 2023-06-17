@@ -44,13 +44,14 @@ export const TextInput: React.FC<TextInputProps> = ({
 						)}
 						<div className={`flex items-center`}>
 							<input
+								id={name}
 								datacy={`textinput-${name}-input`}
 								type={type}
 								{...fieldProps.field}
 								{...props}
-								className={`flex w-full items-center rounded-lg border bg-gray-200 p-2 px-4 ${icon && 'pr-12'} ${
-									fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''
-								}`}
+								className={`flex w-full items-center rounded-lg border border-gray-100 bg-gray-100 p-2 px-4 placeholder:text-gray-400 ${
+									icon && 'pr-12'
+								} ${fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''}`}
 							/>
 							{icon && (
 								<div className={'w-0'}>

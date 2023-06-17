@@ -22,12 +22,11 @@ const Template: Story = {
 	},
 }
 
-export const DropdownDefault = {
+export const Default: Story = {
 	...Template,
 	args: {
 		name: 'gender',
 		labelText: 'Label',
-		helperText: 'Helper Text',
 		placeholder: 'Placeholder',
 		options: [
 			{ value: '1', label: 'Männlich' },
