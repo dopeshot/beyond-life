@@ -71,11 +71,17 @@ const Inheritance = () => {
 
                             <div className="2xl:w-2/3">
                                 {/* Financial Asset Fields */}
-                                <div className="grid grid-cols-[3fr,2fr,1fr,auto] items-end gap-3 mb-3">
+                                <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] items-end lg:gap-3 mb-3">
                                     <TextInput name="financialAssets.where" inputRequired labelText="Bank/Ort" placeholder="BW Bank Stuttgart, Bar,..." />
-                                    <TextInput name="financialAssets.amount" type="number" inputRequired labelText="Betrag" placeholder="10.000" />
-                                    <TextInput name="financialAssets.currency" inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
-                                    <IconButton icon="delete" className="mb-5" />
+                                    <div className="flex gap-x-3 row-start-2 col-start-1 col-end-4 lg:row-start-1 lg:col-start-2 lg:col-end-auto">
+                                        <div className="w-2/3">
+                                            <TextInput name="financialAssets.amount" type="number" min={0} inputRequired labelText="Betrag" placeholder="10.000" />
+                                        </div>
+                                        <div className="w-1/3">
+                                            <TextInput name="financialAssets.currency" inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
+                                        </div>
+                                    </div>
+                                    <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-3 mb-2 md:mb-4" />
                                 </div>
 
                                 <hr />
@@ -90,7 +96,6 @@ const Inheritance = () => {
                                 <Button datacy="button-add-financial-asset" type="button" className="ml-auto" kind="tertiary">
                                     Geldvermögen hinzufügen
                                 </Button>
-
                             </div>
                         </div>
 
@@ -109,7 +114,7 @@ const Inheritance = () => {
                     </Form>
                 )}
             </Formik>
-        </div>
+        </div >
     )
 }
 
