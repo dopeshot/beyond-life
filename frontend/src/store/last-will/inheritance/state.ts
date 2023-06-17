@@ -4,18 +4,17 @@ export type InheritanceState = {
 }
 
 export type FinancialAsset = {
+	id: number
 	where?: string
 	amount?: number | string
 	currency?: string
 }
 
 export type Item = {
+	id: number
 	name?: string
 	description?: string
 }
-
-export type ItemForm = Item & { id?: number }
-export type FinancialAssetForm = FinancialAsset & { id?: number }
 
 export const initialInheritanceState: InheritanceState = {
 	financialAssets: [],

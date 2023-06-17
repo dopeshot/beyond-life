@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { FinancialAssetForm, ItemForm } from './state'
+import { FinancialAsset, Item } from './state'
 
 export type InheritanceActions =
 	| {
@@ -11,8 +11,8 @@ export type InheritanceActions =
 	  }
 
 export type InheritanceFormPayload = {
-	financialAssets: FinancialAssetForm[]
-	items: ItemForm[]
+	financialAssets: FinancialAsset[]
+	items: Item[]
 }
 
 export const submitInheritanceAction = async (

@@ -1,13 +1,8 @@
+import { FinancialAsset } from './state'
+
 export type InheritanceResponse = {
-	financialAssets: {
-		where?: string
-		amount?: number | string
-		currency?: string
-	}[]
-	items: {
-		name?: string
-		description?: string
-	}[]
+	financialAssets: FinancialAsset[]
+	items: FinancialAsset[]
 }
 
 // export const saveInheritance = async (payload: InheritanceFormPayload) => {

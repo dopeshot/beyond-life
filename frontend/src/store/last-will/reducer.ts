@@ -112,28 +112,6 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 		}
 
 		case 'EFFECT_SET_INHERITANCE': {
-			let { financialAssets, items } = action.payload
-
-			// Empty all arrays with empty objects
-			financialAssets = financialAssets.filter(
-				(financialAsset) =>
-					financialAsset.where !== '' || financialAsset.amount !== '' || financialAsset.currency !== '€'
-			)
-			items = items.filter((item) => item.name !== '' || item.description !== '')
-
-			// Remove id from all objects
-			const financialAssetsWithoutId = financialAssets.map((asset) => {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const { id, ...rest } = asset
-				return rest
-			})
-
-			const itemsWithoutId = items.map((item) => {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const { id, ...rest } = item
-				return rest
-			})
-
 			return {
 				...state,
 				common: {
@@ -141,8 +119,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 					isLoading: false,
 				},
 				inheritance: {
-					financialAssets: financialAssetsWithoutId,
-					items: itemsWithoutId,
+					...state.inheritance,
 				},
 			}
 		}
