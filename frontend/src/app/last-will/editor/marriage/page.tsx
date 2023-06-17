@@ -170,7 +170,7 @@ const Marriage = () => {
 											<Dropdown
 												name="partnerGender"
 												labelText="Geschlecht"
-												placeholder="Wähle ein Geschlecht"
+												placeholder="Geschlecht"
 												hasMargin
 												options={genderOptions}
 											/>
