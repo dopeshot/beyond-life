@@ -1,7 +1,7 @@
 'use client'
-import { Form, Formik, FormikProps } from 'formik'
+import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
@@ -13,6 +13,7 @@ import { SidebarPages } from '../../../../types/sidebar'
 
 type InheritanceFormPayload = {
     financialAssets: {
+        id: number
         where: string
         amount: number
         currency: string
@@ -36,6 +37,7 @@ const Inheritance = () => {
     const initalFormValues: InheritanceFormPayload = {
         financialAssets: [
             {
+                id: 1,
                 where: '',
                 amount: 0,
                 currency: '€',
@@ -67,36 +69,40 @@ const Inheritance = () => {
                             <Headline level={3} size="md:text-lg">
                                 Geld Vermögen
                             </Headline>
-                            <p className="text-gray-500 mb-2 md:mb-4">Wie viel Vermögen haben Sie in allen Banken, Krypto, Bar,..?</p>
+                            <p className="text-gray-500 mb-2 md:mb-4">Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar,..?</p>
 
-                            <div className="2xl:w-2/3">
-                                {/* Financial Asset Fields */}
-                                <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] items-end lg:gap-3 mb-3">
-                                    <TextInput name="financialAssets.where" inputRequired labelText="Bank/Ort" placeholder="BW Bank Stuttgart, Bar,..." />
-                                    <div className="flex gap-x-3 row-start-2 col-start-1 col-end-4 lg:row-start-1 lg:col-start-2 lg:col-end-auto">
-                                        <div className="w-2/3">
-                                            <TextInput name="financialAssets.amount" type="number" min={0} inputRequired labelText="Betrag" placeholder="10.000" />
-                                        </div>
-                                        <div className="w-1/3">
-                                            <TextInput name="financialAssets.currency" inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
-                                        </div>
+                            <FieldArray name="financialAssets">
+                                {(arrayHelpers: ArrayHelpers) => (
+                                    <div className="2xl:w-2/3">
+                                        {values.financialAssets.map((financialAsset, index) => <Fragment key={financialAsset.id}>
+                                            {/* Financial Asset Field */}
+                                            <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] items-end lg:gap-x-3 mb-3">
+                                                <TextInput name={`financialAssets.${index}.where`} inputRequired labelText="Bank/Ort" placeholder="BW Bank Stuttgart, Bar,..." />
+                                                <div className="flex gap-x-3 row-start-2 col-start-1 col-end-4 lg:row-start-1 lg:col-start-2 lg:col-end-auto">
+                                                    <div className="w-2/3">
+                                                        <TextInput name={`financialAssets.${index}.amount`} type="number" min={0} inputRequired labelText="Betrag" placeholder="10.000" />
+                                                    </div>
+                                                    <div className="w-1/3">
+                                                        <TextInput name={`financialAssets.${index}.currency`} inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
+                                                    </div>
+                                                </div>
+                                                <IconButton icon="delete" disabled={values.financialAssets.length <= 1} onClick={() => values.financialAssets.length <= 1 ? "" : arrayHelpers.remove(index)} className="row-start-1 col-start-2 lg:col-start-3 mb-2 md:mb-4" />
+                                            </div>
+                                        </Fragment>
+                                        )}
+
+                                        {/* Add Financial Asset Button */}
+                                        <Button datacy="button-add-financial-asset" onClick={() => arrayHelpers.push({
+                                            id: Math.max(...values.financialAssets.map(financialAsset => financialAsset.id)) + 1,
+                                            where: '',
+                                            amount: 0,
+                                            currency: '€',
+                                        })} type="button" className="ml-auto" kind="tertiary">
+                                            Geldvermögen hinzufügen
+                                        </Button>
                                     </div>
-                                    <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-3 mb-2 md:mb-4" />
-                                </div>
-
-                                <hr />
-
-                                {/* Sum Financial Assets */}
-                                <div className="flex items-center mb-4">
-                                    <span className="font-semibold">Summe</span>
-                                    <span className="text-2xl font-semibold ml-auto">0 €</span>
-                                </div>
-
-                                {/* Add Financial Asset Button */}
-                                <Button datacy="button-add-financial-asset" type="button" className="ml-auto" kind="tertiary">
-                                    Geldvermögen hinzufügen
-                                </Button>
-                            </div>
+                                )}
+                            </FieldArray>
                         </div>
 
                         {/* Form Step Buttons */}
