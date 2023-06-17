@@ -119,7 +119,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 					isLoading: false,
 				},
 				inheritance: {
-					...state.inheritance,
+					...action.payload,
 				},
 			}
 		}
