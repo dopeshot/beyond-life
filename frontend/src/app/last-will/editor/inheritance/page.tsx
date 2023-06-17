@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
@@ -19,7 +20,7 @@ type InheritanceFormPayload = {
         amount?: number | string
         currency?: string
     }[],
-    legacy: {
+    items: {
         id?: number
         name?: string
         description?: string
@@ -45,7 +46,7 @@ const Inheritance = () => {
                 currency: '€',
             }
         ],
-        legacy: [
+        items: [
             {
                 id: 1,
                 name: '',
@@ -68,7 +69,7 @@ const Inheritance = () => {
             amount: number().min(1, 'Betrag muss größer als 0 sein.'),
             currency: string(),
         })).required(),
-        legacy: array().of(object().shape({
+        items: array().of(object().shape({
             id: number(),
             name: string(),
             description: string(),
@@ -87,19 +88,19 @@ const Inheritance = () => {
             <Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={(values) => onSubmit(values, routes.lastWill.succession("1"))}>
                 {({ values }: FormikProps<InheritanceFormPayload>) => (
                     <Form>
+                        {/* Financial Assets */}
                         <div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
                             <Headline level={3} size="md:text-lg">
                                 Geld Vermögen
                             </Headline>
                             <p className="text-gray-500 mb-2 md:mb-4">Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar,..?</p>
 
-                            {/* Financial Assets */}
                             <FieldArray name="financialAssets">
                                 {(arrayHelpers: ArrayHelpers) => (
                                     <div className="2xl:w-2/3">
                                         {values.financialAssets.map((financialAsset, index) => <Fragment key={financialAsset.id}>
                                             {/* Financial Asset Field */}
-                                            <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] items-start lg:gap-x-3 h-auto">
+                                            <div className="grid grid-cols-[1fr,auto,auto] lg:grid-rows-1 lg:grid-cols-[2fr,3fr,auto] lg:gap-x-3">
                                                 <TextInput name={`financialAssets.${index}.where`} inputRequired labelText="Bank/Ort" placeholder="BW Bank Stuttgart, Bar,..." />
                                                 <div className="flex gap-x-3 row-start-2 col-start-1 col-end-4 lg:row-start-1 lg:col-start-2 lg:col-end-auto">
                                                     <div className="w-2/3">
@@ -109,19 +110,59 @@ const Inheritance = () => {
                                                         <TextInput name={`financialAssets.${index}.currency`} inputRequired labelText="Währung" placeholder="€, Bitcoin,.." />
                                                     </div>
                                                 </div>
-                                                <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-3 mt-[30px]" disabled={values.financialAssets.length <= 1} onClick={() => values.financialAssets.length <= 1 ? "" : arrayHelpers.remove(index)} />
+                                                <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-3 mt-[30px] ml-2 lg:ml-0" disabled={values.financialAssets.length <= 1} onClick={() => values.financialAssets.length <= 1 ? "" : arrayHelpers.remove(index)} />
                                             </div>
+
+                                            <hr className="border-gray-200 mt-3 mb-6" />
                                         </Fragment>
                                         )}
 
                                         {/* Add Financial Asset Button */}
                                         <Button datacy="button-add-financial-asset" onClick={() => arrayHelpers.push({
-                                            id: Math.max(...values.financialAssets.map(financialAsset => financialAsset.id ?? 1)) + 1,
+                                            id: 'financial-assets' + Math.max(...values.financialAssets.map(financialAsset => financialAsset.id ?? 1)) + 1,
                                             where: '',
                                             amount: '',
                                             currency: '€',
                                         })} type="button" className="ml-auto mt-4 md:mt-0" kind="tertiary">
                                             Geldvermögen hinzufügen
+                                        </Button>
+                                    </div>
+                                )}
+                            </FieldArray>
+                        </div>
+
+                        {/* Items */}
+                        <div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
+                            <Headline level={3} size="md:text-lg">
+                                Gegenstände
+                            </Headline>
+                            <p className="text-gray-500 mb-2 md:mb-4">Hier erstellt man die Vermächtsnisse, die dann in der <Route kind="tertiary" className="inline-flex text-red hover:text-red-600" href={routes.lastWill.succession("1")}>Erbfolge</Route> zugewiesen werden können.</p>
+
+                            <FieldArray name="items">
+                                {(arrayHelpers: ArrayHelpers) => (
+                                    <div className="2xl:w-2/3">
+                                        {values.items.map((item, index) => <Fragment key={item.id}>
+                                            {/* Item Field */}
+                                            <div className="grid grid-cols-[1fr,auto] lg:grid-cols-[1fr,1fr,auto] lg:gap-x-3">
+                                                <TextInput name={`items.${index}.name`} inputRequired labelText="Name des Gegenstandes" placeholder="Ferienhaus in Italien" />
+                                                <div className="lg:row-start-1 col-start-1 col-end-3 lg:col-start-2">
+                                                    <TextInput name={`items.${index}.description`} inputRequired labelText="Beschreibung (Zweck)" placeholder="Begünstigte soll mein Grab pflegen." />
+                                                </div>
+                                                <IconButton icon="delete" className="row-start-1 col-start-2 lg:col-start-4 mt-[30px] ml-2 lg:ml-0" disabled={values.items.length <= 1} onClick={() => values.items.length <= 1 ? "" : arrayHelpers.remove(index)} />
+                                            </div>
+
+                                            <hr className="border-gray-200 mt-3 mb-6" />
+                                        </Fragment>
+                                        )}
+
+                                        {/* Add Item Button */}
+                                        <Button datacy="button-add-item" onClick={() => arrayHelpers.push({
+                                            id: 'items' + Math.max(...values.items.map(items => items.id ?? 1)) + 1,
+                                            where: '',
+                                            amount: '',
+                                            currency: '€',
+                                        })} type="button" className="ml-auto mt-4 md:mt-0" kind="tertiary">
+                                            Gegenstand hinzufügen
                                         </Button>
                                     </div>
                                 )}
