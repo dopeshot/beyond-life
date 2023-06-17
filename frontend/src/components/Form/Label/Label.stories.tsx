@@ -9,7 +9,7 @@ const meta: Meta<typeof Label> = {
 export default meta
 type Story = StoryObj<typeof Label>
 
-export const LabelDefault: Story = {
+export const Default: Story = {
 	args: {
 		name: 'email',
 		labelText: 'Email',

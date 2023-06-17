@@ -8,7 +8,7 @@ export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
 	name: string
 	/** Provide a label to provide a description of the Checkbox input that you are exposing to the user. */
-	labelText: string
+	labelText?: string
 	/** A list of options to choose from. */
 	options: SelectableOption[]
 	/** Provides assistance on how to fill out a field. */
@@ -25,19 +25,27 @@ export type CheckboxProps = {
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
 	return (
 		<>
-			<Label isLegend name={`checkbox-${name}`} labelText={labelText} inputRequired={labelRequired} />
+			{labelText && (
+				<Label
+					isLegend
+					className="font-semibold"
+					name={`checkbox-${name}`}
+					labelText={labelText}
+					inputRequired={labelRequired}
+				/>
+			)}
 			{options.map((option) => (
 				<label
 					datacy={`checkbox-${name}-option-${option.id}`}
 					key={option.id}
 					className="my-1 flex cursor-pointer items-center"
 				>
-					<Field type="checkbox" className="mr-1" name={name} value={`${option.id}`} />
+					<Field type="checkbox" className="mr-2" name={name} value={`${option.id}`} />
 					{option.icon && <Icon icon={option.icon} />}
-					<span className="text-darkgrey text-sm font-semibold">{option.label}</span>
+					<span>{option.label}</span>
 				</label>
 			))}
-			<p datacy={`checkbox-${name}-helpertext`} className="text-lightgrey mb-4 text-sm">
+			<p datacy={`checkbox-${name}-helpertext`} className="text-sm text-gray-500">
 				{helperText}
 			</p>
 			<FormError fieldName={name} />

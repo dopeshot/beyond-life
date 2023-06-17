@@ -22,7 +22,7 @@ const Template: Story = {
 	},
 }
 
-export const ToggleDefault = {
+export const Default: Story = {
 	...Template,
 	args: {
 		name: 'toggle',
@@ -33,7 +33,7 @@ export const ToggleDefault = {
 	},
 }
 
-export const ToggleRequired = {
+export const Required: Story = {
 	...Template,
 	args: {
 		name: 'toggle',
