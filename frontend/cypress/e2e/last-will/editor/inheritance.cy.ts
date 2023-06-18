@@ -5,6 +5,9 @@ describe('Last Will Inheritance Page', () => {
 
 	describe('Basic Flow', () => {
 		it('should fill out one financial asset and one item and redirect to /last-will/editor/succession?id=1 after submit', () => {
+			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			cy.wait(200)
+
 			// Fill out financial asset
 			cy.datacy('textinput-financialAssets-0-where').type('Bank')
 			cy.datacy('textinput-financialAssets-0-amount').type('1000')
