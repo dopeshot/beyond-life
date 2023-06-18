@@ -97,6 +97,7 @@ const Inheritance = () => {
 												{/* Financial Asset Field */}
 												<div className="grid grid-cols-[1fr,auto,auto] lg:grid-cols-[2fr,3fr,auto] lg:grid-rows-1 lg:gap-x-3">
 													<TextInput
+														datacy={`textinput-financialAssets-${index}-where`}
 														name={`financialAssets.${index}.where`}
 														inputRequired
 														labelText="Bank/Ort"
@@ -105,6 +106,7 @@ const Inheritance = () => {
 													<div className="col-start-1 col-end-4 row-start-2 flex gap-x-3 lg:col-start-2 lg:col-end-auto lg:row-start-1">
 														<div className="w-2/3">
 															<TextInput
+																datacy={`textinput-financialAssets-${index}-amount`}
 																name={`financialAssets.${index}.amount`}
 																type="number"
 																min={1}
@@ -115,6 +117,7 @@ const Inheritance = () => {
 														</div>
 														<div className="w-1/3">
 															<TextInput
+																datacy={`textinput-financialAssets-${index}-currency`}
 																name={`financialAssets.${index}.currency`}
 																inputRequired
 																labelText="Währung"
@@ -123,6 +126,7 @@ const Inheritance = () => {
 														</div>
 													</div>
 													<IconButton
+														datacy={`button-delete-financial-asset-${index}`}
 														icon="delete"
 														className="col-start-2 row-start-1 ml-2 mt-[30px] lg:col-start-3 lg:ml-0"
 														disabled={values.financialAssets.length <= 1}
@@ -181,6 +185,7 @@ const Inheritance = () => {
 												{/* Item Field */}
 												<div className="grid grid-cols-[1fr,auto] lg:grid-cols-[1fr,1fr,auto] lg:gap-x-3">
 													<TextInput
+														datacy={`textinput-items-${index}-name`}
 														name={`items.${index}.name`}
 														inputRequired
 														labelText="Name des Gegenstandes"
@@ -188,6 +193,7 @@ const Inheritance = () => {
 													/>
 													<div className="col-start-1 col-end-3 lg:col-start-2 lg:row-start-1">
 														<TextInput
+															datacy={`textinput-items-${index}-description`}
 															name={`items.${index}.description`}
 															inputRequired
 															labelText="Beschreibung (Zweck)"
@@ -195,6 +201,7 @@ const Inheritance = () => {
 														/>
 													</div>
 													<IconButton
+														datacy={`button-delete-item-${index}`}
 														icon="delete"
 														className="col-start-2 row-start-1 ml-2 mt-[30px] lg:col-start-4 lg:ml-0"
 														disabled={values.items.length <= 1}
