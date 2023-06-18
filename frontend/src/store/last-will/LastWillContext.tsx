@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
 import { setProgressKeyService } from './common/actions'
+import { submitMarriageAction } from './marriage/actions'
 import { initalLastWillState, lastWillReducer } from './reducer'
 import { submitTestatorAction } from './testator/actions'
 import { LastWillContextType } from './types'
@@ -18,13 +19,18 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 	}, [initLastWill])
 
 	// Global State Services
+	const setProgressKey = useCallback<LastWillContextType['services']['setProgressKey']>(
+		(payload) => setProgressKeyService(dispatch, payload),
+		[]
+	)
+
 	const submitTestator = useCallback<LastWillContextType['services']['submitTestator']>(
 		(payload) => submitTestatorAction(dispatch, payload),
 		[]
 	)
 
-	const setProgressKey = useCallback<LastWillContextType['services']['setProgressKey']>(
-		(payload) => setProgressKeyService(dispatch, payload),
+	const submitMarriage = useCallback<LastWillContextType['services']['submitMarriage']>(
+		async (payload) => await submitMarriageAction(dispatch, payload),
 		[]
 	)
 
@@ -33,8 +39,9 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 			value={{
 				lastWill,
 				services: {
-					submitTestator,
 					setProgressKey,
+					submitTestator,
+					submitMarriage,
 				},
 			}}
 		>

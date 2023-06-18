@@ -8,9 +8,11 @@ const meta: Meta<typeof Checkbox> = {
 	title: 'Design System/Checkbox',
 	component: Checkbox,
 }
-export default meta
 
-const Template: StoryObj<CheckboxProps> = {
+export default meta
+type Story = StoryObj<CheckboxProps>
+
+const Template: Story = {
 	render: (args) => {
 		return (
 			<Formik
@@ -37,7 +39,7 @@ const Template: StoryObj<CheckboxProps> = {
 	},
 }
 
-export const Default = {
+export const Default: Story = {
 	...Template,
 	args: {
 		name: 'checkbox',
@@ -50,7 +52,7 @@ export const Default = {
 	},
 }
 
-export const Required = {
+export const Required: Story = {
 	...Template,
 	args: {
 		...Default.args,
@@ -58,7 +60,7 @@ export const Required = {
 	},
 }
 
-export const HelperText = {
+export const HelperText: Story = {
 	...Template,
 	args: {
 		...Default.args,

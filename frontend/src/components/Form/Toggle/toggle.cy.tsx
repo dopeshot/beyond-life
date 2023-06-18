@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik'
 import 'material-symbols'
-import '../../app/globals.css'
+import '../../../app/globals.css'
 import { Toggle } from './Toggle'
 
 const initialValues = {
