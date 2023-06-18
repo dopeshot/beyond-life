@@ -44,6 +44,8 @@ describe('Last Will Inheritance Page', () => {
 	describe('Items', () => {
 		it('should add an item', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			cy.wait(200)
+
 			cy.datacy('button-add-item').click()
 			cy.datacy('textinput-items-1-name').should('be.visible')
 		})
