@@ -31,6 +31,9 @@ describe('Last Will Inheritance Page', () => {
 		})
 
 		it('should remove a financial asset', () => {
+			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			cy.wait(200)
+
 			cy.datacy('button-add-financial-asset').click()
 			cy.datacy('button-delete-financial-asset-1').click()
 			cy.datacy('textinput-financialAssets-1-where').should('not.exist')
@@ -51,6 +54,9 @@ describe('Last Will Inheritance Page', () => {
 		})
 
 		it('should remove an item', () => {
+			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			cy.wait(200)
+
 			cy.datacy('button-add-item').click()
 			cy.datacy('button-delete-item-1').click()
 			cy.datacy('textinput-items-1-name').should('not.exist')
