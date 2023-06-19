@@ -35,7 +35,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	...props
 }) => {
 	return (
-		<div className={`${width}`}>
+		<div className={`${width} mb-2 md:mb-4`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
 					<div className="relative flex flex-col justify-center gap-1">

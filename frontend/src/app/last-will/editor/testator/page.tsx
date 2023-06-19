@@ -37,9 +37,18 @@ const Testator = () => {
 		city: string(),
 	})
 
-	const onSubmit = () => {
-		// TODO update last will context
-		router.push(routes.lastWill.marriage('1'))
+	const onSubmit = async (values: TestatorFormPayload, href: string) => {
+		try {
+			if (JSON.stringify(values) !== JSON.stringify(initialFormValues)) {
+				// Update marriage global state only if values have changed
+				services.submitTestator(values)
+			}
+
+			// Redirect to previous or next page
+			router.push(href)
+		} catch (error) {
+			console.error('An error occured while submitting the form: ', error)
+		}
 	}
 
 	return (
@@ -47,8 +56,12 @@ const Testator = () => {
 			<Headline hasMargin={false}>Erblasser</Headline>
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
-			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-				{({ isValid, dirty }: FormikProps<TestatorFormPayload>) => (
+			<Formik
+				initialValues={initialFormValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => onSubmit(values, routes.lastWill.marriage('1'))}
+			>
+				{({ values }: FormikProps<TestatorFormPayload>) => (
 					<Form className="mb-2 mt-4 flex h-full w-full flex-1 flex-col md:mb-0">
 						<div className="flex w-full flex-1 flex-col">
 							<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
@@ -94,25 +107,24 @@ const Testator = () => {
 										</div>
 									</div>
 								</div>
-
-								{/* More Infos */}
-								<div className="mt-6 md:mt-10">
-									<Checkbox
-										name="moreInfos"
-										labelText="Weitere relevante Infos"
-										labelRequired
-										helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
-										options={testatorMoreInfosOptions}
-									/>
-								</div>
-								{/* Personal Data end */}
 							</div>
+
+							{/* More Infos */}
+							<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
+								<Checkbox
+									name="moreInfos"
+									labelText="Weitere relevante Infos"
+									labelRequired
+									helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
+									options={testatorMoreInfosOptions}
+								/>
+							</div>
+							{/* Personal Data end */}
 						</div>
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							href={routes.lastWill.testator('1')}
-							disabled={!(dirty && isValid)}
+							previousOnClick={() => onSubmit(values, routes.lastWill.marriage('1'))}
 							loading={lastWill.common.isLoading}
 						/>
 					</Form>

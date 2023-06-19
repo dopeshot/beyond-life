@@ -12,7 +12,7 @@ export type FormStepsButtonsProps = {
  */
 export const FormStepsButtons: React.FC<FormStepsButtonsProps> = ({ previousOnClick, loading = false }) => {
 	return (
-		<div className="mb-4 mt-6 flex flex-col items-center justify-between md:mb-5 md:mt-6 md:flex-row">
+		<div className="mb-4 mt-8 flex flex-col items-center justify-between md:mb-5 md:mt-10 md:flex-row">
 			{/* Previous Step */}
 			<Button
 				datacy="route-previous-Step"
