@@ -1,17 +1,15 @@
-import { TestatorFormPayload } from './actions'
-
 export type TestatorResponse = {
-	name: string
+	firstName: string
 }
 
-export const saveTestator = async (payload: TestatorFormPayload) => {
-	// simulate async request
-	const data = await new Promise<TestatorResponse>((resolve) => {
-		setTimeout(() => {
-			resolve({
-				name: payload.name,
-			})
-		}, 1000)
-	})
-	return data
-}
+// export const saveTestator = async (payload: TestatorFormPayload) => {
+// 	// simulate async request
+// 	const data = await new Promise<TestatorResponse>((resolve) => {
+// 		setTimeout(() => {
+// 			resolve({
+// 				firstName: payload.firstName,
+// 			})
+// 		}, 1000)
+// 	})
+// 	return data
+// }
