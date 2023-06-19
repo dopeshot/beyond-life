@@ -1,8 +1,10 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { Icon } from '../../../../components/Icon/Icon'
+import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarPages } from '../../../../types/sidebar'
 
@@ -10,7 +12,12 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Final Page for copy last will.
  */
 const Final = () => {
+	const router = useRouter()
 	const { services } = useLastWillContext()
+
+	const onSubmit = async (href: string) => {
+		router.push(href)
+	}
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.FINAL })
@@ -40,7 +47,7 @@ const Final = () => {
 			</div>
 
 			{/* Form Steps Buttons */}
-			<FormStepsButtons previousOnClick={() => {}} loading={false} />
+			<FormStepsButtons previousOnClick={() => onSubmit(routes.lastWill.testator('1'))} loading={false} />
 		</div>
 	)
 }
