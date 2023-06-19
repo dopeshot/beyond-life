@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions'
 import { Meta, StoryObj } from '@storybook/react'
 import { FormStepsButtons, FormStepsButtonsProps } from './FormStepsButtons'
 
@@ -11,7 +12,6 @@ type Story = StoryObj<FormStepsButtonsProps>
 
 export const Default: Story = {
 	args: {
-		href: '/',
-		disabled: false,
+		previousOnClick: async () => action(`previous button clicked`)(''),
 	},
 }

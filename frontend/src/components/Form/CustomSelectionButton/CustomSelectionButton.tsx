@@ -50,7 +50,7 @@ export const CustomSelectionButton: React.FC<CustomSelectionButtonProps> = ({
 				<Icon datacy={`${datacy}-inactive-icon`} icon="circle" className="ml-auto h-4 text-gray-200" />
 			)}
 			{icon && <Icon icon={icon} className={`${active ? `text-${activeColor}-500` : 'text-gray-300'} text-4xl`} />}
-			<h6 datacy={`${datacy}-headline`} className="mt-1 font-medium md:mt-0">
+			<h6 datacy={`${datacy}-headline`} className="mt-1 font-medium">
 				{headline}
 			</h6>
 			{description && (

@@ -36,54 +36,36 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
-		relationshipStatus: string<RelationshipStatus>().required(
-			'Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'
-		),
+		relationshipStatus: string<RelationshipStatus>(),
 		partnerGermanCitizenship: array<string[]>(),
-		partnerFirstName: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
-		partnerLastName: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
+		partnerFirstName: string(),
+		partnerLastName: string(),
 		partnerGender: string<Gender>(),
 		partnerDateOfBirth: string(),
 		partnerPlaceOfBirth: string(),
-		partnerStreet: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
-		partnerHouseNumber: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
+		partnerStreet: string(),
+		partnerHouseNumber: string(),
 		partnerZipCode: string().when('relationshipStatus', {
 			is: 'married',
-			then: (schema) =>
-				schema
-					.required('Dieses Feld ist erforderlich.')
-					.min(5, 'Postleitzahl muss 5 Ziffern haben')
-					.max(5, 'Postleitzahl muss 5 Ziffern haben.'),
+			then: (schema) => schema.min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
 		}),
-		partnerCity: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
+		partnerCity: string(),
 		partnerMoreInfos: array<MoreInfos[]>(),
-		matrimonialProperty: string<MatrimonialProperty>().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.required('Dieses Feld ist erforderlich.'),
-		}),
+		matrimonialProperty: string<MatrimonialProperty>(),
 	})
 
-	const onSubmit = async (values: MarriageFormPayload) => {
-		// Update marriage global state
-		await services.submitMarriage(values)
+	const onSubmit = async (values: MarriageFormPayload, href: string) => {
+		try {
+			if (JSON.stringify(values) !== JSON.stringify(initalFormValues)) {
+				// Update marriage global state only if values have changed
+				await services.submitMarriage(values)
+			}
 
-		// Redirect to Heirs Page
-		router.push(routes.lastWill.heirs('1'))
+			// Redirect to previous or next page
+			router.push(href)
+		} catch (error) {
+			console.error('An error occurred while submitting the form: ', error)
+		}
 	}
 
 	// Use to handle save current page
@@ -95,8 +77,12 @@ const Marriage = () => {
 		<div className="container mt-5">
 			<Headline className="md:mb-8">Familienstand</Headline>
 
-			<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-				{({ values, setFieldValue, isValid, dirty }: FormikProps<MarriageFormPayload>) => (
+			<Formik
+				initialValues={initalFormValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => onSubmit(values, routes.lastWill.heirs('1'))}
+			>
+				{({ values, setFieldValue }: FormikProps<MarriageFormPayload>) => (
 					<Form>
 						{/* Marriage Field */}
 						<div className="mb-4">
@@ -170,7 +156,7 @@ const Marriage = () => {
 											<Dropdown
 												name="partnerGender"
 												labelText="Geschlecht"
-												placeholder="Wähle ein Geschlecht"
+												placeholder="Geschlecht"
 												hasMargin
 												options={genderOptions}
 											/>
@@ -254,8 +240,7 @@ const Marriage = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							href={routes.lastWill.testator('1')}
-							disabled={!(dirty && isValid)}
+							previousOnClick={() => onSubmit(values, routes.lastWill.testator('1'))}
 							loading={lastWill.common.isLoading}
 						/>
 					</Form>
