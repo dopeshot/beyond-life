@@ -26,11 +26,11 @@ const Testator = () => {
 	}
 
 	const validationSchema: ObjectSchema<TestatorFormPayload> = object().shape({
-		firstName: string().required('Bitte geben Sie einen Vornamen an.'),
-		lastName: string().required('Bitte geben Sie einen Nachnamen an.'),
+		firstName: string(),
+		lastName: string(),
 		gender: string<Gender>(),
 		birthDate: string(),
-		birthPlace: string().required('Bitte geben Sie einen Geburtsort an.'),
+		birthPlace: string(),
 		address: string(),
 		houseNumber: string(),
 		postalCode: string(),
@@ -74,7 +74,7 @@ const Testator = () => {
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
 										<TextInput name="firstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-										<TextInput name="LastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+										<TextInput name="lastName" inputRequired labelText="Nachname" placeholder="Nachname" />
 
 										{/* Gender and Birth */}
 										<div className="grid gap-x-3 md:grid-cols-2">
