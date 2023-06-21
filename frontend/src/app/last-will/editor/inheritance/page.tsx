@@ -86,7 +86,7 @@ const Inheritance = () => {
 								Geld Vermögen
 							</Headline>
 							<p className="mb-2 text-gray-500 md:mb-4">
-								Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar,..?
+								Wie viel Vermögen haben Sie in allen Banken, Aktien, Krypto, Bar...?
 							</p>
 
 							<FieldArray name="financialAssets">
@@ -101,7 +101,7 @@ const Inheritance = () => {
 														name={`financialAssets.${index}.where`}
 														inputRequired
 														labelText="Bank/Ort"
-														placeholder="BW Bank Stuttgart, Bar,..."
+														placeholder="BW Bank Stuttgart, Bar..."
 													/>
 													<div className="col-start-1 col-end-4 row-start-2 flex gap-x-3 lg:col-start-2 lg:col-end-auto lg:row-start-1">
 														<div className="w-2/3">
@@ -166,7 +166,7 @@ const Inheritance = () => {
 								Gegenstände
 							</Headline>
 							<p className="mb-2 text-gray-500 md:mb-4">
-								Hier erstellt man die Vermächtsnisse, die dann in der{' '}
+								Hier erstellt man die Vermächtnisse, die dann in der{' '}
 								<Route
 									kind="tertiary"
 									className="inline-flex text-red hover:text-red-600"
@@ -195,9 +195,8 @@ const Inheritance = () => {
 														<TextInput
 															datacy={`textinput-items-${index}-description`}
 															name={`items.${index}.description`}
-															inputRequired
 															labelText="Beschreibung (Zweck)"
-															placeholder="Begünstigte soll mein Grab pflegen."
+															placeholder="Die begünstigte Person soll mein Grab pflegen."
 														/>
 													</div>
 													<IconButton
