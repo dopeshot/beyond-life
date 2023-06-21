@@ -56,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 	const { lastWill } = useLastWillContext()
 
 	return (
-		<div datacy={'sidebar'} className="sticky top-0 hidden h-auto w-80 min-w-[20rem] bg-yellow-400 lg:block">
+		<div datacy={'sidebar'} className="sticky top-0 hidden h-auto w-80 min-w-[20rem] bg-yellow-400 lg:block sm:hidden">
 			{/* Logo */}
 			<div datacy="sidebar-logo" className="px-6 pb-10 pt-[19px]">
 				<NavbarLogo />
@@ -75,8 +75,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 							path.includes(element.page) // button is active if url contains the page name
 								? SidebarButtonState.ACTIVE
 								: lastWill.common.progressKeys.includes(element.page)
-								? SidebarButtonState.DEFAULT // button is default if page was visited yet
-								: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
+									? SidebarButtonState.DEFAULT // button is default if page was visited yet
+									: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 						}
 					/>
 				))}

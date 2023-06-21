@@ -4,19 +4,22 @@ import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFoot
 import { Navbar } from '../../../components/Navbar/Navbar/Navbar'
 import { Sidebar } from '../../../components/Navbar/Sidebar/Sidebar'
 import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
+import { MobileSidebar } from '../../../components/Navbar/MobileSidebar/MobileSidebar'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()
 
 	return (
 		<LastWillContextProvider>
-			<div className={`flex h-screen min-h-screen flex-row overflow-y-scroll`}>
+			<div className={`flex h-screen min-h-screen lg:flex-row sm:flex-col overflow-y-scroll`}>
 				<Sidebar path={path} />
 				<div className="flex h-fit min-h-screen flex-grow flex-col">
 					<Navbar hideLogo noBackground />
+					<MobileSidebar path={path} />
 					{children}
 					<GlobalFooter />
 				</div>
+				
 			</div>
 		</LastWillContextProvider>
 	)
