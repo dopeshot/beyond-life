@@ -1,8 +1,9 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useLastWillContext } from '../../../store/last-will/LastWillContext'
 import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
-import { SidebarButton } from '../Sidebar/SidebarButton/SidebarButton'
+import { Icon } from '../../Icon/Icon'
+import { MobileSidebarButton } from './MobileSidebarButton/MobileSidebarButton'
 
 export type MobileSidebarProps = {
     /** Path of the current page. */
@@ -53,28 +54,49 @@ const mobileSidebarElements: MobileSidebarElement[] = [
  */
 export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
     const { lastWill } = useLastWillContext()
+    const [currentElementIndex, setCurrentElementIndex] = useState(0)
+
+    const handlePrevious = () => {
+        if (currentElementIndex > 0) {
+            setCurrentElementIndex(currentElementIndex - 1)
+        }
+    }
+
+    const handleNext = () => {
+        if (currentElementIndex < mobileSidebarElements.length - 1) {
+            setCurrentElementIndex(currentElementIndex + 1)
+        }
+    }
 
     return (
-        <div datacy={'mobilesidebar'} className="">
-            {/* Nav Elements */}
-            <div className="flex flex-row lg:hidden">
-                {mobileSidebarElements.map((element) => (
-                    <SidebarButton
-                        datacy={`sidebar-button-${element.page}`}
-                        key={element.page}
-                        type={element.page}
-                        title={element.title}
-                        description={element.description}
+        <div datacy={'sidebar'} className="flex flex-row lg:hidden">
+            {/* Chevron Buttons */}
+            <div className="flex justify-between">
+                <button onClick={handlePrevious}>
+                    <Icon icon="chevron_left" className="h-6 w-6 text-gray-500" />
+                </button>
+
+                <div className="flex flex-col">
+                    <MobileSidebarButton
+                        datacy={`sidebar-button-${mobileSidebarElements[currentElementIndex].page}`}
+                        key={mobileSidebarElements[currentElementIndex].page}
+                        type={mobileSidebarElements[currentElementIndex].page}
+                        title={mobileSidebarElements[currentElementIndex].title}
                         state={
-                            path.includes(element.page) // button is active if url contains the page name
+                            path.includes(mobileSidebarElements[currentElementIndex].page)
                                 ? SidebarButtonState.ACTIVE
-                                : lastWill.common.progressKeys.includes(element.page)
-                                    ? SidebarButtonState.DEFAULT // button is default if page was visited yet
-                                    : SidebarButtonState.DISABLED // button is disabled if page was not visited yet
+                                : lastWill.common.progressKeys.includes(mobileSidebarElements[currentElementIndex].page)
+                                    ? SidebarButtonState.DEFAULT
+                                    : SidebarButtonState.DISABLED
                         }
                     />
-                ))}
+                </div>
+
+                <button onClick={handleNext}>
+                    <Icon icon="chevron_right" className="h-6 w-6 text-gray-500" />
+                </button>
             </div>
+
         </div>
     )
 }
