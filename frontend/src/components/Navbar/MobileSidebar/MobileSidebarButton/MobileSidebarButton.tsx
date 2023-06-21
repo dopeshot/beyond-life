@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
 import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
-import { Headline } from '../../../Headline/Headline'
+import { fontArbutusSlab } from '../../../../services/font/font'
 
 export type SidebarButtonProps = {
     /** Id for identification in sidebar. */
@@ -28,12 +28,10 @@ export const MobileSidebarButton: React.FC<SidebarButtonProps> = ({
         <Link
             datacy={datacy}
             href={routes.lastWill[type]('1')}
-            className={`flex h-[5rem] select-none items-center justify-between p-4 pl-6 pr-2`}
+            className={`flex select-none items-center justify-between`}
         >
-            <div className={`flex w-5/6 flex-col`}>
-                <div datacy={`${datacy}-title`} className="text-base font-bold">
-                    <Headline className="md:mb-8">{title}</Headline>
-                </div>
+            <div className={`flex flex-col text-2xl md:text-3xl ${fontArbutusSlab.className}`}>
+                {title}
             </div>
         </Link>
     )

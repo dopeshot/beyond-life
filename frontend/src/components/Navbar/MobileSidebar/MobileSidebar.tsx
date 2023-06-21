@@ -69,11 +69,11 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
     }
 
     return (
-        <div datacy={'sidebar'} className="flex flex-row lg:hidden">
+        <div datacy={'sidebar'} className="container flex flex-row justify-between items-center p-2 my-2 lg:hidden bg-white border-gray-200 border-2 rounded-lg">
             {/* Chevron Buttons */}
-            <div className="flex justify-between">
-                <button onClick={handlePrevious}>
-                    <Icon icon="chevron_left" className="h-6 w-6 text-gray-500" />
+            <div className="flex justify-between w-full">
+                <button onClick={handlePrevious} className="flex justify-center items-center">
+                    <Icon icon="chevron_left" className=" text-gray-500" />
                 </button>
 
                 <div className="flex flex-col">
@@ -92,11 +92,11 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
                     />
                 </div>
 
-                <button onClick={handleNext}>
-                    <Icon icon="chevron_right" className="h-6 w-6 text-gray-500" />
+                <button onClick={handleNext} className="flex justify-center items-center">
+                    <Icon icon="chevron_right" className="text-gray-500" />
                 </button>
             </div>
-
         </div>
+
     )
 }
