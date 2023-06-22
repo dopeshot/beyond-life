@@ -1,5 +1,7 @@
 import { CommonActions } from './common/actions'
 import { initialCommonState } from './common/state'
+import { InheritanceActions } from './inheritance/actions'
+import { initialInheritanceState } from './inheritance/state'
 import { MarriageActions } from './marriage/actions'
 import { initialMarriageState } from './marriage/state'
 import { TestatorActions } from './testator/actions'
@@ -7,14 +9,14 @@ import { initialTestatorState } from './testator/state'
 import { LastWill } from './types'
 
 // Add other actions with pipe operator
-export type LastWillActions = TestatorActions | CommonActions | MarriageActions
+export type LastWillActions = TestatorActions | CommonActions | MarriageActions | InheritanceActions
 
 export const initalLastWillState: LastWill = {
 	common: initialCommonState,
 	testator: initialTestatorState,
 	marriage: initialMarriageState,
 	heirs: '',
-	inheritance: '',
+	inheritance: initialInheritanceState,
 	succession: '',
 }
 
@@ -92,6 +94,32 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				marriage: {
 					...action.payload,
 					partnerGermanCitizenship: !(action.payload.partnerGermanCitizenship?.length === 0),
+				},
+			}
+		}
+
+		case 'PRE_SET_INHERITANCE': {
+			return {
+				...state,
+				common: {
+					...state.common,
+					isLoading: true,
+				},
+				inheritance: {
+					...state.inheritance,
+				},
+			}
+		}
+
+		case 'EFFECT_SET_INHERITANCE': {
+			return {
+				...state,
+				common: {
+					...state.common,
+					isLoading: false,
+				},
+				inheritance: {
+					...action.payload,
 				},
 			}
 		}
