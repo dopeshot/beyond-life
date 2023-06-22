@@ -5,7 +5,7 @@ import { childRelationship, genderOptions } from "../../../../content/dropdownOp
 import { Gender } from "../../../store/last-will/marriage/state"
 import { Button } from "../../ButtonsAndLinks/Button/Button"
 import { Checkbox } from "../../Form/Checkbox/Checkbox"
-import { Dropdown } from "../../Form/Dropdown/Dropdown"
+import { FormDropdown } from "../../Form/FormDropdown/FormDropdown"
 import { TextInput } from "../../Form/TextInput/TextInput"
 import { Headline } from "../../Headline/Headline"
 import { Modal } from "../ModalBase/Modal"
@@ -92,7 +92,7 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
 
                         {/* Gender and Birth */}
                         <div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-3">
-                            <Dropdown
+                            <FormDropdown
                                 name="gender"
                                 labelText="Geschlecht"
                                 placeholder="Geschlecht"
@@ -157,7 +157,7 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
                             />
                         </div>
 
-                        <Dropdown name="childRelationShip" placeholder="Beziehung zum Kind" options={childRelationship} />
+                        <FormDropdown name="childRelationShip" placeholder="Beziehung zum Kind" options={childRelationship} />
                     </div>
 
                     {/* Buttons */}

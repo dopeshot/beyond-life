@@ -8,7 +8,7 @@ import { genderOptions } from '../../../../../content/dropdownOptions'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
-import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
+import { FormDropdown } from '../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Label } from '../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
@@ -154,7 +154,7 @@ const Marriage = () => {
 
                                         {/* Gender and Birth */}
                                         <div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-3">
-                                            <Dropdown
+                                            <FormDropdown
                                                 name="partnerGender"
                                                 labelText="Geschlecht"
                                                 placeholder="Geschlecht"
