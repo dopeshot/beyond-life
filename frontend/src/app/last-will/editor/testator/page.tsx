@@ -14,6 +14,9 @@ import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Gender } from '../../../../store/last-will/marriage/state'
 import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
 
+const PREVIOUS_LINK = routes.lastWill.start
+const NEXT_LINK = routes.lastWill.marriage('1')
+
 /**
  * Testator Page
  */
@@ -61,7 +64,7 @@ const Testator = () => {
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, routes.lastWill.marriage('1'))}
 			>
-				{({ values }: FormikProps<TestatorFormPayload>) => (
+				{({ values, dirty }: FormikProps<TestatorFormPayload>) => (
 					<Form className="mb-2 mt-4 flex h-full w-full flex-1 flex-col md:mb-0">
 						<div className="flex w-full flex-1 flex-col">
 							<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
@@ -126,6 +129,9 @@ const Testator = () => {
 						<FormStepsButtons
 							previousOnClick={() => onSubmit(values, routes.lastWill.marriage('1'))}
 							loading={lastWill.common.isLoading}
+							dirty={dirty}
+							previousHref={PREVIOUS_LINK}
+							nextHref={NEXT_LINK}
 						/>
 					</Form>
 				)}
