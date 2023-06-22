@@ -35,7 +35,7 @@ const Heirs = () => {
                 <thead>
                     <tr className="text-left">
                         <th className="w-6/4 pr-4">Name</th>
-                        <th className="w-5/12 px-4">Wer</th>
+                        <th className="w-3/12 md:w-5/12 px-4">Wer/Was</th>
                         <th className="w-1/12 px-4">Actions</th>
                     </tr>
                 </thead>
