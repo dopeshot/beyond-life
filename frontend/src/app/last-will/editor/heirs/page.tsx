@@ -1,9 +1,9 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
-import { HeirsModal } from '../../../../components/Modal/HeirsModal/HeirsModal'
+import { HeirsModal, Person } from '../../../../components/Modal/HeirsModal/HeirsModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarPages } from '../../../../types/sidebar'
 
@@ -18,22 +18,8 @@ export type HeirsForm = {
  * Heirs Page
  */
 const Heirs = () => {
-    const persons = [
-        {
-            id: 1,
-            firstName: 'Lisadfsfsdfsdfsdf',
-            lastName: 'Müller',
-            adress: 'Musterstraße 1, 12345 Musterstadt',
-            kind: 'Mutter',
-        },
-        {
-            id: 2,
-            firstName: 'Michael',
-            lastName: 'Müller',
-            adress: 'Musterstraße 1, 12345 Musterstadt',
-            kind: 'Vater',
-        },
-    ]
+    const [persons, setPersons] = useState<Person[]>([])
+
 
     const { services } = useLastWillContext()
 
@@ -63,7 +49,7 @@ const Heirs = () => {
                                 </div>
                             </td>
                             <td className="p-4">
-                                {person.kind}
+                                {person.type}
                             </td>
                             <td className="p-4">
                                 <div className="flex">
@@ -76,7 +62,7 @@ const Heirs = () => {
                 </tbody>
             </table>
 
-            <HeirsModal />
+            <HeirsModal setPersons={setPersons} />
 
             <FormStepsButtons previousOnClick={async () => console.log("")} previousHref={''} nextHref={''} dirty={false} />
         </div>
