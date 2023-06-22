@@ -1,9 +1,10 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction, useState } from "react"
 import { personMoreInfosOptions } from "../../../../content/checkboxOptions"
-import { childRelationship, genderOptions } from "../../../../content/dropdownOptions"
+import { childRelationshipOptions, genderOptions, personAddHeirsOptions } from "../../../../content/dropdownOptions"
 import { Gender } from "../../../store/last-will/marriage/state"
 import { Button } from "../../ButtonsAndLinks/Button/Button"
+import { DropdownButton } from "../../ButtonsAndLinks/DropdownButton/DropdownButton"
 import { Checkbox } from "../../Form/Checkbox/Checkbox"
 import { FormDropdown } from "../../Form/FormDropdown/FormDropdown"
 import { TextInput } from "../../Form/TextInput/TextInput"
@@ -24,7 +25,7 @@ export type Person = {
     moreInfos?: PersonMoreInfos[]
     childRelationShip?: "childTogether" | "childFromPartner" | "childFromOther"
     ownChild?: string[]
-    type: "mother" | "father" | "child" | "siblings" | "other"
+    type: PersonType
 }
 
 export type Organisation = {
@@ -36,6 +37,7 @@ export type Organisation = {
 }
 
 export type PersonMoreInfos = "personHandicapped" | "personInsolvent"
+export type PersonType = "mother" | "father" | "child" | "siblings" | "other"
 
 type HeirsModalProps = {
     setPersons: Dispatch<SetStateAction<Person[]>>
@@ -43,6 +45,7 @@ type HeirsModalProps = {
 
 export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
     const [isOpenModal, setIsOpenModal] = useState(false)
+    const [type, setType] = useState<PersonType>('other')
 
     const initialFormValues: Person = {
         id: 0,
@@ -66,11 +69,17 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
         const valuesCopy = { ...values }
         setPersons(persons => {
             valuesCopy.id = Math.max(...persons.map(person => person.id), 0) + 1
+            valuesCopy.type = type
             return [...persons, valuesCopy]
         })
 
         // Close Modal
         setIsOpenModal(false)
+    }
+
+    const setDropdownOption = (type: PersonType) => {
+        setType(type)
+        setIsOpenModal(true)
     }
 
     return <>
@@ -157,7 +166,7 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
                             />
                         </div>
 
-                        <FormDropdown name="childRelationShip" placeholder="Beziehung zum Kind" options={childRelationship} />
+                        <FormDropdown name="childRelationShip" placeholder="Beziehung zum Kind" options={childRelationshipOptions} />
                     </div>
 
                     {/* Buttons */}
@@ -190,5 +199,9 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
         <Button datacy="button-add-person" onClick={() => setIsOpenModal(true)}>
             Person hinzufügen
         </Button>
+
+        <DropdownButton options={personAddHeirsOptions}>
+            Person hinzufügen
+        </DropdownButton>
     </>
 }
