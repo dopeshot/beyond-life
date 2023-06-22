@@ -22,7 +22,7 @@ type IconButtonProps = {
 	disabled?: boolean
 	/** Optional property to dim the opacity of the icon button when it is disabled. */
 	dimOpacityWhenDisabled?: boolean
-	/** Optional property to set the data-cy attribute for testing purposes. */
+	/** Optional property to set the datacy attribute for testing purposes. */
 	datacy?: string
 }
 
