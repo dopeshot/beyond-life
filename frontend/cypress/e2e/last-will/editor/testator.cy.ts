@@ -8,7 +8,7 @@ describe('Last Will Testator Page', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
-			cy.datacy('button-submit').click()
+			cy.datacy('route-next-submit').click()
 
 			cy.url().should('include', 'last-will/editor/marriage?id=1')
 		})
@@ -39,7 +39,7 @@ describe('Last Will Testator Page', () => {
 			cy.datacy('checkbox-moreInfos-option-testatorInsolvent').click()
 
 			// Submit
-			cy.datacy('button-submit').click()
+			cy.datacy('button-next-submit').click()
 			cy.url().should('include', 'last-will/editor/marriage?id=1')
 		})
 	})
