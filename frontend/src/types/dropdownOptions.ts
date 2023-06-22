@@ -8,3 +8,10 @@ export type ComponentOptions = {
 	/** Icon in front of label. */
 	icon?: MaterialSymbol
 }
+
+export type DropdownButtonOptions = {
+	/** Label which is shown as option. */
+	label: string
+	/** Function which is called when button is clicked. */
+	onClick: () => void
+}
