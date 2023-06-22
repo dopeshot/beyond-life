@@ -1,4 +1,4 @@
-import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from './state'
+import { Gender, MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from './state'
 
 export type MarriageResponse = {
 	relationshipStatus?: RelationshipStatus
@@ -12,7 +12,7 @@ export type MarriageResponse = {
 	partnerHouseNumber?: string
 	partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
 	partnerCity?: string
-	partnerMoreInfos?: MoreInfos[]
+	partnerMoreInfos?: PartnerMoreInfos[]
 	matrimonialProperty?: MatrimonialProperty
 }
 
