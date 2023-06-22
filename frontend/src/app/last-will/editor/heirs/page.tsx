@@ -1,13 +1,13 @@
 'use client'
-import { useEffect, useState } from 'react'
-import * as Yup from 'yup'
+import { useEffect } from 'react'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
+import { HeirsModal } from '../../../../components/Modal/HeirsModal/HeirsModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarPages } from '../../../../types/sidebar'
 
-type HeirsForm = {
+export type HeirsForm = {
     persons: {
         firstName: string
         lastName: string
@@ -18,33 +18,6 @@ type HeirsForm = {
  * Heirs Page
  */
 const Heirs = () => {
-    const initialValues: HeirsForm = {
-        persons: [
-            {
-                firstName: 'Michael',
-                lastName: 'Müller',
-            },
-        ],
-    }
-
-    const [DEBUG_submittedState, setDEBUG_submittedState] = useState<any>({})
-
-    const validationSchema: Yup.ObjectSchema<HeirsForm> = Yup.object({
-        persons: Yup.array()
-            .required("You can't have an empty list of persons")
-            .of(
-                Yup.object().shape({
-                    firstName: Yup.string().required('Required'),
-                    lastName: Yup.string().required('Required'),
-                })
-            ),
-    })
-
-    const submitHeirs = (values: HeirsForm) => {
-        console.log('values:', values)
-        setDEBUG_submittedState(values)
-    }
-
     const persons = [
         {
             id: 1,
@@ -76,7 +49,7 @@ const Heirs = () => {
                 <thead>
                     <tr className="text-left">
                         <th className="w-6/4 pr-4">Name</th>
-                        <th className="w-5/12 px-4">Type</th>
+                        <th className="w-5/12 px-4">Wer</th>
                         <th className="w-1/12 px-4">Actions</th>
                     </tr>
                 </thead>
@@ -103,7 +76,9 @@ const Heirs = () => {
                 </tbody>
             </table>
 
-            <FormStepsButtons previousOnClick={async () => console.log("")} />
+            <HeirsModal />
+
+            <FormStepsButtons previousOnClick={async () => console.log("")} previousHref={''} nextHref={''} dirty={false} />
         </div>
     )
 }
