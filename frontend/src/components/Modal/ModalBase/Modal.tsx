@@ -3,12 +3,19 @@ import { Headline } from "../../Headline/Headline"
 import { IconButton } from "../../IconButton/IconButton"
 
 export type ModalProps = {
+    /** Modal Open/Close State. */
     open: boolean
+    /** Handle close method usually set modal open state to false. */
     onClose: () => void
+    /** Modal Headline. */
     headline: string
+    /** Modal Content. */
     children: React.ReactNode
 }
 
+/**
+ * Creates a modal with headline and "x-button".
+ */
 export const Modal: React.FC<ModalProps> = ({ open, onClose, headline, children }) => {
     const modalRef = useRef<HTMLDialogElement>(null)
 
