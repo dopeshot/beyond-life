@@ -22,8 +22,9 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, headline, children 
 
     // Handle Click Outside
     const onClick = useCallback((event: React.MouseEvent) => {
-        if (event.target === modalRef.current)
-            onClose()
+        if (event.target === event.currentTarget) {
+            onClose() // TODO(Zoe-Bot): Fix when start click in modal and release outside of modal, modal closes. Issue #139
+        }
     }, [onClose])
 
     return (
