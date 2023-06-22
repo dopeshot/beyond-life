@@ -29,38 +29,39 @@ const Heirs = () => {
 
     return (
         <div className="container mt-5">
-            <Headline className="mb-2 md:mb-8">Erben</Headline>
+            <Headline>Erben</Headline>
 
-            <table className="border-collapse w-full">
-                <thead>
-                    <tr className="text-left">
-                        <th className="w-6/4 pr-4">Name</th>
-                        <th className="w-3/12 md:w-5/12 px-4">Wer/Was</th>
-                        <th className="w-1/12 px-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {persons.map((person) => (
-                        <tr key={person.id} className="border-b border-gray-300">
-                            <td className="table-cell pr-4">
-                                <div className="flex flex-col md:flex-row">
-                                    <p className="mr-2">{person.firstName}</p>
-                                    <p>{person.lastName}</p>
-                                </div>
-                            </td>
-                            <td className="p-4">
-                                {person.type}
-                            </td>
-                            <td className="p-4">
-                                <div className="flex">
-                                    <IconButton icon="edit" />
-                                    <IconButton icon="delete" />
-                                </div>
-                            </td>
+            {persons.length === 0 ? <p className="text-gray-600 mb-2 md:mb-4">Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.</p> :
+                <table className="border-collapse w-full mt-2 md:mt-8 mb-4">
+                    <thead>
+                        <tr className="text-left">
+                            <th className="w-6/4 pr-4">Name</th>
+                            <th className="w-3/12 md:w-5/12 px-4">Wer/Was</th>
+                            <th className="w-1/12 px-4">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {persons.map((person) => (
+                            <tr key={person.id} className="border-b border-gray-300">
+                                <td className="table-cell pr-4">
+                                    <div className="flex flex-col md:flex-row">
+                                        <p className="mr-2">{person.firstName}</p>
+                                        <p>{person.lastName}</p>
+                                    </div>
+                                </td>
+                                <td className="p-4">
+                                    {person.type}
+                                </td>
+                                <td className="p-4">
+                                    <div className="flex">
+                                        <IconButton icon="edit" />
+                                        <IconButton icon="delete" />
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>}
 
             <HeirsModal setPersons={setPersons} />
 
