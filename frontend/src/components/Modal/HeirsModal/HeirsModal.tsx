@@ -7,7 +7,7 @@ import { Checkbox } from "../../Form/Checkbox/Checkbox"
 import { Dropdown } from "../../Form/Dropdown/Dropdown"
 import { TextInput } from "../../Form/TextInput/TextInput"
 import { Headline } from "../../Headline/Headline"
-import Modal from "../ModalBase/Modal"
+import { Modal } from "../ModalBase/Modal"
 
 export const HeirsModal: React.FC = () => {
     const [isOpenModal, setIsOpenModal] = useState(true)
