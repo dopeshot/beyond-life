@@ -1,5 +1,7 @@
 'use client'
-import React, { useState } from 'react'
+import Link from 'next/link'
+import React from 'react'
+import { routes } from '../../../services/routes/routes'
 import { useLastWillContext } from '../../../store/last-will/LastWillContext'
 import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
 import { Icon } from '../../Icon/Icon'
@@ -54,27 +56,26 @@ const mobileSidebarElements: MobileSidebarElement[] = [
  */
 export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
     const { lastWill } = useLastWillContext()
-    const [currentElementIndex, setCurrentElementIndex] = useState(0)
 
-    const handlePrevious = () => {
-        if (currentElementIndex > 0) {
-            setCurrentElementIndex(currentElementIndex - 1)
-        }
-    }
+    const currentElementIndex = mobileSidebarElements.findIndex(
+        element => path.includes(element.page)
+    )
 
-    const handleNext = () => {
-        if (currentElementIndex < mobileSidebarElements.length - 1) {
-            setCurrentElementIndex(currentElementIndex + 1)
-        }
-    }
+    const previousPage = currentElementIndex > 0
+        ? mobileSidebarElements[currentElementIndex - 1].page
+        : mobileSidebarElements[0].page
+
+    const nextPage = currentElementIndex < mobileSidebarElements.length - 1
+        ? mobileSidebarElements[currentElementIndex + 1].page
+        : mobileSidebarElements[mobileSidebarElements.length - 1].page
 
     return (
         <div datacy={'sidebar'} className="container flex flex-row justify-between items-center p-2 my-2 lg:hidden bg-white border-gray-200 border-2 rounded-lg">
             {/* Chevron Buttons */}
             <div className="flex justify-between w-full">
-                <button onClick={handlePrevious} className="flex justify-center items-center">
+                <Link className="flex justify-center items-center" href={routes.lastWill[previousPage]('1')}>
                     <Icon icon="chevron_left" className=" text-gray-500" />
-                </button>
+                </Link>
 
                 <div className="flex flex-col">
                     <MobileSidebarButton
@@ -92,9 +93,9 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
                     />
                 </div>
 
-                <button onClick={handleNext} className="flex justify-center items-center">
-                    <Icon icon="chevron_right" className="text-gray-500" />
-                </button>
+                <Link className="flex justify-center items-center" href={routes.lastWill[nextPage]('1')}>
+                    <Icon icon="chevron_right" className=" text-gray-500" />
+                </Link>
             </div>
         </div>
 
