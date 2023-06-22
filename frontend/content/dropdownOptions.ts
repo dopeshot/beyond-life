@@ -17,3 +17,18 @@ export const genderOptions: ComponentOptions[] = [
 		icon: 'transgender',
 	},
 ]
+
+export const childRelationship: ComponentOptions[] = [
+	{
+		value: 'childTogether',
+		label: 'Gemeinsames Kind mit Ehepartner',
+	},
+	{
+		value: 'childFromOther',
+		label: 'Kind aus vorheriger Ehe',
+	},
+	{
+		value: 'childFromPartner',
+		label: 'Kind vom Ehepartner',
+	},
+]

@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction, useState } from "react"
 import { personMoreInfosOptions } from "../../../../content/checkboxOptions"
-import { genderOptions } from "../../../../content/dropdownOptions"
+import { childRelationship, genderOptions } from "../../../../content/dropdownOptions"
 import { Gender } from "../../../store/last-will/marriage/state"
 import { Button } from "../../ButtonsAndLinks/Button/Button"
 import { Checkbox } from "../../Form/Checkbox/Checkbox"
@@ -22,6 +22,8 @@ export type Person = {
     zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
     city?: string
     moreInfos?: PersonMoreInfos[]
+    childRelationShip?: "childTogether" | "childFromPartner" | "childFromOther"
+    ownChild?: string[]
     type: "mother" | "father" | "child" | "siblings" | "other"
 }
 
@@ -53,6 +55,8 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
         houseNumber: '',
         zipCode: '',
         city: '',
+        childRelationShip: undefined,
+        ownChild: [],
         moreInfos: [],
         type: 'other'
     }
@@ -141,6 +145,21 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
                         />
                     </div>
 
+                    {/* Children */}
+                    {/* TODO(Zoe-Bot): When married ownChild should be in childRelationShip and when not only show checkbox */}
+                    <div className="mb-6 md:mb-8">
+                        <div className="mb-2 md:mb-3">
+                            <Checkbox
+                                name="ownChild"
+                                labelText="Frage zum Kind"
+                                labelRequired
+                                options={[{ id: 'ownChild', label: 'Ist das Kind ihr eigenes?' }]}
+                            />
+                        </div>
+
+                        <Dropdown name="childRelationShip" placeholder="Beziehung zum Kind" options={childRelationship} />
+                    </div>
+
                     {/* Buttons */}
                     <div className="flex flex-col items-center justify-between md:flex-row">
                         {/* Cancel Button */}
@@ -167,6 +186,9 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
                 </Form>
             </Formik>
         </Modal>
-    </>
 
+        <Button datacy="button-add-person" onClick={() => setIsOpenModal(true)}>
+            Person hinzufügen
+        </Button>
+    </>
 }
