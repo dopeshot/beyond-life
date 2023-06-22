@@ -18,6 +18,8 @@ export type TextInputProps = {
 	icon?: MaterialSymbol
 	/** Click handler for the icon. */
 	iconOnClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+	/** Custom datacy for testing. */
+	datacy?: string
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 /**
@@ -30,6 +32,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	labelText,
 	inputRequired = false,
 	helperText,
+	datacy,
 	icon,
 	iconOnClick,
 	...props
@@ -45,7 +48,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 						<div className={`flex items-center`}>
 							<input
 								id={name}
-								datacy={`textinput-${name}-input`}
+								datacy={datacy ?? `textinput-${name}-input`}
 								type={type}
 								{...fieldProps.field}
 								{...props}
