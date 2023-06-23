@@ -36,9 +36,9 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, headline, children 
 
     return (
         <dialog className="rounded-lg" ref={modalRef} onClick={onClick} onClose={onClose}>
-            <div className="pt-2 pb-4 px-6">
+            <div className="pt-1 md:pt-2 pb-2 md:pb-4 px-3 md:px-6">
                 <div className="flex items-center justify-between">
-                    <Headline level={3} hasMargin={false} className="py-3 mr-4">{headline}</Headline>
+                    <Headline level={3} hasMargin={false} className="py-3 mr-2 md:mr-4">{headline}</Headline>
                     <IconButton icon="close" onClick={onClose} className="-mr-3" />
                 </div>
                 {children}
