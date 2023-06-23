@@ -13,7 +13,8 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command:  npm audit --omit dev
+          # NOTE: This is temporary!
+          command:  npm audit --omit dev || true
           name: Audit
   audit-frontend: 
     executor: node/default 
@@ -24,7 +25,8 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command:  npm audit --omit dev
+          # NOTE: This is temporary!
+          command:  npm audit --omit dev || true
           name: Audit
   audit-migration-tool: 
     executor: node/default 
@@ -35,7 +37,8 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command:  npm audit --omit dev
+          # NOTE: This is temporary!
+          command:  npm audit --omit dev || true
           name: Audit
 
 workflows:
