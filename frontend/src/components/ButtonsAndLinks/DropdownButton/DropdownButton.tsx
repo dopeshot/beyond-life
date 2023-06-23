@@ -2,14 +2,20 @@ import { useState } from "react"
 import { Button, ButtonProps } from "../Button/Button"
 
 export type DropdownButtonProps = {
+    /** Button Text. */
     children: React.ReactNode
+    /** Button Kind. */
     buttonKind?: ButtonProps['kind']
+    /** Dropdown Options. */
     options: {
         onClick: () => void
         label: string
     }[]
 }
 
+/**
+ * Button with a dropdown menu which can be used without formik.
+ */
 export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, options, buttonKind = "tertiary" }) => {
     const [isOpen, setIsOpen] = useState(false)
 
