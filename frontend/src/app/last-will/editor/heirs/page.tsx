@@ -43,7 +43,7 @@ const Heirs = () => {
         <div className="container mt-5">
             <Headline>Erben</Headline>
 
-            {persons.length === 0 ? <p className="text-gray-600 mb-2 md:mb-4">Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.</p> :
+            {persons.length === 0 && organisations.length === 0 ? <p className="text-gray-600 mb-2 md:mb-4">Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.</p> :
                 <table className="border-collapse w-full mt-2 md:mt-8 mb-4">
                     <thead>
                         <tr className="text-left">
