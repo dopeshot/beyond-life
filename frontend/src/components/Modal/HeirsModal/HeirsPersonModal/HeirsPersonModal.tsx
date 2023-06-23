@@ -13,28 +13,37 @@ import { Headline } from "../../../Headline/Headline"
 import { Modal } from "../../ModalBase/Modal"
 
 type HeirsPersonModalProps = {
+    /** Modal Open/Close State. */
     isOpenModal: boolean
-    setIsOpenModal: Dispatch<SetStateAction<boolean>>
+    /** Function that gets called when close Modal. Should reset editPerson and update modal state. */
+    onClose: () => void
+    /** When defined we are in edit mode. */
+    editPerson: Person | null
+    /** The type of person. */
     type: HeirsTypes
+    /** Function that updates the persons state. */
     setPersons: Dispatch<SetStateAction<Person[]>>
 }
 
-export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, setIsOpenModal, type, setPersons }) => {
+/**
+ * Modal to add/edit a heirs person.
+ */
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type, setPersons }) => {
     const initialFormValues: Person = {
-        id: 0,
-        firstName: '',
-        lastName: '',
-        gender: undefined,
-        dateOfBirth: '',
-        placeOfBirth: '',
-        street: '',
-        houseNumber: '',
-        zipCode: '',
-        city: '',
-        childRelationShip: undefined,
-        ownChild: [],
-        moreInfos: [],
-        type: 'other'
+        id: editPerson?.id ?? 0,
+        firstName: editPerson?.firstName ?? '',
+        lastName: editPerson?.lastName ?? '',
+        gender: editPerson?.gender ?? undefined,
+        dateOfBirth: editPerson?.dateOfBirth ?? '',
+        placeOfBirth: editPerson?.placeOfBirth ?? '',
+        street: editPerson?.street ?? '',
+        houseNumber: editPerson?.houseNumber ?? '',
+        zipCode: editPerson?.zipCode ?? '',
+        city: editPerson?.city ?? '',
+        childRelationShip: editPerson?.childRelationShip ?? undefined,
+        ownChild: editPerson?.ownChild ?? [],
+        moreInfos: editPerson?.moreInfos ?? [],
+        type: editPerson?.type ?? 'other'
     }
 
     const validationSchema: ObjectSchema<Person> = object().shape({
@@ -55,19 +64,25 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
     })
 
     const onSubmit = (values: Person) => {
-        // Add person to persons
-        const valuesCopy = { ...values }
-        setPersons(persons => {
-            valuesCopy.id = Math.max(...persons.map(person => person.id), 0) + 1
-            valuesCopy.type = type
-            return [...persons, valuesCopy]
-        })
+        if (editPerson) {
+            // Edit person in persons
+            const valuesCopy = { ...values }
+            setPersons(persons => persons.map(person => person.id === editPerson.id ? valuesCopy : person))
+        } else {
+            // Add person to persons
+            const valuesCopy = { ...values }
+            setPersons(persons => {
+                valuesCopy.id = Math.max(...persons.map(person => person.id), 0) + 1
+                valuesCopy.type = type
+                return [...persons, valuesCopy]
+            })
+        }
 
-        // Close Modal
-        setIsOpenModal(false)
+        // Close and reset Modal
+        onClose()
     }
 
-    return <Modal open={isOpenModal} headline={`${heirsTypes[type].label}`} onClose={() => setIsOpenModal(false)}>
+    return <Modal open={isOpenModal} headline={`${heirsTypes[type].label}`} onClose={onClose}>
         <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             <Form className="mt-2 md:mt-3">
                 {/* Persönliche Daten */}
@@ -75,7 +90,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
                     <Headline level={3} size="text-base">
                         Persönliche Daten
                     </Headline>
-
 
                     {/* Name */}
                     <div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
@@ -159,7 +173,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
                     <Button
                         datacy="button-previous-submit"
                         type="button"
-                        onClick={() => setIsOpenModal(false)}
+                        onClick={onClose}
                         className="order-1 md:order-none"
                         kind="tertiary"
                     >

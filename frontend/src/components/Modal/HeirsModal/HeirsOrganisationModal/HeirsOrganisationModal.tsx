@@ -8,19 +8,24 @@ import { Headline } from "../../../Headline/Headline"
 import { Modal } from "../../ModalBase/Modal"
 
 type HeirsOrganisationModalProps = {
+    /** Modal Open/Close State. */
     isOpenModal: boolean
-    setIsOpenModal: Dispatch<SetStateAction<boolean>>
+    /** Function that gets called when close Modal. Should reset editPerson and update modal state. */
+    onClose: () => void
+    /** When defined we are in edit mode. */
+    editOrganisation: Organisation | null
+    /** Function that updates the organisation state. */
     setOrganisations: Dispatch<SetStateAction<Organisation[]>>
 }
 
-export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ isOpenModal, setIsOpenModal, setOrganisations }) => {
+export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ isOpenModal, onClose, editOrganisation, setOrganisations }) => {
     const initialFormValues: Organisation = {
-        id: 0,
-        name: '',
-        street: '',
-        houseNumber: '',
-        zipCode: '',
-        city: ''
+        id: editOrganisation?.id ?? 0,
+        name: editOrganisation?.name ?? '',
+        street: editOrganisation?.street ?? '',
+        houseNumber: editOrganisation?.houseNumber ?? '',
+        zipCode: editOrganisation?.zipCode ?? '',
+        city: editOrganisation?.city ?? ''
     }
 
     const validationSchema: ObjectSchema<Organisation> = object().shape({
@@ -33,18 +38,23 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
     })
 
     const onSubmit = (values: Organisation) => {
-        // Add organisation to organisations
-        const valuesCopy = { ...values }
-        setOrganisations(organisations => {
-            valuesCopy.id = Math.max(...organisations.map(organisation => organisation.id), 0) + 1
-            return [...organisations, valuesCopy]
-        })
+        if (editOrganisation) {
+            // Edit organisation in organisations
+            setOrganisations(organisations => organisations.map(organisation => organisation.id === editOrganisation?.id ? values : organisation))
+        } else {
+            // Add organisation to organisations
+            const valuesCopy = { ...values }
+            setOrganisations(organisations => {
+                valuesCopy.id = Math.max(...organisations.map(organisation => organisation.id), 0) + 1
+                return [...organisations, valuesCopy]
+            })
+        }
 
-        // Close Modal
-        setIsOpenModal(false)
+        // Close and reset Modal
+        onClose()
     }
 
-    return <Modal open={isOpenModal} headline='Organisation hinzufügen' onClose={() => setIsOpenModal(false)}>
+    return <Modal open={isOpenModal} headline='Organisation hinzufügen' onClose={onClose}>
         <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             <Form className="mt-2 md:mt-3">
                 {/* Persönliche Daten */}
@@ -94,7 +104,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
                     <Button
                         datacy="button-previous-submit"
                         type="button"
-                        onClick={() => setIsOpenModal(false)}
+                        onClick={onClose}
                         className="order-1 md:order-none"
                         kind="tertiary"
                     >

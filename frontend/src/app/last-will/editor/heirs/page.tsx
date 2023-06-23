@@ -97,7 +97,10 @@ const Heirs = () => {
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
-                                        <IconButton onClick={() => setSelectedPerson(person)} icon="edit" />
+                                        <IconButton onClick={() => {
+                                            setSelectedPerson(person)
+                                            setIsPersonModalOpen(true)
+                                        }} icon="edit" />
                                         <IconButton onClick={() => {
                                             setSelectedPerson(person)
                                             setIsDeleteModalOpen(true)
@@ -116,7 +119,10 @@ const Heirs = () => {
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
-                                        <IconButton onClick={() => setSelectedOrganisation(organisation)} icon="edit" />
+                                        <IconButton onClick={() => {
+                                            setSelectedOrganisation(organisation)
+                                            setIsOrganisationModalOpen(true)
+                                        }} icon="edit" />
                                         <IconButton onClick={() => {
                                             setSelectedOrganisation(organisation)
                                             setIsDeleteModalOpen(true)
@@ -129,8 +135,14 @@ const Heirs = () => {
                 </table>}
 
             {/* Modals */}
-            <HeirsPersonModal isOpenModal={isPersonModalOpen} setIsOpenModal={setIsPersonModalOpen} type={type} setPersons={setPersons} />
-            <HeirsOrganisationModal isOpenModal={isOrganisationModalOpen} setIsOpenModal={setIsOrganisationModalOpen} setOrganisations={setOrganisations} />
+            {isPersonModalOpen && <HeirsPersonModal isOpenModal={isPersonModalOpen} onClose={() => {
+                setSelectedPerson(null)
+                setIsPersonModalOpen(false)
+            }} editPerson={selectedPerson} type={type} setPersons={setPersons} />}
+            {isOrganisationModalOpen && <HeirsOrganisationModal isOpenModal={isOrganisationModalOpen} onClose={() => {
+                setSelectedOrganisation(null)
+                setIsOrganisationModalOpen(false)
+            }} editOrganisation={selectedOrganisation} setOrganisations={setOrganisations} />}
             <Modal open={isDeleteModalOpen} headline={deleteHeadline} onClose={() => {
                 setSelectedOrganisation(null)
                 setSelectedPerson(null)
