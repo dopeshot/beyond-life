@@ -16,7 +16,8 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { MarriageFormPayload } from '../../../../store/last-will/marriage/actions'
-import { Gender, MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
+import { MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
+import { Gender } from '../../../../types/gender'
 import { SidebarPages } from '../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.testator('1')

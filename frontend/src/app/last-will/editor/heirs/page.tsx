@@ -5,7 +5,7 @@ import { DropdownButton } from '../../../../components/ButtonsAndLinks/DropdownB
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
-import { HeirsModal } from '../../../../components/Modal/HeirsModal/HeirsModal'
+import { HeirsPersonModal } from '../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Person, PersonType } from '../../../../store/last-will/heirs/state'
 import { SidebarPages } from '../../../../types/sidebar'
@@ -68,7 +68,7 @@ const Heirs = () => {
                     </tbody>
                 </table>}
 
-            <HeirsModal isOpenModal={isOpenPersonModal} setIsOpenModal={setIsOpenPersonModal} type={type} setPersons={setPersons} />
+            <HeirsPersonModal isOpenModal={isOpenPersonModal} setIsOpenModal={setIsOpenPersonModal} type={type} setPersons={setPersons} />
 
             <DropdownButton buttonKind="secondary" options={personAddHeirsOptions}>
                 Person hinzufügen

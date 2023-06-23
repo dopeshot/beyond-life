@@ -1,4 +1,5 @@
-import { Gender, MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from './state'
+import { Gender } from '../../../types/gender'
+import { MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from './state'
 
 export type MarriageResponse = {
 	relationshipStatus?: RelationshipStatus

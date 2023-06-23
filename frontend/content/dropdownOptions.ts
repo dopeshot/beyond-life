@@ -1,4 +1,4 @@
-import { PersonType } from '../src/components/Modal/HeirsModal/HeirsModal'
+import { PersonType } from '../src/store/last-will/heirs/state'
 import { ComponentOptions, DropdownButtonOptions } from '../src/types/dropdownOptions'
 
 export const genderOptions: ComponentOptions[] = [

@@ -1,23 +1,23 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction } from "react"
-import { personMoreInfosOptions } from "../../../../content/checkboxOptions"
-import { childRelationshipOptions, genderOptions, personTypes } from "../../../../content/dropdownOptions"
-import { Person, PersonType } from "../../../store/last-will/heirs/state"
-import { Button } from "../../ButtonsAndLinks/Button/Button"
-import { Checkbox } from "../../Form/Checkbox/Checkbox"
-import { FormDropdown } from "../../Form/FormDropdown/FormDropdown"
-import { TextInput } from "../../Form/TextInput/TextInput"
-import { Headline } from "../../Headline/Headline"
-import { Modal } from "../ModalBase/Modal"
+import { personMoreInfosOptions } from "../../../../../content/checkboxOptions"
+import { childRelationshipOptions, genderOptions, personTypes } from "../../../../../content/dropdownOptions"
+import { Person, PersonType } from "../../../../store/last-will/heirs/state"
+import { Button } from "../../../ButtonsAndLinks/Button/Button"
+import { Checkbox } from "../../../Form/Checkbox/Checkbox"
+import { FormDropdown } from "../../../Form/FormDropdown/FormDropdown"
+import { TextInput } from "../../../Form/TextInput/TextInput"
+import { Headline } from "../../../Headline/Headline"
+import { Modal } from "../../ModalBase/Modal"
 
-type HeirsModalProps = {
+type HeirsPersonModalProps = {
     isOpenModal: boolean
     setIsOpenModal: Dispatch<SetStateAction<boolean>>
     type: PersonType
     setPersons: Dispatch<SetStateAction<Person[]>>
 }
 
-export const HeirsModal: React.FC<HeirsModalProps> = ({ isOpenModal, setIsOpenModal, type, setPersons }) => {
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, setIsOpenModal, type, setPersons }) => {
     const initialFormValues: Person = {
         id: 0,
         firstName: '',
