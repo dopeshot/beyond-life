@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik"
-import { Dispatch, SetStateAction } from "react"
 import { ObjectSchema, number, object, string } from "yup"
+import { useLastWillContext } from "../../../../store/last-will/LastWillContext"
 import { Organisation } from "../../../../store/last-will/heirs/state"
 import { Button } from "../../../ButtonsAndLinks/Button/Button"
 import { TextInput } from "../../../Form/TextInput/TextInput"
@@ -14,11 +14,11 @@ type HeirsOrganisationModalProps = {
     onClose: () => void
     /** When defined we are in edit mode. */
     editOrganisation: Organisation | null
-    /** Function that updates the organisation state. */
-    setOrganisations: Dispatch<SetStateAction<Organisation[]>>
 }
 
-export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ isOpenModal, onClose, editOrganisation, setOrganisations }) => {
+export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ isOpenModal, onClose, editOrganisation }) => {
+    const { lastWill, services } = useLastWillContext()
+
     const initialFormValues: Organisation = {
         id: editOrganisation?.id ?? 0,
         name: editOrganisation?.name ?? '',
@@ -37,17 +37,13 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
         city: string()
     })
 
-    const onSubmit = (values: Organisation) => {
+    const onSubmit = async (values: Organisation) => {
         if (editOrganisation) {
-            // Edit organisation in organisations
-            setOrganisations(organisations => organisations.map(organisation => organisation.id === editOrganisation?.id ? values : organisation))
+            await services.updateOrganisation(values)
         } else {
-            // Add organisation to organisations
             const valuesCopy = { ...values }
-            setOrganisations(organisations => {
-                valuesCopy.id = Math.max(...organisations.map(organisation => organisation.id), 0) + 1
-                return [...organisations, valuesCopy]
-            })
+            valuesCopy.id = Math.max(...lastWill.heirs.organisations.map(organisation => organisation.id), 0) + 1
+            await services.addOrganisation(valuesCopy)
         }
 
         // Close and reset Modal
@@ -115,6 +111,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
                     <Button
                         datacy="button-next-submit"
                         type="submit"
+                        loading={lastWill.common.isLoading}
                         className="mb-4 md:mb-0"
                         icon="check"
                     >

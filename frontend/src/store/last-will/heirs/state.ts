@@ -2,7 +2,7 @@ import { Gender } from '../../../types/gender'
 
 export type HeirsState = {
 	persons: Person[]
-	organisation: Organisation[]
+	organisations: Organisation[]
 }
 
 export type Person = {
@@ -35,7 +35,7 @@ export type PersonMoreInfos = 'personHandicapped' | 'personInsolvent'
 export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 export type HeirsTypes = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 
-export const initialHeirs: HeirsState = {
+export const initialHeirsState: HeirsState = {
 	persons: [],
-	organisation: [],
+	organisations: [],
 }

@@ -1,8 +1,8 @@
 import { Form, Formik } from "formik"
-import { Dispatch, SetStateAction } from "react"
 import { ObjectSchema, array, mixed, number, object, string } from "yup"
 import { personMoreInfosOptions } from "../../../../../content/checkboxOptions"
 import { childRelationshipOptions, genderOptions, heirsTypes } from "../../../../../content/dropdownOptions"
+import { useLastWillContext } from "../../../../store/last-will/LastWillContext"
 import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from "../../../../store/last-will/heirs/state"
 import { Gender } from "../../../../types/gender"
 import { Button } from "../../../ButtonsAndLinks/Button/Button"
@@ -21,14 +21,14 @@ type HeirsPersonModalProps = {
     editPerson: Person | null
     /** The type of person. */
     type: HeirsTypes
-    /** Function that updates the persons state. */
-    setPersons: Dispatch<SetStateAction<Person[]>>
 }
 
 /**
  * Modal to add/edit a heirs person.
  */
-export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type, setPersons }) => {
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
+    const { lastWill, services } = useLastWillContext()
+
     const initialFormValues: Person = {
         id: editPerson?.id ?? 0,
         firstName: editPerson?.firstName ?? '',
@@ -63,19 +63,16 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
         type: string<HeirsTypes>().required()
     })
 
-    const onSubmit = (values: Person) => {
+    const onSubmit = async (values: Person) => {
         if (editPerson) {
-            // Edit person in persons
-            const valuesCopy = { ...values }
-            setPersons(persons => persons.map(person => person.id === editPerson.id ? valuesCopy : person))
+            await services.updatePerson(values)
         } else {
             // Add person to persons
             const valuesCopy = { ...values }
-            setPersons(persons => {
-                valuesCopy.id = Math.max(...persons.map(person => person.id), 0) + 1
-                valuesCopy.type = type
-                return [...persons, valuesCopy]
-            })
+            valuesCopy.id = Math.max(...lastWill.heirs.persons.map(person => person.id), 0) + 1
+            valuesCopy.type = type
+
+            await services.addPerson(valuesCopy)
         }
 
         // Close and reset Modal
@@ -184,6 +181,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
                     <Button
                         datacy="button-next-submit"
                         type="submit"
+                        loading={lastWill.common.isLoading}
                         className="mb-4 md:mb-0"
                         icon="check"
                     >

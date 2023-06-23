@@ -18,8 +18,6 @@ import { SidebarPages } from '../../../../types/sidebar'
  */
 const Heirs = () => {
     // Local State
-    const [persons, setPersons] = useState<Person[]>([])
-    const [organisations, setOrganisations] = useState<Organisation[]>([])
     const [isPersonModalOpen, setIsPersonModalOpen] = useState(false)
     const [isOrganisationModalOpen, setIsOrganisationModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -31,7 +29,7 @@ const Heirs = () => {
     const deleteHeadline = `${selectedPerson !== null ? selectedPerson.firstName ?? '' + selectedPerson.lastName ?? '' : selectedOrganisation !== null ? selectedOrganisation.name : ''} löschen?`
 
     // Global State
-    const { services } = useLastWillContext()
+    const { lastWill, services } = useLastWillContext()
 
     // Use to handle sidebar display state and progress
     useEffect(() => {
@@ -55,13 +53,11 @@ const Heirs = () => {
     /**
      * Handle delete heirs.
      */
-    const deleteHeirs = () => {
+    const deleteHeirs = async () => {
         if (selectedPerson !== null) {
-            const newPersons = persons.filter((person) => person.id !== selectedPerson.id)
-            setPersons(newPersons)
+            await services.deletePerson(selectedPerson)
         } else if (selectedOrganisation !== null) {
-            const newOrganisations = organisations.filter((organisation) => organisation.id !== selectedOrganisation.id)
-            setOrganisations(newOrganisations)
+            await services.deleteOrganisation(selectedOrganisation)
         }
 
         setIsDeleteModalOpen(false)
@@ -72,7 +68,7 @@ const Heirs = () => {
             <Headline>Erben</Headline>
 
             {/* Overview all heirs */}
-            {persons.length === 0 && organisations.length === 0 ? <p className="text-gray-600 mb-2 md:mb-4">Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.</p> :
+            {lastWill.heirs.persons.length === 0 && lastWill.heirs.organisations.length === 0 ? <p className="text-gray-600 mb-2 md:mb-4">Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.</p> :
                 <table className="border-collapse w-full mt-2 md:mt-8 mb-4">
                     <thead>
                         {/* Table Header */}
@@ -84,7 +80,7 @@ const Heirs = () => {
                     </thead>
                     <tbody>
                         {/* Persons and Organisations */}
-                        {persons.map((person) => (
+                        {lastWill.heirs.persons.map((person) => (
                             <tr key={person.id} className="border-b border-gray-300">
                                 <td className="table-cell pr-4">
                                     <div className="flex flex-col md:flex-row">
@@ -109,7 +105,7 @@ const Heirs = () => {
                                 </td>
                             </tr>
                         ))}
-                        {organisations.map((organisation) => (
+                        {lastWill.heirs.organisations.map((organisation) => (
                             <tr key={organisation.id} className="border-b border-gray-300">
                                 <td className="pr-4">
                                     <p className="mr-1">{organisation.name}</p>
@@ -138,11 +134,11 @@ const Heirs = () => {
             {isPersonModalOpen && <HeirsPersonModal isOpenModal={isPersonModalOpen} onClose={() => {
                 setSelectedPerson(null)
                 setIsPersonModalOpen(false)
-            }} editPerson={selectedPerson} type={type} setPersons={setPersons} />}
+            }} editPerson={selectedPerson} type={type} />}
             {isOrganisationModalOpen && <HeirsOrganisationModal isOpenModal={isOrganisationModalOpen} onClose={() => {
                 setSelectedOrganisation(null)
                 setIsOrganisationModalOpen(false)
-            }} editOrganisation={selectedOrganisation} setOrganisations={setOrganisations} />}
+            }} editOrganisation={selectedOrganisation} />}
             <Modal open={isDeleteModalOpen} headline={deleteHeadline} onClose={() => {
                 setSelectedOrganisation(null)
                 setSelectedPerson(null)
@@ -167,6 +163,7 @@ const Heirs = () => {
                     <Button
                         datacy="button-next-submit"
                         onClick={deleteHeirs}
+                        loading={lastWill.common.isLoading}
                         className="mb-4 md:mb-0"
                         icon="delete"
                     >
