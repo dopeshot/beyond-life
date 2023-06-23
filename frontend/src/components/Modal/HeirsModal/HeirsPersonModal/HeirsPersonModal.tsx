@@ -1,8 +1,10 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction } from "react"
+import { ObjectSchema, array, mixed, number, object, string } from "yup"
 import { personMoreInfosOptions } from "../../../../../content/checkboxOptions"
 import { childRelationshipOptions, genderOptions, heirsTypes } from "../../../../../content/dropdownOptions"
-import { HeirsTypes, Person } from "../../../../store/last-will/heirs/state"
+import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from "../../../../store/last-will/heirs/state"
+import { Gender } from "../../../../types/gender"
 import { Button } from "../../../ButtonsAndLinks/Button/Button"
 import { Checkbox } from "../../../Form/Checkbox/Checkbox"
 import { FormDropdown } from "../../../Form/FormDropdown/FormDropdown"
@@ -35,6 +37,23 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
         type: 'other'
     }
 
+    const validationSchema: ObjectSchema<Person> = object().shape({
+        id: number().required(),
+        firstName: string(),
+        lastName: string(),
+        gender: string<Gender>(),
+        dateOfBirth: string(),
+        placeOfBirth: string(),
+        street: string(),
+        houseNumber: string(),
+        zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
+        city: string(),
+        childRelationShip: mixed<ChildRelationShip[]>(),
+        ownChild: array(),
+        moreInfos: mixed<PersonMoreInfos[]>(),
+        type: string<HeirsTypes>().required()
+    })
+
     const onSubmit = (values: Person) => {
         // Add person to persons
         const valuesCopy = { ...values }
@@ -49,7 +68,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
     }
 
     return <Modal open={isOpenModal} headline={`${heirsTypes[type].label}`} onClose={() => setIsOpenModal(false)}>
-        <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
+        <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             <Form className="mt-2 md:mt-3">
                 {/* Persönliche Daten */}
                 <div className="mb-2 md:mb-4">

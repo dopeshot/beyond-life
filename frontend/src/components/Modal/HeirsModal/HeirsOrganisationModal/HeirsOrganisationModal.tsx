@@ -1,5 +1,6 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction } from "react"
+import { ObjectSchema, number, object, string } from "yup"
 import { Organisation } from "../../../../store/last-will/heirs/state"
 import { Button } from "../../../ButtonsAndLinks/Button/Button"
 import { TextInput } from "../../../Form/TextInput/TextInput"
@@ -22,6 +23,15 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
         city: ''
     }
 
+    const validationSchema: ObjectSchema<Organisation> = object().shape({
+        id: number().required(),
+        name: string(),
+        street: string(),
+        houseNumber: string(),
+        zipCode: string(),
+        city: string()
+    })
+
     const onSubmit = (values: Organisation) => {
         // Add organisation to organisations
         const valuesCopy = { ...values }
@@ -35,7 +45,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({ 
     }
 
     return <Modal open={isOpenModal} headline='Organisation hinzufügen' onClose={() => setIsOpenModal(false)}>
-        <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
+        <Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             <Form className="mt-2 md:mt-3">
                 {/* Persönliche Daten */}
                 <div className="mb-2 md:mb-4">
