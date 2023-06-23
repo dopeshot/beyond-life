@@ -7,8 +7,8 @@ export type HeirsState = {
 
 export type Person = {
 	id: number
-	firstName: string
-	lastName: string
+	firstName?: string
+	lastName?: string
 	gender?: Gender
 	dateOfBirth?: string
 	placeOfBirth?: string
@@ -17,14 +17,14 @@ export type Person = {
 	zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
 	city?: string
 	moreInfos?: PersonMoreInfos[]
-	childRelationShip?: 'childTogether' | 'childFromPartner' | 'childFromOther'
+	childRelationShip?: ChildRelationShip[]
 	ownChild?: string[]
 	type: HeirsTypes
 }
 
 export type Organisation = {
 	id: number
-	name: string
+	name?: string
 	street?: string
 	houseNumber?: string
 	zipCode?: number | string
@@ -32,6 +32,7 @@ export type Organisation = {
 }
 
 export type PersonMoreInfos = 'personHandicapped' | 'personInsolvent'
+export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 export type HeirsTypes = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 
 export const initialHeirs: HeirsState = {
