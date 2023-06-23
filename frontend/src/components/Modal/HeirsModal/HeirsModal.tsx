@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction, useState } from "react"
 import { personMoreInfosOptions } from "../../../../content/checkboxOptions"
-import { childRelationshipOptions, genderOptions, personAddHeirsOptions } from "../../../../content/dropdownOptions"
+import { childRelationshipOptions, genderOptions, getPersonAddHeirsOptions, personTypes } from "../../../../content/dropdownOptions"
 import { Gender } from "../../../store/last-will/marriage/state"
 import { Button } from "../../ButtonsAndLinks/Button/Button"
 import { DropdownButton } from "../../ButtonsAndLinks/DropdownButton/DropdownButton"
@@ -81,9 +81,10 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
         setType(type)
         setIsOpenModal(true)
     }
+    const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
     return <>
-        <Modal open={isOpenModal} headline='Person hinzufügen' onClose={() => setIsOpenModal(false)}>
+        <Modal open={isOpenModal} headline={`${personTypes[type].label}`} onClose={() => setIsOpenModal(false)}>
             <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
                 <Form className="mt-2 md:mt-3">
                     {/* Persönliche Daten */}
@@ -196,11 +197,7 @@ export const HeirsModal: React.FC<HeirsModalProps> = ({ setPersons }) => {
             </Formik>
         </Modal>
 
-        <Button datacy="button-add-person" onClick={() => setIsOpenModal(true)}>
-            Person hinzufügen
-        </Button>
-
-        <DropdownButton options={personAddHeirsOptions}>
+        <DropdownButton buttonKind="secondary" options={personAddHeirsOptions}>
             Person hinzufügen
         </DropdownButton>
     </>

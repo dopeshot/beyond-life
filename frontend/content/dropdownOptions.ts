@@ -1,3 +1,4 @@
+import { PersonType } from '../src/components/Modal/HeirsModal/HeirsModal'
 import { ComponentOptions, DropdownButtonOptions } from '../src/types/dropdownOptions'
 
 export const genderOptions: ComponentOptions[] = [
@@ -33,29 +34,18 @@ export const childRelationshipOptions: ComponentOptions[] = [
 	},
 ]
 
-export const personAddHeirsOptions: DropdownButtonOptions[] = [
-	{
-		onClick: () => console.log('Mutter'),
-		label: 'Mutter hinzufügen',
-	},
-	{
-		onClick: () => console.log('Vater'),
-		label: 'Vater hinzufügen',
-	},
-	{
-		onClick: () => console.log('Kind'),
-		label: 'Kind hinzufügen',
-	},
-	{
-		onClick: () => console.log('Geschwister'),
-		label: 'Geschwister hinzufügen',
-	},
-	{
-		onClick: () => console.log('Andere Person'),
-		label: 'Andere Person hinzufügen',
-	},
-	{
-		onClick: () => console.log('Organisation'),
-		label: 'Organisation hinzufügen',
-	},
-]
+export const personTypes: { [key in PersonType]: { displayType: string; label: string } } = {
+	mother: { displayType: 'Mutter', label: 'Mutter hinzufügen' },
+	father: { displayType: 'Vater', label: 'Vater hinzufügen' },
+	child: { displayType: 'Kind', label: 'Kind hinzufügen' },
+	siblings: { displayType: 'Geschwister', label: 'Geschwister hinzufügen' },
+	other: { displayType: 'Andere Person', label: 'Andere Person hinzufügen' },
+}
+
+export type SetDropdownOptionFunction = (type: PersonType) => void
+
+export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
+	Object.entries(personTypes).map(([type, { label }]) => ({
+		onClick: () => setDropdownOption(type as PersonType),
+		label,
+	}))

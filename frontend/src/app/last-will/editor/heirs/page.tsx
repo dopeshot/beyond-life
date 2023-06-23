@@ -1,17 +1,16 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { personTypes } from '../../../../../content/dropdownOptions'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
-import { HeirsModal, Person } from '../../../../components/Modal/HeirsModal/HeirsModal'
+import { HeirsModal, Organisation, Person } from '../../../../components/Modal/HeirsModal/HeirsModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarPages } from '../../../../types/sidebar'
 
 export type HeirsForm = {
-    persons: {
-        firstName: string
-        lastName: string
-    }[]
+    persons: Person[]
+    organisation: Organisation[]
 }
 
 /**
@@ -19,7 +18,6 @@ export type HeirsForm = {
  */
 const Heirs = () => {
     const [persons, setPersons] = useState<Person[]>([])
-
 
     const { services } = useLastWillContext()
 
@@ -45,12 +43,12 @@ const Heirs = () => {
                             <tr key={person.id} className="border-b border-gray-300">
                                 <td className="table-cell pr-4">
                                     <div className="flex flex-col md:flex-row">
-                                        <p className="mr-2">{person.firstName}</p>
+                                        <p className="mr-1">{person.firstName}</p>
                                         <p>{person.lastName}</p>
                                     </div>
                                 </td>
                                 <td className="p-4">
-                                    {person.type}
+                                    {personTypes[person.type].displayType}
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
