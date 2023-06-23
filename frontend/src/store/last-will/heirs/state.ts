@@ -19,10 +19,11 @@ export type Person = {
 	moreInfos?: PersonMoreInfos[]
 	childRelationShip?: 'childTogether' | 'childFromPartner' | 'childFromOther'
 	ownChild?: string[]
-	type: PersonType
+	type: HeirsTypes
 }
 
 export type Organisation = {
+	id: number
 	name: string
 	street?: string
 	houseNumber?: string
@@ -31,7 +32,7 @@ export type Organisation = {
 }
 
 export type PersonMoreInfos = 'personHandicapped' | 'personInsolvent'
-export type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other'
+export type HeirsTypes = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 
 export const initialHeirs: HeirsState = {
 	persons: [],
