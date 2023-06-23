@@ -1,13 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getPersonAddHeirsOptions, personTypes } from '../../../../../content/dropdownOptions'
+import { getPersonAddHeirsOptions, heirsTypes } from '../../../../../content/dropdownOptions'
 import { DropdownButton } from '../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
+import { HeirsOrganisationModal } from '../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { Person, PersonType } from '../../../../store/last-will/heirs/state'
+import { HeirsTypes, Organisation, Person } from '../../../../store/last-will/heirs/state'
 import { SidebarPages } from '../../../../types/sidebar'
 
 /**
@@ -16,8 +17,10 @@ import { SidebarPages } from '../../../../types/sidebar'
 const Heirs = () => {
     // Local State
     const [persons, setPersons] = useState<Person[]>([])
+    const [organisations, setOrganisations] = useState<Organisation[]>([])
     const [isOpenPersonModal, setIsOpenPersonModal] = useState(false)
-    const [type, setType] = useState<PersonType>('other')
+    const [isOpenOrganisationModal, setIsOpenOrganisationModal] = useState(false)
+    const [type, setType] = useState<HeirsTypes>('other')
 
     // Global State
     const { services } = useLastWillContext()
@@ -26,9 +29,13 @@ const Heirs = () => {
         services.setProgressKey({ progressKey: SidebarPages.HEIRS })
     }, [services])
 
-    const setDropdownOption = (type: PersonType) => {
+    const setDropdownOption = (type: HeirsTypes) => {
         setType(type)
-        setIsOpenPersonModal(true)
+
+        if (type === 'organisation')
+            setIsOpenOrganisationModal(true)
+        else
+            setIsOpenPersonModal(true)
     }
     const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
@@ -55,7 +62,23 @@ const Heirs = () => {
                                     </div>
                                 </td>
                                 <td className="p-4">
-                                    {personTypes[person.type].displayType}
+                                    {heirsTypes[person.type].displayType}
+                                </td>
+                                <td className="p-4">
+                                    <div className="flex">
+                                        <IconButton icon="edit" />
+                                        <IconButton icon="delete" />
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                        {organisations.map((organisation) => (
+                            <tr key={organisation.id} className="border-b border-gray-300">
+                                <td className="pr-4">
+                                    <p className="mr-1">{organisation.name}</p>
+                                </td>
+                                <td className="p-4">
+                                    Organisation
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
@@ -68,10 +91,16 @@ const Heirs = () => {
                     </tbody>
                 </table>}
 
+            {/* Modals */}
             <HeirsPersonModal isOpenModal={isOpenPersonModal} setIsOpenModal={setIsOpenPersonModal} type={type} setPersons={setPersons} />
+            <HeirsOrganisationModal isOpenModal={isOpenOrganisationModal} setIsOpenModal={setIsOpenOrganisationModal} setOrganisations={setOrganisations} />
 
-            <DropdownButton buttonKind="secondary" options={personAddHeirsOptions}>
-                Person hinzufügen
+            {/* Add heirs button */}
+            <DropdownButton buttonProps={{
+                kind: 'secondary',
+                icon: 'add'
+            }} options={personAddHeirsOptions}>
+                Erbe hinzufügen
             </DropdownButton>
 
             <FormStepsButtons previousOnClick={async () => console.log("")} previousHref={''} nextHref={''} dirty={false} />

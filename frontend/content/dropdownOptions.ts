@@ -1,4 +1,4 @@
-import { PersonType } from '../src/store/last-will/heirs/state'
+import { HeirsTypes } from '../src/store/last-will/heirs/state'
 import { ComponentOptions, DropdownButtonOptions } from '../src/types/dropdownOptions'
 
 export const genderOptions: ComponentOptions[] = [
@@ -34,18 +34,17 @@ export const childRelationshipOptions: ComponentOptions[] = [
 	},
 ]
 
-export const personTypes: { [key in PersonType]: { displayType: string; label: string } } = {
+export const heirsTypes: { [key in HeirsTypes]: { displayType: string; label: string } } = {
 	mother: { displayType: 'Mutter', label: 'Mutter hinzufügen' },
 	father: { displayType: 'Vater', label: 'Vater hinzufügen' },
 	child: { displayType: 'Kind', label: 'Kind hinzufügen' },
 	siblings: { displayType: 'Geschwister', label: 'Geschwister hinzufügen' },
 	other: { displayType: 'Andere Person', label: 'Andere Person hinzufügen' },
+	organisation: { displayType: 'Organisation', label: 'Organisation hinzufügen' },
 }
-
-export type SetDropdownOptionFunction = (type: PersonType) => void
-
+export type SetDropdownOptionFunction = (type: HeirsTypes) => void
 export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
-	Object.entries(personTypes).map(([type, { label }]) => ({
-		onClick: () => setDropdownOption(type as PersonType),
+	Object.entries(heirsTypes).map(([type, { label }]) => ({
+		onClick: () => setDropdownOption(type as HeirsTypes),
 		label,
 	}))

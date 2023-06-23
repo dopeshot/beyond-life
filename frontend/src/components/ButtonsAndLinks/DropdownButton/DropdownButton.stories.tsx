@@ -28,13 +28,17 @@ export const Primary: Story = {
 export const Secondary: Story = {
     args: {
         ...Primary.args,
-        buttonKind: 'secondary',
+        buttonProps: {
+            kind: 'secondary',
+        },
     },
 }
 
 export const Tertiary: Story = {
     args: {
         ...Primary.args,
-        buttonKind: 'tertiary',
+        buttonProps: {
+            kind: 'tertiary',
+        },
     },
 }

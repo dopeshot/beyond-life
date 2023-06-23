@@ -1,8 +1,8 @@
 import { Form, Formik } from "formik"
 import { Dispatch, SetStateAction } from "react"
 import { personMoreInfosOptions } from "../../../../../content/checkboxOptions"
-import { childRelationshipOptions, genderOptions, personTypes } from "../../../../../content/dropdownOptions"
-import { Person, PersonType } from "../../../../store/last-will/heirs/state"
+import { childRelationshipOptions, genderOptions, heirsTypes } from "../../../../../content/dropdownOptions"
+import { HeirsTypes, Person } from "../../../../store/last-will/heirs/state"
 import { Button } from "../../../ButtonsAndLinks/Button/Button"
 import { Checkbox } from "../../../Form/Checkbox/Checkbox"
 import { FormDropdown } from "../../../Form/FormDropdown/FormDropdown"
@@ -13,7 +13,7 @@ import { Modal } from "../../ModalBase/Modal"
 type HeirsPersonModalProps = {
     isOpenModal: boolean
     setIsOpenModal: Dispatch<SetStateAction<boolean>>
-    type: PersonType
+    type: HeirsTypes
     setPersons: Dispatch<SetStateAction<Person[]>>
 }
 
@@ -48,7 +48,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
         setIsOpenModal(false)
     }
 
-    return <Modal open={isOpenModal} headline={`${personTypes[type].label}`} onClose={() => setIsOpenModal(false)}>
+    return <Modal open={isOpenModal} headline={`${heirsTypes[type].label}`} onClose={() => setIsOpenModal(false)}>
         <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
             <Form className="mt-2 md:mt-3">
                 {/* Persönliche Daten */}

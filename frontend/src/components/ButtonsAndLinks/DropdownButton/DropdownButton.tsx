@@ -4,8 +4,8 @@ import { Button, ButtonProps } from "../Button/Button"
 export type DropdownButtonProps = {
     /** Button Text. */
     children: React.ReactNode
-    /** Button Kind. */
-    buttonKind?: ButtonProps['kind']
+    /** Button Props. */
+    buttonProps?: Omit<ButtonProps, 'children'>
     /** Dropdown Options. */
     options: {
         onClick: () => void
@@ -16,7 +16,7 @@ export type DropdownButtonProps = {
 /**
  * Button with a dropdown menu which can be used without formik.
  */
-export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, options, buttonKind = "tertiary" }) => {
+export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, options, buttonProps }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     return <div className="relative mb-2 md:mb-4">
@@ -30,7 +30,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ children, option
         )}
 
         {/* Input */}
-        <Button className="relative" kind={buttonKind} onClick={() => setIsOpen(true)}>{children}</Button>
+        <Button className="relative" {...buttonProps} onClick={() => setIsOpen(true)}>{children}</Button>
 
         {/* Options */}
         {isOpen && (
