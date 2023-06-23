@@ -1,3 +1,5 @@
+import { Gender } from '../../../types/gender'
+
 export type MarriageState = {
 	relationshipStatus?: RelationshipStatus
 	partnerGermanCitizenship?: boolean
@@ -15,7 +17,6 @@ export type MarriageState = {
 }
 
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
-export type Gender = 'male' | 'female' | 'divers'
 export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 

@@ -1,29 +1,36 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { personTypes } from '../../../../../content/dropdownOptions'
+import { getPersonAddHeirsOptions, personTypes } from '../../../../../content/dropdownOptions'
+import { DropdownButton } from '../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
-import { HeirsModal, Organisation, Person } from '../../../../components/Modal/HeirsModal/HeirsModal'
+import { HeirsModal } from '../../../../components/Modal/HeirsModal/HeirsModal'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { Person, PersonType } from '../../../../store/last-will/heirs/state'
 import { SidebarPages } from '../../../../types/sidebar'
-
-export type HeirsForm = {
-    persons: Person[]
-    organisation: Organisation[]
-}
 
 /**
  * Heirs Page
  */
 const Heirs = () => {
+    // Local State
     const [persons, setPersons] = useState<Person[]>([])
+    const [isOpenPersonModal, setIsOpenPersonModal] = useState(false)
+    const [type, setType] = useState<PersonType>('other')
 
+    // Global State
     const { services } = useLastWillContext()
 
     useEffect(() => {
         services.setProgressKey({ progressKey: SidebarPages.HEIRS })
     }, [services])
+
+    const setDropdownOption = (type: PersonType) => {
+        setType(type)
+        setIsOpenPersonModal(true)
+    }
+    const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
     return (
         <div className="container mt-5">
@@ -61,7 +68,11 @@ const Heirs = () => {
                     </tbody>
                 </table>}
 
-            <HeirsModal setPersons={setPersons} />
+            <HeirsModal isOpenModal={isOpenPersonModal} setIsOpenModal={setIsOpenPersonModal} type={type} setPersons={setPersons} />
+
+            <DropdownButton buttonKind="secondary" options={personAddHeirsOptions}>
+                Person hinzufügen
+            </DropdownButton>
 
             <FormStepsButtons previousOnClick={async () => console.log("")} previousHref={''} nextHref={''} dirty={false} />
         </div>
