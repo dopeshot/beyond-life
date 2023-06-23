@@ -168,7 +168,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
                 <div className="flex flex-col items-center justify-between md:flex-row">
                     {/* Cancel Button */}
                     <Button
-                        datacy="button-previous-submit"
+                        datacy="button-cancel"
                         type="button"
                         onClick={onClose}
                         className="order-1 md:order-none"
@@ -179,7 +179,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
                     {/* Submit Button */}
                     <Button
-                        datacy="button-next-submit"
+                        datacy="button-submit"
                         type="submit"
                         loading={lastWill.common.isLoading}
                         className="mb-4 md:mb-0"

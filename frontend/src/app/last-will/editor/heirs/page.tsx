@@ -81,7 +81,7 @@ const Heirs = () => {
                     <tbody>
                         {/* Persons and Organisations */}
                         {lastWill.heirs.persons.map((person) => (
-                            <tr key={person.id} className="border-b border-gray-300">
+                            <tr datacy={`persons-row-${person.firstName}`} key={person.id} className="border-b border-gray-300">
                                 <td className="table-cell pr-4">
                                     <div className="flex flex-col md:flex-row">
                                         <p className="mr-1">{person.firstName}</p>
@@ -93,11 +93,11 @@ const Heirs = () => {
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
-                                        <IconButton onClick={() => {
+                                        <IconButton datacy={`persons-editbutton-${person.firstName}`} onClick={() => {
                                             setSelectedPerson(person)
                                             setIsPersonModalOpen(true)
                                         }} icon="edit" />
-                                        <IconButton onClick={() => {
+                                        <IconButton datacy={`persons-deletebutton-${person.firstName}`} onClick={() => {
                                             setSelectedPerson(person)
                                             setIsDeleteModalOpen(true)
                                         }} icon="delete" />
@@ -106,7 +106,7 @@ const Heirs = () => {
                             </tr>
                         ))}
                         {lastWill.heirs.organisations.map((organisation) => (
-                            <tr key={organisation.id} className="border-b border-gray-300">
+                            <tr datacy={`organisations-row-${organisation.name}`} key={organisation.id} className="border-b border-gray-300">
                                 <td className="pr-4">
                                     <p className="mr-1">{organisation.name}</p>
                                 </td>
@@ -115,11 +115,11 @@ const Heirs = () => {
                                 </td>
                                 <td className="p-4">
                                     <div className="flex">
-                                        <IconButton onClick={() => {
+                                        <IconButton datacy={`organisations-editbutton-${organisation.name}`} onClick={() => {
                                             setSelectedOrganisation(organisation)
                                             setIsOrganisationModalOpen(true)
                                         }} icon="edit" />
-                                        <IconButton onClick={() => {
+                                        <IconButton datacy={`organisations-deletebutton-${organisation.name}`} onClick={() => {
                                             setSelectedOrganisation(organisation)
                                             setIsDeleteModalOpen(true)
                                         }} icon="delete" />
@@ -150,7 +150,7 @@ const Heirs = () => {
                 <div className="flex flex-col items-center justify-between md:flex-row">
                     {/* Cancel Button */}
                     <Button
-                        datacy="button-previous-submit"
+                        datacy="button-cancel"
                         type="button"
                         onClick={() => setIsDeleteModalOpen(false)}
                         className="order-1 md:order-none"
@@ -161,7 +161,7 @@ const Heirs = () => {
 
                     {/* Submit Button */}
                     <Button
-                        datacy="button-next-submit"
+                        datacy="button-delete"
                         onClick={deleteHeirs}
                         loading={lastWill.common.isLoading}
                         className="mb-4 md:mb-0"
@@ -173,7 +173,7 @@ const Heirs = () => {
             </Modal>
 
             {/* Add heirs button */}
-            <DropdownButton buttonProps={{
+            <DropdownButton datacy='heirs-dropdownbutton' buttonProps={{
                 kind: 'secondary',
                 icon: 'add'
             }} options={personAddHeirsOptions}>

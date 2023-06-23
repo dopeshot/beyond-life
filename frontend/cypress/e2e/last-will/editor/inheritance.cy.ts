@@ -5,7 +5,7 @@ describe('Last Will Inheritance Page', () => {
 
 	describe('Basic Flow', () => {
 		it('should fill out one financial asset and one item and redirect to /last-will/editor/succession?id=1 after submit', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			// Fill out financial asset
@@ -26,7 +26,7 @@ describe('Last Will Inheritance Page', () => {
 
 	describe('Financial Assets', () => {
 		it('should add a financial asset', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			cy.datacy('button-add-financial-asset').click()
@@ -34,7 +34,7 @@ describe('Last Will Inheritance Page', () => {
 		})
 
 		it('should remove a financial asset', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			cy.datacy('button-add-financial-asset').click()
@@ -49,7 +49,7 @@ describe('Last Will Inheritance Page', () => {
 
 	describe('Items', () => {
 		it('should add an item', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			cy.datacy('button-add-item').click()
@@ -57,7 +57,7 @@ describe('Last Will Inheritance Page', () => {
 		})
 
 		it('should remove an item', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
+			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			cy.datacy('button-add-item').click()
