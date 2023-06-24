@@ -1,11 +1,12 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
+import { fontArbutusSlab } from '../../../services/font/font'
 import { routes } from '../../../services/routes/routes'
 import { useLastWillContext } from '../../../store/last-will/LastWillContext'
 import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
 import { Icon } from '../../Icon/Icon'
-import { MobileSidebarButton } from './MobileSidebarButton/MobileSidebarButton'
+import { SidebarButton } from '../Sidebar/SidebarButton/SidebarButton'
 
 export type MobileSidebarProps = {
     /** Path of the current page. */
@@ -55,6 +56,9 @@ const mobileSidebarElements: MobileSidebarElement[] = [
  * Sidebar component for navigation
  */
 export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
+
+    const [isOpen, setIsOpen] = useState(false)
+
     const { lastWill } = useLastWillContext()
 
     const currentElementIndex = mobileSidebarElements.findIndex(
@@ -70,27 +74,40 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
         : mobileSidebarElements[mobileSidebarElements.length - 1].page
 
     return (
-        <div datacy={'sidebar'} className="container flex flex-row justify-between items-center p-2 my-2 lg:hidden bg-white border-gray-200 border-2 rounded-lg">
+        <div datacy={'sidebar'} className="container flex-row justify-between items-center lg:hidden bg-white border-gray-200 border-2 rounded-lg">
             {/* Chevron Buttons */}
-            <div className="flex justify-between w-full">
+            <div className="flex justify-between">
                 <Link className="flex justify-center items-center" href={routes.lastWill[previousPage]('1')}>
                     <Icon icon="chevron_left" className=" text-gray-500" />
                 </Link>
 
-                <div className="flex flex-col">
-                    <MobileSidebarButton
-                        datacy={`sidebar-button-${mobileSidebarElements[currentElementIndex].page}`}
-                        key={mobileSidebarElements[currentElementIndex].page}
-                        type={mobileSidebarElements[currentElementIndex].page}
-                        title={mobileSidebarElements[currentElementIndex].title}
-                        state={
-                            path.includes(mobileSidebarElements[currentElementIndex].page)
-                                ? SidebarButtonState.ACTIVE
-                                : lastWill.common.progressKeys.includes(mobileSidebarElements[currentElementIndex].page)
-                                    ? SidebarButtonState.DEFAULT
-                                    : SidebarButtonState.DISABLED
-                        }
-                    />
+                <div className="relative flex flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
+                    <div className={`flex flex-col text-2xl md:text-3xl ${fontArbutusSlab.className}`}>
+                        {mobileSidebarElements[currentElementIndex].title}
+                    </div>
+                    <div>
+                        <Icon icon={isOpen ? "expand_less" : "expand_more"} className=" text-gray-500" />
+                    </div>
+                    {isOpen &&
+                        <div className="absolute top-full mt-2 w-200 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden z-50">
+                            {mobileSidebarElements.map((element) => (
+                                <SidebarButton
+                                    datacy={`sidebar-button-${element.page}`}
+                                    key={element.page}
+                                    type={element.page}
+                                    title={element.title}
+                                    description={element.description}
+                                    state={
+                                        path.includes(element.page) // button is active if url contains the page name
+                                            ? SidebarButtonState.ACTIVE
+                                            : lastWill.common.progressKeys.includes(element.page)
+                                                ? SidebarButtonState.DEFAULT // button is default if page was visited yet
+                                                : SidebarButtonState.DISABLED // button is disabled if page was not visited yet
+                                    }
+                                />
+                            ))}
+                        </div>
+                    }
                 </div>
 
                 <Link className="flex justify-center items-center" href={routes.lastWill[nextPage]('1')}>
