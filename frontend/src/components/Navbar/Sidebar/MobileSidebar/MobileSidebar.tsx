@@ -74,25 +74,25 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
         : mobileSidebarElements[mobileSidebarElements.length - 1].page
 
     return (
-        <div datacy={'sidebar'} className="container flex-row justify-between items-center lg:hidden bg-yellow-400 rounded-lg">
+        <div datacy={'mobileSidebar'} className="container flex-row justify-between items-center lg:hidden bg-yellow-400 rounded-lg">
             {/* Chevron Buttons */}
             <div className="flex justify-between">
                 <Link className="flex justify-center items-center" href={routes.lastWill[previousPage]('1')}>
-                    <Icon icon="chevron_left" className=" text-gray-500" />
+                    <Icon datacy='chevron_left' icon="chevron_left" className=" text-gray-500"/>
                 </Link>
 
-                <div className="relative flex flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
+                <div className="relative flex flex-col items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
                     <div className={`flex flex-col text-2xl md:text-3xl ${fontArbutusSlab.className}`}>
                         {mobileSidebarElements[currentElementIndex].title}
                     </div>
                     <div>
-                        <Icon icon={isOpen ? "expand_less" : "expand_more"} className=" text-gray-500" />
+                        <Icon icon={isOpen ? "expand_less" : "expand_more"} className="text-gray-500" />
                     </div>
                     {isOpen &&
                         <div className="absolute top-full mt-2 rounded-md shadow-lg bg-yellow-400 ring-1 ring-black ring-opacity-5 overflow-hidden z-50">
                             {mobileSidebarElements.map((element) => (
                                 <SidebarButton
-                                    datacy={`sidebar-button-${element.page}`}
+                                    datacy={`mobileSidebar-button-${element.page}`}
                                     key={element.page}
                                     type={element.page}
                                     title={element.title}
@@ -111,7 +111,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
                 </div>
 
                 <Link className="flex justify-center items-center" href={routes.lastWill[nextPage]('1')}>
-                    <Icon icon="chevron_right" className=" text-gray-500" />
+                    <Icon datacy="chevron_right" icon="chevron_right" className=" text-gray-500" />
                 </Link>
             </div>
         </div>
