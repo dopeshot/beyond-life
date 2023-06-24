@@ -2,9 +2,9 @@
 import { usePathname } from 'next/navigation'
 import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../components/Navbar/Navbar/Navbar'
+import { MobileSidebar } from '../../../components/Navbar/Sidebar/MobileSidebar/MobileSidebar'
 import { Sidebar } from '../../../components/Navbar/Sidebar/Sidebar'
 import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
-import { MobileSidebar } from '../../../components/Navbar/MobileSidebar/MobileSidebar'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					{children}
 					<GlobalFooter />
 				</div>
-				
+
 			</div>
 		</LastWillContextProvider>
 	)

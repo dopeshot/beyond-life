@@ -1,12 +1,12 @@
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { fontArbutusSlab } from '../../../services/font/font'
-import { routes } from '../../../services/routes/routes'
-import { useLastWillContext } from '../../../store/last-will/LastWillContext'
-import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
-import { Icon } from '../../Icon/Icon'
-import { SidebarButton } from '../Sidebar/SidebarButton/SidebarButton'
+import { fontArbutusSlab } from '../../../../services/font/font'
+import { routes } from '../../../../services/routes/routes'
+import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
+import { Icon } from '../../../Icon/Icon'
+import { SidebarButton } from '../SidebarButton/SidebarButton'
 
 export type MobileSidebarProps = {
     /** Path of the current page. */
@@ -74,7 +74,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
         : mobileSidebarElements[mobileSidebarElements.length - 1].page
 
     return (
-        <div datacy={'sidebar'} className="container flex-row justify-between items-center lg:hidden bg-white border-gray-200 border-2 rounded-lg">
+        <div datacy={'sidebar'} className="container flex-row justify-between items-center lg:hidden bg-yellow-400 rounded-lg">
             {/* Chevron Buttons */}
             <div className="flex justify-between">
                 <Link className="flex justify-center items-center" href={routes.lastWill[previousPage]('1')}>
@@ -89,7 +89,7 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
                         <Icon icon={isOpen ? "expand_less" : "expand_more"} className=" text-gray-500" />
                     </div>
                     {isOpen &&
-                        <div className="absolute top-full mt-2 w-200 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-hidden z-50">
+                        <div className="absolute top-full mt-2 rounded-md shadow-lg bg-yellow-400 ring-1 ring-black ring-opacity-5 overflow-hidden z-50">
                             {mobileSidebarElements.map((element) => (
                                 <SidebarButton
                                     datacy={`sidebar-button-${element.page}`}
