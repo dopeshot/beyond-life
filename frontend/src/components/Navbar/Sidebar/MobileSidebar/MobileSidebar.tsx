@@ -74,11 +74,11 @@ export const MobileSidebar: React.FC<MobileSidebarProps> = ({ path }) => {
         : mobileSidebarElements[mobileSidebarElements.length - 1].page
 
     return (
-        <div datacy={'mobileSidebar'} className="container flex-row justify-between items-center lg:hidden bg-yellow-400 rounded-lg">
+        <div datacy={'mobileSidebar'} className="container lg:hidden ">
             {/* Chevron Buttons */}
-            <div className="flex justify-between">
+            <div className="flex justify-between bg-yellow-400 rounded-lg">
                 <Link className="flex justify-center items-center" href={routes.lastWill[previousPage]('1')}>
-                    <Icon datacy='chevron_left' icon="chevron_left" className=" text-gray-500"/>
+                    <Icon datacy='chevron_left' icon="chevron_left" className=" text-gray-500" />
                 </Link>
 
                 <div className="relative flex flex-col items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
