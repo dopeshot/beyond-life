@@ -22,11 +22,6 @@ describe('MobileSidebar', () => {
             cy.datacy('mobileSidebar').should('be.visible')
         })
 
-        it('should render correctly', () => {
-            cy.viewport('iphone-6') 
-            cy.datacy('mobileSidebar').should('be.visible')
-        })
-
         it('should display all buttons when open', () => {
             cy.viewport('iphone-6') 
             cy.get('[datacy=mobileSidebar]').click()
