@@ -16,7 +16,7 @@ type SidebarElement = {
 	description?: string
 }
 
-const sidebarElements: SidebarElement[] = [
+export const sidebarElements: SidebarElement[] = [
 	{
 		page: SidebarPages.TESTATOR,
 		title: 'Erblasser',
