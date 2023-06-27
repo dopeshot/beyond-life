@@ -65,7 +65,7 @@ const Testator = () => {
 				onSubmit={(values) => onSubmit(values, routes.lastWill.marriage('1'))}
 			>
 				{({ values, dirty }: FormikProps<TestatorFormPayload>) => (
-					<Form className="mb-2 mt-4 flex h-full w-full flex-1 flex-col md:mb-0">
+					<Form className="flex flex-1 flex-col md:mb-0">
 						<div className="flex w-full flex-1 flex-col">
 							<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
 								{/*Personal Data*/}
