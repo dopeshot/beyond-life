@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { object, string } from 'yup'
+import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
@@ -35,7 +35,7 @@ const Testator = () => {
 	}
 
 	// TODO: Ensure all schemas are equal from the strength
-	const validationSchema = object<TestatorFormPayload>({
+	const validationSchema: ObjectSchema<TestatorFormPayload> = object({
 		firstName: string(),
 		lastName: string(),
 		gender: string<Gender>(),
@@ -44,6 +44,7 @@ const Testator = () => {
 		houseNumber: string(),
 		postalCode: string(),
 		city: string(),
+		street: string(),
 	})
 	// TODO: Ensure typescript here
 

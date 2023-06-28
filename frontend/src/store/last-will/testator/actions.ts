@@ -15,6 +15,7 @@ export type TestatorFormPayload = {
 	lastName?: string
 	gender?: Gender
 	birthDate?: string
+	street?: string
 	birthPlace?: string
 	houseNumber?: string
 	postalCode?: string

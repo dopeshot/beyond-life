@@ -9,6 +9,7 @@ export type TestatorState = {
 	houseNumber?: string
 	postalCode?: string
 	city?: string
+	street?: string
 }
 
 export const initialTestatorState: TestatorState = {
@@ -20,4 +21,5 @@ export const initialTestatorState: TestatorState = {
 	houseNumber: '',
 	postalCode: '',
 	city: '',
+	street: '',
 }
