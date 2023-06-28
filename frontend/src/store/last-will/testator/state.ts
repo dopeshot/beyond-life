@@ -16,7 +16,7 @@ export const initialTestatorState: TestatorState = {
 	firstName: '',
 	lastName: '',
 	gender: undefined,
-	birthDate: undefined,
+	birthDate: '',
 	birthPlace: '',
 	address: '',
 	houseNumber: '',
