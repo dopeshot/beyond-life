@@ -1,6 +1,8 @@
 import example from '../src/assets/images/tutorial/example.png'
 import { CardWithIconProps } from '../src/components/Layout/CardWithIcon/CardWithIcon'
 
+// TODO: this content folder is a bit out of place... We should find a good solution for this.
+
 export const cardContent: CardWithIconProps[] = [
 	{
 		icon: 'history_edu',
