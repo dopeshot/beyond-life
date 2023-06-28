@@ -41,9 +41,9 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					<div className={`flex flex-col text-xl md:text-2xl ${fontArbutusSlab.className} mt-1`}>
 						{sidebarElements[currentElementIndex].title}
 					</div>
-					<div className="mb-1 ml-2 flex justify-center">
+					<div className="mb-1 ml-2 flex justify-center text-xs">
 						Menü
-						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-gray-500" />
+						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-500" />
 					</div>
 				</div>
 				<Link
