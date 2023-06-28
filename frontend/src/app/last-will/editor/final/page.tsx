@@ -47,7 +47,13 @@ const Final = () => {
 			</div>
 
 			{/* Form Steps Buttons */}
-			<FormStepsButtons previousOnClick={() => onSubmit(routes.lastWill.testator('1'))} loading={false} />
+			<FormStepsButtons
+				loading={false}
+				dirty={false}
+				previousOnClick={() => onSubmit(routes.lastWill.testator('1'))}
+				previousHref={''} // TODO
+				nextHref={''} // TODO
+			/>
 		</div>
 	)
 }
