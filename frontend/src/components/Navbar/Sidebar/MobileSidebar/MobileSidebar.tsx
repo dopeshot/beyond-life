@@ -71,6 +71,9 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 									? SidebarButtonState.DEFAULT // button is default if page was visited yet
 									: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 							}
+							onClick={() => {
+								setIsOpen(false)
+							}}
 						/>
 					))}
 				</div>
