@@ -50,6 +50,7 @@ const Testator = () => {
 			// Redirect to previous or next page
 			router.push(href)
 		} catch (error) {
+			// TODO: This feedback should be visible for the user
 			console.error('An error occured while submitting the form: ', error)
 		}
 	}
