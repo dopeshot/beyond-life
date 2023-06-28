@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { ObjectSchema, object, string } from 'yup'
+import { object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
@@ -35,17 +35,17 @@ const Testator = () => {
 	}
 
 	// TODO: Ensure all schemas are equal from the strength
-	const validationSchema: ObjectSchema<TestatorFormPayload> = object().shape({
+	const validationSchema = object<TestatorFormPayload>({
 		firstName: string(),
 		lastName: string(),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
-		address: string(),
 		houseNumber: string(),
 		postalCode: string(),
 		city: string(),
 	})
+	// TODO: Ensure typescript here
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
 		// This functions only gets called if values have changed
@@ -103,9 +103,9 @@ const Testator = () => {
 												options={genderOptions}
 											/>
 											{/* // TODO: Replace with datepicker */}
-											<TextInput name="dateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+											<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
 										</div>
-										<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+										<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
@@ -116,7 +116,7 @@ const Testator = () => {
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="md:col-start-1 md:col-end-2">
-											<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+											<TextInput name="postalCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
 											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />

@@ -6,7 +6,6 @@ export type TestatorState = {
 	gender?: Gender
 	birthDate?: string
 	birthPlace?: string
-	address?: string
 	houseNumber?: string
 	postalCode?: string
 	city?: string
@@ -18,7 +17,6 @@ export const initialTestatorState: TestatorState = {
 	gender: undefined,
 	birthDate: '',
 	birthPlace: '',
-	address: '',
 	houseNumber: '',
 	postalCode: '',
 	city: '',
