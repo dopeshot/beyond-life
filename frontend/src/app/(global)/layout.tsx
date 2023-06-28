@@ -3,7 +3,7 @@ import { Navbar } from '../../components/Navbar/Navbar/Navbar'
 
 export const metadata = {
 	title: 'Siebtes Leben',
-	description: 'Handle your death.',
+	description: '',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
