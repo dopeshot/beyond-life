@@ -19,6 +19,9 @@ import { MarriageFormPayload } from '../../../../store/last-will/marriage/action
 import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
 import { SidebarPages } from '../../../../types/sidebar'
 
+const PREVIOUS_LINK = routes.lastWill.testator('1')
+const NEXT_LINK = routes.lastWill.heirs('1')
+
 /**
  * Marriage Page
  */
@@ -56,10 +59,8 @@ const Marriage = () => {
 
 	const onSubmit = async (values: MarriageFormPayload, href: string) => {
 		try {
-			if (JSON.stringify(values) !== JSON.stringify(initalFormValues)) {
-				// Update marriage global state only if values have changed
-				await services.submitMarriage(values)
-			}
+			// Update marriage global state only if values have changed
+			await services.submitMarriage(values)
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -80,9 +81,9 @@ const Marriage = () => {
 			<Formik
 				initialValues={initalFormValues}
 				validationSchema={validationSchema}
-				onSubmit={(values) => onSubmit(values, routes.lastWill.heirs('1'))}
+				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>
-				{({ values, setFieldValue }: FormikProps<MarriageFormPayload>) => (
+				{({ values, setFieldValue, dirty }: FormikProps<MarriageFormPayload>) => (
 					<Form>
 						{/* Marriage Field */}
 						<div className="mb-4">
@@ -202,7 +203,7 @@ const Marriage = () => {
 									<Checkbox
 										name="partnerMoreInfos"
 										labelText="Weitere relevante Infos"
-										labelRequired
+										inputRequired
 										helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 										options={partnerMoreInfosOptions}
 									/>
@@ -240,8 +241,11 @@ const Marriage = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							previousOnClick={() => onSubmit(values, routes.lastWill.testator('1'))}
 							loading={lastWill.common.isLoading}
+							dirty={dirty}
+							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
+							previousHref={PREVIOUS_LINK}
+							nextHref={NEXT_LINK}
 						/>
 					</Form>
 				)}

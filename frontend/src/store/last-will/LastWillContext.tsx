@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
 import { setProgressKeyService } from './common/actions'
+import { submitInheritanceAction } from './inheritance/actions'
 import { submitMarriageAction } from './marriage/actions'
 import { initalLastWillState, lastWillReducer } from './reducer'
 import { submitTestatorAction } from './testator/actions'
@@ -34,6 +35,11 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
+	const submitInheritance = useCallback<LastWillContextType['services']['submitInheritance']>(
+		async (payload) => await submitInheritanceAction(dispatch, payload),
+		[]
+	)
+
 	return (
 		<LastWillContext.Provider
 			value={{
@@ -42,6 +48,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 					setProgressKey,
 					submitTestator,
 					submitMarriage,
+					submitInheritance,
 				},
 			}}
 		>

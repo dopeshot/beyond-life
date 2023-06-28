@@ -7,7 +7,7 @@ import { Checkbox, CheckboxProps } from './Checkbox'
 const data: CheckboxProps = {
 	name: 'food',
 	labelText: 'What food do you like?',
-	labelRequired: true,
+	inputRequired: true,
 	helperText: 'Please select all that apply.',
 	options: [
 		{
@@ -44,7 +44,7 @@ describe('Checkbox', () => {
 					options={data.options}
 					labelText={data.labelText}
 					helperText={data.helperText}
-					labelRequired={data.labelRequired}
+					inputRequired={data.inputRequired}
 				/>
 				<button type="submit">Submit</button>
 			</Wrapper>

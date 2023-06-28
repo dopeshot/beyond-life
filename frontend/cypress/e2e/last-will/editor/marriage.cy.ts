@@ -10,7 +10,7 @@ describe('Last Will Marriage Page', () => {
 
 			cy.datacy('field-relationshipStatus-divorced').click()
 
-			cy.datacy('button-submit').click()
+			cy.datacy('button-next-submit').click()
 
 			cy.url().should('include', 'last-will/editor/heirs?id=1')
 		})
@@ -50,7 +50,7 @@ describe('Last Will Marriage Page', () => {
 			// Property Status
 			cy.datacy('field-matrimonialProperty-communityOfGain').click()
 
-			cy.datacy('button-submit').click()
+			cy.datacy('button-next-submit').click()
 
 			cy.url().should('include', 'last-will/editor/heirs?id=1')
 		})
