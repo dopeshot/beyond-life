@@ -34,14 +34,14 @@ export const childRelationshipOptions: ComponentOptions[] = [
 	},
 ]
 
-export const heirsTypes: { [key in HeirsTypes]: { displayType: string; label: string } } = {
+export const heirsTypes = {
 	mother: { displayType: 'Mutter', label: 'Mutter hinzufügen' },
 	father: { displayType: 'Vater', label: 'Vater hinzufügen' },
 	child: { displayType: 'Kind', label: 'Kind hinzufügen' },
 	siblings: { displayType: 'Geschwister', label: 'Geschwister hinzufügen' },
 	other: { displayType: 'Andere Person', label: 'Andere Person hinzufügen' },
 	organisation: { displayType: 'Organisation', label: 'Organisation hinzufügen' },
-}
+} as const
 export type SetDropdownOptionFunction = (type: HeirsTypes) => void
 export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
 	Object.entries(heirsTypes).map(([type, { label }]) => ({
