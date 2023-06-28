@@ -24,14 +24,14 @@ describe('Last Will Testator Page', () => {
 			cy.datacy('gender-dropdown-button').click()
 			cy.datacy('gender-dropdown-option-male').click()
 
-			cy.datacy('textinput-dateOfBirth-input').type('01.01.1990')
-			cy.datacy('textinput-placeOfBirth-input').type('Here')
+			cy.datacy('textinput-birthDate-input').type('01.01.1990')
+			cy.datacy('textinput-birthPlace-input').type('Here')
 
 			// Address
 			cy.datacy('textinput-street-input').type('Street')
 			cy.datacy('textinput-houseNumber-input').type('123')
 
-			cy.datacy('textinput-zipCode-input').type('12345')
+			cy.datacy('textinput-postalCode-input').type('12345')
 			cy.datacy('textinput-city-input').type('City')
 
 			// More Infos
