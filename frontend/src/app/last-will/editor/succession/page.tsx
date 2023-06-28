@@ -31,6 +31,17 @@ const data = {
 				ownChild: [],
 				moreInfos: [],
 				heirsType: 'mother',
+				percentage: 50,
+				objectIds: [
+					{
+						id: 1,
+						name: 'Test',
+					},
+					{
+						id: 2,
+						name: 'Test2',
+					},
+				],
 			},
 			{
 				id: 2,
@@ -46,6 +57,8 @@ const data = {
 				ownChild: [],
 				moreInfos: ['personInsolvent'],
 				heirsType: 'father',
+				percentage: 20,
+				objectIds: [],
 			},
 			{
 				id: 3,
@@ -62,6 +75,13 @@ const data = {
 				ownChild: ['ownChild'],
 				moreInfos: ['personHandicapped', 'personInsolvent'],
 				heirsType: 'child',
+				percentage: 10,
+				objectIds: [
+					{
+						id: 3,
+						name: 'Test3',
+					},
+				],
 			},
 		],
 		organisations: [
@@ -72,6 +92,8 @@ const data = {
 				houseNumber: '2',
 				zipCode: '23231',
 				city: 'Stuttgart',
+				percentage: 20,
+				objectIds: [],
 			},
 		],
 	},
@@ -120,10 +142,22 @@ const Succession = () => {
 						<div className="flex-1">
 							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
 								{data.heirs.persons.map((person) => (
-									<SuccessionPerson key={person.id} name={person.firstName} relationshipType={person.heirsType} />
+									<SuccessionPerson
+										key={person.id}
+										name={person.firstName}
+										relationshipType={person.heirsType}
+										percentage={person.percentage}
+										objects={person.objectIds}
+									/>
 								))}
 								{data.heirs.organisations.map((organisation) => (
-									<SuccessionPerson key={organisation.id} name={organisation.name} relationshipType="organisation" />
+									<SuccessionPerson
+										key={organisation.id}
+										name={organisation.name}
+										relationshipType="Organisation"
+										percentage={organisation.percentage}
+										objects={organisation.objectIds}
+									/>
 								))}
 							</div>
 						</div>

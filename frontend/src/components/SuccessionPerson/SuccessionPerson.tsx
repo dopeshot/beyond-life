@@ -1,19 +1,26 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useLastWillContext } from '../../store/last-will/LastWillContext'
 import { Button } from '../ButtonsAndLinks/Button/Button'
 import { Headline } from '../Headline/Headline'
+
+type Object = {
+	id: number
+	name: string
+}
 
 type SuccessionPersonProps = {
 	name: string
 	relationshipType: any //TODO: Add type
+	objects: Object[]
+	percentage: number
 }
 
-type SuccessionPersonFormPayload = {}
-
-export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({ name = '', relationshipType }) => {
-	const { lastWill, services } = useLastWillContext()
-
-	const [inputValue, setInputValue] = useState('30%')
+export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
+	name = '',
+	relationshipType,
+	objects = [],
+	percentage,
+}) => {
+	const [inputValue, setInputValue] = useState(percentage.toString() + '%')
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const inputValue = event.target.value
@@ -29,7 +36,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({ name = '', r
 	}
 
 	return (
-		<div className="flex h-auto w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 ">
+		<div className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 ">
 			<div className="flex gap-1">
 				<Headline hasMargin={false} size="text-lg">
 					{name}
@@ -43,7 +50,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({ name = '', r
 					value={inputValue}
 					onChange={handleChange}
 				/>
-				{lastWill?.inheritance.items.map((item) => {
+				{objects.map((item) => {
 					return (
 						<div key={item.id} className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6 ">
 							{item.name}
