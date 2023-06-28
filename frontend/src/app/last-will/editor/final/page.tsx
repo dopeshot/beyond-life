@@ -13,7 +13,8 @@ import { SidebarPages } from '../../../../types/sidebar'
  */
 const Final = () => {
 	const router = useRouter()
-	const { services } = useLastWillContext()
+
+	const { lastWill, services } = useLastWillContext()
 
 	const onSubmit = async (href: string) => {
 		router.push(href)
@@ -33,17 +34,28 @@ const Final = () => {
 						Vorlage zum Abschreiben
 					</Headline>
 				</div>
-				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-				dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
-				clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
-				consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
-				diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-				takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-				diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-				accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-				dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel
-				illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent
-				luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
+				<h2>Mein letzter Wille und Testament</h2>
+				<p>
+					Ich, {lastWill.testator.name}, geboren am 09.09.2000 in Plochingen, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:
+				</p>
+				<h2>§ 1Erbeinsetzung</h2>
+				<p>
+					Als Erben meines Nachlasses setze ich folgende Personen ein:
+				</p>
+				<p>
+					Meine Frau, {lastWill.marriage.partnerFirstName} {lastWill.marriage.partnerLastName}, geboren am 09.09.2000, mit einem Anteil in Höhe von 30,00 Prozent.
+				</p>
+				<p>
+					Meine Mutter, Dorothea , geboren am 12.12.1980, mit einem Anteil in Höhe von 30,00 Prozent.
+				</p>
+				<p>
+					Meine Lebenspartnerin, Madeleine, geboren am 10.10.2000, mit einem Anteil in Höhe von 20,00 Prozent.
+				</p>
+				<p>
+					Meine/n Freund, Basti, geboren am 23.09.2000, mit einem Anteil in Höhe von 20,00 Prozent.
+				</p>
+
+
 			</div>
 
 			{/* Form Steps Buttons */}
