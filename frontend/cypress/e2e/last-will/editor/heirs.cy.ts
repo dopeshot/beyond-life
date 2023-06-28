@@ -1,6 +1,6 @@
 describe('Last Will Heirs Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/heirs?id=1')
+		cy.visit('/last-will/editor/heirs')
 	})
 
 	describe('Person', () => {
