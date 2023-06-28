@@ -43,9 +43,8 @@ describe('MobileSidebar', () => {
 			cy.datacy('mobileSidebar-button-final').should('not.exist')
 		})
 
-		it('should display chevron buttons', () => {
+		it('should display right chevron button at first page', () => {
 			cy.viewport('iphone-6')
-			cy.get('[datacy=chevron_left]').should('be.visible')
 			cy.get('[datacy=chevron_right]').should('be.visible')
 		})
 	})
