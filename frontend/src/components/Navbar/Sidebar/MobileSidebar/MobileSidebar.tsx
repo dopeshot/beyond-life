@@ -56,7 +56,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 				</Link>
 			</div>
 			{isOpen && (
-				<div className="relative mt-2 w-full overflow-hidden rounded-md bg-yellow-400 shadow-lg ring-1 ring-black ring-opacity-5">
+				<div className="relative mt-2 w-full overflow-hidden rounded-md bg-yellow-400 ring-1 ring-black ring-opacity-5">
 					{sidebarElements.map((element) => (
 						<SidebarButton
 							datacy={`mobileSidebar-button-${element.page}`}
