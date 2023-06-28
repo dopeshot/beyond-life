@@ -59,7 +59,7 @@ const Heirs = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Erben</Headline>
+			<Headline className="hidden lg:block">Erben</Headline>
 
 			{/* Overview all heirs */}
 			{lastWill.heirs.persons.length === 0 && lastWill.heirs.organisations.length === 0 ? (

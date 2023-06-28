@@ -71,7 +71,7 @@ const Inheritance = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Erbschaft</Headline>
+			<Headline className="hidden lg:block">Erbschaft</Headline>
 
 			<Formik
 				initialValues={initalFormValues}

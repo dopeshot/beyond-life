@@ -18,7 +18,7 @@ const Final = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Abschreiben</Headline>
+			<Headline className="hidden lg:block">Abschreiben</Headline>
 			<Route href={routes.lastWill.testator('1')}>Final page</Route>
 		</div>
 	)

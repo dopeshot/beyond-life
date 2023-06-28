@@ -18,7 +18,7 @@ const Succession = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Erbfolge</Headline>
+			<Headline className="hidden lg:block">Erbfolge</Headline>
 			<Route href={routes.lastWill.final('1')}>
 				<div>Next</div>
 			</Route>

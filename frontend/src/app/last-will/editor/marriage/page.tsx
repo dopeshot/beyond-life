@@ -77,7 +77,7 @@ const Marriage = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline className="md:mb-8">Familienstand</Headline>
+			<Headline className="hidden lg:block">Familienstand</Headline>
 
 			<Formik
 				initialValues={initalFormValues}

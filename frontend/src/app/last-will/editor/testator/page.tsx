@@ -71,7 +71,9 @@ const Testator = () => {
 			<Head>
 				<title>Erblasser</title>
 			</Head>
-			<Headline hasMargin={false}>Erblasser</Headline>
+			<Headline hasMargin={false} className="hidden lg:block">
+				Erblasser
+			</Headline>
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
 			<Formik
