@@ -9,6 +9,7 @@ import { IconButton } from '../../../../components/IconButton/IconButton'
 import { HeirsOrganisationModal } from '../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../components/Modal/ModalBase/Modal'
+import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { HeirsTypes, Organisation, Person } from '../../../../store/last-will/heirs/state'
 import { SidebarPages } from '../../../../types/sidebar'
@@ -17,6 +18,9 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Heirs Page
  */
 const Heirs = () => {
+	const PREVIOUS_LINK = routes.lastWill.marriage('1')
+	const NEXT_LINK = routes.lastWill.inheritance('1')
+
 	// Local State
 	const [isPersonModalOpen, setIsPersonModalOpen] = useState(false)
 	const [isOrganisationModalOpen, setIsOrganisationModalOpen] = useState(false)
@@ -226,7 +230,14 @@ const Heirs = () => {
 				Erbe hinzufügen
 			</DropdownButton>
 
-			<FormStepsButtons previousOnClick={async () => console.log('')} previousHref={''} nextHref={''} dirty={false} />
+			{/* Form Steps Buttons */}
+			<FormStepsButtons
+				loading={lastWill.common.isLoading}
+				dirty={false}
+				previousOnClick={async () => console.log('TODO')}
+				previousHref={PREVIOUS_LINK}
+				nextHref={NEXT_LINK}
+			/>
 		</div>
 	)
 }
