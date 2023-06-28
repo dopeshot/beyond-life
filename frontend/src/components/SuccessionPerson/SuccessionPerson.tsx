@@ -43,6 +43,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 	return (
 		<div className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 ">
 			<div className="flex gap-1">
+				<Headline level={2} hasMargin={false} size="text-lg">
 					{name}
 				</Headline>
 			</div>
