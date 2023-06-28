@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { Gender } from '../marriage/state'
+import { Gender } from '../../../types/gender'
 
 export type TestatorActions =
 	| {
