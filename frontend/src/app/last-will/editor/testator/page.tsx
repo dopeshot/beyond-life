@@ -1,6 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
@@ -13,6 +14,7 @@ import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Gender } from '../../../../store/last-will/marriage/state'
 import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
+import { SidebarPages } from '../../../../types/sidebar'
 
 /**
  * Testator Page
@@ -58,6 +60,10 @@ const Testator = () => {
 		}
 	}
 
+	useEffect(() => {
+		services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
+	}, [services])
+
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
 			<Headline hasMargin={false}>Erblasser</Headline>
@@ -97,7 +103,6 @@ const Testator = () => {
 										</div>
 										<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
 									</div>
-
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
 										<div className="md:col-start-1 md:col-end-3">
