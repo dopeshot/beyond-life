@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 	return (
 		<LastWillContextProvider>
-			<div className={`flex h-screen min-h-screen lg:flex-row sm:flex-col overflow-y-scroll`}>
+			<div className={`flex h-screen min-h-screen overflow-y-scroll sm:flex-col lg:flex-row`}>
 				<Sidebar path={path} />
 				<div className="flex h-fit min-h-screen flex-grow flex-col">
 					<Navbar hideLogo noBackground />
@@ -19,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					{children}
 					<GlobalFooter />
 				</div>
-
 			</div>
 		</LastWillContextProvider>
 	)

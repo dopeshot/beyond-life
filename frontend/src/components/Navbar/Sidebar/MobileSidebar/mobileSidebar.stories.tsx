@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { LastWillContextProvider } from '../../../../store/last-will/LastWillContext'
-import { MobileSidebar } from './MobileSidebar'
 import { SidebarProps } from '../Sidebar'
+import { MobileSidebar } from './MobileSidebar'
 
 const meta: Meta<typeof MobileSidebar> = {
 	title: 'Design System/Navbar/MobileSideBar',
