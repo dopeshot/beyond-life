@@ -1,19 +1,19 @@
 describe('Last Will Testator Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/testator?id=1')
+		cy.visit('/last-will/editor/testator')
 	})
 
 	describe('Basic Flow', () => {
-		it('should fill out testator and redirect to /last-will/editor/marriage?id=1 after submit', () => {
+		it('should fill out testator and redirect to /last-will/editor/marriage after submit', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
 			cy.datacy('route-next-submit').click()
 
-			cy.url().should('include', 'last-will/editor/marriage?id=1')
+			cy.url().should('include', 'last-will/editor/marriage')
 		})
 
-		it('shoud fill out testator data and redirect to /last-will/editor/marriage?id=1 after submit', () => {
+		it('shoud fill out testator data and redirect to /last-will/editor/marriage after submit', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 

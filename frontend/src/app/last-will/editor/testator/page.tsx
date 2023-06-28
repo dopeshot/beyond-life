@@ -21,13 +21,13 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Testator Page
  */
 const Testator = () => {
-	const PREVIOUS_LINK = routes.lastWill.start
-	const NEXT_LINK = routes.lastWill.marriage('1')
-
 	const router = useRouter()
 
 	// Last will state
 	const { lastWill, services } = useLastWillContext()
+
+	const PREVIOUS_LINK = routes.lastWill.start
+	const NEXT_LINK = routes.lastWill.marriage(lastWill.common.id)
 
 	// TODO: Do we require the spread here?
 	const initialFormValues: TestatorFormPayload = {
@@ -71,7 +71,9 @@ const Testator = () => {
 			<Head>
 				<title>Erblasser</title>
 			</Head>
-			<Headline hasMargin={false}>Erblasser</Headline>
+			<Headline hasMargin={false} className="hidden lg:block">
+				Erblasser
+			</Headline>
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
 			<Formik
