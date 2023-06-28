@@ -14,7 +14,7 @@ export type CheckboxProps = {
 	/** Provides assistance on how to fill out a field. */
 	helperText?: string
 	/** When set to true, a '*' symbol will be displayed next to the label, indicating that the field is required. */
-	labelRequired?: boolean
+	inputRequired?: boolean
 }
 
 /**
@@ -22,7 +22,7 @@ export type CheckboxProps = {
  */
 
 // MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
-export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, labelRequired = false }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, inputRequired = false }) => {
 	return (
 		<>
 			{labelText && (
@@ -31,7 +31,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					className="font-semibold"
 					name={`checkbox-${name}`}
 					labelText={labelText}
-					inputRequired={labelRequired}
+					inputRequired={inputRequired}
 				/>
 			)}
 			{options.map((option) => (
