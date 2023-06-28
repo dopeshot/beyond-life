@@ -1,6 +1,14 @@
 'use client'
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react'
 import { setProgressKeyService } from './common/actions'
+import {
+	addOrganisationAction,
+	addPersonAction,
+	deleteOrganisationAction,
+	deletePersonAction,
+	updateOrganisationAction,
+	updatePersonAction,
+} from './heirs/actions'
 import { submitInheritanceAction } from './inheritance/actions'
 import { submitMarriageAction } from './marriage/actions'
 import { initalLastWillState, lastWillReducer } from './reducer'
@@ -40,6 +48,36 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
+	const addPerson = useCallback<LastWillContextType['services']['addPerson']>(
+		async (payload) => await addPersonAction(dispatch, payload),
+		[]
+	)
+
+	const updatePerson = useCallback<LastWillContextType['services']['updatePerson']>(
+		async (payload) => await updatePersonAction(dispatch, payload),
+		[]
+	)
+
+	const deletePerson = useCallback<LastWillContextType['services']['deletePerson']>(
+		async (payload) => await deletePersonAction(dispatch, payload),
+		[]
+	)
+
+	const addOrganisation = useCallback<LastWillContextType['services']['addOrganisation']>(
+		async (payload) => await addOrganisationAction(dispatch, payload),
+		[]
+	)
+
+	const updateOrganisation = useCallback<LastWillContextType['services']['updateOrganisation']>(
+		async (payload) => await updateOrganisationAction(dispatch, payload),
+		[]
+	)
+
+	const deleteOrganisation = useCallback<LastWillContextType['services']['deleteOrganisation']>(
+		async (payload) => await deleteOrganisationAction(dispatch, payload),
+		[]
+	)
+
 	return (
 		<LastWillContext.Provider
 			value={{
@@ -49,6 +87,12 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 					submitTestator,
 					submitMarriage,
 					submitInheritance,
+					addPerson,
+					updatePerson,
+					deletePerson,
+					addOrganisation,
+					updateOrganisation,
+					deleteOrganisation,
 				},
 			}}
 		>

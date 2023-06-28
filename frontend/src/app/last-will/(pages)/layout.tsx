@@ -2,8 +2,8 @@ import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFoot
 import { Navbar } from '../../../components/Navbar/Navbar/Navbar'
 
 export const metadata = {
-	title: 'Beyond Life',
-	description: 'Handle your death.',
+	title: 'Siebtes Leben',
+	description: '',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

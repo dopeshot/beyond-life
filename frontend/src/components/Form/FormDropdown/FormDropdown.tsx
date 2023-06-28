@@ -5,7 +5,7 @@ import { ComponentOptions } from '../../../types/dropdownOptions'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
-export type DropdownProps = {
+export type FormDropdownProps = {
 	/** Gives the dropdown a unique name. */
 	name: string
 	/** Text that informs the user what to expect in the list of dropdown options. */
@@ -23,7 +23,7 @@ export type DropdownProps = {
 /**
  * Dropdown, can only be used with Formik.
  */
-export const Dropdown: React.FC<DropdownProps> = ({
+export const FormDropdown: React.FC<FormDropdownProps> = ({
 	name,
 	placeholder,
 	labelText,

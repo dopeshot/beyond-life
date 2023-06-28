@@ -1,3 +1,5 @@
+import { Gender } from '../../../types/gender'
+
 export type MarriageState = {
 	relationshipStatus?: RelationshipStatus
 	partnerGermanCitizenship?: boolean
@@ -10,14 +12,15 @@ export type MarriageState = {
 	partnerHouseNumber?: string
 	partnerZipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
 	partnerCity?: string
-	partnerMoreInfos?: MoreInfos[]
+	partnerMoreInfos?: PartnerMoreInfos[]
 	matrimonialProperty?: MatrimonialProperty
 }
 
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
-export type Gender = 'male' | 'female' | 'divers'
-export type MoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
+export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
+
+// TODO: Move partner to persons
 
 export const initialMarriageState: MarriageState = {
 	relationshipStatus: undefined,

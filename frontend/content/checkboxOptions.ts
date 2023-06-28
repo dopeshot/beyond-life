@@ -25,3 +25,14 @@ export const partnerMoreInfosOptions: SelectableOption[] = [
 		label: 'Wollen Sie ein Berliner Testament?',
 	},
 ]
+
+export const personMoreInfosOptions: SelectableOption[] = [
+	{
+		id: 'personHandicapped',
+		label: 'Hat die Person eine Behinderung?',
+	},
+	{
+		id: 'personInsolvent',
+		label: 'Ist die Person insolvent?',
+	},
+]

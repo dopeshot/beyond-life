@@ -12,7 +12,7 @@ export type FormErrorProps = {
 export const FormError: React.FunctionComponent<FormErrorProps> = ({ fieldName }) => {
 	return (
 		<ErrorMessage name={fieldName}>
-			{(errorMessage) => (
+			{(errorMessage: string) => (
 				<div datacy={`formerror-${fieldName}`} className="flex items-center text-red">
 					<Icon icon="error" className="mr-2"></Icon>
 					<span className="text-sm font-medium">{errorMessage}</span>
