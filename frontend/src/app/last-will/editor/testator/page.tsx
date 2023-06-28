@@ -14,20 +14,24 @@ import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Gender } from '../../../../store/last-will/marriage/state'
 import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
 
-const PREVIOUS_LINK = routes.lastWill.start
-const NEXT_LINK = routes.lastWill.marriage('1')
-
 /**
  * Testator Page
  */
 const Testator = () => {
+	const PREVIOUS_LINK = routes.lastWill.start
+	const NEXT_LINK = routes.lastWill.marriage('1')
+
 	const router = useRouter()
+
+	// Last will state
 	const { lastWill, services } = useLastWillContext()
 
+	// TODO: Do we require the spread here?
 	const initialFormValues: TestatorFormPayload = {
 		...lastWill.testator,
 	}
 
+	// TODO: Ensure all schemas are equal from the strength
 	const validationSchema: ObjectSchema<TestatorFormPayload> = object().shape({
 		firstName: string(),
 		lastName: string(),
@@ -41,11 +45,10 @@ const Testator = () => {
 	})
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
+		// This functions only gets called if values have changed
 		try {
-			if (JSON.stringify(values) !== JSON.stringify(initialFormValues)) {
-				// Update marriage global state only if values have changed
-				services.submitTestator(values)
-			}
+			// Update marriage global state
+			services.submitTestator(values)
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -128,7 +131,7 @@ const Testator = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							previousOnClick={() => onSubmit(values, routes.lastWill.marriage('1'))}
+							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							loading={lastWill.common.isLoading}
 							dirty={dirty}
 							previousHref={PREVIOUS_LINK}
