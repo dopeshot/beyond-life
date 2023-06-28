@@ -56,7 +56,7 @@ export const Required: Story = {
 	...Template,
 	args: {
 		...Default.args,
-		labelRequired: true,
+		inputRequired: true,
 	},
 }
 

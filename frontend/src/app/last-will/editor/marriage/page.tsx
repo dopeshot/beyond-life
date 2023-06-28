@@ -203,7 +203,7 @@ const Marriage = () => {
 									<Checkbox
 										name="partnerMoreInfos"
 										labelText="Weitere relevante Infos"
-										labelRequired
+										inputRequired
 										helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 										options={partnerMoreInfosOptions}
 									/>
