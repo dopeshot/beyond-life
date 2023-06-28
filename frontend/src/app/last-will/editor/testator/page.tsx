@@ -21,13 +21,13 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Testator Page
  */
 const Testator = () => {
-	const PREVIOUS_LINK = routes.lastWill.start
-	const NEXT_LINK = routes.lastWill.marriage('1')
-
 	const router = useRouter()
 
 	// Last will state
 	const { lastWill, services } = useLastWillContext()
+
+	const PREVIOUS_LINK = routes.lastWill.start
+	const NEXT_LINK = routes.lastWill.marriage(lastWill.common.id)
 
 	// TODO: Do we require the spread here?
 	const initialFormValues: TestatorFormPayload = {

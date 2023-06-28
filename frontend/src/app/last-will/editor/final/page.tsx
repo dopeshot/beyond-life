@@ -10,7 +10,7 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Final Page for copy last will.
  */
 const Final = () => {
-	const { services } = useLastWillContext()
+	const { services, lastWill } = useLastWillContext()
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.FINAL })
@@ -19,7 +19,7 @@ const Final = () => {
 	return (
 		<div className="container mt-5">
 			<Headline className="hidden lg:block">Abschreiben</Headline>
-			<Route href={routes.lastWill.testator('1')}>Final page</Route>
+			<Route href={routes.lastWill.testator(lastWill.common.id)}>Final page</Route>
 		</div>
 	)
 }
