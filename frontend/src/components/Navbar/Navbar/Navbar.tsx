@@ -6,19 +6,19 @@ import { NavLink } from '../../../types/routes'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { IconButton } from '../../IconButton/IconButton'
 import { NavbarLink } from '../NavbarLink/NavbarLink'
-import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 
+// TODO: The api for this component is to complicated and confusing
 type NavbarProps = {
-	/** When true don't show logo. For modules. */
-	showLogo?: boolean
 	/** When true has a transparent background. For modules. */
 	background?: boolean
+	/** Left side of navbar */
+	children: React.ReactNode
 }
 
 /**
  * Display Top Navbar.
  */
-export const Navbar: React.FC<NavbarProps> = ({ showLogo = true, background = true }) => {
+export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) => {
 	const pathname = usePathname()
 
 	// Local States
@@ -38,9 +38,8 @@ export const Navbar: React.FC<NavbarProps> = ({ showLogo = true, background = tr
 	return (
 		<div className={`${background ? 'bg-yellow-400' : ''} py-3`}>
 			<nav className="container md:flex">
-				<div className={`flex ${showLogo ? 'items-center justify-between md:mr-5' : 'justify-end'}`}>
-					{/* Logo */}
-					{showLogo && <NavbarLogo />}
+				<div className={`flex ${children ? 'items-center justify-between' : 'justify-end'}`}>
+					{children}
 
 					{/* Mobile menu button */}
 					<IconButton
