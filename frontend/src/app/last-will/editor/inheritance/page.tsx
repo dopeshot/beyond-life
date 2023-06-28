@@ -15,9 +15,6 @@ import { InheritanceFormPayload } from '../../../../store/last-will/inheritance/
 import { FinancialAsset } from '../../../../store/last-will/inheritance/state'
 import { SidebarPages } from '../../../../types/sidebar'
 
-const PREVIOUS_LINK = routes.lastWill.heirs('1')
-const NEXT_LINK = routes.lastWill.succession('1')
-
 /**
  * Inheritance Page
  */
@@ -26,6 +23,9 @@ const Inheritance = () => {
 
 	// Global State
 	const { lastWill, services } = useLastWillContext()
+
+	const PREVIOUS_LINK = routes.lastWill.heirs(lastWill.common.id)
+	const NEXT_LINK = routes.lastWill.succession(lastWill.common.id)
 
 	// Formik
 	const initalFormValues: InheritanceFormPayload = lastWill.inheritance
@@ -71,7 +71,7 @@ const Inheritance = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Erbschaft</Headline>
+			<Headline className="hidden lg:block">Erbschaft</Headline>
 
 			<Formik
 				initialValues={initalFormValues}

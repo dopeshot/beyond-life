@@ -155,7 +155,7 @@ const Succession = () => {
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
-			<Headline>Erbfolge</Headline>
+			<Headline className="hidden lg:block">Erbfolge</Headline>
 			<Formik
 				initialValues={initialFormValues}
 				validationSchema={validationSchema}

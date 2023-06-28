@@ -20,9 +20,6 @@ import { MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from '../..
 import { Gender } from '../../../../types/gender'
 import { SidebarPages } from '../../../../types/sidebar'
 
-const PREVIOUS_LINK = routes.lastWill.testator('1')
-const NEXT_LINK = routes.lastWill.heirs('1')
-
 /**
  * Marriage Page
  */
@@ -32,6 +29,9 @@ const Marriage = () => {
 
 	// Gloabl State
 	const { lastWill, services } = useLastWillContext()
+
+	const PREVIOUS_LINK = routes.lastWill.testator(lastWill.common.id)
+	const NEXT_LINK = routes.lastWill.heirs(lastWill.common.id)
 
 	// Formik
 	const initalFormValues: MarriageFormPayload = {
@@ -77,7 +77,7 @@ const Marriage = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline className="md:mb-8">Familienstand</Headline>
+			<Headline className="hidden lg:block">Familienstand</Headline>
 
 			<Formik
 				initialValues={initalFormValues}
