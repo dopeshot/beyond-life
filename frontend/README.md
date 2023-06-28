@@ -1,6 +1,7 @@
 # Frontend BeyondLife
 
 ### Start the frontend
+
 ```sh
 git clone git@github.com:dopeshot/beyond-life.git
 cd frontend
@@ -14,11 +15,12 @@ npm run dev # Run in watch
 npm run build
 npm run start # Starts that build
 ```
+
 ### Testing
 
 ```sh
 # Open Cypress Client
-npm run test 
+npm run test
 
 # Run e2e tests in cli (without client)
 npm run te:cli
@@ -38,4 +40,4 @@ npm run tc:cli
 - [Cypress](https://www.cypress.io/) is used as testing framework.
 - [Formik](https://formik.org/) is used to handle forms.
 - [Yup](https://www.npmjs.com/package/yup) is used to handle form validation.
-- [TailwindCSS](https://tailwindcss.com/) is used as CSS Utility Framework
+- [TailwindCSS](https://tailwindcss.com/) is used as CSS Utility Framework.
