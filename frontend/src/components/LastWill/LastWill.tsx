@@ -1,5 +1,7 @@
 'use client'
 import { useLastWillContext } from '../../store/last-will/LastWillContext'
+import { FinancialAsset } from '../../store/last-will/inheritance/state'
+import { Gender } from '../../store/last-will/marriage/state'
 import { Headline } from '../Headline/Headline'
 import { Icon } from '../Icon/Icon'
 
@@ -9,15 +11,61 @@ import { Icon } from '../Icon/Icon'
 export const LastWill = () => {
 	const { lastWill } = useLastWillContext()
 
+	const getPartnerGenderText = (gender: Gender) => {
+		if (gender === 'male') {
+			return 'Meinen Ehemann'
+		} else if (gender === 'female') {
+			return 'Meine Ehefrau'
+		} else {
+			return 'Meinen Ehepartner'
+		}
+	}
+
+	/*
+	const getHeirGenderText = (heirType: HeirsTypes, heirGender: Gender) => {
+		switch (heirType) {
+			case 'mother':
+				return 'Meine Mutter'
+			case 'father':
+				return 'Mein Vater'
+			case 'child':
+				return heirGender === 'male' ? 'Mein Sohn' : heirGender === 'female' ? 'Meine Tochter' : 'Mein Kind'
+			case 'siblings':
+				return heirGender === 'male' ? 'Mein Bruder' : heirGender === 'female' ? 'Meine Schwester' : 'Mein Geschwister'
+			case 'other':
+				return 'Mein Erbe' // ersetzen Sie dies durch den gewünschten Text
+			case 'organisation':
+				return 'Meine Organisation' // ersetzen Sie dies durch den gewünschten Text
+			default:
+				return ''
+		}
+	}
+	*/
+
+	const calculateSumOfMoney = (financialAssets: FinancialAsset[]) => {
+		let sum = 0
+		financialAssets.forEach((financialAsset) => {
+			if (financialAsset.amount) {
+				sum += Number(financialAsset.amount)
+			}
+		})
+		return sum
+	}
+
+	const getMoneyAmount = (amount: number, percentage: number) => {
+		return (percentage / 100) * amount
+	}
+
 	return (
 		<div className="mt-2 flex-1 rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-6">
-			<div className="flex pb-8">
+			<div className="flex">
 				<Icon icon="edit" className="mr-2" />
 				<Headline level={3} size="text-lg">
 					Vorlage zum Abschreiben
 				</Headline>
 			</div>
-			<Headline level={3} size="text-lg" className="pb-4 text-center">
+			Ein gültiges Testament muss vom Erblasser handschriftlich und eigenhändig verfasst und unterzeichnet werden.
+			<Headline level={3} size="text-lg" className="pt-4 pb-4 text-center">
 				Mein letzter Wille und Testament
 			</Headline>
 			<p className="pb-2">
@@ -30,33 +78,62 @@ export const LastWill = () => {
 				§1 Erbeinsetzung
 			</Headline>
 			<p className="pb-1">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
-
 			{lastWill.marriage.relationshipStatus === 'married' ? (
 				<p className="pb-2">
-					{lastWill.marriage.partnerGender === 'male'
-						? 'Meinen Ehemann'
-						: lastWill.marriage.partnerGender === 'female'
-						? 'Meine Ehefrau'
-						: 'Meinen Ehepartner'}
-					, {lastWill.marriage.partnerFirstName} {lastWill.marriage.partnerLastName}, geboren am{' '}
-					{lastWill.marriage.partnerDateOfBirth}, mit einem Anteil in Höhe von 30,00 Prozent.
+					{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
+					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName}, geboren am{' '}
+					{lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
+					{lastWill.marriage.partnerPercentageOfMoney || ' [?%] '} Prozent.
+					{lastWill.inheritance.financialAssets.length > 0 ? (
+						<>
+							Dies entspricht einem Wert von{' '}
+							{getMoneyAmount(
+								calculateSumOfMoney(lastWill.inheritance.financialAssets),
+								lastWill.marriage.partnerPercentageOfMoney
+							)}{' '}
+							€.
+						</>
+					) : null}
 				</p>
 			) : null}
-
-			{/*
-				lastWill.heirs.persons.map((person, index) => (
-
-				))
-				*/
-			}
-
+			{/*lastWill.heirs.persons.map((person, index) => (
+				<p className="pb-2">
+					{getHeirGenderText(person.gender ?? 'divers')}, {person.firstName || ' [Name] '}{' '}
+					{person.lastName}, geboren am {person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in
+					Höhe von {person.percentageOfMoney || ' [?%] '}.
+					{lastWill.inheritance.financialAssets.length > 0 ? (
+						<>
+							Dies entspricht einem Wert von{' '}
+							{getMoneyAmount(
+								calculateSumOfMoney(lastWill.inheritance.financialAssets),
+								person.partnerPercentageOfMoney
+							)}{' '}
+							€.
+						</>
+					) : null}
+				</p>
+			))*/}
+			{/*lastWill.heirs.organisations.map((organisation, index) => (
+				<p className="pb-2">
+					Das Unternehmen, {organisation.firstName || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem Anteil in Höhe von {organisation.percentageOfMoney || ' [?%] '}.
+					{lastWill.inheritance.financialAssets.length > 0 ? (
+						<>
+							Dies entspricht einem Wert von{' '}
+							{getMoneyAmount(
+								calculateSumOfMoney(lastWill.inheritance.financialAssets),
+								organisation.partnerPercentageOfMoney
+							)}{' '}
+							€.
+						</>
+					) : null}
+				</p>
+			))*/}
 			<Headline level={3} size="text-lg">
 				§2 Ersatzerbe
 			</Headline>
 			<p className="pb-2">
-				Sollte meine Frau, {lastWill.marriage.partnerFirstName} {lastWill.marriage.partnerLastName}, vor mir verstorben
-				sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem Verhältnis der von mir vorgegebenen
-				Erbanteile.
+				Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem
+				Verhältnis der von mir vorgegebenen Erbanteile.
 			</p>
 			<Headline level={3} size="text-lg">
 				§3 Vermächtnisse
