@@ -1,4 +1,4 @@
-import { Gender } from '../marriage/state'
+import { Gender } from '../../../types/gender'
 
 export type TestatorState = {
 	firstName?: string
@@ -6,10 +6,10 @@ export type TestatorState = {
 	gender?: Gender
 	birthDate?: string
 	birthPlace?: string
-	address?: string
 	houseNumber?: string
 	postalCode?: string
 	city?: string
+	street?: string
 }
 
 export const initialTestatorState: TestatorState = {
@@ -18,8 +18,8 @@ export const initialTestatorState: TestatorState = {
 	gender: undefined,
 	birthDate: '',
 	birthPlace: '',
-	address: '',
 	houseNumber: '',
 	postalCode: '',
 	city: '',
+	street: '',
 }

@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { Gender } from '../marriage/state'
+import { Gender } from '../../../types/gender'
 
 export type TestatorActions =
 	| {
@@ -15,8 +15,8 @@ export type TestatorFormPayload = {
 	lastName?: string
 	gender?: Gender
 	birthDate?: string
+	street?: string
 	birthPlace?: string
-	address?: string
 	houseNumber?: string
 	postalCode?: string
 	city?: string

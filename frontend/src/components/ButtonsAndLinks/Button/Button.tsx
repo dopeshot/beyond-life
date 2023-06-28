@@ -2,7 +2,7 @@ import { buttonsAndLinksService } from '../../../services/buttonsAndLinks/button
 import { CommonProps } from '../../../types/buttonLinkCommonProps'
 import { InnerContent } from '../InnerContent/InnerContent'
 
-type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
+export type ButtonProps = CommonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 /**
  * Button component

@@ -7,14 +7,14 @@ import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
-import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
+import { FormDropdown } from '../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { Gender } from '../../../../store/last-will/marriage/state'
 import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
+import { Gender } from '../../../../types/gender'
 import { SidebarPages } from '../../../../types/sidebar'
 
 /**
@@ -35,17 +35,18 @@ const Testator = () => {
 	}
 
 	// TODO: Ensure all schemas are equal from the strength
-	const validationSchema: ObjectSchema<TestatorFormPayload> = object().shape({
+	const validationSchema: ObjectSchema<TestatorFormPayload> = object({
 		firstName: string(),
 		lastName: string(),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
-		address: string(),
 		houseNumber: string(),
 		postalCode: string(),
 		city: string(),
+		street: string(),
 	})
+	// TODO: Ensure typescript here
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
 		// This functions only gets called if values have changed
@@ -95,7 +96,7 @@ const Testator = () => {
 
 										{/* Gender and Birth */}
 										<div className="grid gap-x-3 md:grid-cols-2">
-											<Dropdown
+											<FormDropdown
 												name="gender"
 												labelText="Geschlecht"
 												placeholder="Geschlecht"
@@ -103,9 +104,9 @@ const Testator = () => {
 												options={genderOptions}
 											/>
 											{/* // TODO: Replace with datepicker */}
-											<TextInput name="dateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+											<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
 										</div>
-										<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+										<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
@@ -116,7 +117,7 @@ const Testator = () => {
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="md:col-start-1 md:col-end-2">
-											<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+											<TextInput name="postalCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
 											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
