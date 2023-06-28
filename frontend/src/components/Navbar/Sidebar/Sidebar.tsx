@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
+import { sidebarElements } from '../../../../content/sidebar'
 import { useLastWillContext } from '../../../store/last-will/LastWillContext'
-import { SidebarButtonState, SidebarPages } from '../../../types/sidebar'
+import { SidebarButtonState } from '../../../types/sidebar'
 import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 import { SidebarButton } from './SidebarButton/SidebarButton'
 
@@ -9,45 +10,6 @@ export type SidebarProps = {
 	/** Path of the current page. */
 	path: string
 }
-
-type SidebarElement = {
-	page: SidebarPages
-	title: string
-	description?: string
-}
-
-export const sidebarElements: SidebarElement[] = [
-	{
-		page: SidebarPages.TESTATOR,
-		title: 'Erblasser',
-		description: 'Persönliche Daten des Erblassers',
-	},
-	{
-		page: SidebarPages.MARRIAGE,
-		title: 'Familienstand',
-		description: 'Beziehungsstatus, Art des Testaments, Daten des Ehepartners',
-	},
-	{
-		page: SidebarPages.HEIRS,
-		title: 'Erben',
-		description: 'Erben und deren Anteile',
-	},
-	{
-		page: SidebarPages.INHERITANCE,
-		title: 'Erbschaft',
-		description: 'Erbschaftsgegenstände',
-	},
-	{
-		page: SidebarPages.SUCCESSION,
-		title: 'Erbfolge',
-		description: 'Stammbaum und Verteilung',
-	},
-	{
-		page: SidebarPages.FINAL,
-		title: 'Zusammenfassung',
-		description: 'Überprüfung und Abschreiben',
-	},
-]
 
 /**
  * Sidebar component for navigation

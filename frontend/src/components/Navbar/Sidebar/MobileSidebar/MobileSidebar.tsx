@@ -1,12 +1,13 @@
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { sidebarElements } from '../../../../../content/sidebar'
 import { fontArbutusSlab } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarButtonState } from '../../../../types/sidebar'
 import { Icon } from '../../../Icon/Icon'
-import { sidebarElements, SidebarProps } from '../Sidebar'
+import { SidebarProps } from '../Sidebar'
 import { SidebarButton } from '../SidebarButton/SidebarButton'
 
 /**
