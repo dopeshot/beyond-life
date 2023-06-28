@@ -101,7 +101,7 @@ export const LastWill = () => {
 					{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
 					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName || '[Nachname]'},
 					geboren am {lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-					{/*lastWill.marriage.partnerPercentageOfMoney || */' [?%] '} Prozent.
+					{/*lastWill.marriage.partnerPercentageOfMoney || */ ' [?%] '} Prozent.
 					{/*lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
@@ -119,7 +119,8 @@ export const LastWill = () => {
 				<p key={index} className="pb-4">
 					{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
 					{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {/*person.percentageOfMoney || */' [?%] '}.
+					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
+					{/*person.percentageOfMoney || */ ' [?%] '}.
 					{/*lastWill.inheritance.financialAssets.length > 1 && (
 						<>
 							Dies entspricht einem Wert von{' '}
@@ -158,6 +159,7 @@ export const LastWill = () => {
 				Verhältnis der von mir vorgegebenen Erbanteile.
 			</p>
 			{/* Vermächtnisse */}
+			{/*
 			{lastWill.inheritance.items[0].name !== '' && (
 				<>
 					<Headline level={3} size="text-lg">
@@ -204,7 +206,7 @@ export const LastWill = () => {
 								}
 							})
 					)}
-					*/}
+					
 					<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
 					<p className="pb-3">
 						Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.
@@ -215,6 +217,7 @@ export const LastWill = () => {
 					</p>
 				</>
 			)}
+					*/}
 			{/* Rechtswahl */}
 			{lastWill.inheritance.items[0].name !== '' ? (
 				<Headline level={3} size="text-lg">
@@ -253,8 +256,10 @@ export const LastWill = () => {
 				</p>
 			</div>
 
-			<div className=' pt-10'>
-			Hinweis: Dieses Testament-Generierungstool ist ein Prototyp und ausschließlich für die Media Night an der Hochschule der Medien in Stuttgart gedacht. Es ist noch in Entwicklung und bietet derzeit keine rechtliche Absicherung, doch wir arbeiten daran, in Zukunft eine Notarvalidierung bereitzustellen.
+			<div className=" pt-10">
+				Hinweis: Dieses Testament-Generierungstool ist ein Prototyp und ausschließlich für die Media Night an der
+				Hochschule der Medien in Stuttgart gedacht. Es ist noch in Entwicklung und bietet derzeit keine rechtliche
+				Absicherung, doch wir arbeiten daran, in Zukunft eine Notarvalidierung bereitzustellen.
 			</div>
 		</div>
 	)
