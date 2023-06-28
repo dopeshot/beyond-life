@@ -1,4 +1,4 @@
-import { Gender } from '../marriage/state'
+import { Gender } from '../../../types/gender'
 
 export type TestatorState = {
 	firstName?: string
