@@ -32,7 +32,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 		city: editOrganisation?.city ?? '',
 	}
 
-	const validationSchema: ObjectSchema<Organisation> = object().shape({
+	const validationSchema: ObjectSchema<Organisation> = object({
 		id: number().required(),
 		name: string(),
 		street: string(),
