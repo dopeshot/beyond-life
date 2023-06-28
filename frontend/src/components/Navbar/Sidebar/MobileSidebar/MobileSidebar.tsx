@@ -28,7 +28,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 			: sidebarElements[sidebarElements.length - 1].page
 
 	return (
-		<div datacy={'mobileSidebar'} className="container lg:hidden ">
+		<div datacy="mobileSidebar" className="container lg:hidden ">
 			{/* Chevron Buttons */}
 			<div className="flex justify-between rounded-lg bg-yellow-400">
 				<Link className="flex items-center justify-center pl-2" href={routes.lastWill[previousPage]('1')}>
