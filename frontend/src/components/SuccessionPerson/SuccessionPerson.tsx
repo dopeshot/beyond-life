@@ -3,27 +3,14 @@ import { useLastWillContext } from '../../store/last-will/LastWillContext'
 import { Button } from '../ButtonsAndLinks/Button/Button'
 import { Headline } from '../Headline/Headline'
 
-export enum RelationshipType {
-	'YOU' = 'Du',
-	'MOTHER' = 'Mutter',
-	'FATHER' = 'Vater',
-	'CHILD' = 'Kind',
-	'PARTNER' = 'Partner',
-	'SIBLING' = 'Geschwister',
-	'FRIEND' = 'Freund',
-}
-
 type SuccessionPersonProps = {
 	name: string
-	relationshipType: RelationshipType
+	relationshipType: any //TODO: Add type
 }
 
 type SuccessionPersonFormPayload = {}
 
-export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
-	name = '',
-	relationshipType = RelationshipType.YOU,
-}) => {
+export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({ name = '', relationshipType }) => {
 	const { lastWill, services } = useLastWillContext()
 
 	const [inputValue, setInputValue] = useState('30%')
