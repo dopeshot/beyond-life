@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const meta: Meta<typeof Checkbox> = {
-	title: 'Design System/Checkbox',
+	title: 'Design System/Form/Checkbox',
 	component: Checkbox,
 }
 

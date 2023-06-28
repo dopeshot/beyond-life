@@ -1,6 +1,7 @@
-# Frontend BeyondLife
+# Frontend Siebtes Leben
 
 ### Start the frontend
+
 ```sh
 git clone git@github.com:dopeshot/beyond-life.git
 cd frontend
@@ -14,11 +15,12 @@ npm run dev # Run in watch
 npm run build
 npm run start # Starts that build
 ```
+
 ### Testing
 
 ```sh
 # Open Cypress Client
-npm run test 
+npm run test
 
 # Run e2e tests in cli (without client)
 npm run te:cli

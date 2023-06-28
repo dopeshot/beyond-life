@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik'
 import { Toggle, ToggleProps } from './Toggle'
 
 const meta: Meta<typeof Toggle> = {
-	title: 'Design System/Toggle',
+	title: 'Design System/Form/Toggle',
 	component: Toggle,
 }
 

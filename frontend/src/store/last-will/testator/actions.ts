@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { saveTestator } from './api'
+import { Gender } from '../../../types/gender'
 
 export type TestatorActions =
 	| {
@@ -11,17 +11,29 @@ export type TestatorActions =
 	  }
 
 export type TestatorFormPayload = {
-	name: string
+	firstName?: string
+	lastName?: string
+	gender?: Gender
+	birthDate?: string
+	street?: string
+	birthPlace?: string
+	houseNumber?: string
+	postalCode?: string
+	city?: string
 }
 
 export const submitTestatorAction = async (dispatch: Dispatch<TestatorActions>, payload: TestatorFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_TESTATOR' })
-	// Fetch
-	const example = await saveTestator(payload)
+	// Fake Fetch
+	await new Promise<void>((resolve) => {
+		setTimeout(() => {
+			resolve()
+		}, 500)
+	})
 	// Effect
 	dispatch({
 		type: 'EFFECT_SET_TESTATOR',
-		payload: { name: example.name },
+		payload,
 	})
 }

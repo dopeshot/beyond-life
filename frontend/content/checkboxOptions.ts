@@ -1,5 +1,16 @@
 import { SelectableOption } from '../src/types/forms'
 
+export const testatorMoreInfosOptions: SelectableOption[] = [
+	{
+		id: 'testatorHandicapped',
+		label: 'Haben Sie eine Behinderung?',
+	},
+	{
+		id: 'testatorInsolvent',
+		label: 'Sind Sie insolvent?',
+	},
+]
+
 export const partnerMoreInfosOptions: SelectableOption[] = [
 	{
 		id: 'partnerHandicapped',
@@ -12,5 +23,16 @@ export const partnerMoreInfosOptions: SelectableOption[] = [
 	{
 		id: 'partnerBerlinWill',
 		label: 'Wollen Sie ein Berliner Testament?',
+	},
+]
+
+export const personMoreInfosOptions: SelectableOption[] = [
+	{
+		id: 'personHandicapped',
+		label: 'Hat die Person eine Behinderung?',
+	},
+	{
+		id: 'personInsolvent',
+		label: 'Ist die Person insolvent?',
 	},
 ]

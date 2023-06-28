@@ -1,21 +1,21 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Form, Formik } from 'formik'
-import { Dropdown, DropdownProps } from './Dropdown'
+import { FormDropdown, FormDropdownProps } from './FormDropdown'
 
-const meta: Meta<typeof Dropdown> = {
-	title: 'Design System/Form/Dropdown',
-	component: Dropdown,
+const meta: Meta<typeof FormDropdown> = {
+	title: 'Design System/Form/FormDropdown',
+	component: FormDropdown,
 }
 
 export default meta
-type Story = StoryObj<DropdownProps>
+type Story = StoryObj<FormDropdownProps>
 
 const Template: Story = {
 	render: (args) => {
 		return (
 			<Formik initialValues={{ gender: '' }} onSubmit={() => {}}>
 				<Form>
-					<Dropdown {...args} />
+					<FormDropdown {...args} />
 				</Form>
 			</Formik>
 		)
