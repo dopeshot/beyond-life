@@ -1,4 +1,4 @@
-# Frontend BeyondLife
+# Frontend Siebtes Leben
 
 ### Start the frontend
 
