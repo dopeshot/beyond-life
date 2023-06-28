@@ -116,7 +116,16 @@ const Succession = () => {
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form className="flex flex-1 flex-col">
 						{/* Content */}
-						<div className="mt-6 flex flex-1 flex-col rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4"></div>
+						<div className="flex-1">
+							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
+								{data.heirs.persons.map((person) => (
+									<SuccessionPerson key={person.id} name={person.firstName} relationshipType={person.heirsType} />
+								))}
+								{data.heirs.organisations.map((organisation) => (
+									<SuccessionPerson key={organisation.id} name={organisation.name} relationshipType="organisation" />
+								))}
+							</div>
+						</div>
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
