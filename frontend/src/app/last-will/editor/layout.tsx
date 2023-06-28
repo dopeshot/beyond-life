@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<Sidebar path={path} />
 				<div className="flex h-fit min-h-screen flex-grow flex-col">
 					<Navbar background={false}>
-						<div className="md:hidden">
+						<div className="mr-5 lg:hidden">
 							<NavbarLogo />
 						</div>
 					</Navbar>
