@@ -84,9 +84,20 @@ const Succession = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	// Formik
-	const initialFormValues = {} // lastWill.succession
+	const initialFormValues: SuccessionFormPayload = {
+		...lastWill.succession,
+	}
 
-	const onSubmit = async (values: any, href: string) => {}
+	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
+		try {
+			// Update succession global store
+			await services.submitSuccession(values)
+
+			router.push(href)
+		} catch (error) {
+			console.error('An error occured while submitting the form: ', error)
+		}
+	}
 
 	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({})
 
