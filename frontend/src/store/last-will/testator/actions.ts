@@ -23,7 +23,6 @@ export type TestatorFormPayload = {
 }
 
 export const submitTestatorAction = async (dispatch: Dispatch<TestatorActions>, payload: TestatorFormPayload) => {
-	console.log('Testator payload', payload)
 	// Prepare
 	dispatch({ type: 'PRE_SET_TESTATOR' })
 	// Fake Fetch
