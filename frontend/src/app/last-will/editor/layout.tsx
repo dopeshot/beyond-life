@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<div className={`flex h-screen min-h-screen overflow-y-scroll sm:flex-col lg:flex-row`}>
 				<Sidebar path={path} />
 				<div className="flex h-fit min-h-screen flex-grow flex-col">
-					<Navbar hideLogo noBackground />
+					<Navbar showLogo={false} background={false} />
 					<MobileSidebar path={path} />
 					{children}
 					<GlobalFooter />

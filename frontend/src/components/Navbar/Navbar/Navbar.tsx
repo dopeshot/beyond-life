@@ -10,15 +10,15 @@ import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 
 type NavbarProps = {
 	/** When true don't show logo. For modules. */
-	hideLogo?: boolean
+	showLogo?: boolean
 	/** When true has a transparent background. For modules. */
-	noBackground?: boolean
+	background?: boolean
 }
 
 /**
  * Display Top Navbar.
  */
-export const Navbar: React.FC<NavbarProps> = ({ hideLogo, noBackground }) => {
+export const Navbar: React.FC<NavbarProps> = ({ showLogo = true, background = true }) => {
 	const pathname = usePathname()
 
 	// Local States
@@ -36,11 +36,11 @@ export const Navbar: React.FC<NavbarProps> = ({ hideLogo, noBackground }) => {
 	]
 
 	return (
-		<div className={`${noBackground ? '' : 'bg-yellow-400'} py-3`}>
+		<div className={`${background ? 'bg-yellow-400' : ''} py-3`}>
 			<nav className="container md:flex">
-				<div className={`flex ${hideLogo ? 'justify-end' : 'items-center justify-between md:mr-5'}`}>
+				<div className={`flex ${showLogo ? 'items-center justify-between md:mr-5' : 'justify-end'}`}>
 					{/* Logo */}
-					{!hideLogo && <NavbarLogo />}
+					{showLogo && <NavbarLogo />}
 
 					{/* Mobile menu button */}
 					<IconButton
