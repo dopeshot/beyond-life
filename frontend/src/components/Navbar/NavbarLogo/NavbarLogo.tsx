@@ -10,7 +10,7 @@ export const NavbarLogo: React.FC = () => {
 	return (
 		<Link className="flex items-center" href={routes.index}>
 			<Image src={logo_symbol} alt="Logo" className="mr-2 w-[25px] min-w-[25px]" />
-			<span className="text-lg font-bold">BeyondLife</span>
+			<span className="block whitespace-nowrap text-lg font-bold">Siebtes Leben</span>
 		</Link>
 	)
 }
