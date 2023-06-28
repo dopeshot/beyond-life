@@ -20,6 +20,8 @@ export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried
 export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 
+// TODO: Move partner to persons
+
 export const initialMarriageState: MarriageState = {
 	relationshipStatus: undefined,
 	partnerGermanCitizenship: false,
