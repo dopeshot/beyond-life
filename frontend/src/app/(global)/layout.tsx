@@ -1,5 +1,6 @@
 import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../components/Navbar/Navbar/Navbar'
+import { NavbarLogo } from '../../components/Navbar/NavbarLogo/NavbarLogo'
 
 export const metadata = {
 	title: 'Siebtes Leben',
@@ -9,7 +10,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<Navbar />
+			<Navbar>
+				<div className="mr-5">
+					<NavbarLogo />
+				</div>
+			</Navbar>
 			{children}
 			<GlobalFooter />
 		</>

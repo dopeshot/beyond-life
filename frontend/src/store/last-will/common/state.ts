@@ -5,7 +5,7 @@ export type CommonState = {
 }
 
 export const initialCommonState: CommonState = {
-	id: '',
+	id: 'demo',
 	isLoading: false,
 	progressKeys: [],
 }

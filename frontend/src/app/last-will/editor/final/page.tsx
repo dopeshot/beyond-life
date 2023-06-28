@@ -27,7 +27,7 @@ const Final = () => {
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
-			<Headline className="md:mb-8">Zusammenfassung</Headline>
+			<Headline className="hidden md:mb-8 lg:block">Zusammenfassung</Headline>
 
 			<div className="flex">
 				<Icon icon="edit" className="mr-2" />
@@ -35,7 +35,7 @@ const Final = () => {
 					Vorlage zum Abschreiben
 				</Headline>
 			</div>
-			<div className='pb-2'>
+			<div className="pb-2">
 				Ein gültiges Testament muss vom Erblasser handschriftlich und eigenhändig verfasst und unterzeichnet werden.
 			</div>
 

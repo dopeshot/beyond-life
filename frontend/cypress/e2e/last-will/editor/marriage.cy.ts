@@ -1,10 +1,10 @@
 describe('Last Will Marriage Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/marriage?id=1')
+		cy.visit('/last-will/editor/marriage')
 	})
 
 	describe('Basic Flow', () => {
-		it('should fill out divorced and redirect to /last-will/editor/heirs?id=1 after submit', () => {
+		it('should fill out divorced and redirect to /last-will/editor/heirs after submit', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
@@ -12,10 +12,10 @@ describe('Last Will Marriage Page', () => {
 
 			cy.datacy('button-next-submit').click()
 
-			cy.url().should('include', 'last-will/editor/heirs?id=1')
+			cy.url().should('include', 'last-will/editor/heirs')
 		})
 
-		it('should fill out married and data from partner and redirect to /last-will/editor/heirs?id=1 after submit', () => {
+		it('should fill out married and data from partner and redirect to /last-will/editor/heirs after submit', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
@@ -52,7 +52,7 @@ describe('Last Will Marriage Page', () => {
 
 			cy.datacy('button-next-submit').click()
 
-			cy.url().should('include', 'last-will/editor/heirs?id=1')
+			cy.url().should('include', 'last-will/editor/heirs')
 		})
 	})
 

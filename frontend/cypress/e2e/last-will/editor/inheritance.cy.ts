@@ -1,10 +1,10 @@
 describe('Last Will Inheritance Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/inheritance?id=1')
+		cy.visit('/last-will/editor/inheritance')
 	})
 
 	describe('Basic Flow', () => {
-		it('should fill out one financial asset and one item and redirect to /last-will/editor/succession?id=1 after submit', () => {
+		it('should fill out one financial asset and one item and redirect to /last-will/editor/succession after submit', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
@@ -20,7 +20,7 @@ describe('Last Will Inheritance Page', () => {
 
 			cy.datacy('button-next-submit').click()
 
-			cy.url().should('include', 'last-will/editor/succession?id=1')
+			cy.url().should('include', 'last-will/editor/succession')
 		})
 	})
 

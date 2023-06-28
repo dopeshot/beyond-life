@@ -10,7 +10,7 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Succession Page
  */
 const Succession = () => {
-	const { services } = useLastWillContext()
+	const { services, lastWill } = useLastWillContext()
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
@@ -18,8 +18,8 @@ const Succession = () => {
 
 	return (
 		<div className="container mt-5">
-			<Headline>Erbfolge</Headline>
-			<Route href={routes.lastWill.final('1')}>
+			<Headline className="hidden lg:block">Erbfolge</Headline>
+			<Route href={routes.lastWill.final(lastWill.common.id)}>
 				<div>Next</div>
 			</Route>
 		</div>
