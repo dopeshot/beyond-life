@@ -4,7 +4,6 @@ import { HeirsTypes } from '../../store/last-will/heirs/state'
 import { FinancialAsset } from '../../store/last-will/inheritance/state'
 import { Gender } from '../../types/gender'
 import { Headline } from '../Headline/Headline'
-import { Icon } from '../Icon/Icon'
 
 /**
  * Display Last Will.
@@ -57,36 +56,53 @@ export const LastWill = () => {
 
 	return (
 		<div className="w-100 mt-2 flex-1 rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
-			<div className="flex">
-				<Icon icon="edit" className="mr-2" />
-				<Headline level={3} size="text-lg">
-					Vorlage zum Abschreiben
-				</Headline>
+			{/* Header */}
+			<div className="flex justify-between pt-6 font-semibold">
+				<div className="flex flex-col">
+					<p>
+						{lastWill?.testator?.firstName || ' [Vorname] '} {lastWill.testator.lastName || ' [Nachname] '}
+					</p>
+					<p>
+						{lastWill?.testator?.street || ' [Straße] '} {lastWill?.testator?.houseNumber || ' [Hausnummer] '}
+					</p>
+					<p>
+						{lastWill?.testator?.postalCode || ' [PLZ] '} {lastWill?.testator?.city || ' [Ort] '}
+					</p>
+				</div>
+				<div>
+					<p>
+						{lastWill?.testator?.city || ' [Ort] '}, den{' '}
+						{new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}
+					</p>
+				</div>
 			</div>
-			Ein gültiges Testament muss vom Erblasser handschriftlich und eigenhändig verfasst und unterzeichnet werden.
-			<Headline level={3} size="text-lg" className="pb-4 pt-4 text-center">
+			{/* Start Testament */}
+			<Headline level={3} size="text-lg" className="pb-8 pt-12 text-center">
 				Mein letzter Wille und Testament
 			</Headline>
-			<p className="pb-2">
+			{/* Erblasser */}
+			<p className="pb-8">
 				Ich, {lastWill?.testator?.firstName || ' [Vorname] '} {lastWill.testator.lastName || ' [Nachname] '}, geboren am{' '}
 				{lastWill.testator.birthDate || ' [Geburtstag] '} in {lastWill.testator.birthPlace || ' [Geburtsort]'},
 				widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit
 				Folgendes:
 			</p>
+			{/* Verteiltes Erbe */}
 			<Headline level={3} size="text-lg">
 				§1 Erbeinsetzung
 			</Headline>
 			<p className="pb-1">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
 			{lastWill.marriage.relationshipStatus === undefined && lastWill.heirs.persons.length === 0 && (
-				<p className="pb-2">[Keine Erben angegeben]</p>
+				<p className="pb-4">[Keine Erben angegeben]</p>
 			)}
+			{/* Ehepartner */}
 			{lastWill.marriage.relationshipStatus === 'married' && (
-				<p className="pb-2">
+				<p className="pb-4">
 					{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
 					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName || '[Nachname]'},
 					geboren am {lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-					{lastWill.marriage.partnerPercentageOfMoney || ' [?%] '} Prozent.
-					{lastWill.inheritance.financialAssets.length > 0 && (
+					{/*lastWill.marriage.partnerPercentageOfMoney || */' [?%] '} Prozent.
+					{/*lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -95,15 +111,16 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					)}
+					)*/}
 				</p>
 			)}
+			{/* Sonstige Erben außer Ehepartner */}
 			{lastWill.heirs.persons.map((person, index) => (
-				<p key={index} className="pb-2">
+				<p key={index} className="pb-4">
 					{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
 					{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {person.percentageOfMoney || ' [?%] '}.
-					{lastWill.inheritance.financialAssets.length > 0 && (
+					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {/*person.percentageOfMoney || */' [?%] '}.
+					{/*lastWill.inheritance.financialAssets.length > 1 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -112,14 +129,15 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					)}
+					)*/}
 				</p>
 			))}
+			{/* Unternehmen die erben */}
 			{lastWill.heirs.organisations.map((organisation, index) => (
-				<p key={index} className="pb-2">
+				<p key={index} className="pb-4">
 					Das Unternehmen, {organisation.name || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem
-					Anteil in Höhe von {organisation.percentageOfMoney || ' [?%] '}.
-					{lastWill.inheritance.financialAssets.length > 0 && (
+					Anteil in Höhe von {/*organisation.percentageOfMoney ||*/ ' [?%] '}.
+					{/*lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -128,44 +146,116 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					)}
+							)*/}
 				</p>
 			))}
+			{/* Ersatzerbe fixer String */}
 			<Headline level={3} size="text-lg">
 				§2 Ersatzerbe
 			</Headline>
-			<p className="pb-2">
+			<p className="pb-4">
 				Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem
 				Verhältnis der von mir vorgegebenen Erbanteile.
 			</p>
-			<Headline level={3} size="text-lg">
-				§3 Vermächtnisse
-			</Headline>
-			<p className="pb-2">
-				Ich vermache {}, {}, geboren am {}, ohne Anrechnung auf ihren Erbteil, {}. {} ist mit der folgenden Auflage
-				beschwert: {}.
-			</p>
-			<p className="pb-2">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
-			<p className="pb-2">Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.</p>
-			<p className="pb-2">
-				Ersatzvermächtnisnehmer sind nicht bestimmt. Das jeweilige Vermächtnis entfällt ersatzlos, wenn der/die
-				Vermächtnisnehmer/-in vor oder nach dem Erbfall, gleich aus welchem Grunde, wegfällt.
-			</p>
-			<Headline level={3} size="text-lg">
-				§4 Rechtswahl
-			</Headline>
-			<p className="pb-2">
+			{/* Vermächtnisse */}
+			{lastWill.inheritance.items[0].name !== '' && (
+				<>
+					<Headline level={3} size="text-lg">
+						§3 Vermächtnisse
+					</Headline>
+					{/*
+					{lastWill.heirs.persons.map(
+						(person, index) =>
+							person.items.length > 0 &&
+							person.items.map((item, index) => (
+								lastWill.inheritance.items.map((item, index) => (
+								<p key={index} className="pb-2">
+									Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
+									{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
+									{item.description !== '' && (
+										<>
+											{' '}
+											{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert: {item.description}.
+										</>
+									)}
+								</p>
+							))
+					)}
+					{lastWill.heirs.persons.map(
+						(person, index) =>
+							person.items.length > 0 &&
+							person.items.map((itemId) => {
+								const item = lastWill.inheritance.items.find((item) => item.id === itemId)
+								if (item) {
+									return (
+										<p key={itemId} className="pb-2">
+											Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, 
+											geboren am {person.dateOfBirth || ' [Geburtstag] '}, 
+											ohne Anrechnung auf ihren Erbteil, {item.name}.
+											{item.description !== '' && (
+												<>
+													{' '}
+													{person.firstName || ' [Vorname] '} 
+													ist mit der folgenden Auflage beschwert: {item.description}.
+												</>
+											)}
+										</p>
+									)
+								}
+							})
+					)}
+					*/}
+					<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
+					<p className="pb-3">
+						Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.
+					</p>
+					<p className="pb-3">
+						Ersatzvermächtnisnehmer sind nicht bestimmt. Das jeweilige Vermächtnis entfällt ersatzlos, wenn der/die
+						Vermächtnisnehmer/-in vor oder nach dem Erbfall, gleich aus welchem Grunde, wegfällt.
+					</p>
+				</>
+			)}
+			{/* Rechtswahl */}
+			{lastWill.inheritance.items[0].name !== '' ? (
+				<Headline level={3} size="text-lg">
+					§4 Rechtswahl
+				</Headline>
+			) : (
+				<Headline level={3} size="text-lg">
+					§3 Rechtswahl
+				</Headline>
+			)}
+			<p className="pb-4">
 				Auf meinen gesamten Nachlass sowie für Fragen, die die Wirksamkeit dieses Testaments betreffen, soll deutsches
 				Erbrecht anwendbar sein. Diese Rechtswahl soll auch dann weiterhin Gültigkeit haben, wenn ich meinen letzten
 				gewöhnlichen Aufenthalt im Ausland habe.
 			</p>
-			<Headline level={3} size="text-lg">
-				§5 Salvatorische Klausel
-			</Headline>
-			<p className="pb-2">
+			{/* Klausel */}
+			{lastWill.inheritance.items[0].name !== '' ? (
+				<Headline level={3} size="text-lg">
+					§5 Salvatorische Klausel
+				</Headline>
+			) : (
+				<Headline level={3} size="text-lg">
+					§4 Salvatorische Klausel
+				</Headline>
+			)}
+			<p className="pb-4">
 				Sollte eine der in diesem Testament enthaltenen Anordnungen unwirksam sein, so behalten dennoch alle anderen
 				Anordnungen ihre Wirkung.
 			</p>
+
+			<div className="mt-8">
+				<p className="mb-2">[Deine Unterschrift]</p>
+				<hr className=" w-2/6 border-t-2" />
+				<p className="mt-2">
+					{lastWill?.testator?.firstName || ' [Vorname] '} {lastWill?.testator?.lastName || ' [Nachname] '}
+				</p>
+			</div>
+
+			<div className=' pt-10'>
+			Hinweis: Dieses Testament-Generierungstool ist ein Prototyp und ausschließlich für die Media Night an der Hochschule der Medien in Stuttgart gedacht. Es ist noch in Entwicklung und bietet derzeit keine rechtliche Absicherung, doch wir arbeiten daran, in Zukunft eine Notarvalidierung bereitzustellen.
+			</div>
 		</div>
 	)
 }
