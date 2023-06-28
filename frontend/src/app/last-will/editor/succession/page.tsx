@@ -13,6 +13,69 @@ import { SidebarPages } from '../../../../types/sidebar'
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
 const NEXT_LINK = routes.lastWill.final('1')
 
+const data = {
+	heirs: {
+		persons: [
+			{
+				id: 1,
+				firstName: 'Annette',
+				lastName: 'Cabanis',
+				gender: 'female',
+				dateOfBirth: '16.05.1956',
+				placeOfBirth: 'Esslingen',
+				street: 'Weilerweg',
+				houseNumber: '22/1',
+				zipCode: '73732',
+				city: 'Esslingen',
+				ownChild: [],
+				moreInfos: [],
+				heirsType: 'mother',
+			},
+			{
+				id: 2,
+				firstName: 'Hans',
+				lastName: 'Cabanis',
+				gender: 'male',
+				dateOfBirth: '01.02.2023',
+				placeOfBirth: 'Esslingen',
+				street: 'Weilerweg',
+				houseNumber: '22/1',
+				zipCode: '73732',
+				city: 'Esslingen',
+				ownChild: [],
+				moreInfos: ['personInsolvent'],
+				heirsType: 'father',
+			},
+			{
+				id: 3,
+				firstName: 'Vorname',
+				lastName: 'Nachname',
+				gender: 'male',
+				dateOfBirth: 'Geburtstag',
+				placeOfBirth: 'Geburtsort',
+				street: 'Straße',
+				houseNumber: 'Hausnummer',
+				zipCode: '11111',
+				city: 'Stadt',
+				childRelationShip: 'childFromOther',
+				ownChild: ['ownChild'],
+				moreInfos: ['personHandicapped', 'personInsolvent'],
+				heirsType: 'child',
+			},
+		],
+		organisations: [
+			{
+				id: 1,
+				name: 'Beyond Life Orga',
+				street: 'Hdm',
+				houseNumber: '2',
+				zipCode: '23231',
+				city: 'Stuttgart',
+			},
+		],
+	},
+}
+
 /**
  * Succession Page
  */
