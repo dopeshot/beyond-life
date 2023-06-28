@@ -1,12 +1,13 @@
 'use client'
-import { Form, Formik, FormikProps } from 'formik'
+import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ObjectSchema, object } from 'yup'
+import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
+import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
+import { Icon } from '../../../../components/Icon/Icon'
 import { Modal } from '../../../../components/Modal/ModalBase/Modal'
-import { SuccessionPerson } from '../../../../components/SuccessionPerson/SuccessionPerson'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SuccessionFormPayload } from '../../../../store/last-will/succassion/actions'
@@ -124,7 +125,35 @@ const Succession = () => {
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
-		...lastWill.inheritance,
+		persons: [
+			{
+				id: 1,
+				percentage: 30,
+				items: [1, 2, 3],
+			},
+			{
+				id: 2,
+				percentage: 20,
+				items: [4, 5, 6],
+			},
+			{
+				id: 3,
+				percentage: 50,
+				items: [7, 8, 9],
+			},
+		],
+		organisations: [
+			{
+				id: 1,
+				percentage: 40,
+				items: [10, 11, 12],
+			},
+			{
+				id: 2,
+				percentage: 60,
+				items: [13, 14, 15],
+			},
+		],
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
@@ -137,8 +166,6 @@ const Succession = () => {
 			console.error('An error occured while submitting the form: ', error)
 		}
 	}
-
-	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({})
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
@@ -156,38 +183,58 @@ const Succession = () => {
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
 			<Headline className="hidden lg:block">Erbfolge</Headline>
-			<Formik
-				initialValues={initialFormValues}
-				validationSchema={validationSchema}
-				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
-			>
+			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form className="flex flex-1 flex-col">
 						{/* Content */}
 						<div className="flex-1">
 							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
-								{data.heirs.persons.map((person) => (
-									<SuccessionPerson
-										key={person.id}
-										name={person.firstName}
-										relationshipType={person.heirsType}
-										percentage={person.percentage}
-										items={person.itemIds}
-										handleOpenModal={() => setIsModalOpen(true)}
-										handleRemoveItem={handleRemoveItem}
-									/>
-								))}
-								{data.heirs.organisations.map((organisation) => (
-									<SuccessionPerson
-										key={organisation.id}
-										name={organisation.name}
-										relationshipType="Organisation"
-										percentage={organisation.percentage}
-										items={organisation.itemIds}
-										handleOpenModal={() => setIsModalOpen(true)}
-										handleRemoveItem={handleRemoveItem}
-									/>
-								))}
+								<FieldArray name="persons">
+									{(arrayHelpers: ArrayHelpers) => (
+										<>
+											{values.persons.map((person, index) => (
+												<div
+													key={person.id}
+													className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
+												>
+													<div className="flex gap-1">
+														<Headline level={2} hasMargin={false} size="text-lg">
+															{person.id}
+														</Headline>
+													</div>
+													<div className="flex w-full flex-col gap-2">
+														<p className="w-full text-center">{'relationshipType'}</p>
+														<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
+														{person.items.map((item) => {
+															return (
+																<div
+																	key={item}
+																	className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
+																>
+																	{item}
+																	<div onClick={() => handleRemoveItem(item)}>
+																		<Icon icon="close" className="text-base" />
+																	</div>
+																</div>
+															)
+														})}
+														<div className="flex w-full justify-center">
+															<Button
+																type="button"
+																kind="tertiary"
+																icon="add"
+																datacy="addObject"
+																onClick={() => setIsModalOpen(true)}
+															>
+																Gegenstand hinzufügen
+															</Button>
+														</div>
+													</div>
+												</div>
+											))}
+										</>
+									)}
+								</FieldArray>
 							</div>
 						</div>
 
