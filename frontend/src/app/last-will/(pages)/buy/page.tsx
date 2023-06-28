@@ -1,7 +1,7 @@
 import { Headline } from '../../../../components/Headline/Headline'
 
 export const metadata = {
-	title: 'Kaufen | Beyond Life',
+	title: 'Kaufen | Siebtes Leben',
 	description: 'Handle your death.',
 }
 

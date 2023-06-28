@@ -2,7 +2,7 @@ import { GlobalFooter } from '../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../components/Navbar/Navbar/Navbar'
 
 export const metadata = {
-	title: 'Beyond Life',
+	title: 'Siebtes Leben',
 	description: 'Handle your death.',
 }
 
