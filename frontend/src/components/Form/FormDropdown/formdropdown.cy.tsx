@@ -3,7 +3,7 @@ import 'material-symbols'
 import React from 'react'
 import '../../../app/globals.css'
 import { ComponentOptions } from '../../../types/dropdownOptions'
-import { Dropdown } from './Dropdown'
+import { FormDropdown } from './FormDropdown'
 
 const initialValues = {
 	gender: '',
@@ -32,7 +32,7 @@ describe('Dropdown', () => {
 	beforeEach(() => {
 		cy.mount(
 			<Wrapper>
-				<Dropdown {...data} />
+				<FormDropdown {...data} />
 			</Wrapper>
 		)
 	})

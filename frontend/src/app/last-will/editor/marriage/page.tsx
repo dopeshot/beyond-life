@@ -8,7 +8,7 @@ import { genderOptions } from '../../../../../content/dropdownOptions'
 import { FormError } from '../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
-import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
+import { FormDropdown } from '../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Label } from '../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
@@ -16,7 +16,8 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { MarriageFormPayload } from '../../../../store/last-will/marriage/actions'
-import { Gender, MatrimonialProperty, MoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
+import { MatrimonialProperty, PartnerMoreInfos, RelationshipStatus } from '../../../../store/last-will/marriage/state'
+import { Gender } from '../../../../types/gender'
 import { SidebarPages } from '../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.testator('1')
@@ -53,7 +54,7 @@ const Marriage = () => {
 			then: (schema) => schema.min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
 		}),
 		partnerCity: string(),
-		partnerMoreInfos: array<MoreInfos[]>(),
+		partnerMoreInfos: array<PartnerMoreInfos[]>(),
 		matrimonialProperty: string<MatrimonialProperty>(),
 	})
 
@@ -154,7 +155,7 @@ const Marriage = () => {
 
 										{/* Gender and Birth */}
 										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-3">
-											<Dropdown
+											<FormDropdown
 												name="partnerGender"
 												labelText="Geschlecht"
 												placeholder="Geschlecht"
