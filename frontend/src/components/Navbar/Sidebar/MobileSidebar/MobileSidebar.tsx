@@ -34,7 +34,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					}`}
 					href={previousPageIndex != -1 ? routes.lastWill[sidebarElements[previousPageIndex].page]('1') : '#'}
 				>
-					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-500" />
+					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-800" />
 				</Link>
 
 				<div className="relative flex cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
@@ -43,7 +43,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					</div>
 					<div className="mb-1 ml-2 flex justify-center text-xs">
 						Menü
-						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-500" />
+						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-800" />
 					</div>
 				</div>
 				<Link
@@ -52,7 +52,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					}`}
 					href={nextPageIndex != -1 ? routes.lastWill[sidebarElements[nextPageIndex].page]('1') : '#'}
 				>
-					<Icon datacy="chevron_right" icon="chevron_right" className=" text-gray-500" />
+					<Icon datacy="chevron_right" icon="chevron_right" className=" text-gray-800" />
 				</Link>
 			</div>
 			{isOpen && (
