@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
+import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { ObjectSchema, object, string } from 'yup'
@@ -66,6 +67,9 @@ const Testator = () => {
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
+			<Head>
+				<title>Erblasser</title>
+			</Head>
 			<Headline hasMargin={false}>Erblasser</Headline>
 			<p className="mb-4 font-medium">Persönliche Daten desjenigen, der das Testament erstellen möchte.</p>
 
