@@ -18,8 +18,11 @@ import { SidebarPages } from '../../../../types/sidebar'
  * Heirs Page
  */
 const Heirs = () => {
-	const PREVIOUS_LINK = routes.lastWill.marriage('1')
-	const NEXT_LINK = routes.lastWill.inheritance('1')
+	// Global State
+	const { lastWill, services } = useLastWillContext()
+
+	const PREVIOUS_LINK = routes.lastWill.marriage(lastWill.common.id)
+	const NEXT_LINK = routes.lastWill.inheritance(lastWill.common.id)
 
 	// Local State
 	const [isPersonModalOpen, setIsPersonModalOpen] = useState(false)
@@ -27,40 +30,23 @@ const Heirs = () => {
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
 	const [selectedOrganisation, setSelectedOrganisation] = useState<Organisation | null>(null)
-	const [type, setType] = useState<HeirsTypes>('other')
-
-	// Local Variables
-	const deleteHeadline = `${
-		selectedPerson !== null
-			? selectedPerson.firstName ?? '' + selectedPerson.lastName ?? ''
-			: selectedOrganisation !== null
-			? selectedOrganisation.name
-			: ''
-	} löschen?`
-
-	// Global State
-	const { lastWill, services } = useLastWillContext()
+	const [heirsType, setHeirsType] = useState<HeirsTypes>('other')
 
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.HEIRS })
 	}, [services])
 
-	/**
-	 * Set heirs add dropdown options.
-	 * @param type of heirs person or organisation.
-	 */
+	// Functions
 	const setDropdownOption = (type: HeirsTypes) => {
-		setType(type)
+		setHeirsType(type)
 
 		if (type === 'organisation') setIsOrganisationModalOpen(true)
 		else setIsPersonModalOpen(true)
 	}
+
 	const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
-	/**
-	 * Handle delete heirs.
-	 */
 	const deleteHeirs = async () => {
 		if (selectedPerson !== null) {
 			await services.deletePerson(selectedPerson)
@@ -100,7 +86,7 @@ const Heirs = () => {
 										<p>{person.lastName}</p>
 									</div>
 								</td>
-								<td className="p-4">{heirsTypes[person.type].displayType}</td>
+								<td className="p-4">{heirsTypes[person.heirsType].displayType}</td>
 								<td className="p-4">
 									<div className="flex">
 										<IconButton
@@ -168,7 +154,7 @@ const Heirs = () => {
 						setIsPersonModalOpen(false)
 					}}
 					editPerson={selectedPerson}
-					type={type}
+					heirsType={heirsType}
 				/>
 			)}
 			{isOrganisationModalOpen && (
@@ -183,7 +169,13 @@ const Heirs = () => {
 			)}
 			<Modal
 				open={isDeleteModalOpen}
-				headline={deleteHeadline}
+				headline={`${
+					selectedPerson !== null
+						? selectedPerson.firstName ?? '' + selectedPerson.lastName ?? ''
+						: selectedOrganisation !== null
+						? selectedOrganisation.name
+						: ''
+				} löschen?`}
 				onClose={() => {
 					setSelectedOrganisation(null)
 					setSelectedPerson(null)

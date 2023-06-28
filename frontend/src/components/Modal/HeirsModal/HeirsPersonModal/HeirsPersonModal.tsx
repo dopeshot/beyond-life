@@ -20,13 +20,13 @@ type HeirsPersonModalProps = {
 	/** When defined we are in edit mode. */
 	editPerson: Person | null
 	/** The type of person. */
-	type: HeirsTypes
+	heirsType: HeirsTypes
 }
 
 /**
  * Modal to add/edit a heirs person.
  */
-export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, heirsType }) => {
 	const { lastWill, services } = useLastWillContext()
 
 	const initialFormValues: Person = {
@@ -43,7 +43,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		childRelationShip: editPerson?.childRelationShip ?? undefined,
 		ownChild: editPerson?.ownChild ?? [],
 		moreInfos: editPerson?.moreInfos ?? [],
-		type: editPerson?.type ?? 'other',
+		heirsType: editPerson?.heirsType ?? 'other',
 	}
 
 	const validationSchema: ObjectSchema<Person> = object().shape({
@@ -60,7 +60,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		childRelationShip: mixed<ChildRelationShip[]>(),
 		ownChild: array(),
 		moreInfos: mixed<PersonMoreInfos[]>(),
-		type: string<HeirsTypes>().required(),
+		heirsType: string<HeirsTypes>().required(),
 	})
 
 	const onSubmit = async (values: Person) => {
@@ -70,7 +70,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 			// Add person to persons
 			const valuesCopy = { ...values }
 			valuesCopy.id = Math.max(...lastWill.heirs.persons.map((person) => person.id), 0) + 1
-			valuesCopy.type = type
+			valuesCopy.heirsType = heirsType
 
 			await services.addPerson(valuesCopy)
 		}
@@ -80,7 +80,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 	}
 
 	return (
-		<Modal open={isOpenModal} headline={`${heirsTypes[type].label}`} onClose={onClose}>
+		<Modal open={isOpenModal} headline={`${heirsTypes[heirsType].label}`} onClose={onClose}>
 			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				<Form className="mt-2 md:mt-3">
 					{/* Persönliche Daten */}

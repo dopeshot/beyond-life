@@ -19,7 +19,7 @@ export type Person = {
 	moreInfos?: PersonMoreInfos[]
 	childRelationShip?: ChildRelationShip[]
 	ownChild?: string[]
-	type: HeirsTypes
+	heirsType: HeirsTypes
 }
 
 export type Organisation = {
