@@ -1,7 +1,8 @@
 'use client'
 import { useLastWillContext } from '../../store/last-will/LastWillContext'
+import { HeirsTypes } from '../../store/last-will/heirs/state'
 import { FinancialAsset } from '../../store/last-will/inheritance/state'
-import { Gender } from '../../store/last-will/marriage/state'
+import { Gender } from '../../types/gender'
 import { Headline } from '../Headline/Headline'
 import { Icon } from '../Icon/Icon'
 
@@ -21,7 +22,6 @@ export const LastWill = () => {
 		}
 	}
 
-	/*
 	const getHeirGenderText = (heirType: HeirsTypes, heirGender: Gender) => {
 		switch (heirType) {
 			case 'mother':
@@ -33,14 +33,13 @@ export const LastWill = () => {
 			case 'siblings':
 				return heirGender === 'male' ? 'Mein Bruder' : heirGender === 'female' ? 'Meine Schwester' : 'Mein Geschwister'
 			case 'other':
-				return 'Mein Erbe' // ersetzen Sie dies durch den gewünschten Text
+				return 'Mein Erbe'
 			case 'organisation':
-				return 'Meine Organisation' // ersetzen Sie dies durch den gewünschten Text
+				return 'Das Unternehmen'
 			default:
 				return ''
 		}
 	}
-	*/
 
 	const calculateSumOfMoney = (financialAssets: FinancialAsset[]) => {
 		let sum = 0
@@ -57,7 +56,7 @@ export const LastWill = () => {
 	}
 
 	return (
-		<div className="mt-2 flex-1 rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-6">
+		<div className="w-100 mt-2 flex-1 rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
 			<div className="flex">
 				<Icon icon="edit" className="mr-2" />
 				<Headline level={3} size="text-lg">
@@ -65,12 +64,12 @@ export const LastWill = () => {
 				</Headline>
 			</div>
 			Ein gültiges Testament muss vom Erblasser handschriftlich und eigenhändig verfasst und unterzeichnet werden.
-			<Headline level={3} size="text-lg" className="pt-4 pb-4 text-center">
+			<Headline level={3} size="text-lg" className="pb-4 pt-4 text-center">
 				Mein letzter Wille und Testament
 			</Headline>
 			<p className="pb-2">
-				Ich, {lastWill?.testator?.firstName || ' [Name] '} {lastWill.testator.lastName}, geboren am{' '}
-				{lastWill.testator.birthDate || ' [Geburtstag] '} in {lastWill.testator.birthPlace || ' [Geburtsort] '},
+				Ich, {lastWill?.testator?.firstName || ' [Vorname] '} {lastWill.testator.lastName || ' [Nachname] '}, geboren am{' '}
+				{lastWill.testator.birthDate || ' [Geburtstag] '} in {lastWill.testator.birthPlace || ' [Geburtsort]'},
 				widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit
 				Folgendes:
 			</p>
@@ -78,13 +77,16 @@ export const LastWill = () => {
 				§1 Erbeinsetzung
 			</Headline>
 			<p className="pb-1">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
-			{lastWill.marriage.relationshipStatus === 'married' ? (
+			{lastWill.marriage.relationshipStatus === undefined && lastWill.heirs.persons.length === 0 && (
+				<p className="pb-2">[Keine Erben angegeben]</p>
+			)}
+			{lastWill.marriage.relationshipStatus === 'married' && (
 				<p className="pb-2">
 					{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
-					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName}, geboren am{' '}
-					{lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
+					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName || '[Nachname]'},
+					geboren am {lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
 					{lastWill.marriage.partnerPercentageOfMoney || ' [?%] '} Prozent.
-					{lastWill.inheritance.financialAssets.length > 0 ? (
+					{lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -93,15 +95,15 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					) : null}
+					)}
 				</p>
-			) : null}
-			{/*lastWill.heirs.persons.map((person, index) => (
-				<p className="pb-2">
-					{getHeirGenderText(person.gender ?? 'divers')}, {person.firstName || ' [Name] '}{' '}
-					{person.lastName}, geboren am {person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in
-					Höhe von {person.percentageOfMoney || ' [?%] '}.
-					{lastWill.inheritance.financialAssets.length > 0 ? (
+			)}
+			{lastWill.heirs.persons.map((person, index) => (
+				<p key={index} className="pb-2">
+					{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
+					{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
+					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {person.percentageOfMoney || ' [?%] '}.
+					{lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -110,13 +112,14 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					) : null}
+					)}
 				</p>
-			))*/}
-			{/*lastWill.heirs.organisations.map((organisation, index) => (
-				<p className="pb-2">
-					Das Unternehmen, {organisation.firstName || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem Anteil in Höhe von {organisation.percentageOfMoney || ' [?%] '}.
-					{lastWill.inheritance.financialAssets.length > 0 ? (
+			))}
+			{lastWill.heirs.organisations.map((organisation, index) => (
+				<p key={index} className="pb-2">
+					Das Unternehmen, {organisation.name || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem
+					Anteil in Höhe von {organisation.percentageOfMoney || ' [?%] '}.
+					{lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
 							{getMoneyAmount(
@@ -125,9 +128,9 @@ export const LastWill = () => {
 							)}{' '}
 							€.
 						</>
-					) : null}
+					)}
 				</p>
-			))*/}
+			))}
 			<Headline level={3} size="text-lg">
 				§2 Ersatzerbe
 			</Headline>
