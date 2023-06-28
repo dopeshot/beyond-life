@@ -1,10 +1,11 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ObjectSchema, object } from 'yup'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../components/Headline/Headline'
+import { Modal } from '../../../../components/Modal/ModalBase/Modal'
 import { SuccessionPerson } from '../../../../components/SuccessionPerson/SuccessionPerson'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
@@ -119,6 +120,7 @@ const data = {
 const Succession = () => {
 	const router = useRouter()
 	const { lastWill, services } = useLastWillContext()
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
@@ -142,6 +144,15 @@ const Succession = () => {
 		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
 	}, [services])
 
+	const handleAddItem = (id: number) => {
+		console.log('Add item with id: ', id)
+		setIsModalOpen(false)
+	}
+
+	const handleRemoveItem = (id: number) => {
+		console.log('Remove item with id: ', id)
+	}
+
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
 			<Headline>Erbfolge</Headline>
@@ -162,6 +173,8 @@ const Succession = () => {
 										relationshipType={person.heirsType}
 										percentage={person.percentage}
 										items={person.itemIds}
+										handleOpenModal={() => setIsModalOpen(true)}
+										handleRemoveItem={handleRemoveItem}
 									/>
 								))}
 								{data.heirs.organisations.map((organisation) => (
@@ -171,6 +184,8 @@ const Succession = () => {
 										relationshipType="Organisation"
 										percentage={organisation.percentage}
 										items={organisation.itemIds}
+										handleOpenModal={() => setIsModalOpen(true)}
+										handleRemoveItem={handleRemoveItem}
 									/>
 								))}
 							</div>
@@ -187,6 +202,19 @@ const Succession = () => {
 					</Form>
 				)}
 			</Formik>
+			<Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} headline="Erbschaftsgegenstände">
+				<div className="flex flex-col gap-2">
+					{data.items.map((item) => (
+						<div
+							key={item.id}
+							onClick={() => handleAddItem(item.id)}
+							className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
+						>
+							{item.name}
+						</div>
+					))}
+				</div>
+			</Modal>
 		</div>
 	)
 }
