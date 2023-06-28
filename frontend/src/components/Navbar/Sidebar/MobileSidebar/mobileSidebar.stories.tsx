@@ -21,7 +21,7 @@ const Template: Story = {
 	},
 }
 
-export const SidebarDefault: Story = {
+export const Default: Story = {
 	...Template,
 	args: {
 		path: '/testator',
