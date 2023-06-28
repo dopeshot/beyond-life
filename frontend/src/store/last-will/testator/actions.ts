@@ -25,7 +25,7 @@ export type TestatorFormPayload = {
 export const submitTestatorAction = async (dispatch: Dispatch<TestatorActions>, payload: TestatorFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_TESTATOR' })
-	// Fetch
+	// Fake Fetch
 	await new Promise<void>((resolve) => {
 		setTimeout(() => {
 			resolve()
