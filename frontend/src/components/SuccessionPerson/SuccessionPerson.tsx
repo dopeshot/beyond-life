@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import { Button } from '../ButtonsAndLinks/Button/Button'
 import { Headline } from '../Headline/Headline'
+import { Icon } from '../Icon/Icon'
 
 type Item = {
 	id: number
@@ -12,6 +13,8 @@ type SuccessionPersonProps = {
 	relationshipType: any //TODO: Add type
 	items: Item[]
 	percentage: number
+	handleOpenModal: () => void
+	handleRemoveItem: (id: number) => void
 }
 
 export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
@@ -19,6 +22,8 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 	relationshipType,
 	items = [],
 	percentage = 0,
+	handleOpenModal = () => {},
+	handleRemoveItem = () => {},
 }) => {
 	const [inputValue, setInputValue] = useState(percentage.toString() + '%')
 
@@ -38,7 +43,6 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 	return (
 		<div className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 ">
 			<div className="flex gap-1">
-				<Headline hasMargin={false} size="text-lg">
 					{name}
 				</Headline>
 			</div>
@@ -52,13 +56,19 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 				/>
 				{items.map((item) => {
 					return (
-						<div key={item.id} className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6 ">
+						<div
+							key={item.id}
+							className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
+						>
 							{item.name}
+							<div onClick={() => handleRemoveItem(item.id)}>
+								<Icon icon="close" className="text-base" />
+							</div>
 						</div>
 					)
 				})}
 				<div className="flex w-full justify-center">
-					<Button kind="tertiary" icon="add" datacy="addObject">
+					<Button type="button" kind="tertiary" icon="add" datacy="addObject" onClick={() => handleOpenModal()}>
 						Gegenstand hinzufügen
 					</Button>
 				</div>
