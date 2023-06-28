@@ -29,7 +29,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 			{/* Chevron Buttons */}
 			<div className="flex justify-between rounded-lg bg-yellow-400">
 				<Link
-					className={`flex items-center justify-center pl-2${
+					className={`flex items-center justify-center pl-2 pr-8${
 						previousPageIndex == -1 ? ' pointer-events-none opacity-0' : ''
 					}`}
 					href={previousPageIndex != -1 ? routes.lastWill[sidebarElements[previousPageIndex].page]('1') : '#'}
@@ -37,7 +37,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-800" />
 				</Link>
 
-				<div className="relative flex cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
+				<div className="relative flex w-full cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
 					<div className={`flex flex-col text-xl md:text-2xl ${fontArbutusSlab.className} mt-1`}>
 						{sidebarElements[currentElementIndex].title}
 					</div>
@@ -47,7 +47,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					</div>
 				</div>
 				<Link
-					className={`flex items-center justify-center pr-2${
+					className={`flex items-center justify-center pr-2 pl-8${
 						nextPageIndex == -1 ? ' pointer-events-none opacity-0' : ''
 					}`}
 					href={nextPageIndex != -1 ? routes.lastWill[sidebarElements[nextPageIndex].page]('1') : '#'}
