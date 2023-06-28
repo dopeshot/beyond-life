@@ -86,13 +86,13 @@ const Succession = () => {
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
-		...lastWill.succession,
+		...lastWill.inheritance,
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
 		try {
 			// Update succession global store
-			await services.submitSuccession(values)
+			// await services.
 
 			router.push(href)
 		} catch (error) {
