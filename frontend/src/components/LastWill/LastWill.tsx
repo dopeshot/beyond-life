@@ -91,7 +91,7 @@ export const LastWill = () => {
 			<Headline level={3} size="text-lg">
 				§1 Erbeinsetzung
 			</Headline>
-			<p className="pb-1">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
+			<p className="pb-4">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
 			{lastWill.marriage.relationshipStatus === undefined && lastWill.heirs.persons.length === 0 && (
 				<p className="pb-4">[Keine Erben angegeben]</p>
 			)}
@@ -120,7 +120,7 @@ export const LastWill = () => {
 					{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
 					{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
 					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-					{/*person.percentageOfMoney || */ ' [?%] '}.
+					{/*person.percentageOfMoney || */ ' [?%] '} Prozent.
 					{/*lastWill.inheritance.financialAssets.length > 1 && (
 						<>
 							Dies entspricht einem Wert von{' '}
@@ -137,7 +137,7 @@ export const LastWill = () => {
 			{lastWill.heirs.organisations.map((organisation, index) => (
 				<p key={index} className="pb-4">
 					Das Unternehmen, {organisation.name || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem
-					Anteil in Höhe von {/*organisation.percentageOfMoney ||*/ ' [?%] '}.
+					Anteil in Höhe von {/*organisation.percentageOfMoney ||*/ ' [?%] '} Prozent.
 					{/*lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
