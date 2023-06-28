@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { Button } from '../ButtonsAndLinks/Button/Button'
 import { Headline } from '../Headline/Headline'
 
-type Object = {
+type Item = {
 	id: number
 	name: string
 }
@@ -10,15 +10,15 @@ type Object = {
 type SuccessionPersonProps = {
 	name: string
 	relationshipType: any //TODO: Add type
-	objects: Object[]
+	items: Item[]
 	percentage: number
 }
 
 export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 	name = '',
 	relationshipType,
-	objects = [],
-	percentage,
+	items = [],
+	percentage = 0,
 }) => {
 	const [inputValue, setInputValue] = useState(percentage.toString() + '%')
 
@@ -50,7 +50,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 					value={inputValue}
 					onChange={handleChange}
 				/>
-				{objects.map((item) => {
+				{items.map((item) => {
 					return (
 						<div key={item.id} className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6 ">
 							{item.name}

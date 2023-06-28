@@ -32,7 +32,7 @@ const data = {
 				moreInfos: [],
 				heirsType: 'mother',
 				percentage: 50,
-				objectIds: [
+				itemIds: [
 					{
 						id: 1,
 						name: 'Test',
@@ -58,7 +58,7 @@ const data = {
 				moreInfos: ['personInsolvent'],
 				heirsType: 'father',
 				percentage: 20,
-				objectIds: [],
+				itemIds: [],
 			},
 			{
 				id: 3,
@@ -76,7 +76,7 @@ const data = {
 				moreInfos: ['personHandicapped', 'personInsolvent'],
 				heirsType: 'child',
 				percentage: 10,
-				objectIds: [
+				itemIds: [
 					{
 						id: 3,
 						name: 'Test3',
@@ -93,10 +93,24 @@ const data = {
 				zipCode: '23231',
 				city: 'Stuttgart',
 				percentage: 20,
-				objectIds: [],
+				itemIds: [],
 			},
 		],
 	},
+	items: [
+		{
+			id: 1,
+			name: 'Test1',
+		},
+		{
+			id: 2,
+			name: 'Test2',
+		},
+		{
+			id: 3,
+			name: 'Test3',
+		},
+	],
 }
 
 /**
@@ -147,7 +161,7 @@ const Succession = () => {
 										name={person.firstName}
 										relationshipType={person.heirsType}
 										percentage={person.percentage}
-										objects={person.objectIds}
+										items={person.itemIds}
 									/>
 								))}
 								{data.heirs.organisations.map((organisation) => (
@@ -156,7 +170,7 @@ const Succession = () => {
 										name={organisation.name}
 										relationshipType="Organisation"
 										percentage={organisation.percentage}
-										objects={organisation.objectIds}
+										items={organisation.itemIds}
 									/>
 								))}
 							</div>
