@@ -9,7 +9,7 @@ import { Icon } from '../../../../components/Icon/Icon'
 import { Modal } from '../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { SuccessionFormPayload } from '../../../../store/last-will/succassion/actions'
+import { SuccessionFormPayload } from '../../../../store/last-will/succession/actions'
 import { SidebarPages } from '../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
