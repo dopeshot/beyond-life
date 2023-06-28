@@ -1,7 +1,7 @@
 import { CommonActions } from './common/actions'
 import { initialCommonState } from './common/state'
 import { HeirsActions } from './heirs/actions'
-import { initialHeirsState } from './heirs/state'
+import { Organisation, Person, initialHeirsState } from './heirs/state'
 import { InheritanceActions } from './inheritance/actions'
 import { initialInheritanceState } from './inheritance/state'
 import { MarriageActions } from './marriage/actions'
@@ -131,7 +131,12 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 		}
 
 		case 'EFFECT_ADD_PERSON': {
-			const newPersons = [...state.heirs.persons, action.payload]
+			const newPerson: Person = {
+				...action.payload,
+				id: Math.max(...state.heirs.persons.map((person) => person.id!), 0) + 1,
+			}
+
+			const newPersons = [...state.heirs.persons, newPerson]
 
 			return {
 				...state,
@@ -184,7 +189,12 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 		}
 
 		case 'EFFECT_ADD_ORGANISATION': {
-			const newOrganisations = [...state.heirs.organisations, action.payload]
+			const newOrga: Organisation = {
+				...action.payload,
+				id: Math.max(...state.heirs.organisations.map((organisation) => organisation.id!), 0) + 1,
+			}
+
+			const newOrgas = [...state.heirs.organisations, newOrga]
 
 			return {
 				...state,
@@ -194,7 +204,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				},
 				heirs: {
 					...state.heirs,
-					organisations: newOrganisations,
+					organisations: newOrgas,
 				},
 			}
 		}

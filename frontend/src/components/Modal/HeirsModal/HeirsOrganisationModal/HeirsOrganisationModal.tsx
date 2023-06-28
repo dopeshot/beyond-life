@@ -24,7 +24,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	const { lastWill, services } = useLastWillContext()
 
 	const initialFormValues: Organisation = {
-		id: editOrganisation?.id ?? 0,
+		id: editOrganisation?.id ?? null,
 		name: editOrganisation?.name ?? '',
 		street: editOrganisation?.street ?? '',
 		houseNumber: editOrganisation?.houseNumber ?? '',
@@ -33,7 +33,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	}
 
 	const validationSchema: ObjectSchema<Organisation> = object({
-		id: number().required(),
+		id: number().required().nullable(),
 		name: string(),
 		street: string(),
 		houseNumber: string(),
@@ -45,9 +45,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 		if (editOrganisation) {
 			await services.updateOrganisation(values)
 		} else {
-			const valuesCopy = { ...values }
-			valuesCopy.id = Math.max(...lastWill.heirs.organisations.map((organisation) => organisation.id), 0) + 1
-			await services.addOrganisation(valuesCopy)
+			await services.addOrganisation(values)
 		}
 
 		// Close and reset Modal

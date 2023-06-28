@@ -6,7 +6,7 @@ export type HeirsState = {
 }
 
 export type Person = {
-	id: number
+	id: number | null
 	firstName?: string
 	lastName?: string
 	gender?: Gender
@@ -23,7 +23,7 @@ export type Person = {
 }
 
 export type Organisation = {
-	id: number
+	id: number | null
 	name?: string
 	street?: string
 	houseNumber?: string

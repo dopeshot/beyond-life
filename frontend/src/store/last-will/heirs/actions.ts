@@ -7,7 +7,7 @@ export type HeirsActions =
 	  }
 	| {
 			type: 'EFFECT_ADD_PERSON'
-			payload: Person
+			payload: Omit<Person, 'id'>
 	  }
 	| {
 			type: 'EFFECT_UPDATE_PERSON'
@@ -30,7 +30,7 @@ export type HeirsActions =
 			payload: Organisation
 	  }
 
-export const addPersonAction = async (dispatch: Dispatch<HeirsActions>, payload: Person) => {
+export const addPersonAction = async (dispatch: Dispatch<HeirsActions>, payload: Omit<Person, 'id'>) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch

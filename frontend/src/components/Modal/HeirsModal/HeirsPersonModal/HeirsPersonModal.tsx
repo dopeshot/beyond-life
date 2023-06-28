@@ -30,7 +30,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 	const { lastWill, services } = useLastWillContext()
 
 	const initialFormValues: Person = {
-		id: editPerson?.id ?? 0,
+		id: editPerson?.id ?? null,
 		firstName: editPerson?.firstName ?? '',
 		lastName: editPerson?.lastName ?? '',
 		gender: editPerson?.gender ?? undefined,
@@ -43,11 +43,11 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		childRelationShip: editPerson?.childRelationShip ?? undefined,
 		ownChild: editPerson?.ownChild ?? [],
 		moreInfos: editPerson?.moreInfos ?? [],
-		heirsType: editPerson?.heirsType ?? 'other',
+		heirsType: editPerson?.heirsType ?? heirsType,
 	}
 
 	const validationSchema: ObjectSchema<Person> = object().shape({
-		id: number().required(),
+		id: number().required().nullable(),
 		firstName: string(),
 		lastName: string(),
 		gender: string<Gender>(),
@@ -67,12 +67,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		if (editPerson) {
 			await services.updatePerson(values)
 		} else {
-			// Add person to persons
-			const valuesCopy = { ...values }
-			valuesCopy.id = Math.max(...lastWill.heirs.persons.map((person) => person.id), 0) + 1
-			valuesCopy.heirsType = heirsType
-
-			await services.addPerson(valuesCopy)
+			await services.addPerson(values)
 		}
 
 		// Close and reset Modal
