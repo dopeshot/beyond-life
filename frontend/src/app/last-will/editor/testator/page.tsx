@@ -7,14 +7,14 @@ import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../components/Form/Checkbox/Checkbox'
-import { Dropdown } from '../../../../components/Form/Dropdown/Dropdown'
+import { FormDropdown } from '../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { Gender } from '../../../../store/last-will/marriage/state'
 import { TestatorFormPayload } from '../../../../store/last-will/testator/actions'
+import { Gender } from '../../../../types/gender'
 import { SidebarPages } from '../../../../types/sidebar'
 
 /**
@@ -95,7 +95,7 @@ const Testator = () => {
 
 										{/* Gender and Birth */}
 										<div className="grid gap-x-3 md:grid-cols-2">
-											<Dropdown
+											<FormDropdown
 												name="gender"
 												labelText="Geschlecht"
 												placeholder="Geschlecht"
