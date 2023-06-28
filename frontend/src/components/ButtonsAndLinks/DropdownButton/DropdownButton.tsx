@@ -33,7 +33,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ datacy, children
 			)}
 
 			{/* Input */}
-			<Button datacy={datacy} className="relative" {...buttonProps} onClick={() => setIsOpen(true)}>
+			<Button type="button" datacy={datacy} className="relative" {...buttonProps} onClick={() => setIsOpen(true)}>
 				{children}
 			</Button>
 

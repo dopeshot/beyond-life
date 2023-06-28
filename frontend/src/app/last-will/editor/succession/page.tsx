@@ -2,7 +2,6 @@
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
@@ -115,6 +114,8 @@ const data = {
 	],
 }
 
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 /**
  * Succession Page
  */
@@ -190,50 +191,49 @@ const Succession = () => {
 						<div className="flex-1">
 							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
 								<FieldArray name="persons">
-									{(arrayHelpers: ArrayHelpers) => (
-										<>
-											{values.persons.map((person, index) => (
-												<div
-													key={person.id}
-													className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
-												>
-													<div className="flex gap-1">
-														<Headline level={2} hasMargin={false} size="text-lg">
-															{person.id}
-														</Headline>
-													</div>
-													<div className="flex w-full flex-col gap-2">
-														<p className="w-full text-center">{'relationshipType'}</p>
-														<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
-														{person.items.map((item) => {
-															return (
-																<div
-																	key={item}
-																	className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
-																>
-																	{item}
-																	<div onClick={() => handleRemoveItem(item)}>
-																		<Icon icon="close" className="text-base" />
+									{(arrayHelpers: ArrayHelpers) => {
+										return (
+											<>
+												{values.persons.map((person, index) => (
+													<div
+														key={person.id}
+														className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
+													>
+														<div className="flex gap-1">
+															<Headline level={2} hasMargin={false} size="text-lg">
+																{person.id}
+															</Headline>
+														</div>
+														<div className="flex w-full flex-col gap-2">
+															<p className="w-full text-center">{'relationshipType'}</p>
+															<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
+															{person.items.map((item) => {
+																return (
+																	<div
+																		key={item}
+																		className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
+																	>
+																		{item}
+																		<div onClick={() => handleRemoveItem(item)}>
+																			<Icon icon="close" className="text-base" />
+																		</div>
 																	</div>
-																</div>
-															)
-														})}
-														<div className="flex w-full justify-center">
-															<Button
-																type="button"
-																kind="tertiary"
-																icon="add"
-																datacy="addObject"
-																onClick={() => setIsModalOpen(true)}
+																)
+															})}
+															{/* <DropdownButton
+																options={items.map((item) => ({
+																	onClick: () => console.log(item),
+																	label: item.toString(),
+																}))}
 															>
-																Gegenstand hinzufügen
-															</Button>
+																Gegenstand auswählen
+															</DropdownButton> */}
 														</div>
 													</div>
-												</div>
-											))}
-										</>
-									)}
+												))}
+											</>
+										)
+									}}
 								</FieldArray>
 							</div>
 						</div>
@@ -251,13 +251,13 @@ const Succession = () => {
 			</Formik>
 			<Modal open={isModalOpen} onClose={() => setIsModalOpen(false)} headline="Erbschaftsgegenstände">
 				<div className="flex flex-col gap-2">
-					{data.items.map((item) => (
+					{items.map((item) => (
 						<div
-							key={item.id}
-							onClick={() => handleAddItem(item.id)}
+							key={item}
+							onClick={() => handleAddItem(item)}
 							className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
 						>
-							{item.name}
+							{item}
 						</div>
 					))}
 				</div>

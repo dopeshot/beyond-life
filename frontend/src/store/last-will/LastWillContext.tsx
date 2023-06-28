@@ -78,6 +78,10 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
+	useEffect(() => {
+		console.log(lastWill)
+	}, [lastWill])
+
 	return (
 		<LastWillContext.Provider
 			value={{
