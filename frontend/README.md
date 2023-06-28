@@ -40,4 +40,4 @@ npm run tc:cli
 - [Cypress](https://www.cypress.io/) is used as testing framework.
 - [Formik](https://formik.org/) is used to handle forms.
 - [Yup](https://www.npmjs.com/package/yup) is used to handle form validation.
-- [TailwindCSS](https://tailwindcss.com/) is used as CSS Utility Framework.
+- [TailwindCSS](https://tailwindcss.com/) is used as CSS Utility Framework
