@@ -6,6 +6,11 @@ import { MobileSidebar } from './MobileSidebar'
 const meta: Meta<typeof MobileSidebar> = {
 	title: 'Design System/Navbar/MobileSideBar',
 	component: MobileSidebar,
+	parameters: {
+		viewport: {
+			defaultViewport: 'mobile2',
+		},
+	},
 }
 
 export default meta
