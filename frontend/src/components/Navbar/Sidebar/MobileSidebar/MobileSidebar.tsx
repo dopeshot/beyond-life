@@ -20,18 +20,20 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 
 	const currentElementIndex = sidebarElements.findIndex((element) => path.includes(element.page))
 
-	const previousPage = currentElementIndex > 0 ? sidebarElements[currentElementIndex - 1].page : sidebarElements[0].page
+	const previousPageIndex = currentElementIndex > 0 ? currentElementIndex - 1 : -1
+	const nextPageIndex = currentElementIndex < sidebarElements.length - 1 ? currentElementIndex + 1 : -1
 
-	const nextPage =
-		currentElementIndex < sidebarElements.length - 1
-			? sidebarElements[currentElementIndex + 1].page
-			: sidebarElements[sidebarElements.length - 1].page
-
+	// TODO: refactor this with grids instead of opacity 0
 	return (
 		<div datacy="mobileSidebar" className="container lg:hidden ">
 			{/* Chevron Buttons */}
 			<div className="flex justify-between rounded-lg bg-yellow-400">
-				<Link className="flex items-center justify-center pl-2" href={routes.lastWill[previousPage]('1')}>
+				<Link
+					className={`flex items-center justify-center pl-2${
+						previousPageIndex == -1 ? ' pointer-events-none opacity-0' : ''
+					}`}
+					href={previousPageIndex != -1 ? routes.lastWill[sidebarElements[previousPageIndex].page]('1') : '#'}
+				>
 					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-500" />
 				</Link>
 
@@ -44,7 +46,12 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-gray-500" />
 					</div>
 				</div>
-				<Link className="flex items-center justify-center pr-2" href={routes.lastWill[nextPage]('1')}>
+				<Link
+					className={`flex items-center justify-center pr-2${
+						nextPageIndex == -1 ? ' pointer-events-none opacity-0' : ''
+					}`}
+					href={nextPageIndex != -1 ? routes.lastWill[sidebarElements[nextPageIndex].page]('1') : '#'}
+				>
 					<Icon datacy="chevron_right" icon="chevron_right" className=" text-gray-500" />
 				</Link>
 			</div>
