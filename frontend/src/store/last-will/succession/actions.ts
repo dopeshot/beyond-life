@@ -12,10 +12,16 @@ export type SuccessionActions =
 export type SuccessionFormPayload = {
 	persons: SuccessionPerson[]
 	organisations: SuccessionOrganisation[]
+	partner: SuccessionPartner
 }
 
 export type SuccessionPerson = {
 	id: number | null
+	percentage: number
+	itemIds: number[]
+}
+
+export type SuccessionPartner = {
 	percentage: number
 	itemIds: number[]
 }
