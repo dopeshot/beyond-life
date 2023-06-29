@@ -45,34 +45,49 @@ export const initialInheritanceState: InheritanceState = {
 	],
 	items: [
 		{
-			id: 0,
-			name: 'Mercedes EQS',
-			description: 'Die Person die das Auto kriegt soll damit in Urlaub fahren',
-		},
-		{
 			id: 1,
-			name: 'Ferienhaus am Garadasee',
+			name: 'Fahrrad',
+			description: '',
 		},
 		{
 			id: 2,
-			name: 'Gold im Nachtschrank',
+			name: 'Das geerbte Kunstwerk',
+			description: 'gut damit umgehen!',
 		},
 		{
 			id: 3,
-			name: 'Hardwareteile',
+			name: 'Ferienhaus am Garadasee',
 		},
 		{
 			id: 4,
+			name: 'Gold im Nachtschrank',
+		},
+		{
+			id: 5,
+			name: 'Antiquitätensammlung',
+		},
+		{
+			id: 6,
 			name: 'Fotoapparat',
 			description: 'Und das Zubehör',
 		},
 		{
-			id: 5,
+			id: 7,
 			name: 'iPhone 13',
 		},
 		{
-			id: 6,
+			id: 8,
 			name: 'Instrument',
+		},
+		{
+			id: 9,
+			name: 'Mercedes Benz EQS',
+			description: '',
+		},
+		{
+			id: 10,
+			name: 'Tesla Model 3',
+			description: '',
 		},
 	],
 }
