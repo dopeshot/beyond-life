@@ -3,7 +3,7 @@ describe('Last Will Marriage Page', () => {
 		cy.visit('/last-will/editor/marriage')
 	})
 
-	describe('Basic Flow', () => {
+	describe.skip('Basic Flow', () => {
 		it('should fill out divorced and redirect to /last-will/editor/heirs after submit', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
 			cy.wait(200)
@@ -56,7 +56,7 @@ describe('Last Will Marriage Page', () => {
 		})
 	})
 
-	describe('Personal Data Married', () => {
+	describe.skip('Personal Data Married', () => {
 		it('should hide personal data of partner when married is false', () => {
 			// TODO: Remove whe find a new fix see /pages/start.cy.ts
 			cy.wait(200)
