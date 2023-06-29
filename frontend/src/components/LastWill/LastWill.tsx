@@ -194,19 +194,16 @@ export const LastWill = () => {
 								if (!item) return null
 
 								return (
-									<>
-										<p key={itemId} className="pb-2">
-											Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-											{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
-											{item.description !== '' && item.description !== undefined && (
-												<>
-													{' '}
-													{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert:{' '}
-													{item.description}.
-												</>
-											)}
-										</p>
-									</>
+									<p key={person.id! + itemId} className="pb-2">
+										Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
+										{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
+										{item.description !== '' && item.description !== undefined && (
+											<>
+												{' '}
+												{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert: {item.description}.
+											</>
+										)}
+									</p>
 								)
 							})
 					)}
@@ -220,20 +217,18 @@ export const LastWill = () => {
 								if (!item) return null
 
 								return (
-									<>
-										<p key={itemId} className="pb-2">
-											Ich vermache dem Unternehmen {organisation.name || ' [Unternehmen] '}, aus{' '}
-											{organisation.zipCode || ' [Postleitzahl] '} {organisation.city || ' [Stadt] '}, ohne Anrechnung
-											auf den Erbteil, {item.name}.
-											{item.description !== '' && item.description !== undefined && (
-												<>
-													{' '}
-													Das Unternehmen {organisation.name || ' [Unternehmen] '} ist mit der folgenden Auflage
-													beschwert: {item.description}.
-												</>
-											)}
-										</p>
-									</>
+									<p key={organisation.id! + itemId} className="pb-2">
+										Ich vermache dem Unternehmen {organisation.name || ' [Unternehmen] '}, aus{' '}
+										{organisation.zipCode || ' [Postleitzahl] '} {organisation.city || ' [Stadt] '}, ohne Anrechnung auf
+										den Erbteil, {item.name}.
+										{item.description !== '' && item.description !== undefined && (
+											<>
+												{' '}
+												Das Unternehmen {organisation.name || ' [Unternehmen] '} ist mit der folgenden Auflage
+												beschwert: {item.description}.
+											</>
+										)}
+									</p>
 								)
 							})
 					)}
