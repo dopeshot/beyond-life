@@ -66,7 +66,6 @@ const Succession = () => {
 			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
 				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
-						<p>{JSON.stringify(values)}</p>
 						{/* Content */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
 							{/* Partner */}
@@ -78,12 +77,12 @@ const Succession = () => {
 									</Headline>
 									<p className="text-gray-500">Partner</p>
 									<div className="w-full">
-										<TextInput name="partner.percentage" labelText="Percentage" />
+										<TextInput name="partner.percentage" labelText="Prozentualer Anteil des Erbes" />
 									</div>
 
 									{/* Organisation Items */}
 									<div className="mb-2 w-full md:mb-4">
-										{values.partner.itemIds.length !== 0 && <span>Items</span>}
+										{values.partner.itemIds.length !== 0 && <span>Gegenstände</span>}
 										{values.partner.itemIds.map((item) => (
 											<div
 												key={item}
@@ -147,12 +146,12 @@ const Succession = () => {
 												</Headline>
 												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
 												<div className="w-full">
-													<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
+													<TextInput name={`persons.${index}.percentage`} labelText="Prozentualer Anteil des Erbes" />
 												</div>
 
 												{/* Person Items */}
 												<div className="mb-2 w-full md:mb-4">
-													{person.itemIds.length !== 0 && <span>Items</span>}
+													{person.itemIds.length !== 0 && <span>Gegenstände</span>}
 													{person.itemIds.map((item) => (
 														<div
 															key={item}
@@ -225,12 +224,15 @@ const Succession = () => {
 												</Headline>
 												<p className="text-gray-500">{heirsTypes['organisation'].displayType}</p>
 												<div className="w-full">
-													<TextInput name={`organisations.${index}.percentage`} labelText="Percentage" />
+													<TextInput
+														name={`organisations.${index}.percentage`}
+														labelText="Prozentualer Anteil des Erbes"
+													/>
 												</div>
 
 												{/* Organisation Items */}
 												<div className="mb-2 w-full md:mb-4">
-													{organisation.itemIds.length !== 0 && <span>Items</span>}
+													{organisation.itemIds.length !== 0 && <span>Gegenstände</span>}
 													{organisation.itemIds.map((item) => (
 														<div
 															key={item}
