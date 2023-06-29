@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
-import { Icon } from '../../../../components/Icon/Icon'
 import { Modal } from '../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
@@ -126,41 +125,23 @@ const Succession = () => {
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
-		persons: [
-			{
-				id: 1,
-				percentage: 30,
-				items: [1, 2, 3],
-			},
-			{
-				id: 2,
-				percentage: 20,
-				items: [4, 5, 6],
-			},
-			{
-				id: 3,
-				percentage: 50,
-				items: [7, 8, 9],
-			},
-		],
-		organisations: [
-			{
-				id: 1,
-				percentage: 40,
-				items: [10, 11, 12],
-			},
-			{
-				id: 2,
-				percentage: 60,
-				items: [13, 14, 15],
-			},
-		],
+		persons: lastWill.heirs.persons.map((person) => ({
+			id: person.id,
+			percentage: person.percentage ?? 0,
+			items: person.items?.map((item) => item.id) ?? [],
+		})),
+		organisations: lastWill.heirs.organisations.map((organisation) => ({
+			id: organisation.id,
+			percentage: organisation.percentage ?? 0,
+			items: organisation.items?.map((item) => item.id) ?? [],
+		})),
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
 		try {
 			// Update succession global store
-			// await services.
+			console.log(values)
+			await services.submitSuccession(values)
 
 			router.push(href)
 		} catch (error) {
@@ -191,49 +172,45 @@ const Succession = () => {
 						<div className="flex-1">
 							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
 								<FieldArray name="persons">
-									{(arrayHelpers: ArrayHelpers) => {
-										return (
-											<>
-												{values.persons.map((person, index) => (
-													<div
-														key={person.id}
-														className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
-													>
-														<div className="flex gap-1">
-															<Headline level={2} hasMargin={false} size="text-lg">
-																{person.id}
-															</Headline>
-														</div>
-														<div className="flex w-full flex-col gap-2">
-															<p className="w-full text-center">{'relationshipType'}</p>
-															<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
-															{person.items.map((item) => {
-																return (
-																	<div
-																		key={item}
-																		className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
-																	>
-																		{item}
-																		<div onClick={() => handleRemoveItem(item)}>
-																			<Icon icon="close" className="text-base" />
-																		</div>
-																	</div>
-																)
-															})}
-															{/* <DropdownButton
-																options={items.map((item) => ({
-																	onClick: () => console.log(item),
-																	label: item.toString(),
-																}))}
+									{(arrayHelpers: ArrayHelpers) =>
+										values.persons.map((person, index) => (
+											<div
+												key={person.id}
+												className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
+											>
+												<div className="flex gap-1">
+													<Headline level={2} hasMargin={false} size="text-lg">
+														{person.id}
+													</Headline>
+												</div>
+												<div className="flex w-full flex-col gap-2">
+													<p className="w-full text-center">{'relationshipType'}</p>
+													<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
+													{/* {person.items.map((item) => {
+														return (
+															<div
+																key={item}
+																className="bg-gray100 mx-2 flex justify-between rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
 															>
-																Gegenstand auswählen
-															</DropdownButton> */}
-														</div>
-													</div>
-												))}
-											</>
-										)
-									}}
+																{item}
+																<div onClick={() => handleRemoveItem(item)}>
+																	<Icon icon="close" className="text-base" />
+																</div>
+															</div>
+														)
+													})} */}
+													{/* <DropdownButton
+                                                    options={items.map((item) => ({
+                                                        onClick: () => console.log(item),
+                                                        label: item.toString(),
+                                                    }))}
+                                                >
+                                                    Gegenstand auswählen
+                                                </DropdownButton> */}
+												</div>
+											</div>
+										))
+									}
 								</FieldArray>
 							</div>
 						</div>

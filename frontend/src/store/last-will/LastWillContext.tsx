@@ -12,6 +12,7 @@ import {
 import { submitInheritanceAction } from './inheritance/actions'
 import { submitMarriageAction } from './marriage/actions'
 import { initalLastWillState, lastWillReducer } from './reducer'
+import { submitSuccessionAction } from './succession/actions'
 import { submitTestatorAction } from './testator/actions'
 import { LastWillContextType } from './types'
 
@@ -78,6 +79,11 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 		[]
 	)
 
+	const submitSuccession = useCallback<LastWillContextType['services']['submitSuccession']>(
+		async (payload) => await submitSuccessionAction(dispatch, payload),
+		[]
+	)
+
 	useEffect(() => {
 		console.log(lastWill)
 	}, [lastWill])
@@ -97,6 +103,7 @@ export const LastWillContextProvider: React.FC<{ children: React.ReactNode }> = 
 					addOrganisation,
 					updateOrganisation,
 					deleteOrganisation,
+					submitSuccession,
 				},
 			}}
 		>

@@ -20,6 +20,11 @@ export type Person = {
 	childRelationShip?: ChildRelationShip[]
 	ownChild?: string[]
 	heirsType: HeirsTypes
+	percentage?: number
+	items?: {
+		id: number
+		name: string
+	}[]
 }
 
 export type Organisation = {
@@ -29,6 +34,11 @@ export type Organisation = {
 	houseNumber?: string
 	zipCode?: number | string
 	city?: string
+	percentage?: number
+	items?: {
+		id: number
+		name: string
+	}[]
 }
 
 export type PersonMoreInfos = 'personHandicapped' | 'personInsolvent'

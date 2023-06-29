@@ -1,5 +1,6 @@
 import { Dispatch } from 'react'
-import { Organisation, Person } from './state'
+import { Gender } from '../../../types/gender'
+import { ChildRelationShip, HeirsTypes, PersonMoreInfos } from './state'
 
 export type HeirsActions =
 	| {
@@ -7,30 +8,56 @@ export type HeirsActions =
 	  }
 	| {
 			type: 'EFFECT_ADD_PERSON'
-			payload: Omit<Person, 'id'>
+			payload: PersonFormPayload
 	  }
 	| {
 			type: 'EFFECT_UPDATE_PERSON'
-			payload: Person
+			payload: PersonFormPayload
 	  }
 	| {
 			type: 'EFFECT_DELETE_PERSON'
-			payload: Person
+			payload: PersonFormPayload
 	  }
 	| {
 			type: 'EFFECT_ADD_ORGANISATION'
-			payload: Organisation
+			payload: OrganisationFormPayload
 	  }
 	| {
 			type: 'EFFECT_UPDATE_ORGANISATION'
-			payload: Organisation
+			payload: OrganisationFormPayload
 	  }
 	| {
 			type: 'EFFECT_DELETE_ORGANISATION'
-			payload: Organisation
+			payload: OrganisationFormPayload
 	  }
 
-export const addPersonAction = async (dispatch: Dispatch<HeirsActions>, payload: Omit<Person, 'id'>) => {
+export type PersonFormPayload = {
+	id: number | null
+	firstName?: string
+	lastName?: string
+	gender?: Gender
+	dateOfBirth?: string
+	placeOfBirth?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
+	city?: string
+	moreInfos?: PersonMoreInfos[]
+	childRelationShip?: ChildRelationShip[]
+	ownChild?: string[]
+	heirsType: HeirsTypes
+}
+
+export type OrganisationFormPayload = {
+	id: number | null
+	name?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: number | string
+	city?: string
+}
+
+export const addPersonAction = async (dispatch: Dispatch<HeirsActions>, payload: PersonFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
@@ -45,7 +72,7 @@ export const addPersonAction = async (dispatch: Dispatch<HeirsActions>, payload:
 	})
 }
 
-export const updatePersonAction = async (dispatch: Dispatch<HeirsActions>, payload: Person) => {
+export const updatePersonAction = async (dispatch: Dispatch<HeirsActions>, payload: PersonFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
@@ -60,7 +87,7 @@ export const updatePersonAction = async (dispatch: Dispatch<HeirsActions>, paylo
 	})
 }
 
-export const deletePersonAction = async (dispatch: Dispatch<HeirsActions>, payload: Person) => {
+export const deletePersonAction = async (dispatch: Dispatch<HeirsActions>, payload: PersonFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
@@ -75,7 +102,7 @@ export const deletePersonAction = async (dispatch: Dispatch<HeirsActions>, paylo
 	})
 }
 
-export const addOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: Organisation) => {
+export const addOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: OrganisationFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
@@ -90,7 +117,7 @@ export const addOrganisationAction = async (dispatch: Dispatch<HeirsActions>, pa
 	})
 }
 
-export const updateOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: Organisation) => {
+export const updateOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: OrganisationFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
@@ -105,7 +132,7 @@ export const updateOrganisationAction = async (dispatch: Dispatch<HeirsActions>,
 	})
 }
 
-export const deleteOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: Organisation) => {
+export const deleteOrganisationAction = async (dispatch: Dispatch<HeirsActions>, payload: OrganisationFormPayload) => {
 	// Prepare
 	dispatch({ type: 'PRE_SET_HEIRS' })
 	// Fetch
