@@ -63,7 +63,7 @@ const Succession = () => {
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						{/* Content */}
-						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
+						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
 							<FieldArray name="persons">
 								{(arrayHelpers: ArrayHelpers) =>
 									// Person
@@ -84,25 +84,27 @@ const Succession = () => {
 												</div>
 
 												{/* Person Items */}
-												<span className="w-full">Items</span>
-												{person.items.map((item) => (
-													<div
-														key={item}
-														className="mb-4 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
-													>
-														{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ??
-															''}
-														<IconButton
-															icon="delete"
-															onClick={() => {
-																arrayHelpers.replace(index, {
-																	...person,
-																	items: person.items.filter((itemId) => itemId !== item),
-																})
-															}}
-														/>
-													</div>
-												))}
+												<div className="mb-2 w-full md:mb-4">
+													{person.items.length !== 0 && <span>Items</span>}
+													{person.items.map((item) => (
+														<div
+															key={item}
+															className="mb-2 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
+														>
+															{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)
+																?.name ?? ''}
+															<IconButton
+																icon="delete"
+																onClick={() => {
+																	arrayHelpers.replace(index, {
+																		...person,
+																		items: person.items.filter((itemId) => itemId !== item),
+																	})
+																}}
+															/>
+														</div>
+													))}
+												</div>
 
 												{/* Add Item Button */}
 												<DropdownButton
@@ -153,25 +155,27 @@ const Succession = () => {
 												</div>
 
 												{/* Organisation Items */}
-												<span className="w-full">Items</span>
-												{organisation.items.map((item) => (
-													<div
-														key={item}
-														className="mb-4 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
-													>
-														{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ??
-															''}
-														<IconButton
-															icon="delete"
-															onClick={() => {
-																arrayHelpers.replace(index, {
-																	...organisation,
-																	items: organisation.items.filter((itemId) => itemId !== item),
-																})
-															}}
-														/>
-													</div>
-												))}
+												<div className="mb-2 w-full md:mb-4">
+													{organisation.items.length !== 0 && <span>Items</span>}
+													{organisation.items.map((item) => (
+														<div
+															key={item}
+															className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
+														>
+															{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)
+																?.name ?? ''}
+															<IconButton
+																icon="delete"
+																onClick={() => {
+																	arrayHelpers.replace(index, {
+																		...organisation,
+																		items: organisation.items.filter((itemId) => itemId !== item),
+																	})
+																}}
+															/>
+														</div>
+													))}
+												</div>
 
 												{/* Add Item Button */}
 												<DropdownButton
