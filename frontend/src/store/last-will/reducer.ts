@@ -264,6 +264,11 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 		case 'EFFECT_SET_SUCCESSION': {
 			const { persons, organisations } = action.payload
 
+			const newPartner = {
+				...state.marriage,
+				...action.payload.partner,
+			}
+
 			const newPersons = state.heirs.persons.map((person) => {
 				const newPerson = persons.find((findPerson) => findPerson.id === person.id)
 				if (newPerson) {
@@ -288,6 +293,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 					...state.common,
 					isLoading: false,
 				},
+				marriage: newPartner,
 				heirs: {
 					persons: newPersons,
 					organisations: newOrganisations,
