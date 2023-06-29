@@ -13,13 +13,13 @@ export type TestatorState = {
 }
 
 export const initialTestatorState: TestatorState = {
-	firstName: '',
-	lastName: '',
-	gender: undefined,
-	birthDate: '',
-	birthPlace: '',
-	houseNumber: '',
-	postalCode: '',
-	city: '',
-	street: '',
+	firstName: 'Luca',
+	lastName: 'Maier',
+	gender: 'male',
+	birthDate: '27.05.1989',
+	birthPlace: 'Stuttgart',
+	houseNumber: '4',
+	postalCode: '73730',
+	city: 'Esslingen am Neckar',
+	street: 'Neckarstraße',
 }

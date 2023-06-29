@@ -3,6 +3,7 @@ import { ObjectSchema, array, mixed, number, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions, heirsTypes } from '../../../../../content/dropdownOptions'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { PersonFormPayload } from '../../../../store/last-will/heirs/actions'
 import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from '../../../../store/last-will/heirs/state'
 import { Gender } from '../../../../types/gender'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -29,7 +30,7 @@ type HeirsPersonModalProps = {
 export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, heirsType }) => {
 	const { lastWill, services } = useLastWillContext()
 
-	const initialFormValues: Person = {
+	const initialFormValues: PersonFormPayload = {
 		id: editPerson?.id ?? null,
 		firstName: editPerson?.firstName ?? '',
 		lastName: editPerson?.lastName ?? '',
@@ -46,7 +47,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		heirsType: editPerson?.heirsType ?? heirsType,
 	}
 
-	const validationSchema: ObjectSchema<Person> = object().shape({
+	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
 		id: number().required().nullable(),
 		firstName: string(),
 		lastName: string(),
@@ -57,7 +58,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		houseNumber: string(),
 		zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
 		city: string(),
-		childRelationShip: mixed<ChildRelationShip[]>(),
+		childRelationShip: string<ChildRelationShip>(),
 		ownChild: array(),
 		moreInfos: mixed<PersonMoreInfos[]>(),
 		heirsType: string<HeirsTypes>().required(),

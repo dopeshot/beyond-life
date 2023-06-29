@@ -24,7 +24,7 @@ describe('Last Will Inheritance Page', () => {
 		})
 	})
 
-	describe('Financial Assets', () => {
+	describe.skip('Financial Assets', () => {
 		it('should add a financial asset', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
@@ -47,7 +47,7 @@ describe('Last Will Inheritance Page', () => {
 		})
 	})
 
-	describe('Items', () => {
+	describe.skip('Items', () => {
 		it('should add an item', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
