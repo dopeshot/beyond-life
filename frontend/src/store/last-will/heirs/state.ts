@@ -89,7 +89,7 @@ export const initialHeirsState: HeirsState = {
 		{
 			id: 4,
 			firstName: 'Maya',
-			lastName: 'Sätzler',
+			lastName: 'Maier',
 			gender: 'divers',
 			dateOfBirth: '05.01.2014',
 			placeOfBirth: 'Stuttgart',
