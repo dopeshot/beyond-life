@@ -1,6 +1,7 @@
 import { Form, Formik } from 'formik'
 import { ObjectSchema, number, object, string } from 'yup'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { OrganisationFormPayload } from '../../../../store/last-will/heirs/actions'
 import { Organisation } from '../../../../store/last-will/heirs/state'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
@@ -23,7 +24,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 }) => {
 	const { lastWill, services } = useLastWillContext()
 
-	const initialFormValues: Organisation = {
+	const initialFormValues: OrganisationFormPayload = {
 		id: editOrganisation?.id ?? null,
 		name: editOrganisation?.name ?? '',
 		street: editOrganisation?.street ?? '',
@@ -32,7 +33,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 		city: editOrganisation?.city ?? '',
 	}
 
-	const validationSchema: ObjectSchema<Organisation> = object({
+	const validationSchema: ObjectSchema<OrganisationFormPayload> = object({
 		id: number().required().nullable(),
 		name: string(),
 		street: string(),
