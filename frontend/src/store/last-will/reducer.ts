@@ -6,12 +6,18 @@ import { InheritanceActions } from './inheritance/actions'
 import { initialInheritanceState } from './inheritance/state'
 import { MarriageActions } from './marriage/actions'
 import { initialMarriageState } from './marriage/state'
+import { SuccessionActions } from './succession/actions'
 import { TestatorActions } from './testator/actions'
 import { initialTestatorState } from './testator/state'
 import { LastWill } from './types'
 
-// Add other actions with pipe operator
-export type LastWillActions = TestatorActions | CommonActions | MarriageActions | InheritanceActions | HeirsActions
+export type LastWillActions =
+	| TestatorActions
+	| CommonActions
+	| MarriageActions
+	| InheritanceActions
+	| HeirsActions
+	| SuccessionActions
 
 export const initalLastWillState: LastWill = {
 	common: initialCommonState,
@@ -19,7 +25,6 @@ export const initalLastWillState: LastWill = {
 	marriage: initialMarriageState,
 	heirs: initialHeirsState,
 	inheritance: initialInheritanceState,
-	succession: '',
 }
 
 export const lastWillReducer = (state: LastWill, action: LastWillActions): LastWill => {
@@ -241,6 +246,56 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				},
 				heirs: {
 					...state.heirs,
+					organisations: newOrganisations,
+				},
+			}
+		}
+		// TODO(Zoe-Bot): Refactor all loadings to one action
+		case 'PRE_SET_SUCCESSION': {
+			return {
+				...state,
+				common: {
+					...state.common,
+					isLoading: true,
+				},
+			}
+		}
+
+		case 'EFFECT_SET_SUCCESSION': {
+			const { persons, organisations } = action.payload
+
+			const newPartner = {
+				...state.marriage,
+				...action.payload.partner,
+			}
+
+			const newPersons = state.heirs.persons.map((person) => {
+				const newPerson = persons.find((findPerson) => findPerson.id === person.id)
+				if (newPerson) {
+					person.percentage = newPerson.percentage
+					person.itemIds = newPerson.itemIds
+				}
+				return person
+			})
+
+			const newOrganisations = state.heirs.organisations.map((organisation) => {
+				const newOrganisation = organisations.find((findOrganisation) => findOrganisation.id === organisation.id)
+				if (newOrganisation) {
+					organisation.percentage = newOrganisation.percentage
+					organisation.itemIds = newOrganisation.itemIds
+				}
+				return organisation
+			})
+
+			return {
+				...state,
+				common: {
+					...state.common,
+					isLoading: false,
+				},
+				marriage: newPartner,
+				heirs: {
+					persons: newPersons,
 					organisations: newOrganisations,
 				},
 			}
