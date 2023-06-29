@@ -46,47 +46,47 @@ export const initialInheritanceState: InheritanceState = {
 	items: [
 		{
 			id: 1,
-			name: 'Fahrrad',
+			name: 'mein Fahrrad',
 			description: '',
 		},
 		{
 			id: 2,
-			name: 'Das geerbte Kunstwerk',
-			description: 'gut damit umgehen!',
+			name: 'mein geerbtes Kunstwerk',
+			description: 'Vererbe es weiter an deine Kinder',
 		},
 		{
 			id: 3,
-			name: 'Ferienhaus am Garadasee',
+			name: 'mein Ferienhaus am Garadasee',
 		},
 		{
 			id: 4,
-			name: 'Gold im Nachtschrank',
+			name: 'mein Gold im Nachtschrank',
 		},
 		{
 			id: 5,
-			name: 'Antiquitätensammlung',
+			name: 'meine Antiquitätensammlung',
 		},
 		{
 			id: 6,
-			name: 'Fotoapparat',
-			description: 'Und das Zubehör',
+			name: 'mein Fotoapparat',
+			description: 'Benutzte Sie für tolle Urlaubsbilder',
 		},
 		{
 			id: 7,
-			name: 'iPhone 13',
+			name: 'mein iPhone 13',
 		},
 		{
 			id: 8,
-			name: 'Instrument',
+			name: 'mein Instrument',
 		},
 		{
 			id: 9,
-			name: 'Mercedes Benz EQS',
+			name: 'mein Mercedes Benz EQS',
 			description: '',
 		},
 		{
 			id: 10,
-			name: 'Tesla Model 3',
+			name: 'mein Tesla Model 3',
 			description: '',
 		},
 	],
