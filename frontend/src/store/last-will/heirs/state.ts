@@ -55,6 +55,8 @@ export const initialHeirsState: HeirsState = {
 			ownChild: [],
 			moreInfos: [],
 			heirsType: 'mother',
+			percentage: 20,
+			itemIds: [5],
 		},
 		{
 			id: 2,
@@ -70,6 +72,8 @@ export const initialHeirsState: HeirsState = {
 			ownChild: [],
 			moreInfos: [],
 			heirsType: 'father',
+			percentage: 20,
+			itemIds: [3],
 		},
 		{
 			id: 3,
@@ -85,6 +89,7 @@ export const initialHeirsState: HeirsState = {
 			ownChild: [],
 			moreInfos: [],
 			heirsType: 'siblings',
+			percentage: 20,
 		},
 		{
 			id: 4,
@@ -101,16 +106,18 @@ export const initialHeirsState: HeirsState = {
 			ownChild: ['ownChild'],
 			moreInfos: [],
 			heirsType: 'child',
+			percentage: 10,
 		},
 	],
 	organisations: [
 		{
 			id: 1,
 			name: 'easygiveback',
-			street: '',
-			houseNumber: '',
-			zipCode: '',
-			city: '',
+			street: 'Nobelstraße',
+			houseNumber: '10',
+			zipCode: '70569',
+			city: 'Stuttgart',
+			percentage: 10,
 		},
 	],
 }

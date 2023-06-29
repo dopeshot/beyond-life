@@ -211,6 +211,33 @@ export const LastWill = () => {
 							})
 					)}
 
+					{/* Vermächtnisse Unternehmen */}
+					{lastWill.heirs.organisations.map(
+						(organisation, index) =>
+							organisation.itemIds !== undefined &&
+							organisation.itemIds.map((itemId) => {
+								const item = lastWill.inheritance.items.find((item) => item.id === itemId)
+								if (!item) return null
+
+								return (
+									<>
+										<p key={index} className="pb-2">
+											Ich vermache dem Unternehmen {organisation.name || ' [Unternehmen] '}, aus{' '}
+											{organisation.zipCode || ' [Postleitzahl] '} {organisation.city || ' [Stadt] '}, ohne Anrechnung
+											auf den Erbteil, {item.name}.
+											{item.description !== '' && item.description !== undefined && (
+												<>
+													{' '}
+													Das Unternehmen {organisation.name || ' [Unternehmen] '} ist mit der folgenden Auflage beschwert:{' '}
+													{item.description}.
+												</>
+											)}
+										</p>
+									</>
+								)
+							})
+					)}
+
 					<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
 					<p className="pb-3">
 						Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.

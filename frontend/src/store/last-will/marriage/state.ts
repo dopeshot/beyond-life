@@ -40,6 +40,6 @@ export const initialMarriageState: MarriageState = {
 	partnerCity: 'Esslingen am Neckar',
 	partnerMoreInfos: [],
 	matrimonialProperty: 'communityOfGain',
-	percentage: 0,
-	itemIds: [],
+	percentage: 20,
+	itemIds: [2],
 }
