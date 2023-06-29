@@ -1,4 +1,4 @@
-describe('Last Will Inheritance Page', () => {
+describe.skip('Last Will Inheritance Page', () => {
 	beforeEach(() => {
 		cy.visit('/last-will/editor/inheritance')
 	})

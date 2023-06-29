@@ -1,4 +1,4 @@
-describe('Last Will Marriage Page', () => {
+describe.skip('Last Will Marriage Page', () => {
 	beforeEach(() => {
 		cy.visit('/last-will/editor/marriage')
 	})

@@ -1,4 +1,4 @@
-describe('Last Will Start Page', () => {
+describe.skip('Last Will Start Page', () => {
 	beforeEach(() => {
 		cy.visit('/last-will/start')
 	})

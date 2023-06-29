@@ -26,10 +26,6 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 
 	const navLinks: NavLink[] = [
 		{
-			to: routes.index,
-			text: 'Startseite',
-		},
-		{
 			to: routes.lastWill.index,
 			text: 'Testament',
 		},
