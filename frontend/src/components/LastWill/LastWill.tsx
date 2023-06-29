@@ -43,8 +43,10 @@ export const LastWill = () => {
 	const calculateSumOfMoney = (financialAssets: FinancialAsset[]) => {
 		let sum = 0
 		financialAssets.forEach((financialAsset) => {
-			if (financialAsset.amount) {
-				sum += Number(financialAsset.amount)
+			if (financialAsset.currency === '€') {
+				if (financialAsset.amount) {
+					sum += Number(financialAsset.amount)
+				}
 			}
 		})
 		return sum
@@ -101,17 +103,14 @@ export const LastWill = () => {
 					{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
 					{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName || '[Nachname]'},
 					geboren am {lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-					{/*lastWill.marriage.partnerPercentageOfMoney || */ ' [?%] '} Prozent.
-					{/*lastWill.inheritance.financialAssets.length > 0 && (
+					{lastWill.marriage.percentage || ' [?%] '} Prozent.
+					{lastWill.inheritance.financialAssets[0].amount !== '' && (
 						<>
 							Dies entspricht einem Wert von{' '}
-							{getMoneyAmount(
-								calculateSumOfMoney(lastWill.inheritance.financialAssets),
-								lastWill.marriage.partnerPercentageOfMoney
-							)}{' '}
+							{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), lastWill.marriage.percentage)}{' '}
 							€.
 						</>
-					)*/}
+					)}
 				</p>
 			)}
 			{/* Sonstige Erben außer Ehepartner */}
@@ -119,37 +118,31 @@ export const LastWill = () => {
 				<p key={index} className="pb-4">
 					{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
 					{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-					{/*person.percentageOfMoney || */ ' [?%] '} Prozent.
-					{/*lastWill.inheritance.financialAssets.length > 1 && (
+					{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {person.percentage || ' [?%] '}{' '}
+					Prozent.
+					{lastWill.inheritance.financialAssets.length > 1 && (
 						<>
 							Dies entspricht einem Wert von{' '}
-							{getMoneyAmount(
-								calculateSumOfMoney(lastWill.inheritance.financialAssets),
-								person.partnerPercentageOfMoney
-							)}{' '}
-							€.
+							{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), person.percentage)} €.
 						</>
-					)*/}
+					)}
 				</p>
 			))}
+			
 			{/* Unternehmen die erben */}
 			{lastWill.heirs.organisations.map((organisation, index) => (
 				<p key={index} className="pb-4">
 					Das Unternehmen, {organisation.name || ' [Name] '}, aus {organisation.zipCode} {organisation.city}, mit einem
-					Anteil in Höhe von {/*organisation.percentageOfMoney ||*/ ' [?%] '} Prozent.
-					{/*lastWill.inheritance.financialAssets.length > 0 && (
+					Anteil in Höhe von {organisation.percentage || ' [?%] '} Prozent.
+					{lastWill.inheritance.financialAssets.length > 0 && (
 						<>
 							Dies entspricht einem Wert von{' '}
-							{getMoneyAmount(
-								calculateSumOfMoney(lastWill.inheritance.financialAssets),
-								organisation.partnerPercentageOfMoney
-							)}{' '}
-							€.
+							{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), organisation.percentage)} €.
 						</>
-							)*/}
+					)}
 				</p>
 			))}
+
 			{/* Ersatzerbe fixer String */}
 			<Headline level={3} size="text-lg">
 				§2 Ersatzerbe
@@ -158,31 +151,53 @@ export const LastWill = () => {
 				Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem
 				Verhältnis der von mir vorgegebenen Erbanteile.
 			</p>
+
 			{/* Vermächtnisse */}
-			{/*
 			{lastWill.inheritance.items[0].name !== '' && (
 				<>
 					<Headline level={3} size="text-lg">
 						§3 Vermächtnisse
 					</Headline>
-					{/*
+
+					{/* Vermächtnisse Ehepartner */}
+					{lastWill.marriage.relationshipStatus === 'married' &&
+						lastWill.marriage.items.length > 0 &&
+						lastWill.marriage.items.map((item, index) => (
+							<p key={index} className="pb-2">
+								Ich vermache {lastWill.marriage.partnerFirstName || ' [Vorname] '}{' '}
+								{lastWill.marriage.partnerLastName || ' [Nachname]'}, geboren am{' '}
+								{lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil,{' '}
+								{item.name}.
+								{item.description !== '' && (
+									<>
+										{' '}
+										{lastWill.marriage.partnerFirstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert:{' '}
+										{item.description}.
+									</>
+								)}
+							</p>
+						))}
+
+					{/* Vermächtnisse sontige Erben */}
 					{lastWill.heirs.persons.map(
 						(person, index) =>
 							person.items.length > 0 &&
-							person.items.map((item, index) => (
+							person.items.map((item, index) =>
 								lastWill.inheritance.items.map((item, index) => (
-								<p key={index} className="pb-2">
-									Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-									{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
-									{item.description !== '' && (
-										<>
-											{' '}
-											{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert: {item.description}.
-										</>
-									)}
-								</p>
-							))
+									<p key={index} className="pb-2">
+										Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
+										{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
+										{item.description !== '' && (
+											<>
+												{' '}
+												{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert: {item.description}.
+											</>
+										)}
+									</p>
+								))
+							)
 					)}
+
 					{lastWill.heirs.persons.map(
 						(person, index) =>
 							person.items.length > 0 &&
@@ -191,13 +206,12 @@ export const LastWill = () => {
 								if (item) {
 									return (
 										<p key={itemId} className="pb-2">
-											Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, 
-											geboren am {person.dateOfBirth || ' [Geburtstag] '}, 
-											ohne Anrechnung auf ihren Erbteil, {item.name}.
+											Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
+											{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
 											{item.description !== '' && (
 												<>
 													{' '}
-													{person.firstName || ' [Vorname] '} 
+													{person.firstName || ' [Vorname] '}
 													ist mit der folgenden Auflage beschwert: {item.description}.
 												</>
 											)}
@@ -206,7 +220,7 @@ export const LastWill = () => {
 								}
 							})
 					)}
-					
+
 					<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
 					<p className="pb-3">
 						Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.
@@ -217,7 +231,7 @@ export const LastWill = () => {
 					</p>
 				</>
 			)}
-					*/}
+
 			{/* Rechtswahl */}
 			{lastWill.inheritance.items[0].name !== '' ? (
 				<Headline level={3} size="text-lg">
