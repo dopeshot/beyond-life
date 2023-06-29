@@ -174,7 +174,7 @@ const Home: React.FC = () => {
 						{/* End/Right Content */}
 						<div className="flex flex-col items-center justify-center rounded-xl bg-gray-100 p-6 text-center lg:w-1/3">
 							<Headline level={5}>Einmal zahlen, lebenslang nutzen</Headline>
-							<span className="mb-2 text-3xl font-bold md:mb-4">20€</span>
+							<span className="mb-2 text-3xl font-bold md:mb-4"></span>
 							<Route href={routes.lastWill.start} className="mb-2">
 								Jetzt Testament erstellen
 							</Route>
