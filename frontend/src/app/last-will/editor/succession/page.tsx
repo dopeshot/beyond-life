@@ -66,7 +66,7 @@ const Succession = () => {
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
 							<FieldArray name="persons">
 								{(arrayHelpers: ArrayHelpers) =>
-									// Single Person
+									// Person
 									values.persons.map((person, index) => {
 										const currentPerson = lastWill.heirs.persons.find((heirsPerson) => heirsPerson.id === person.id)
 										return (
@@ -75,19 +75,20 @@ const Succession = () => {
 												className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4"
 											>
 												{/* Person Information */}
-												<Headline level={2} hasMargin={false} size="text-lg">
+												<Headline level={2} hasMargin={false} size="text-xl">
 													{currentPerson?.firstName}
 												</Headline>
-												<p>{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
+												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
 												<div className="w-full">
 													<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
 												</div>
 
 												{/* Person Items */}
+												<span className="w-full">Items</span>
 												{person.items.map((item) => (
 													<div
 														key={item}
-														className="mb-4 flex w-full items-center justify-between rounded-lg bg-gray-100 p-2 px-4"
+														className="mb-4 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
 													>
 														{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ??
 															''}
@@ -118,6 +119,75 @@ const Succession = () => {
 																arrayHelpers.replace(index, {
 																	...person,
 																	items: [...person.items, inheritanceItem.id],
+																}),
+															label: inheritanceItem.name ?? '',
+														}))
+													})()}
+												>
+													Gegenstand auswählen
+												</DropdownButton>
+											</div>
+										)
+									})
+								}
+							</FieldArray>
+							<FieldArray name="organisations">
+								{(arrayHelpers: ArrayHelpers) =>
+									// Person
+									values.organisations.map((organisation, index) => {
+										const currentOrganisation = lastWill.heirs.organisations.find(
+											(heirsOrganisation) => heirsOrganisation.id === organisation.id
+										)
+										return (
+											<div
+												key={organisation.id}
+												className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4"
+											>
+												{/* Organisation Information */}
+												<Headline level={2} hasMargin={false} size="text-xl">
+													{currentOrganisation?.name}
+												</Headline>
+												<p className="text-gray-500">{heirsTypes['organisation'].displayType}</p>
+												<div className="w-full">
+													<TextInput name={`organisations.${index}.percentage`} labelText="Percentage" />
+												</div>
+
+												{/* Organisation Items */}
+												<span className="w-full">Items</span>
+												{organisation.items.map((item) => (
+													<div
+														key={item}
+														className="mb-4 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
+													>
+														{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ??
+															''}
+														<IconButton
+															icon="delete"
+															onClick={() => {
+																arrayHelpers.replace(index, {
+																	...organisation,
+																	items: organisation.items.filter((itemId) => itemId !== item),
+																})
+															}}
+														/>
+													</div>
+												))}
+
+												{/* Add Item Button */}
+												<DropdownButton
+													buttonProps={{
+														kind: 'secondary',
+													}}
+													options={(function getDropdownOptions(): DropdownButtonOptions[] {
+														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter(
+															(inheritanceItem) => organisation.items.includes(inheritanceItem.id) === false
+														)
+
+														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
+															onClick: () =>
+																arrayHelpers.replace(index, {
+																	...organisation,
+																	items: [...organisation.items, inheritanceItem.id],
 																}),
 															label: inheritanceItem.name ?? '',
 														}))
