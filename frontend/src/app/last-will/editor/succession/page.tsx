@@ -2,6 +2,7 @@
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { heirsTypes } from '../../../../../content/dropdownOptions'
 import { FormStepsButtons } from '../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
@@ -167,26 +168,26 @@ const Succession = () => {
 			<Headline className="hidden lg:block">Erbfolge</Headline>
 			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
-					<Form className="flex flex-1 flex-col">
+					<Form>
 						{/* Content */}
-						<div className="flex-1">
-							<div className="mt-5 grid grid-flow-row grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
-								<FieldArray name="persons">
-									{(arrayHelpers: ArrayHelpers) =>
-										values.persons.map((person, index) => (
+						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
+							<FieldArray name="persons">
+								{(arrayHelpers: ArrayHelpers) =>
+									values.persons.map((person, index) => {
+										const currentPerson = lastWill.heirs.persons.find((heirsPerson) => heirsPerson.id === person.id)
+										return (
 											<div
 												key={person.id}
-												className="flex h-fit w-auto flex-col items-center overflow-hidden rounded-xl border-2 border-gray-100 px-4 py-1 "
+												className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4"
 											>
-												<div className="flex gap-1">
-													<Headline level={2} hasMargin={false} size="text-lg">
-														{person.id}
-													</Headline>
-												</div>
-												<div className="flex w-full flex-col gap-2">
-													<p className="w-full text-center">{'relationshipType'}</p>
+												<Headline level={2} hasMargin={false} size="text-lg">
+													{currentPerson?.firstName}
+												</Headline>
+												<p>{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
+												<div className="w-full">
 													<TextInput name={`persons.${index}.percentage`} labelText="Percentage" />
-													{/* {person.items.map((item) => {
+												</div>
+												{/* {person.items.map((item) => {
 														return (
 															<div
 																key={item}
@@ -199,7 +200,7 @@ const Succession = () => {
 															</div>
 														)
 													})} */}
-													{/* <DropdownButton
+												{/* <DropdownButton
                                                     options={items.map((item) => ({
                                                         onClick: () => console.log(item),
                                                         label: item.toString(),
@@ -207,12 +208,11 @@ const Succession = () => {
                                                 >
                                                     Gegenstand auswählen
                                                 </DropdownButton> */}
-												</div>
 											</div>
-										))
-									}
-								</FieldArray>
-							</div>
+										)
+									})
+								}
+							</FieldArray>
 						</div>
 
 						{/* Form Steps Buttons */}
@@ -232,7 +232,7 @@ const Succession = () => {
 						<div
 							key={item}
 							onClick={() => handleAddItem(item)}
-							className="bg-gray100 mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
+							className="mx-2 rounded-lg border border-gray-100 bg-gray-100 p-2 px-6"
 						>
 							{item}
 						</div>
