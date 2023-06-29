@@ -186,13 +186,15 @@ export const LastWill = () => {
 						})}
 
 					{/* Vermächtnisse andere Erben */}
-					{lastWill.heirs.persons.map((person, index) => {
-						person.itemIds !== undefined &&
+					{lastWill.heirs.persons.map(
+						(person, index) =>
+							person.itemIds !== undefined &&
 							person.itemIds.map((itemId) => {
-								;<p>Does it live!</p>
 								const item = lastWill.inheritance.items.find((item) => item.id === itemId)
-								if (item) {
-									return (
+								if (!item) return null
+
+								return (
+									<>
 										<p key={index} className="pb-2">
 											Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
 											{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
@@ -204,10 +206,10 @@ export const LastWill = () => {
 												</>
 											)}
 										</p>
-									)
-								}
+									</>
+								)
 							})
-					})}
+					)}
 
 					<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
 					<p className="pb-3">
