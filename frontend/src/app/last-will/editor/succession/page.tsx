@@ -38,6 +38,10 @@ const Succession = () => {
 			percentage: organisation.percentage ?? 0,
 			itemIds: organisation.itemIds ?? [],
 		})),
+		partner: {
+			percentage: lastWill.marriage.percentage ?? 0,
+			itemIds: lastWill.marriage.itemIds ?? [],
+		},
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
@@ -60,11 +64,73 @@ const Succession = () => {
 		<div className="container mt-5 flex flex-1 flex-col">
 			<Headline className="hidden lg:block">Erbfolge</Headline>
 			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
-				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
+				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						<p>{JSON.stringify(values)}</p>
 						{/* Content */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
+							{/* Partner */}
+							{lastWill.marriage.relationshipStatus === 'married' && (
+								<div className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4">
+									{/* Partner Information */}
+									<Headline level={2} hasMargin={false} size="text-xl">
+										{lastWill.marriage.partnerFirstName} {lastWill.marriage.partnerLastName}
+									</Headline>
+									<p className="text-gray-500">Partner</p>
+									<div className="w-full">
+										<TextInput name="partner.percentage" labelText="Percentage" />
+									</div>
+
+									{/* Organisation Items */}
+									<div className="mb-2 w-full md:mb-4">
+										{values.partner.itemIds.length !== 0 && <span>Items</span>}
+										{values.partner.itemIds.map((item) => (
+											<div
+												key={item}
+												className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
+											>
+												{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ?? ''}
+												<IconButton
+													icon="delete"
+													onClick={() => {
+														const newItems = values.partner.itemIds.filter((itemId) => itemId !== item)
+														setFieldValue('partner.itemIds', newItems)
+													}}
+												/>
+											</div>
+										))}
+									</div>
+
+									{/* Add Item Button */}
+									<DropdownButton
+										buttonProps={{
+											kind: 'secondary',
+										}}
+										options={(function getDropdownOptions(): DropdownButtonOptions[] {
+											const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
+												const alreadyUsedIds = [
+													...values.partner.itemIds,
+													...values.persons.map((person) => person.itemIds).flat(),
+													...values.organisations.map((orga) => orga.itemIds).flat(),
+												]
+												return alreadyUsedIds.includes(item.id) === false
+											})
+
+											return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
+												onClick: () => {
+													const newItems = [...values.partner.itemIds, inheritanceItem.id]
+													setFieldValue('partner.itemIds', newItems)
+												},
+												label: inheritanceItem.name ?? '',
+											}))
+										})()}
+									>
+										Gegenstand auswählen
+									</DropdownButton>
+								</div>
+							)}
+
+							{/* Persons */}
 							<FieldArray name="persons">
 								{(arrayHelpers: ArrayHelpers) =>
 									// Person
@@ -115,6 +181,7 @@ const Succession = () => {
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
 														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
 															const alreadyUsedIds = [
+																...values.partner.itemIds,
 																...values.persons.map((person) => person.itemIds).flat(),
 																...values.organisations.map((orga) => orga.itemIds).flat(),
 															]
@@ -138,6 +205,8 @@ const Succession = () => {
 									})
 								}
 							</FieldArray>
+
+							{/* Organisations */}
 							<FieldArray name="organisations">
 								{(arrayHelpers: ArrayHelpers) =>
 									// Person
@@ -190,6 +259,7 @@ const Succession = () => {
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
 														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
 															const alreadyUsedIds = [
+																...values.partner.itemIds,
 																...values.persons.map((person) => person.itemIds).flat(),
 																...values.organisations.map((orga) => orga.itemIds).flat(),
 															]
