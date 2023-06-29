@@ -27,20 +27,19 @@ export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 // TODO: Move partner to persons
 
 export const initialMarriageState: MarriageState = {
-	relationshipStatus: undefined,
-	partnerGermanCitizenship: false,
-	partnerFirstName: '',
-	partnerLastName: '',
-	partnerGender: undefined,
-	partnerDateOfBirth: '',
-	partnerPlaceOfBirth: '',
-	partnerStreet: '',
-	partnerHouseNumber: '',
-	partnerZipCode: '',
-	partnerCity: '',
+	relationshipStatus: 'married',
+	partnerGermanCitizenship: true,
+	partnerFirstName: 'Kathi',
+	partnerLastName: 'Maier',
+	partnerGender: 'female',
+	partnerDateOfBirth: '12.04.1992',
+	partnerPlaceOfBirth: 'Reutlingen',
+	partnerStreet: 'Neckarstraße',
+	partnerHouseNumber: '4',
+	partnerZipCode: '73730',
+	partnerCity: 'Esslingen am Neckar',
 	partnerMoreInfos: [],
-	matrimonialProperty: undefined,
-
+	matrimonialProperty: 'communityOfGain',
 	percentage: 0,
 	itemIds: [],
 }
