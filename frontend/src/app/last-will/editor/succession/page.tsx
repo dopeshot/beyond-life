@@ -143,7 +143,7 @@ const Succession = () => {
 											>
 												{/* Person Information */}
 												<Headline level={2} hasMargin={false} size="text-xl">
-													{currentPerson?.firstName}
+													{currentPerson?.firstName} {currentPerson?.lastName}
 												</Headline>
 												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
 												<div className="w-full">
