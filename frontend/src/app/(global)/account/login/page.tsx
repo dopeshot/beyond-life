@@ -11,7 +11,8 @@ export const metadata = {
 const Login = () => {
 	return (
 		<div className="container mt-5">
-			<Headline>Login</Headline>
+			<Headline>Bald verfügbar!</Headline>
+			<p>Vielen Dank für Ihre Geduld und einen Moment der Entspannung während wir den Login bauen.</p>
 		</div>
 	)
 }
