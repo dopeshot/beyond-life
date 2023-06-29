@@ -14,6 +14,10 @@ export type MarriageState = {
 	partnerCity?: string
 	partnerMoreInfos?: PartnerMoreInfos[]
 	matrimonialProperty?: MatrimonialProperty
+
+	// TODO: Refactor
+	percentage?: number
+	itemIds?: number[]
 }
 
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
@@ -36,4 +40,7 @@ export const initialMarriageState: MarriageState = {
 	partnerCity: '',
 	partnerMoreInfos: [],
 	matrimonialProperty: undefined,
+
+	percentage: 0,
+	itemIds: [],
 }

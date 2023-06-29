@@ -17,13 +17,13 @@ export type SuccessionFormPayload = {
 export type SuccessionPerson = {
 	id: number | null
 	percentage: number
-	items: number[]
+	itemIds: number[]
 }
 
 export type SuccessionOrganisation = {
 	id: number | null
 	percentage: number
-	items: number[]
+	itemIds: number[]
 }
 
 export const submitSuccessionAction = async (dispatch: Dispatch<SuccessionActions>, payload: SuccessionFormPayload) => {

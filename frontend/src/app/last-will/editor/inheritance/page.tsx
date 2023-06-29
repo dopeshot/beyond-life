@@ -12,7 +12,7 @@ import { IconButton } from '../../../../components/IconButton/IconButton'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { InheritanceFormPayload } from '../../../../store/last-will/inheritance/actions'
-import { FinancialAsset } from '../../../../store/last-will/inheritance/state'
+import { FinancialAsset, Item } from '../../../../store/last-will/inheritance/state'
 import { SidebarPages } from '../../../../types/sidebar'
 
 /**
@@ -218,10 +218,9 @@ const Inheritance = () => {
 											onClick={() =>
 												arrayHelpers.push({
 													id: Math.max(...values.items.map((items) => items.id)) + 1,
-													where: '',
-													amount: '',
-													currency: '€',
-												})
+													name: '',
+													description: '',
+												} satisfies Item)
 											}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"

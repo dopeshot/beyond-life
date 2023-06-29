@@ -31,12 +31,12 @@ const Succession = () => {
 		persons: lastWill.heirs.persons.map((person) => ({
 			id: person.id,
 			percentage: person.percentage ?? 0,
-			items: person.items?.map((item) => item.id) ?? [],
+			itemIds: person.itemIds ?? [],
 		})),
 		organisations: lastWill.heirs.organisations.map((organisation) => ({
 			id: organisation.id,
 			percentage: organisation.percentage ?? 0,
-			items: organisation.items?.map((item) => item.id) ?? [],
+			itemIds: organisation.itemIds ?? [],
 		})),
 	}
 
@@ -62,6 +62,7 @@ const Succession = () => {
 			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
+						<p>{JSON.stringify(values)}</p>
 						{/* Content */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
 							<FieldArray name="persons">
@@ -85,8 +86,8 @@ const Succession = () => {
 
 												{/* Person Items */}
 												<div className="mb-2 w-full md:mb-4">
-													{person.items.length !== 0 && <span>Items</span>}
-													{person.items.map((item) => (
+													{person.itemIds.length !== 0 && <span>Items</span>}
+													{person.itemIds.map((item) => (
 														<div
 															key={item}
 															className="mb-2 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
@@ -98,7 +99,7 @@ const Succession = () => {
 																onClick={() => {
 																	arrayHelpers.replace(index, {
 																		...person,
-																		items: person.items.filter((itemId) => itemId !== item),
+																		itemIds: person.itemIds.filter((itemId) => itemId !== item),
 																	})
 																}}
 															/>
@@ -113,14 +114,20 @@ const Succession = () => {
 													}}
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
 														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter(
-															(inheritanceItem) => person.items.includes(inheritanceItem.id) === false
+															(item) =>
+																[
+																	...values.persons.map((person) => person.id),
+																	...values.organisations.map((orga) => orga.id),
+																].includes(item.id) === false
 														)
+
+														console.log(lastWillWithoutItemsAlreadyUsed)
 
 														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
 															onClick: () =>
 																arrayHelpers.replace(index, {
 																	...person,
-																	items: [...person.items, inheritanceItem.id],
+																	itemIds: [...person.itemIds, inheritanceItem.id],
 																}),
 															label: inheritanceItem.name ?? '',
 														}))
@@ -156,8 +163,8 @@ const Succession = () => {
 
 												{/* Organisation Items */}
 												<div className="mb-2 w-full md:mb-4">
-													{organisation.items.length !== 0 && <span>Items</span>}
-													{organisation.items.map((item) => (
+													{organisation.itemIds.length !== 0 && <span>Items</span>}
+													{organisation.itemIds.map((item) => (
 														<div
 															key={item}
 															className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
@@ -169,7 +176,7 @@ const Succession = () => {
 																onClick={() => {
 																	arrayHelpers.replace(index, {
 																		...organisation,
-																		items: organisation.items.filter((itemId) => itemId !== item),
+																		itemIds: organisation.itemIds.filter((itemId) => itemId !== item),
 																	})
 																}}
 															/>
@@ -184,14 +191,14 @@ const Succession = () => {
 													}}
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
 														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter(
-															(inheritanceItem) => organisation.items.includes(inheritanceItem.id) === false
+															(inheritanceItem) => organisation.itemIds.includes(inheritanceItem.id) === false
 														)
 
 														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
 															onClick: () =>
 																arrayHelpers.replace(index, {
 																	...organisation,
-																	items: [...organisation.items, inheritanceItem.id],
+																	items: [...organisation.itemIds, inheritanceItem.id],
 																}),
 															label: inheritanceItem.name ?? '',
 														}))

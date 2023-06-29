@@ -43,7 +43,7 @@ export type PersonFormPayload = {
 	zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
 	city?: string
 	moreInfos?: PersonMoreInfos[]
-	childRelationShip?: ChildRelationShip[]
+	childRelationShip?: ChildRelationShip
 	ownChild?: string[]
 	heirsType: HeirsTypes
 }

@@ -268,10 +268,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				const newPerson = persons.find((findPerson) => findPerson.id === person.id)
 				if (newPerson) {
 					person.percentage = newPerson.percentage
-					person.items = newPerson.items.map((item) => ({
-						id: item,
-						name: state.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ?? '',
-					}))
+					person.itemIds = newPerson.itemIds
 				}
 				return person
 			})
@@ -280,10 +277,7 @@ export const lastWillReducer = (state: LastWill, action: LastWillActions): LastW
 				const newOrganisation = organisations.find((findOrganisation) => findOrganisation.id === organisation.id)
 				if (newOrganisation) {
 					organisation.percentage = newOrganisation.percentage
-					organisation.items = newOrganisation.items.map((item) => ({
-						id: item,
-						name: state.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ?? '',
-					}))
+					organisation.itemIds = newOrganisation.itemIds
 				}
 				return organisation
 			})
