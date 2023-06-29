@@ -113,15 +113,13 @@ const Succession = () => {
 														kind: 'secondary',
 													}}
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
-														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter(
-															(item) =>
-																[
-																	...values.persons.map((person) => person.id),
-																	...values.organisations.map((orga) => orga.id),
-																].includes(item.id) === false
-														)
-
-														console.log(lastWillWithoutItemsAlreadyUsed)
+														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
+															const alreadyUsedIds = [
+																...values.persons.map((person) => person.itemIds).flat(),
+																...values.organisations.map((orga) => orga.itemIds).flat(),
+															]
+															return alreadyUsedIds.includes(item.id) === false
+														})
 
 														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
 															onClick: () =>
@@ -190,15 +188,19 @@ const Succession = () => {
 														kind: 'secondary',
 													}}
 													options={(function getDropdownOptions(): DropdownButtonOptions[] {
-														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter(
-															(inheritanceItem) => organisation.itemIds.includes(inheritanceItem.id) === false
-														)
+														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
+															const alreadyUsedIds = [
+																...values.persons.map((person) => person.itemIds).flat(),
+																...values.organisations.map((orga) => orga.itemIds).flat(),
+															]
+															return alreadyUsedIds.includes(item.id) === false
+														})
 
 														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
 															onClick: () =>
 																arrayHelpers.replace(index, {
 																	...organisation,
-																	items: [...organisation.itemIds, inheritanceItem.id],
+																	itemIds: [...organisation.itemIds, inheritanceItem.id],
 																}),
 															label: inheritanceItem.name ?? '',
 														}))
