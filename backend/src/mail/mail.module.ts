@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
-import { MailService } from './mail.service'
+import { MailSendService } from './services/send.service'
 import { ConfigurableModuleClass } from './metadata/mail.module-definition'
+import { MailScheduleService } from './services/scheduler.service'
 
 @Module({
-  providers: [MailService],
-  exports: [MailService],
+  providers: [MailScheduleService, MailSendService],
+  exports: [MailScheduleService],
 })
 export class MailModule extends ConfigurableModuleClass {}

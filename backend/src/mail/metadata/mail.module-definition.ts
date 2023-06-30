@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder } from '@nestjs/common'
-import { MailModuleConfig } from '../types/mail-module.type'
+import { MailModuleConfig } from '../interfaces/mail-module.interface'
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } =
   new ConfigurableModuleBuilder<MailModuleConfig>()
