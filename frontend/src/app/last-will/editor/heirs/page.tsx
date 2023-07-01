@@ -67,26 +67,23 @@ const Heirs = () => {
 					Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
 				</p>
 			) : (
-				<table className="mb-4 mt-2 w-full border-collapse md:mt-8">
+				<table className="mb-4 mt-2 w-full table-fixed border-collapse md:mt-8">
 					<thead>
 						{/* Table Header */}
-						<tr className="text-left">
-							<th className="w-6/4 pr-4">Name</th>
-							<th className="w-3/12 px-4 md:w-5/12">Wer/Was</th>
-							<th className="w-1/12 px-4">Actions</th>
-						</tr>
+						<th className="w-5/12 pr-4 text-left md:w-6/12">Name</th>
+						<th className="w-auto px-4 text-left">Wer/Was</th>
+						<th className="w-28 px-4 text-left">Actions</th>
 					</thead>
 					<tbody>
 						{/* Persons and Organisations */}
 						{lastWill.heirs.persons.map((person) => (
 							<tr datacy={`persons-row-${person.firstName}`} key={person.id} className="border-b border-gray-300">
 								<td className="table-cell pr-4">
-									<div className="flex flex-col md:flex-row">
-										<p className="mr-1">{person.firstName}</p>
-										<p>{person.lastName}</p>
+									<div className="flex md:flex-row">
+										<p className="mr-1 whitespace-normal">{`${person.firstName} ${person.lastName}`}</p>
 									</div>
 								</td>
-								<td className="p-4">{heirsTypes[person.heirsType].displayType}</td>
+								<td className="truncate p-4">{heirsTypes[person.heirsType].displayType}</td>
 								<td className="p-4">
 									<div className="flex">
 										<IconButton
@@ -116,9 +113,9 @@ const Heirs = () => {
 								className="border-b border-gray-300"
 							>
 								<td className="pr-4">
-									<p className="mr-1">{organisation.name}</p>
+									<p className="mr-1 truncate">{organisation.name}</p>
 								</td>
-								<td className="p-4">Organisation</td>
+								<td className="truncate p-4">Organisation</td>
 								<td className="p-4">
 									<div className="flex">
 										<IconButton
