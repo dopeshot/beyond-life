@@ -8,8 +8,10 @@ import { MailData } from '../interfaces/mail.interface'
 @Injectable()
 export class MailScheduleService {
   constructor(@Inject() private mailSendService: MailSendService) {}
-  scheduleMailNow(mail: MailData) {
+  async scheduleMailNow(mail: MailData) {
     console.log('Scheduling email')
-    this.mailSendService.sendMail(mail)
+    await this.mailSendService.sendMail(mail)
   }
+
+  async scheduleMailAtDate(scheduleDate: Date, mail: MailData) {}
 }

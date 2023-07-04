@@ -5,14 +5,16 @@ enum MailTemplates {
 }
 
 interface MailContent {
-  contentRaw: string
-  contentTemplate: MailTemplates
-  templateContent: VerifyMailContent
+  subject: string
+  contentRaw?: string
+  contentTemplate?: MailTemplates
+  templateContent?: VerifyMailContent
 }
 
 interface MailRecipient {
-  recipients: string[]
-  cc: string[]
+  recipients: string
+  cc?: string[]
+  from?: string
 }
 
 export interface MailData {
