@@ -31,6 +31,22 @@ jobs:
         with:
           path: ~/.npm
           key: node-modules-${{ hashFiles('package-lock.json') }}
+          
+  audit:
+    runs-on: ubuntu-latest
+    # Only run on PRs against stable and on stable itself
+    if: github.ref == 'stable' || github.base_ref == 'stable'
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: audit
+      run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
