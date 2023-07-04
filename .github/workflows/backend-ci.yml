@@ -35,7 +35,6 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
-    #if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable' 
     if: github.ref == 'stable' || github.base_ref == 'stable'
     defaults:
       run:
