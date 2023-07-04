@@ -69,10 +69,12 @@ const Heirs = () => {
 			) : (
 				<table className="mb-4 mt-2 w-full table-fixed border-collapse md:mt-8">
 					<thead>
+						<tr>
 							{/* Table Header */}
 							<th className="w-auto pr-4 text-left">Name</th>
 							<th className="w-28 px-4 text-left md:w-48">Wer/Was</th>
 							<th className="w-28 px-4 text-left">Actions</th>
+						</tr>
 					</thead>
 					<tbody>
 						{/* Persons and Organisations */}
