@@ -3,7 +3,7 @@ name: backend-pipeline
 on:
   push:
     branches:
-      #- "stable"
+      - "stable"
       - "main"
   pull_request:
     branches: [main]
@@ -31,6 +31,22 @@ jobs:
         with:
           path: ~/.npm
           key: node-modules-${{ hashFiles('package-lock.json') }}
+          
+  audit:
+    runs-on: ubuntu-latest
+    # Only run on PRs against stable and on stable itself
+    if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable' 
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: audit
+      run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
