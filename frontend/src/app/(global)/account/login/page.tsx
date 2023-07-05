@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
@@ -22,8 +23,11 @@ type LoginDto = {
  * Login Page
  */
 const Login = () => {
+    const router = useRouter()
+
     // Local State
     const [isPasswordEyeOpen, setIsPasswordEyeOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     // Formik
     const initialFormValues: LoginDto = {
@@ -38,6 +42,15 @@ const Login = () => {
 
     const onFormSubmit = async (values: LoginDto) => {
         console.log(values)
+
+        // Simulate request
+        setIsLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        setIsLoading(false)
+
+        // Redirect to profile page
+        // TODO: implement callbackurl when paywall is implemented
+        router.push(routes.account.profile)
     }
 
     return (
@@ -65,7 +78,7 @@ const Login = () => {
                             Passwort vergessen?
                         </Route>
 
-                        <Button className="mt-8 md:justify-center md:w-full" datacy="login-button" icon="login" disabled={!(dirty && isValid)} type="submit">
+                        <Button className="mt-8 md:justify-center md:w-full" datacy="login-button" icon="login" loading={isLoading} disabled={!(dirty && isValid)} type="submit">
                             Login
                         </Button>
                     </Form>
