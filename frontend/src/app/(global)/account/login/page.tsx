@@ -9,11 +9,6 @@ import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 
-export const metadata = {
-    title: 'Login | Siebtes Leben',
-    description: '',
-}
-
 type LoginDto = {
     email: string
     password: string
