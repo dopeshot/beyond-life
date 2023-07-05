@@ -4,6 +4,7 @@ export const routes = {
 		register: '/account/register',
 		login: '/account/login',
 		profile: '/account/profile',
+		forgotPassword: '/account/forgot-password',
 	},
 	lastWill: {
 		index: '/last-will',
