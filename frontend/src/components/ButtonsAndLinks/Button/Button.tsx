@@ -17,10 +17,11 @@ export const Button: React.FC<ButtonProps> = ({
     loading = false,
     className = '',
     children,
-    width = "w-full md:w-max",
+    width,
     isColoredTertiary = false,
     ...props
 }) => {
+
     const calculatedProps = buttonsAndLinksService({
         disabled,
         isColoredTertiary,

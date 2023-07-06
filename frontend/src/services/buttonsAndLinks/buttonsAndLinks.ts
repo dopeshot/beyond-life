@@ -16,7 +16,9 @@ export const buttonsAndLinksService = (
 	const tertiaryColor = isColoredTertiary ? 'red' : 'gray'
 
 	// Base Classes
-	const twButtonBaseClasses = `flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-10 ${width}`
+	const twButtonBaseClasses = `flex items-center justify-center md:justify-start font-medium rounded-full py-2 px-10 ${
+		width ?? 'w-full md:w-max'
+	}`
 	const twLinkBaseClasses = `flex items-center font-medium text-${tertiaryColor}-500`
 
 	// Disable state classes
