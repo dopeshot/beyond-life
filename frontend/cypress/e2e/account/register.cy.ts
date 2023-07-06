@@ -6,7 +6,6 @@ describe('Account Register Page', () => {
 	describe('Register Base Flow', () => {
 		it('should register successfully', () => {
 			cy.datacy('textinput-email-input').type('test@test.de')
-			cy.datacy('textinput-username-input').type('test')
 			cy.datacy('textinput-password-input').type('test123')
 
 			cy.datacy('submit-button').click()
