@@ -12,14 +12,8 @@ type AccountFormProps = {
     type?: "login" | "register"
 }
 
-type LoginDto = {
+type AccountDto = {
     email: string
-    password: string
-}
-
-type RegisterDto = {
-    email: string
-    username?: string
     password: string
 }
 
@@ -31,29 +25,17 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
     const [isLoading, setIsLoading] = useState(false)
 
     // Formik
-    const initialLoginFormValues: LoginDto = {
+    const initialFormValues: AccountDto = {
         email: '',
         password: '',
     }
 
-    const initialRegisterFormValues: RegisterDto = {
-        email: '',
-        username: '',
-        password: '',
-    }
-
-    const loginValidationSchema: ObjectSchema<LoginDto> = object({
-        email: string().email('Ungültige E-Mail Adresse').required('E-Mail Adresse ist erforderlich'),
-        password: string().required('Password ist erforderlich'),
+    const accountValidationSchema: ObjectSchema<AccountDto> = object({
+        email: string().email('Bitte geben Sie eine gültige E-Mail Adresse ein.').required('E-Mail Adresse ist erforderlich.'),
+        password: string().required('Password ist erforderlich.'),
     })
 
-    const registerValidationSchema: ObjectSchema<RegisterDto> = object({
-        email: string().email('Ungültige E-Mail Adresse').required('E-Mail Adresse ist erforderlich'),
-        username: string().required('Username ist erforderlich'),
-        password: string().required('Password ist erforderlich'),
-    })
-
-    const onLoginFormSubmit = async (values: LoginDto) => {
+    const onLoginFormSubmit = async (values: AccountDto) => {
         console.log(values)
 
         // Simulate request
@@ -66,7 +48,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
         router.push(routes.account.profile)
     }
 
-    const onRegisterFormSubmit = async (values: RegisterDto) => {
+    const onRegisterFormSubmit = async (values: AccountDto) => {
         console.log(values)
 
         // Simulate request
@@ -80,11 +62,10 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
     }
 
     return (
-        <Formik initialValues={type === "login" ? initialLoginFormValues : initialRegisterFormValues} validationSchema={type === "login" ? loginValidationSchema : registerValidationSchema} onSubmit={type === "login" ? onLoginFormSubmit : onRegisterFormSubmit}>
+        <Formik initialValues={initialFormValues} validationSchema={accountValidationSchema} onSubmit={type === "login" ? onLoginFormSubmit : onRegisterFormSubmit}>
             {({ dirty, isValid }) => (
                 <Form className="mb-3">
                     <TextInput autoComplete="email" type="email" name="email" labelText="E-Mail" placeholder="E-Mail" />
-                    {type === "register" && <TextInput autoComplete="off" name="username" labelText="Username" placeholder="Username" />}
                     <TextInput
                         autoComplete="current-password"
                         type={isPasswordEyeOpen ? 'text' : 'password'}
