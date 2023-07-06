@@ -11,6 +11,8 @@ export type CommonProps = {
 	icon?: MaterialSymbol
 	/** Specify the location of the icon. */
 	iconSlot?: 'start' | 'end'
+	/** Set custom width for button. Default is auto and mobile full. */
+	width?: string
 	/** Can add classes to customize margins for example. */
 	className?: string
 	/** Disabled state when set to true button is disabled. */

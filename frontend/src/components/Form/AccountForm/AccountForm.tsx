@@ -98,7 +98,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
                         Passwort vergessen?
                     </Route>}
 
-                    <Button className="mt-8 md:justify-center md:w-full" datacy="login-button" icon="login" loading={isLoading} disabled={!(dirty && isValid)} type="submit">
+                    <Button className="mt-8 md:justify-center" width="w-full" datacy="login-button" icon="login" loading={isLoading} disabled={!(dirty && isValid)} type="submit">
                         {type === "login" ? "Einloggen" : "Registrieren"}
                     </Button>
                 </Form>
