@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<LastWillContextProvider>
 			<div className={`flex h-screen min-h-screen overflow-y-scroll sm:flex-col lg:flex-row`}>
 				<Sidebar path={path} />
-				<div className="flex h-fit min-h-screen flex-grow flex-col">
+				<div className="flex h-fit min-h-screen w-full flex-grow flex-col">
 					<Navbar background={false}>
 						<div className="mr-5 lg:hidden">
 							<NavbarLogo />
