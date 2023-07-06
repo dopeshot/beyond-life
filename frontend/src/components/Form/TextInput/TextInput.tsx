@@ -59,7 +59,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 							{icon && (
 								<div className={'w-0'}>
 									<button
-										type="submit"
+										type="button"
 										onClick={iconOnClick}
 										className={'relative -left-10 flex h-full w-6 items-center'}
 									>
