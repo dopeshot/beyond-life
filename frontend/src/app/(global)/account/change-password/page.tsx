@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
-import { TextInput } from '../../../../components/Form/TextInput/TextInput'
+import { PasswordInput } from '../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 
@@ -56,8 +56,8 @@ const ChangePassword = () => {
                 <Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
                     {({ dirty, isValid }) => (
                         <Form>
-                            <TextInput name="newPassword" labelText="Neues Passwort" placeholder="Geben Sie ein neues Passwort ein." />
-                            <TextInput name="newPasswordConfirm" labelText="Neues Passwort bestätigen" placeholder="Wiederholen Sie das neue Passwort." />
+                            <PasswordInput name="newPassword" labelText="Neues Passwort" placeholder="Geben Sie ein neues Passwort ein." />
+                            <PasswordInput name="newPasswordConfirm" labelText="Neues Passwort bestätigen" placeholder="Wiederholen Sie das neue Passwort." />
                             <Button type="submit" icon="lock_reset" loading={isLoading} disabled={!(dirty && isValid)}
                                 className="ml-auto">
                                 Passwort ändern
