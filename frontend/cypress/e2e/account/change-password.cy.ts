@@ -10,10 +10,7 @@ describe('Password Change Page', () => {
 
 			cy.datacy('submit-button').click()
 
-			// Cause of mock
-			cy.wait(1010)
-
-			cy.url().should('include', '/account/login')
+			// TODO: Add tests when backend is implemented
 		})
 	})
 

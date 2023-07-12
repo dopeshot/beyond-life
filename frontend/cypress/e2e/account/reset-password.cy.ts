@@ -9,10 +9,7 @@ describe('Password Reset Page', () => {
 
 			cy.datacy('submit-button').click()
 
-			// Cause of mock
-			cy.wait(1001)
-
-			cy.url().should('include', '/account/login')
+			// TODO: Add tests when backend is implemented
 		})
 	})
 })
