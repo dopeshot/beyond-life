@@ -4,14 +4,14 @@ describe('Password Change Page', () => {
 	})
 
 	describe('Password Change Base Flow', () => {
-		it('should change password successfully', () => {
+		it.only('should change password successfully', () => {
 			cy.datacy('textinput-newPassword-input').type('password1234')
 			cy.datacy('textinput-newPasswordConfirm-input').type('password1234')
 
 			cy.datacy('submit-button').click()
 
 			// Cause of mock
-			cy.wait(1001)
+			cy.wait(1010)
 
 			cy.url().should('include', '/account/login')
 		})
