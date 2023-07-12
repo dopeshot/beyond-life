@@ -4,7 +4,7 @@ describe('Password Change Page', () => {
 	})
 
 	describe('Password Change Base Flow', () => {
-		it.only('should change password successfully', () => {
+		it('should change password successfully', () => {
 			cy.datacy('textinput-newPassword-input').type('password1234')
 			cy.datacy('textinput-newPasswordConfirm-input').type('password1234')
 
