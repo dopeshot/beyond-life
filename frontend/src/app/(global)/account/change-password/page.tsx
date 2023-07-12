@@ -58,7 +58,7 @@ const ChangePassword = () => {
                         <Form>
                             <PasswordInput name="newPassword" labelText="Neues Passwort" placeholder="Geben Sie ein neues Passwort ein." />
                             <PasswordInput name="newPasswordConfirm" labelText="Neues Passwort bestätigen" placeholder="Wiederholen Sie das neue Passwort." />
-                            <Button type="submit" icon="lock_reset" loading={isLoading} disabled={!(dirty && isValid)}
+                            <Button datacy="submit-button" type="submit" icon="lock_reset" loading={isLoading} disabled={!(dirty && isValid)}
                                 className="ml-auto">
                                 Passwort ändern
                             </Button>

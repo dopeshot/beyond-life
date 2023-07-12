@@ -59,7 +59,7 @@ const ResetPassword = () => {
                     {({ dirty, isValid }) => (
                         <Form>
                             <TextInput name="email" labelText="E-Mail" placeholder="Geben Sie Ihre E-Mail Adresse ein." />
-                            <Button type="submit" icon="lock_reset" loading={isLoading} disabled={!(dirty && isValid)}
+                            <Button datacy="submit-button" type="submit" icon="lock_reset" loading={isLoading} disabled={!(dirty && isValid)}
                                 className="ml-auto">
                                 Passwort zurücksetzen
                             </Button>
