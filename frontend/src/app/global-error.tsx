@@ -3,7 +3,7 @@
 import { ServerError } from '../components/Errors/ServerError/ServerError'
 
 /**
- * Custom 500 Page, occures when something went wrong on server side.
+ * Custom Error Page, handle errors in root layout.js. https://nextjs.org/docs/app/api-reference/file-conventions/error#global-errorjs
  */
 export default function GlobalError({ reset }: { reset: () => void }) {
 	return (
