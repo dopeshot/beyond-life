@@ -6,6 +6,7 @@ import { ObjectSchema, object, string } from 'yup'
 import { routes } from '../../../services/routes/routes'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
+import { PasswordInput } from '../PasswordInput/PasswordInput'
 import { TextInput } from '../TextInput/TextInput'
 
 type AccountFormProps = {
@@ -21,7 +22,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const router = useRouter()
 
 	// Local State
-	const [isPasswordEyeOpen, setIsPasswordEyeOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 
 	// Formik
@@ -72,15 +72,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 			{({ dirty, isValid }) => (
 				<Form className="mb-3">
 					<TextInput autoComplete="email" type="email" name="email" labelText="E-Mail" placeholder="E-Mail" />
-					<TextInput
-						autoComplete="current-password"
-						type={isPasswordEyeOpen ? 'text' : 'password'}
-						name="password"
-						labelText="Password"
-						placeholder="Password"
-						icon={isPasswordEyeOpen ? 'visibility' : 'visibility_off'}
-						iconOnClick={() => setIsPasswordEyeOpen(!isPasswordEyeOpen)}
-					/>
+					<PasswordInput />
 					{type === 'login' && (
 						<Route href={routes.account.resetPassword} kind="tertiary" className="ml-auto">
 							Passwort vergessen?
