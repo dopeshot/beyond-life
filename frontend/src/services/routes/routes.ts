@@ -35,7 +35,8 @@ export const routes = {
 		final: (id: string) => `/last-will/editor/final?id=${id}`,
 	},
 	misc: {
+		faq: '/misc/faq',
+		imprint: '/misc/imprint',
 		privacy: '/misc/privacy-policy',
-		terms: '/misc/terms-of-service',
 	},
 }
