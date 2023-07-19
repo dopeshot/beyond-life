@@ -15,13 +15,13 @@ export const ServerError: React.FC<ServerErrorProps> = ({ reset }) => {
 			headline="Fehler auf unserer Seite"
 			action={
 				<Button onClick={reset} className="mx-auto mt-5" icon="sync">
-					Erneut probieren
+					Erneut versuchen
 				</Button>
 			}
 		>
 			<p className="mb-2 md:mb-4">
-				Auf unserer Seite ist ein Fehler passiert. Probieren Sie es nochmal oder warten Sie bis wir den Fehler gefunden
-				haben. Melden Sie hier den Fehler damit wir die Ursache schneller beheben können.
+				Auf unserer Seite ist ein Fehler aufgetreten. Probieren Sie es nochmal oder warten Sie bis wir den Fehler
+				gefunden haben. Melden Sie hier den Fehler damit wir die Ursache schneller beheben können.
 			</p>
 		</BaseError>
 	)
