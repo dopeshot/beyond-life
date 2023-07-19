@@ -4,7 +4,7 @@ type NavbarLinkProps = {
 	/** The content inside the navbar link. */
 	children: React.ReactNode
 	/** Link to go when you click navbar link. */
-	to?: string
+	href?: string
 	/** Function that gets called when you click navbar link. */
 	onClick?: () => void
 	/** Change look of link and disable it to show that it is active. */
@@ -16,8 +16,8 @@ type NavbarLinkProps = {
 /**
  * Navbar Link to use in Navbar. Handles the to and onClick and have an active state.
  */
-export const NavbarLink: React.FC<NavbarLinkProps> = ({ to, children, datacy, onClick, isActive = false }) => {
-	if (!to && !onClick) <p className="text-red-500">Error: You must define to or onClick prop.</p>
+export const NavbarLink: React.FC<NavbarLinkProps> = ({ href, children, datacy, onClick, isActive = false }) => {
+	if (!href && !onClick) <p className="text-red-500">Error: You must define to or onClick prop.</p>
 
 	// CSS classes
 	const classes = `${
@@ -26,11 +26,11 @@ export const NavbarLink: React.FC<NavbarLinkProps> = ({ to, children, datacy, on
 
 	return (
 		<>
-			{/* Link with to */}
-			{to && (
+			{/* Link with href */}
+			{href && (
 				<Link
 					datacy={datacy}
-					href={isActive ? '' : to}
+					href={isActive ? '' : href}
 					onClick={isActive ? (event) => event.preventDefault() : () => ''}
 					tabIndex={isActive ? -1 : 0}
 					className={classes}
