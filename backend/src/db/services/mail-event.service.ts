@@ -29,7 +29,7 @@ export class MailEventService {
     if (ids.length == 0) {
       return
     }
-    await this.mailEventEntity.update(ids, { hasBeenSend: true })
+    await this.mailEventEntity.update(ids, { hasBeenSent: true })
   }
 
   async rescheduleMails(ids: number[], newDate: Date): Promise<void> {

@@ -15,7 +15,6 @@ export class MailEventEntity {
     name: 'scheduled_at',
   })
   @ApiPropertyOptional({
-    description: 'Creation date of user',
     example: Date.now(),
   })
   scheduledAt: Date
@@ -31,7 +30,7 @@ export class MailEventEntity {
     name: 'has_been_send',
     default: false,
   })
-  hasBeenSend: boolean
+  hasBeenSent: boolean
 
   @Column({
     type: 'boolean',

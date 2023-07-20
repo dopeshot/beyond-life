@@ -39,7 +39,7 @@ export class MailScheduleService {
   async scheduleMailAtDate(scheduleDate: Date, mail: MailData): Promise<void> {
     const mailEvent: Partial<MailEventEntity> = {
       scheduledAt: scheduleDate,
-      hasBeenSend: false,
+      hasBeenSent: false,
       hasBeenRescheduled: false,
       content: mail,
     }

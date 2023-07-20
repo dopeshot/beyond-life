@@ -71,7 +71,7 @@ describe('MailModule', () => {
       expect(new Date(mailEvent.scheduledAt).getTime()).toEqual(
         scheduleDate.getTime(),
       )
-      expect(mailEvent.hasBeenSend).toEqual(false)
+      expect(mailEvent.hasBeenSent).toEqual(false)
     })
   })
 
@@ -132,7 +132,7 @@ describe('MailModule', () => {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
-          hasBeenSend: false,
+          hasBeenSent: false,
         }
         await insertMailEvent(dataSource, mailEventEntityData)
         // ACT
@@ -155,7 +155,7 @@ describe('MailModule', () => {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
-          hasBeenSend: false,
+          hasBeenSent: false,
         }
         await insertMailEvent(dataSource, mailEventEntityData)
         // ACT
@@ -163,7 +163,7 @@ describe('MailModule', () => {
         // ASSERT
         expect(mock.getSentMail().length).toEqual(1)
         const alteredMailEvent = (await getMailEventsByAttribute(dataSource))[0]
-        expect(alteredMailEvent.hasBeenSend).toEqual(true)
+        expect(alteredMailEvent.hasBeenSent).toEqual(true)
       })
     })
     describe('Negatve Tests', () => {
@@ -182,7 +182,7 @@ describe('MailModule', () => {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
-          hasBeenSend: false,
+          hasBeenSent: false,
         }
         await insertMailEvent(dataSource, mailEventEntityData)
         mock.setShouldFail(true)
@@ -191,7 +191,7 @@ describe('MailModule', () => {
         // ASSERT
         const alteredMailEvent = (await getMailEventsByAttribute(dataSource))[0]
         expect(alteredMailEvent.hasBeenRescheduled).toEqual(true)
-        expect(alteredMailEvent.hasBeenSend).toEqual(false)
+        expect(alteredMailEvent.hasBeenSent).toEqual(false)
         expect(alteredMailEvent.scheduledAt.getTime()).toBeGreaterThanOrEqual(
           new Date().getTime(),
         )
