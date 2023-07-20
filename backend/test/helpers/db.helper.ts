@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
 import { newDb } from 'pg-mem'
 import { UserEntity } from '../../src/db/entities/users.entity'
+import { MailEventEntity } from '../../src/db/entities/mail-event.entity'
 
 // List of all entities in the application
-const DEFAULT_ENTITIES = [UserEntity]
+const DEFAULT_ENTITIES = [UserEntity, MailEventEntity]
 
 /**
  * @description Get mock datasource for testing
