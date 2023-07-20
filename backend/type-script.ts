@@ -34,7 +34,7 @@ async function main() {
   fs.writeFileSync('./api.yaml', yamlString)
 
   const { stdout, stderr } = await exec(
-    'npx openapi-generator-cli generate -i ./api.yaml -o ../frontend/src/generated -g typescript-fetch',
+    'npx --yes @openapitools/openapi-generator-cli generate -i ./api.yaml -o ../frontend/src/generated -g typescript-fetch',
   )
   console.log('stdout:', stdout)
   console.error('stderr:', stderr)
