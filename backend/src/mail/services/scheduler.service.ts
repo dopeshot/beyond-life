@@ -23,6 +23,7 @@ export class MailScheduleService {
     private readonly mailSendService: MailSendService,
     private readonly mailEventService: MailEventService,
   ) {}
+
   async scheduleMailNow(mail: MailData): Promise<void> {
     try {
       await this.mailSendService.sendMail(mail)

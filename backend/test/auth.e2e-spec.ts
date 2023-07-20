@@ -60,7 +60,7 @@ describe('AuthController (e2e)', () => {
 
   describe('/auth/register (POST)', () => {
     describe('Positive Tests', () => {
-      it('Should accept valid DTO ', () => {
+      it('should accept valid DTO ', () => {
         // ACT & ASSERT
         return request(app.getHttpServer())
           .post('/auth/register')
@@ -68,7 +68,7 @@ describe('AuthController (e2e)', () => {
           .expect(HttpStatus.CREATED)
       })
 
-      it('Should write to DB ', async () => {
+      it('should write to DB ', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -86,7 +86,7 @@ describe('AuthController (e2e)', () => {
         )
       })
 
-      it('Should return valid access token', async () => {
+      it('should return valid access token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -105,7 +105,7 @@ describe('AuthController (e2e)', () => {
     })
 
     describe('Negative Tests', () => {
-      it('Should fail for incomplete payload', async () => {
+      it('should fail for incomplete payload', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -114,7 +114,7 @@ describe('AuthController (e2e)', () => {
         expect(res.statusCode).toEqual(HttpStatus.BAD_REQUEST)
       })
 
-      it('Should fail for invalid email address input', async () => {
+      it('should fail for invalid email address input', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -126,7 +126,7 @@ describe('AuthController (e2e)', () => {
         expect(res.statusCode).toEqual(HttpStatus.BAD_REQUEST)
       })
 
-      it('Should fail for password without sufficient length', async () => {
+      it('should fail for password without sufficient length', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -172,7 +172,7 @@ describe('AuthController (e2e)', () => {
 
   describe('/auth/login (POST)', () => {
     describe('Positive Tests', () => {
-      it('Should return token for correct data ', async () => {
+      it('should return token for correct data ', async () => {
         // ARRANGE
         await createUser(dataSource, SAMPLE_USER)
         // ACT
@@ -188,7 +188,7 @@ describe('AuthController (e2e)', () => {
         expect(res.body).toHaveProperty('refresh_token')
       })
 
-      it('Should return valid token', async () => {
+      it('should return valid token', async () => {
         // ARRANGE
         await createUser(dataSource, SAMPLE_USER)
         // ACT
@@ -212,7 +212,7 @@ describe('AuthController (e2e)', () => {
     })
 
     describe('Negative Tests', () => {
-      it('Should fail for incorrect data ', () => {
+      it('should fail for incorrect data ', () => {
         // ACT & ASSERT
         return request(app.getHttpServer())
           .post('/auth/login')
@@ -223,7 +223,7 @@ describe('AuthController (e2e)', () => {
           .expect(HttpStatus.UNAUTHORIZED)
       })
 
-      it('Should fail for non existing user', async () => {
+      it('should fail for non existing user', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/login')

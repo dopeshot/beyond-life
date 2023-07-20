@@ -1,5 +1,3 @@
-import { VerifyMailContent } from './mail-interface-contents.interface'
-
 enum MailTemplates {
   VERIFY = 'VERIFY',
 }
@@ -8,7 +6,7 @@ interface MailContent {
   subject: string
   contentRaw?: string
   contentTemplate?: MailTemplates
-  templateContent?: VerifyMailContent
+  templateContent?: never
 }
 
 interface MailRecipient {

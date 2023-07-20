@@ -27,6 +27,7 @@ export class MailEventService {
 
   async markMailsAsSend(ids: number[]): Promise<void> {
     if (ids.length == 0) {
+      this.logger.log('Empty update will not be executed')
       return
     }
     await this.mailEventEntity.update(ids, { hasBeenSent: true })
@@ -34,6 +35,7 @@ export class MailEventService {
 
   async rescheduleMails(ids: number[], newDate: Date): Promise<void> {
     if (ids.length == 0) {
+      this.logger.log('Empty update will not be executed')
       return
     }
     await this.mailEventEntity.update(ids, {

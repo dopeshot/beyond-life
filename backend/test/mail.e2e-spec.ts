@@ -49,8 +49,8 @@ describe('MailModule', () => {
     await app.close()
   })
 
-  describe('schedule mail', () => {
-    it('Should allow scheduling mails', async () => {
+  describe('Schedule mail', () => {
+    it('should allow scheduling mails', async () => {
       // ARRANGE
       const scheduleDate = new Date(Date.now() + 5 * 60000)
       const mailData: MailData = {
@@ -75,7 +75,7 @@ describe('MailModule', () => {
     })
   })
 
-  describe('send mail', () => {
+  describe('Send mail', () => {
     describe('Positive Tests', () => {
       it('should send a mail', async () => {
         // ARRANGE
@@ -167,7 +167,7 @@ describe('MailModule', () => {
       })
     })
     describe('Negatve Tests', () => {
-      it('Should reschedule mails on failure', async () => {
+      it('should reschedule mails on failure', async () => {
         // ARRANGE
         const mailData: MailData = {
           recipient: {

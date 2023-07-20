@@ -3,7 +3,6 @@ import { Transporter, createTransport } from 'nodemailer'
 import { MailModuleConfig } from '../interfaces/mail-module.interface'
 import { MODULE_OPTIONS_TOKEN } from '../metadata/mail.module-definition'
 import { MailData } from '../interfaces/mail.interface'
-import { VerifyMailContent } from '../interfaces/mail-interface-contents.interface'
 
 /**
  * @description Service reliable for actually talking to the http server
@@ -26,20 +25,19 @@ export class MailSendService {
         mail.content.templateContent,
       )
     }
+    const { recipient, cc, from } = mail.recipient
+    this.logger.debug(`Sending mail to ${recipient}`)
     await this.transport.sendMail({
-      to: mail.recipient.recipient,
-      cc: mail.recipient.cc,
-      from: mail.recipient.from || this.defaultFrom,
+      to: recipient,
+      cc: cc,
+      from: from || this.defaultFrom,
       subject: mail.content.subject,
       // Assume always HTML...our emails SHOULD be styled anyways
       html: mailContent,
     })
   }
 
-  private renderTemplate(
-    templateName: string,
-    content: VerifyMailContent,
-  ): string {
+  private renderTemplate(templateName: string, content: never): string {
     // TODO: Add template lookup/render as soon as we have templates
     return ''
   }
