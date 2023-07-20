@@ -7,6 +7,11 @@ export class MockConfigService {
     JWT_REFRESH_EXPIRE_TIME: '10h',
     JWT_REFRESH_SECRET: 'verysecret',
     JWT_SECRET: 'secret',
+    DB_USER_NAME: 'admin',
+    DB_USER_PW: 'admin',
+    DB_DB: 'beyond_life',
+    DB_HOST: 'localhost',
+    DB_PORT: '27017',
   }
 
   /**

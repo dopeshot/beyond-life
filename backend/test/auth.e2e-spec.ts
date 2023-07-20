@@ -1,38 +1,33 @@
 /* eslint-disable prettier/prettier */
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
 import * as request from 'supertest'
-import { DataSource } from 'typeorm'
-import { AppModule } from '../src/app.module'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
-import { UserService } from '../src/db/services/user.service'
 import { comparePassword } from './helpers/general.helper'
-import { SAMPLE_USER } from './helpers/sample-data.helper'
+import { SAMPLE_USER,  SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
 import { MockConfigService } from './helpers/config-service.helper'
-import { setupDataSource } from './helpers/db.helper'
-import {
-  createUser,
-  deleteUserByAttribute,
-  getUserByAttribute,
-} from './helpers/user.helper'
+import { getConnectionToken } from '@m8a/nestjs-typegoose'
+import { closeInMongodConnection, rootTypegooseTestModule } from './helpers/mongo.helper'
+import { Connection, Model } from 'mongoose'
+import { User } from '../src/db/entities/users.entity'
+import { DbModule } from '../src/db/db.module'
+import { SharedModule } from '../src/shared/shared.module'
+import {PassportModule } from '@nestjs/passport'
+import { AuthModule } from '../src/auth/auth.module'
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication
-  let dataSource: DataSource
   let jwtService: JwtService
+  let connection: Connection;
+   let userModel: Model<User>;
   let configService: ConfigService
-  let userService: UserService
 
   beforeEach(async () => {
-    dataSource = await setupDataSource()
-
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [DbModule, SharedModule, ConfigModule.forRoot({isGlobal: true}), PassportModule, rootTypegooseTestModule(), AuthModule],
     })
-      .overrideProvider(DataSource)
-      .useValue(dataSource)
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
       .compile()
@@ -41,21 +36,16 @@ describe('AuthController (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 
     jwtService = app.get<JwtService>(JwtService)
+    connection = await app.get(getConnectionToken());
     configService = app.get<ConfigService>(ConfigService)
-    userService = app.get<UserService>(UserService)
+    userModel = connection.model<User>('User');
 
     await app.init()
-
-    // Mock value for Db time as this value is not available
-    jest
-      .spyOn(userService, 'getCurrentDbTime')
-      .mockImplementation(async () => ({
-        now: new Date(Date.now()).toISOString(),
-      }))
   })
 
   afterEach(async () => {
     await app.close()
+        await closeInMongodConnection()
   })
 
   describe('/auth/register (POST)', () => {
@@ -76,11 +66,10 @@ describe('AuthController (e2e)', () => {
 
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        const user = await getUserByAttribute(dataSource, {
+        const user = await userModel.findOne( {
           email: SAMPLE_USER.email,
-        })
+        }).lean()
         expect(user.email).toEqual(SAMPLE_USER.email)
-        expect(user.username).toEqual(SAMPLE_USER.username)
         expect(comparePassword(SAMPLE_USER.password, user.password)).toEqual(
           true,
         )
@@ -98,7 +87,6 @@ describe('AuthController (e2e)', () => {
         expect(tokePayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
-            username: SAMPLE_USER.username,
           }),
         )
       })
@@ -140,25 +128,10 @@ describe('AuthController (e2e)', () => {
 
       it('should fail for duplicate email', async () => {
         // ARRANGE
-        await createUser(dataSource, {
+        (await userModel.create({
           email: SAMPLE_USER.email,
           ...SAMPLE_USER,
-        })
-        // ACT
-        const res = await request(app.getHttpServer())
-          .post('/auth/register')
-          .send(SAMPLE_USER)
-
-        // ASSERT
-        expect(res.statusCode).toEqual(HttpStatus.CONFLICT)
-      })
-
-      it('should fail for duplicate username', async () => {
-        // ARRANGE
-        await createUser(dataSource, {
-          username: SAMPLE_USER.username,
-          ...SAMPLE_USER,
-        })
+        }))
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -174,7 +147,7 @@ describe('AuthController (e2e)', () => {
     describe('Positive Tests', () => {
       it('should return token for correct data ', async () => {
         // ARRANGE
-        await createUser(dataSource, SAMPLE_USER)
+        await userModel.create({...SAMPLE_USER, password: await SAMPLE_USER_PW_HASH()})
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/login')
@@ -190,7 +163,7 @@ describe('AuthController (e2e)', () => {
 
       it('should return valid token', async () => {
         // ARRANGE
-        await createUser(dataSource, SAMPLE_USER)
+        await userModel.create({...SAMPLE_USER, password: await SAMPLE_USER_PW_HASH()})
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/login')
@@ -205,7 +178,6 @@ describe('AuthController (e2e)', () => {
         expect(tokePayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
-            username: SAMPLE_USER.username,
           }),
         )
       })
@@ -240,10 +212,10 @@ describe('AuthController (e2e)', () => {
   describe('/auth/refresh (POST)', () => {
     let token
     beforeEach(async () => {
-      const user = await createUser(dataSource, SAMPLE_USER)
+      const user =  await userModel.create({...SAMPLE_USER, password: await SAMPLE_USER_PW_HASH()})
       token = jwtService.sign(
         {
-          id: user.pkUserId,
+          id: user._id,
           email: user.email,
         } as RefreshJWTPayload,
         { secret: configService.get('JWT_REFRESH_SECRET') },
@@ -274,7 +246,7 @@ describe('AuthController (e2e)', () => {
 
       it('should fail to auth for non existant user', async () => {
         // ARRANGE
-        await deleteUserByAttribute(dataSource, { email: SAMPLE_USER.email })
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/refresh')
