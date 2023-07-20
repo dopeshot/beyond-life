@@ -18,7 +18,7 @@ export class MailSendService {
     this.defaultFrom = options.defaultSender
   }
 
-  async sendMail(mail: MailData) {
+  async sendMail(mail: MailData): Promise<void> {
     const mailContent = mail.content.contentRaw
     if (mail.content.contentTemplate) {
       this.renderTemplate(
@@ -26,17 +26,20 @@ export class MailSendService {
         mail.content.templateContent,
       )
     }
-      await this.transport.sendMail({
-        to: mail.recipient.recipient,
-        cc: mail.recipient.cc,
-        from: mail.recipient.from || this.defaultFrom,
-        subject: mail.content.subject,
-        // Assume always HTML...our emails SHOULD be styled anyways
-        html: mailContent,
-      })
+    await this.transport.sendMail({
+      to: mail.recipient.recipient,
+      cc: mail.recipient.cc,
+      from: mail.recipient.from || this.defaultFrom,
+      subject: mail.content.subject,
+      // Assume always HTML...our emails SHOULD be styled anyways
+      html: mailContent,
+    })
   }
 
-  private renderTemplate(templateName: string, content: VerifyMailContent) {
+  private renderTemplate(
+    templateName: string,
+    content: VerifyMailContent,
+  ): string {
     // TODO: Add template lookup/render as soon as we have templates
     return ''
   }

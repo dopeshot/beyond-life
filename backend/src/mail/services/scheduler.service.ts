@@ -23,16 +23,20 @@ export class MailScheduleService {
     private readonly mailSendService: MailSendService,
     private readonly mailEventService: MailEventService,
   ) {}
-  async scheduleMailNow(mail: MailData) {
-    try{
-    await this.mailSendService.sendMail(mail)
-    } catch(error){
-      this.logger.error(`Encountered error while trying to send email: ${error}`)
-      throw new ServiceUnavailableException('We are experiencing issues within our backend, please try again later')
+  async scheduleMailNow(mail: MailData): Promise<void> {
+    try {
+      await this.mailSendService.sendMail(mail)
+    } catch (error) {
+      this.logger.error(
+        `Encountered error while trying to send email: ${error}`,
+      )
+      throw new ServiceUnavailableException(
+        'We are experiencing issues within our backend, please try again later',
+      )
     }
   }
 
-  async scheduleMailAtDate(scheduleDate: Date, mail: MailData) {
+  async scheduleMailAtDate(scheduleDate: Date, mail: MailData): Promise<void> {
     const mailEvent: Partial<MailEventEntity> = {
       scheduledAt: scheduleDate,
       hasBeenSend: false,
@@ -46,22 +50,24 @@ export class MailScheduleService {
     }
   }
 
-  private async rescheduleMails(ids: number[], newSendDate?: Date){
-    if (ids.length == 0){
+  private async rescheduleMails(
+    ids: number[],
+    newSendDate?: Date,
+  ): Promise<void> {
+    if (ids.length == 0) {
       return
     }
-    if (!newSendDate){
+    if (!newSendDate) {
       newSendDate = new Date()
       // Reschedule 5 hours later by default
       newSendDate.setHours(newSendDate.getHours() + 5)
     }
     await this.mailEventService.rescheduleMails(ids, newSendDate)
-
   }
 
   // Run every hour
   @Cron('0 * * * *')
-  async sendScheduledMails() {
+  async sendScheduledMails(): Promise<void> {
     const mails = await this.mailEventService.getOpenEventsBefore(new Date())
     if (!mails) {
       this.logger.log(`No scheduled mails for cron`)
@@ -71,15 +77,19 @@ export class MailScheduleService {
     const successIds: number[] = []
     const failureIds: number[] = []
     for (const mail of mails) {
-      try{
-      await this.mailSendService.sendMail(mail.content)
-      successIds.push(mail.pkMailEventId)
-      } catch(error){
-        this.logger.warn(`Could not send scheduled mail due to an error ${error}`)
+      try {
+        await this.mailSendService.sendMail(mail.content)
+        successIds.push(mail.pkMailEventId)
+      } catch (error) {
+        this.logger.warn(
+          `Could not send scheduled mail due to an error ${error}`,
+        )
         failureIds.push(mail.pkMailEventId)
       }
     }
-    this.logger.log(`Send ${successIds.length} scheduled mails, failed to send ${failureIds.length}`)
+    this.logger.log(
+      `Send ${successIds.length} scheduled mails, failed to send ${failureIds.length}`,
+    )
     await this.mailEventService.markMailsAsSend(successIds)
     await this.rescheduleMails(failureIds)
   }
