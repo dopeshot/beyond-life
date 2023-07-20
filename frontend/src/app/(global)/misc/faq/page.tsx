@@ -7,9 +7,9 @@ export const metadata = {
 	title: 'FAQ | Siebtes Leben',
 }
 
-const FAQContent = [
+export const FAQContent = [
 	{
-		slug: 'how-much-does-the-tool-cost',
+		slug: '1',
 		question: 'Wie viel kostet das Tool?',
 		answer: (
 			<>
@@ -26,7 +26,7 @@ const FAQContent = [
 		),
 	},
 	{
-		slug: 'how-much-does-the-tool-cost',
+		slug: '2',
 		question: 'Wie viel kostet das Tool?',
 		answer: (
 			<>
@@ -43,7 +43,7 @@ const FAQContent = [
 		),
 	},
 	{
-		slug: 'how-much-does-the-tool-cost',
+		slug: '3',
 		question: 'Wie viel kostet das Tool?',
 		answer: (
 			<>
@@ -63,14 +63,14 @@ const FAQContent = [
 
 const FAQOverview = () => {
 	return (
-		<div className="container mt-10">
+		<div className="container mt-5 md:mt-10">
 			<Headline>FAQ</Headline>
 			<p>Hier finden Sie Antworten auf häufig gestellte Fragen.</p>
 
 			{FAQContent.map((item, index) => (
 				<div key={index} className="mt-10">
 					<div className="md:w-2/3">
-						<Link href={`/faq/${item.slug}`}>
+						<Link href={routes.misc.faq.single(item.slug)}>
 							<Headline level={3} size="text-xl">
 								{item.question}
 							</Headline>

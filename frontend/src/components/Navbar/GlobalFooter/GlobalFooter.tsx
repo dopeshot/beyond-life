@@ -5,7 +5,7 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 const footerLinks = [
 	{
 		title: 'FAQ',
-		href: routes.misc.faq,
+		href: routes.misc.faq.index,
 	},
 	{
 		title: 'Impressum',
