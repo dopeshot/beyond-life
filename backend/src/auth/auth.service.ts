@@ -14,7 +14,7 @@ import { RefreshJWTPayload } from './interfaces/refresh-jwt-payload.interface'
 import { RegisterDTO } from './dtos/register.dto'
 import { TokenResponse } from './responses/token.response'
 import { UserService } from '../db/services/user.service'
-import { UserEntity } from '../db/entities/users.entity'
+import { User } from '../db/entities/users.entity'
 
 @Injectable()
 export class AuthService {
@@ -51,7 +51,7 @@ export class AuthService {
    * @description Initiate user login
    */
   async login(body: LoginDTO): Promise<TokenResponse> {
-    let user: UserEntity
+    let user: User
     try {
       user = await this.userService.findOneByEmail(body.email)
     } catch (error) /* istanbul ignore next */ {
@@ -71,8 +71,8 @@ export class AuthService {
   /**
    * @description Generate tokens
    */
-  async getAuthPayload(user: UserEntity): Promise<TokenResponse> {
-    await this.userService.setLoginTimestamp(user.pkUserId)
+  async getAuthPayload(user: User): Promise<TokenResponse> {
+    await this.userService.setLoginTimestamp(user._id)
     return {
       access_token: await this.generateJWTToken(user),
       refresh_token: await this.generateRefreshToken(user),
@@ -82,10 +82,10 @@ export class AuthService {
   /**
    * @description Generate refresh token for passed user
    */
-  private async generateRefreshToken(user: UserEntity): Promise<string> {
+  private async generateRefreshToken(user: User): Promise<string> {
     return await this.jwtService.sign(
       {
-        id: user.pkUserId,
+        id: user._id,
         email: user.email,
       } as RefreshJWTPayload,
       {
@@ -98,10 +98,9 @@ export class AuthService {
   /**
    * @description Generate access token for passed user
    */
-  private async generateJWTToken(user: UserEntity): Promise<string> {
+  private async generateJWTToken(user: User): Promise<string> {
     return this.jwtService.sign({
-      username: user.username,
-      id: user.pkUserId,
+      id: user._id,
       email: user.email,
     } as JWTPayload)
   }

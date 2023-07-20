@@ -1,41 +1,51 @@
-import { ApiPropertyOptional } from '@nestjs/swagger'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { MailData } from '../../mail/interfaces/mail.interface'
+import { modelOptions, prop } from '@typegoose/typegoose'
+import { ObjectId } from 'mongoose'
+
+class MailContent {
+  @prop()
+  subject: string
+  @prop()
+  contentRaw?: string
+  @prop()
+  contentTemplate?: MailTemplates
+  @prop()
+  templateContent?: string
+}
+
+class MailRecipient {
+  @prop()
+  recipient: string
+
+  @prop({ type: () => [String] })
+  cc?: string[]
+
+  @prop()
+  from?: string
+}
+
+export class MailData {
+  @prop({ type: () => MailRecipient, _id: false })
+  recipient: MailRecipient
+
+  @prop({ type: () => MailContent, _id: false })
+  content: MailContent
+}
 
 /**
  * @description Entity with all user information
  */
-@Entity('mail_events', { schema: 'public' })
-export class MailEventEntity {
-  @PrimaryGeneratedColumn({ type: 'integer', name: 'pk_mail_event_id' })
-  pkMailEventId: number
+export class MailEvent {
+  _id: ObjectId
 
-  @Column({
-    type: 'timestamp with time zone',
-    name: 'scheduled_at',
-  })
-  @ApiPropertyOptional({
-    example: Date.now(),
-  })
+  @prop({ required: true })
   scheduledAt: Date
 
-  @Column({
-    type: 'json',
-    name: 'content',
-  })
+  @prop({ required: true, type: () => MailData, _id: false })
   content: MailData
 
-  @Column({
-    type: 'boolean',
-    name: 'has_been_send',
-    default: false,
-  })
+  @prop({ required: true })
   hasBeenSent: boolean
 
-  @Column({
-    type: 'boolean',
-    name: 'has_been_rescheduled',
-    default: false,
-  })
+  @prop({ required: true })
   hasBeenRescheduled: boolean
 }
