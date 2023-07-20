@@ -1,13 +1,13 @@
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { AppModule } from './src/app.module'
-import * as yaml from 'yaml'
-import * as fs from 'fs'
-import { Test, TestingModule } from '@nestjs/testing'
-import { DataSource } from 'typeorm'
-import { setupDataSource } from './test/helpers/db.helper'
-import { promisify } from 'util'
 import { ConfigService } from '@nestjs/config'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { Test, TestingModule } from '@nestjs/testing'
+import * as fs from 'fs'
+import { DataSource } from 'typeorm'
+import { promisify } from 'util'
+import * as yaml from 'yaml'
+import { AppModule } from './src/app.module'
 import { MockConfigService } from './test/helpers/config-service.helper'
+import { setupDataSource } from './test/helpers/db.helper'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const exec = promisify(require('node:child_process').exec)
@@ -34,7 +34,7 @@ async function main() {
   fs.writeFileSync('./api.yaml', yamlString)
 
   const { stdout, stderr } = await exec(
-    'npx openapi-typescript api.yaml --output schema.ts',
+    'npx openapi-generator-cli generate -i ./api.yaml -o ../frontend/src/generated -g typescript-fetch',
   )
   console.log('stdout:', stdout)
   console.error('stderr:', stderr)
