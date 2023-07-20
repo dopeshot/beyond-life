@@ -13,7 +13,6 @@ import { LoginDTO } from './dtos/login.dto'
 import { RefreshJWTPayload } from './interfaces/refresh-jwt-payload.interface'
 import { RegisterDTO } from './dtos/register.dto'
 import { TokenResponse } from './responses/token.response'
-import { createPublicKey } from 'crypto'
 import { UserService } from '../db/services/user.service'
 import { UserEntity } from '../db/entities/users.entity'
 
