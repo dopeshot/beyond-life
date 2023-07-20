@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  ServiceUnavailableException,
   forwardRef,
 } from '@nestjs/common'
 import { MailSendService } from './send.service'
@@ -23,7 +24,12 @@ export class MailScheduleService {
     private readonly mailEventService: MailEventService,
   ) {}
   async scheduleMailNow(mail: MailData) {
+    try{
     await this.mailSendService.sendMail(mail)
+    } catch(error){
+      this.logger.error(`Encountered error while trying to send email: ${error}`)
+      throw new ServiceUnavailableException('We are experiencing issues within our backend, please try again later')
+    }
   }
 
   async scheduleMailAtDate(scheduleDate: Date, mail: MailData) {
@@ -35,8 +41,22 @@ export class MailScheduleService {
     }
     const insertedValue = await this.mailEventService.createEvent(mailEvent)
     if (!insertedValue) {
+      this.logger.warn(`MailEvent could not be inserted into the database`)
       throw new InternalServerErrorException('Mailevent could not be scheduled')
     }
+  }
+
+  private async rescheduleMails(ids: number[], newSendDate?: Date){
+    if (ids.length == 0){
+      return
+    }
+    if (!newSendDate){
+      newSendDate = new Date()
+      // Reschedule 5 hours later by default
+      newSendDate.setHours(newSendDate.getHours() + 5)
+    }
+    await this.mailEventService.rescheduleMails(ids, newSendDate)
+
   }
 
   // Run every hour
@@ -49,11 +69,18 @@ export class MailScheduleService {
     }
     // TODO: This lacks error handling
     const successIds: number[] = []
+    const failureIds: number[] = []
     for (const mail of mails) {
+      try{
       await this.mailSendService.sendMail(mail.content)
       successIds.push(mail.pkMailEventId)
+      } catch(error){
+        this.logger.warn(`Could not send scheduled mail due to an error ${error}`)
+        failureIds.push(mail.pkMailEventId)
+      }
     }
-    this.logger.log(`Send ${mails.length} scheduled mails`)
+    this.logger.log(`Send ${successIds.length} scheduled mails, failed to send ${failureIds.length}`)
     await this.mailEventService.markMailsAsSend(successIds)
+    await this.rescheduleMails(failureIds)
   }
 }

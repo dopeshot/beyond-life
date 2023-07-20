@@ -26,7 +26,6 @@ export class MailSendService {
         mail.content.templateContent,
       )
     }
-    try {
       await this.transport.sendMail({
         to: mail.recipient.recipient,
         cc: mail.recipient.cc,
@@ -35,9 +34,6 @@ export class MailSendService {
         // Assume always HTML...our emails SHOULD be styled anyways
         html: mailContent,
       })
-    } catch (exception) {
-      this.logger.warn(`Mail could not be send due to an error: ${exception}`)
-    }
   }
 
   private renderTemplate(templateName: string, content: VerifyMailContent) {
