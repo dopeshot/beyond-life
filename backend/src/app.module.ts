@@ -6,9 +6,11 @@ import { SharedModule } from './shared/shared.module'
 import { DbModule } from './db/db.module'
 import { AuthModule } from './auth/auth.module'
 import { MailModule } from './mail/mail.module'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -41,6 +43,7 @@ import { MailModule } from './mail/mail.module'
             pass: configService.get('MAIL_AUTH_PW'),
           },
         },
+        defaultSender: configService.get('MAIL_DEFAULT_SENDER'),
       }),
       inject: [ConfigService],
     }),

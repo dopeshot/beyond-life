@@ -1,6 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Exclude, Expose } from 'class-transformer'
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { ApiPropertyOptional } from '@nestjs/swagger'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { MailData } from '../../mail/interfaces/mail.interface'
 
 /**
@@ -8,7 +7,9 @@ import { MailData } from '../../mail/interfaces/mail.interface'
  */
 @Entity('mail_events', { schema: 'public' })
 export class MailEventEntity {
-  @Expose()
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'pk_mail_event_id' })
+  pkMailEventId: number
+
   @Column({
     type: 'timestamp with time zone',
     name: 'scheduled_at',
@@ -17,16 +18,14 @@ export class MailEventEntity {
     description: 'Creation date of user',
     example: Date.now(),
   })
-  createdAt: Date
+  scheduledAt: Date
 
-  @Expose()
   @Column({
     type: 'json',
     name: 'content',
   })
-  isScheduled: MailData
+  content: MailData
 
-  @Expose()
   @Column({
     type: 'boolean',
     name: 'has_been_send',
@@ -34,7 +33,6 @@ export class MailEventEntity {
   })
   hasBeenSend: boolean
 
-  @Expose()
   @Column({
     type: 'boolean',
     name: 'has_been_rescheduled',
