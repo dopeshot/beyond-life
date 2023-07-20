@@ -12,7 +12,7 @@ interface MailContent {
 }
 
 interface MailRecipient {
-  recipients: string
+  recipient: string
   cc?: string[]
   from?: string
 }

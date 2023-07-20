@@ -28,7 +28,7 @@ export class MailSendService {
     }
     try {
       await this.transport.sendMail({
-        to: mail.recipient.recipients,
+        to: mail.recipient.recipient,
         cc: mail.recipient.cc,
         from: mail.recipient.from || this.defaultFrom,
         subject: mail.content.subject,
