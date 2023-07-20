@@ -35,7 +35,7 @@ import { ScheduleModule } from '@nestjs/schedule'
           host: configService.get('MAIL_HOST'),
           port: +configService.get('MAIL_HOST_PORT'),
           // Default secure option to false
-          secure: ['false', 'False', '0'].includes(
+          secure: !['false', 'False', '0'].includes(
             configService.get('MAIL_IS_SECURE'),
           ),
           auth: {
