@@ -25,7 +25,6 @@ const Home: React.FC = () => {
 					className="absolute -z-10 h-[calc(80vh_-_64px)] min-h-[420px] object-cover object-top"
 					src={headerBackground}
 					alt="Couple"
-					placeholder="blur"
 				/>
 				<div className="container flex h-full flex-col justify-center">
 					<Headline size="text-3xl md:text-5xl" className="mb-5 text-yellow xl:w-2/3">
