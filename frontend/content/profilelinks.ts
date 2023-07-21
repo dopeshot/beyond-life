@@ -1,12 +1,7 @@
 import { MaterialSymbol } from 'material-symbols'
 import { routes } from '../src/services/routes/routes'
 
-export const profileLinks: {
-	name: string
-	icon: MaterialSymbol
-	href?: string
-	onClick?: () => void
-}[] = [
+export const profileLinks = [
 	{
 		name: 'Meine Testamente',
 		icon: 'history_edu',
@@ -22,4 +17,14 @@ export const profileLinks: {
 		icon: 'logout',
 		onClick: () => console.log('logout'),
 	},
-]
+] satisfies ((
+	| {
+			href: string
+	  }
+	| {
+			onClick: () => void
+	  }
+) & {
+	name: string
+	icon: MaterialSymbol
+})[]

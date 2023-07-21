@@ -34,7 +34,9 @@ export const ProfileSideBarLink: React.FC<ProfileSidebarLinkProps> = ({
 }) => {
 	// CSS classes
 	const classes = `flex items-center font-semibold gap-2 ${
-		isActive ? 'border-2 border-red text-red rounded-xl p-3' : 'text-gray-500 hover:text-gray-700 pt-4 p-3'
+		isActive
+			? 'border-2 border-red text-red cursor-default rounded-xl p-3'
+			: 'text-gray-500 hover:text-gray-700 pt-4 p-3'
 	}`
 
 	return (

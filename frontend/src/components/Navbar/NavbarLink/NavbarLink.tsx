@@ -24,7 +24,9 @@ type NavbarLinkProps = (
 export const NavbarLink: React.FC<NavbarLinkProps> = ({ children, datacy, isActive = false, ...props }) => {
 	// CSS classes
 	const classes = `${
-		isActive ? 'font-bold text-red-700' : 'font-semibold text-dark hover:text-dark-300 focus:text-dark-400'
+		isActive
+			? 'font-bold text-red-700 cursor-default'
+			: 'font-semibold text-dark hover:text-dark-300 focus:text-dark-400'
 	}`
 
 	return (

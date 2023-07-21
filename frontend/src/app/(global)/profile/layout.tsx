@@ -8,25 +8,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname()
 
 	return (
-		<div className="flex flex-col md:flex-row gap-5 md:gap-10 container my-5">
+		<div className="container my-5 flex flex-col gap-5 md:flex-row md:gap-10">
 			{/* Sidebar */}
-			<div className="order-1 md:-order-1 md:sticky top-5 lg:w-1/3 xl:w-1/4 h-full">
-				<div className="border-2 border-gray-200 rounded-xl pt-5 pb-3 px-5">
+			<div className="top-5 order-1 h-full md:sticky md:-order-1 lg:w-1/3 xl:w-1/4">
+				<div className="rounded-xl border-2 border-gray-200 px-5 pb-3 pt-5">
 					{/* Header */}
-					<div className="flex flex-row mb-2">
+					<div className="mb-2 flex flex-row">
 						<Headline size="text-xl md:text-2xl mx-auto">email@gmail.com</Headline>
 					</div>
 
-					<hr className="border mb-2 md:mb-4" />
+					<hr className="mb-2 border md:mb-4" />
 
 					{/* Links */}
 					<div>
 						{profileLinks.map((link) => (
 							<ProfileSideBarLink
-								key={link.href}
-								icon={link.icon}
-								onClick={link.onClick}
-								href={link.href}
+								key={link.icon}
+								{...link}
 								isActive={'href' in link && link.href === pathname}
 								datacy={`profile-link-${link.href}`}
 							>
