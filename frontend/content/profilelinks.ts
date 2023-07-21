@@ -15,7 +15,7 @@ export const profileLinks: {
 	{
 		name: 'Account Einstellungen',
 		icon: 'settings',
-		href: routes.profile.accountSettings,
+		href: routes.profile.settings,
 	},
 	{
 		name: 'Ausloggen',

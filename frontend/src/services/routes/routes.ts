@@ -7,7 +7,7 @@ export const routes = {
 	},
 	profile: {
 		myLastWills: '/profile/last-will',
-		accountSettings: '/profile/account-settings',
+		settings: '/profile/settings',
 	},
 	lastWill: {
 		index: '/last-will',
