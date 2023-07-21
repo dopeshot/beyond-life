@@ -1,7 +1,7 @@
 'use client'
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
@@ -10,11 +10,13 @@ import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
 import { routes } from '../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { InheritanceFormPayload } from '../../../../store/last-will/inheritance/actions'
-import { FinancialAsset, Item } from '../../../../store/last-will/inheritance/state'
-import { SidebarPages } from '../../../../types/sidebar'
+import { useAppSelector } from '../../../../store/hooks'
+import { FinancialAsset, Item } from '../../../../types/lastWill'
 
+type InheritanceFormPayload = {
+	financialAssets: FinancialAsset[]
+	items: Item[]
+}
 /**
  * Inheritance Page
  */
@@ -22,18 +24,27 @@ const Inheritance = () => {
 	const router = useRouter()
 
 	// Global State
-	const { lastWill, services } = useLastWillContext()
 
-	const PREVIOUS_LINK = routes.lastWill.heirs(lastWill.common.id)
-	const NEXT_LINK = routes.lastWill.succession(lastWill.common.id)
+	// New Global State
+	const [financialAssets, items] = useAppSelector((state) => [
+		state.inheritance.financialAssets,
+		state.inheritance.items,
+	])
+
+	// TODO: Replace with new global state ids
+	const PREVIOUS_LINK = routes.lastWill.heirs('lastWill.common.id')
+	const NEXT_LINK = routes.lastWill.succession('lastWill.common.id')
 
 	// Formik
-	const initalFormValues: InheritanceFormPayload = lastWill.inheritance
+	const initalFormValues: InheritanceFormPayload = {
+		financialAssets,
+		items,
+	}
 
 	const onSubmit = async (values: InheritanceFormPayload, href: string) => {
 		try {
 			// Update inheritance global state only if values have changed
-			await services.submitInheritance(values)
+			console.log(values)
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -46,7 +57,7 @@ const Inheritance = () => {
 		financialAssets: array()
 			.of(
 				object().shape({
-					id: number().required(),
+					id: string().required(),
 					where: string(),
 					amount: number().min(1, 'Betrag muss größer als 0 sein.'),
 					currency: string(),
@@ -56,7 +67,7 @@ const Inheritance = () => {
 		items: array()
 			.of(
 				object().shape({
-					id: number().required(),
+					id: string().required(),
 					name: string(),
 					description: string(),
 				})
@@ -65,9 +76,10 @@ const Inheritance = () => {
 	})
 
 	// Use to handle sidebar display state and progress
-	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
-	}, [services])
+	// TODO: Replace with global state
+	// useEffect(() => {
+	// services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
+	// }, [services])
 
 	return (
 		<div className="container mt-5">
@@ -141,14 +153,7 @@ const Inheritance = () => {
 										{/* Add Financial Asset Button */}
 										<Button
 											datacy="button-add-financial-asset"
-											onClick={() =>
-												arrayHelpers.push({
-													id: Math.max(...values.financialAssets.map((financialAsset) => financialAsset.id)) + 1,
-													where: '',
-													amount: '',
-													currency: '€',
-												})
-											}
+											onClick={() => console.log('TODO')}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"
 											kind="tertiary"
@@ -215,13 +220,7 @@ const Inheritance = () => {
 										{/* Add Item Button */}
 										<Button
 											datacy="button-add-item"
-											onClick={() =>
-												arrayHelpers.push({
-													id: Math.max(...values.items.map((items) => items.id)) + 1,
-													name: '',
-													description: '',
-												} satisfies Item)
-											}
+											onClick={() => console.log('TODO')}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"
 											kind="tertiary"
@@ -235,7 +234,7 @@ const Inheritance = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							loading={lastWill.common.isLoading}
+							loading={false} // TODO: replace with new global state
 							dirty={dirty}
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							previousHref={PREVIOUS_LINK}

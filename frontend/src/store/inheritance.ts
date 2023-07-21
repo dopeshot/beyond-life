@@ -10,33 +10,27 @@ const initialState: InheritanceState = {
 	financialAssets: [
 		{
 			id: nanoid(),
-			place: 'Geld bei der Sparkasse',
-			amount: 15000,
+			where: 'Meine Bank',
+			amount: 100,
 			currency: '€',
 		},
 		{
 			id: nanoid(),
-			place: 'Geld bei Cosmos im Aktiendepot',
-			amount: 450000,
-			currency: '€',
-		},
-		{
-			id: nanoid(),
-			place: 'Geld im Tresor unter den Büchern',
-			amount: 8000,
-			currency: '€',
+			where: 'Clash of Clans',
+			amount: 500,
+			currency: 'COINS',
 		},
 	],
 	items: [
 		{
 			id: nanoid(),
-			name: 'mein Fahrrad',
-			description: '',
+			name: 'Mein Fahrrad',
+			description: 'Bitte damit fahren!',
 		},
 		{
 			id: nanoid(),
-			name: 'mein geerbtes Kunstwerk',
-			description: 'Vererbe es weiter an deine Kinder',
+			name: 'Mein geerbtes Kunstwerk',
+			description: '',
 		},
 	],
 }
@@ -47,5 +41,5 @@ const inheritanceSlice = createSlice({
 	reducers: {},
 })
 
-export const tasksReducer = inheritanceSlice.reducer
+export const inheritanceReducer = inheritanceSlice.reducer
 export const {} = inheritanceSlice.actions

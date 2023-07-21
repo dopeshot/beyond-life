@@ -1,7 +1,7 @@
 export type FinancialAsset = {
 	id: string
-	place?: string
-	amount?: number | string
+	where?: string
+	amount?: number
 	currency?: string
 }
 
