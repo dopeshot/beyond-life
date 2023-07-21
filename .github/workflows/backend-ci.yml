@@ -52,7 +52,9 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        command: ["test", "test:e2e"]
+        command: 
+        - test
+        - test:e2e
     defaults:
       run:
         shell: bash
@@ -79,7 +81,9 @@ jobs:
     needs: [tests]
     strategy:
       matrix:
-        platform: ["linux/amd64", "linux/arm64"]
+        platform: 
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v3
