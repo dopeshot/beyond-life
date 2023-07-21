@@ -2,7 +2,6 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -10,25 +9,24 @@ import {
   SerializeOptions,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common'
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
-} from '@nestjs/swagger'
-import { AuthService } from './auth.service'
-import { LoginDTO } from './dtos/login.dto'
-import { RegisterDTO } from './dtos/register.dto'
-import { RefreshTokenGuard } from './guards/refresh-token.guard'
-import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface'
-import { TokenResponse } from './responses/token.response'
+} from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { LoginDTO } from './dtos/login.dto';
+import { RegisterDTO } from './dtos/register.dto';
+import { RefreshTokenGuard } from './guards/refresh-token.guard';
+import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface';
+import { TokenResponse } from './responses/token.response';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -51,7 +49,7 @@ export class AuthController {
     type: TokenResponse,
   })
   async register(@Body() registerData: RegisterDTO): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.register(registerData))
+    return new TokenResponse(await this.authService.register(registerData));
   }
 
   @Post('login')
@@ -66,10 +64,10 @@ export class AuthController {
     type: TokenResponse,
   })
   async login(@Body() loginData: LoginDTO): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.login(loginData))
+    return new TokenResponse(await this.authService.login(loginData));
   }
 
-  @Post('refresh')
+  @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: 'Fetch new access token using refresh token' })
@@ -84,6 +82,6 @@ export class AuthController {
   async getAuthViaRefreshToken(
     @Req() { user }: RequestWithDbUser,
   ): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.getAuthPayload(user))
+    return new TokenResponse(await this.authService.getAuthPayload(user));
   }
 }

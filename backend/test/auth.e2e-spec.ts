@@ -1,24 +1,24 @@
 /* eslint-disable prettier/prettier */
+import { getConnectionToken } from '@m8a/nestjs-typegoose';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Connection, Model } from 'mongoose';
 import * as request from 'supertest';
+import { AuthModule } from '../src/auth/auth.module';
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface';
-import { comparePassword } from './helpers/general.helper';
-import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper';
+import { DbModule } from '../src/db/db.module';
+import { User } from '../src/db/entities/users.entity';
+import { SharedModule } from '../src/shared/shared.module';
 import { MockConfigService } from './helpers/config-service.helper';
-import { getConnectionToken } from '@m8a/nestjs-typegoose';
+import { comparePassword } from './helpers/general.helper';
 import {
   closeInMongodConnection,
   rootTypegooseTestModule,
 } from './helpers/mongo.helper';
-import { Connection, Model } from 'mongoose';
-import { User } from '../src/db/entities/users.entity';
-import { DbModule } from '../src/db/db.module';
-import { SharedModule } from '../src/shared/shared.module';
-import { PassportModule } from '@nestjs/passport';
-import { AuthModule } from '../src/auth/auth.module';
+import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -227,7 +227,7 @@ describe('AuthController (e2e)', () => {
     });
   });
 
-  describe('/auth/refresh (POST)', () => {
+  describe('/auth/refresh-token (POST)', () => {
     let token;
     beforeEach(async () => {
       const user = await userModel.create({
@@ -246,7 +246,7 @@ describe('AuthController (e2e)', () => {
       it('should allow for auth with valid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}`);
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK);
@@ -259,7 +259,7 @@ describe('AuthController (e2e)', () => {
       it('should fail to auth with invalid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}a`);
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
@@ -270,7 +270,7 @@ describe('AuthController (e2e)', () => {
         await userModel.deleteOne({ email: SAMPLE_USER.email });
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}a`);
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
@@ -294,7 +294,7 @@ describe('AuthController (e2e)', () => {
       expect(loginRes.statusCode).toEqual(HttpStatus.OK);
       // ACT 3
       const refreshRes = await request(app.getHttpServer())
-        .post('/auth/refresh')
+        .post('/auth/refresh-token')
         .set('Authorization', `Bearer ${loginRes.body.refresh_token}`);
       // ASSERT 3
       expect(refreshRes.statusCode).toEqual(HttpStatus.OK);
