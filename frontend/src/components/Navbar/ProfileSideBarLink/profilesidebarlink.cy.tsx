@@ -63,7 +63,10 @@ describe('ProfileSideBarLink', () => {
 					Profile
 				</ProfileSideBarLink>
 			)
-			cy.datacy('profile-sidebar-link').should('have.class', 'border-2 border-red text-red rounded-xl p-3')
+			cy.datacy('profile-sidebar-link').should(
+				'have.class',
+				'border-2 border-red text-red cursor-default rounded-xl p-3'
+			)
 		})
 
 		it('renders an inactive link', () => {
@@ -73,7 +76,10 @@ describe('ProfileSideBarLink', () => {
 				</ProfileSideBarLink>
 			)
 			cy.datacy('profile-sidebar-link').should('have.class', 'text-gray-500 hover:text-gray-700 pt-4 p-3')
-			cy.datacy('profile-sidebar-link').should('not.have.class', 'border-2 border-red text-red rounded-xl p-3')
+			cy.datacy('profile-sidebar-link').should(
+				'not.have.class',
+				'border-2 border-red text-red cursor-default rounded-xl p-3'
+			)
 		})
 	})
 })
