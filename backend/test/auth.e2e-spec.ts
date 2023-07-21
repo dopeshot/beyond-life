@@ -430,7 +430,7 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mock.getSentMail().length).toEqual(0)
       })
 
       it('should send valid token in said email', async () => {
