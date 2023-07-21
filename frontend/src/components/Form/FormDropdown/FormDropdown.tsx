@@ -1,7 +1,7 @@
 'use-client'
 import { Field, FieldProps } from 'formik'
 import { useState } from 'react'
-import { ComponentOptions } from '../../../types/dropdownOptions'
+import { ComponentOptions } from '../../../types/form'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 

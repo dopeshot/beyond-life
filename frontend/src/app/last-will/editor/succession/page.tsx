@@ -11,7 +11,7 @@ import { IconButton } from '../../../../components/IconButton/IconButton'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SuccessionFormPayload } from '../../../../store/last-will/succession/actions'
-import { DropdownButtonOptions } from '../../../../types/dropdownOptions'
+import { DropdownButtonOptions } from '../../../../types/form'
 import { SidebarPages } from '../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
