@@ -37,7 +37,7 @@ describe('NavbarLink', () => {
 	})
 
 	describe('OnClick Prop', () => {
-		it('renders a button with onClick', () => {
+		it('renders a buthrefn with onClick', () => {
 			cy.mount(
 				<NavbarLink datacy="navbar-link" onClick={() => console.log('Clicked!')}>
 					Click me
@@ -46,7 +46,7 @@ describe('NavbarLink', () => {
 			cy.datacy('navbar-link').should('be.visible')
 		})
 
-		it('disables button when link is active', () => {
+		it('disables buthrefn when link is active', () => {
 			cy.mount(
 				<NavbarLink datacy="navbar-link" onClick={() => console.log('Clicked!')} isActive>
 					Click me

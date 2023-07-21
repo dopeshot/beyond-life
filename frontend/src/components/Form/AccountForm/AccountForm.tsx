@@ -47,7 +47,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 		// Redirect to profile page
 		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.account.profile)
+		router.push(routes.profile.myLastWills)
 	}
 
 	const onRegisterFormSubmit = async (values: AccountDto) => {
@@ -60,7 +60,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 		// Redirect to profile page
 		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.account.profile)
+		router.push(routes.profile.myLastWills)
 	}
 
 	return (

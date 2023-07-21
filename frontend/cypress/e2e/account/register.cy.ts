@@ -13,7 +13,7 @@ describe('Account Register Page', () => {
 			// Cause of mock
 			cy.wait(1055)
 
-			cy.url().should('include', '/account/profile')
+			cy.url().should('include', '/profile/last-will')
 		})
 	})
 })

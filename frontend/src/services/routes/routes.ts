@@ -3,8 +3,11 @@ export const routes = {
 	account: {
 		register: '/account/register',
 		login: '/account/login',
-		profile: '/account/profile',
 		resetPassword: '/account/reset-password',
+	},
+	profile: {
+		myLastWills: '/profile/last-will',
+		settings: '/profile/settings',
 	},
 	lastWill: {
 		index: '/last-will',
