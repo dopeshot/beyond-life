@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -9,7 +10,7 @@ import {
   SerializeOptions,
   UseGuards,
   UseInterceptors,
-} from '@nestjs/common';
+} from '@nestjs/common'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -20,13 +21,17 @@ import {
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { LoginDTO } from './dtos/login.dto';
-import { RegisterDTO } from './dtos/register.dto';
-import { RefreshTokenGuard } from './guards/refresh-token.guard';
-import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface';
-import { TokenResponse } from './responses/token.response';
+} from '@nestjs/swagger'
+import { JwtGuard } from '../shared/guards/jwt.guard'
+import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
+import { AuthService } from './auth.service'
+import { LoginDTO } from './dtos/login.dto'
+import { RegisterDTO } from './dtos/register.dto'
+import { RefreshTokenGuard } from './guards/refresh-token.guard'
+import { VerifyTokenGuard } from './guards/verify-token.guard'
+import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface'
+import { RequestWithVerifyContent } from './interfaces/request-with-verify-payload.interface'
+import { TokenResponse } from './responses/token.response'
 
 @Controller('auth')
 @ApiTags('auth')
@@ -49,7 +54,7 @@ export class AuthController {
     type: TokenResponse,
   })
   async register(@Body() registerData: RegisterDTO): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.register(registerData));
+    return new TokenResponse(await this.authService.register(registerData))
   }
 
   @Post('login')
@@ -64,7 +69,7 @@ export class AuthController {
     type: TokenResponse,
   })
   async login(@Body() loginData: LoginDTO): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.login(loginData));
+    return new TokenResponse(await this.authService.login(loginData))
   }
 
   @Post('refresh-token')
@@ -82,6 +87,30 @@ export class AuthController {
   async getAuthViaRefreshToken(
     @Req() { user }: RequestWithDbUser,
   ): Promise<TokenResponse> {
-    return new TokenResponse(await this.authService.getAuthPayload(user));
+    return new TokenResponse(await this.authService.getAuthPayload(user))
+  }
+
+  @Get('verify-email')
+  @UseGuards(VerifyTokenGuard)
+  @ApiOperation({ summary: 'Verify a users email' })
+  @ApiBearerAuth('verify_token')
+  @ApiOkResponse({
+    description: 'Email has been verified',
+  })
+  async verifyMail(@Req() { user }: RequestWithVerifyContent) {
+    await this.authService.verifyUserMail(user.email)
+  }
+
+  @Get('request-verify-email')
+  @UseGuards(JwtGuard)
+  @ApiOperation({
+    summary: 'Request a verfication email for the users email address',
+  })
+  @ApiBearerAuth('access_token')
+  @ApiOkResponse({
+    description: 'Verify email has been send',
+  })
+  async requestVerifyMail(@Req() { user }: RequestWithJWTPayload) {
+    await this.authService.requestUserVerifyMail(user.id)
   }
 }

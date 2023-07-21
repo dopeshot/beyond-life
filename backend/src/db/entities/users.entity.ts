@@ -36,6 +36,13 @@ export class User {
     example: Date.now(),
   })
   createdAt: Date
+
+  @Expose()
+  @prop({ required: true, default: false })
+  @ApiProperty({
+    description: 'Has the users mail been verified?',
+  })
+  hasVerifiedEmail: boolean
 }
 
 export type UserModel = User & Document
