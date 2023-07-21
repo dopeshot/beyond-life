@@ -26,11 +26,11 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 
 	const navLinks: NavLink[] = [
 		{
-			to: routes.index,
+			href: routes.index,
 			text: 'Startseite',
 		},
 		{
-			to: routes.lastWill.index,
+			href: routes.lastWill.index,
 			text: 'Testament',
 		},
 	]
@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 					{/* Navlinks Start */}
 					{navLinks.map((navLink) => (
 						<li key={navLink.text}>
-							<NavbarLink isActive={'to' in navLink && navLink.to === pathname} {...navLink}>
+							<NavbarLink isActive={'href' in navLink && navLink.href === pathname} {...navLink}>
 								{navLink.text}
 							</NavbarLink>
 						</li>
@@ -73,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 						</Route>
 					</li>
 					<li>
-						<NavbarLink to={routes.account.register} isActive={routes.account.register === pathname}>
+						<NavbarLink href={routes.account.register} isActive={routes.account.register === pathname}>
 							Register
 						</NavbarLink>
 					</li>
