@@ -1,6 +1,6 @@
 export const FAQContent = [
 	{
-		slug: '1',
+		slug: 'what-is-a-will-and-why-should-I-make-one',
 		question: 'Was ist ein Testament und warum sollte ich eins erstellen?',
 		answer: (
 			<>
@@ -14,7 +14,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '2',
+		slug: 'benefits-of-creating-will-with-seventh-life',
 		question: 'Was bringt es, das Testament mit Siebtes Leben zu erstellen?',
 		answer: (
 			<>
@@ -27,7 +27,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '3',
+		slug: 'formal-requirements-for-valid-private-will',
 		question: 'Welche formalen Anforderungen muss ein privates Testament erfüllen, um gültig zu sein?',
 		answer: (
 			<>
@@ -40,7 +40,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '4',
+		slug: 'difference-between-public-and-handwritten-will',
 		question: 'Was ist der Unterschied zwischen einem öffentlichen und einem handschriftlichen Testament?',
 		answer: (
 			<>
@@ -60,7 +60,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '5',
+		slug: 'why-do-I-need-to-register',
 		question: 'Warum muss ich mich registrieren?',
 		answer: (
 			<>
@@ -75,7 +75,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '6',
+		slug: 'are-my-personal-data-safe',
 		question: 'Sind meine persönlichen Daten sicher?',
 		answer: (
 			<>
@@ -89,7 +89,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '7',
+		slug: 'what-happens-if-I-dont-make-a-will',
 		question: 'Was passiert, wenn ich kein Testament erstelle?',
 		answer: (
 			<>
@@ -102,7 +102,7 @@ export const FAQContent = [
 		),
 	},
 	{
-		slug: '8',
+		slug: 'what-is-a-bequest-and-how-is-it-different-from-an-inheritance',
 		question: 'Was ist ein Vermächtnis und wie unterscheidet es sich von einer Erbschaft?',
 		answer: (
 			<>
