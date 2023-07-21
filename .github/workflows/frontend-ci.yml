@@ -10,7 +10,7 @@ on:
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"
-      - ".github/workflows/templates/docker-build-and-push.yml"
+      - ".github/workflows/docker-build-and-push.template.yml"
 
 jobs:
   setup:
@@ -50,6 +50,6 @@ jobs:
       run: npm audit --omit=dev
 
   docker-build-and-push:
-    uses: ./.github/workflows/templates/docker-build-and-push.yml
+    uses: ./.github/workflows/docker-build-and-push.template.yml
     with:
       image: ghcr.io/dopeshot/beyond-life/frontend
