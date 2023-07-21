@@ -1,12 +1,12 @@
+import { TypegooseModule } from '@m8a/nestjs-typegoose'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { AppController } from './app.controller'
-import { SharedModule } from './shared/shared.module'
-import { DbModule } from './db/db.module'
-import { AuthModule } from './auth/auth.module'
-import { MailModule } from './mail/mail.module'
 import { ScheduleModule } from '@nestjs/schedule'
-import { TypegooseModule } from '@m8a/nestjs-typegoose'
+import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
+import { DbModule } from './db/db.module'
+import { MailModule } from './mail/mail.module'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
   imports: [
@@ -23,6 +23,7 @@ import { TypegooseModule } from '@m8a/nestjs-typegoose'
         )}:${configService.get('DB_USER_PW')}@${configService.get(
           'DB_HOST',
         )}:${configService.get('DB_PORT')}/${configService.get('DB_DB')}`,
+        family: 4,
       }),
       inject: [ConfigService],
     }),
