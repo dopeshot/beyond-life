@@ -11,27 +11,13 @@ on:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"
       - ".github/workflows/docker-build-and-push.template.yml"
+      - ".github/workflows/setup.template.yaml"
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: frontend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: install npm dependencies
-        run: npm ci --no-audit --cache ~/.npm
-
-      - name: Cache
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+    uses: .github/workflows/setup.template.yaml
+    with:
+      context: frontend
           
   audit:
     runs-on: ubuntu-latest
