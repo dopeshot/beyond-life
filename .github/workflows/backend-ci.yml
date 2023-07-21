@@ -81,4 +81,4 @@ jobs:
     needs: tests
     uses: ./.github/workflows/docker-build-and-push.template.yml
     with:
-      image: ghcr.io/dopeshot/beyond-life/backend
+      context: backend
