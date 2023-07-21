@@ -60,15 +60,19 @@ const MyLastWills = () => {
 				Meine Testamente <span className="text-base text-gray-600 ml-2">(2)</span>
 			</Headline>
 
+			{/* Last Will List */}
 			{lastWills.map((lastWill) => (
 				<div key={lastWill.id} className="border-2 border-gray-200 rounded-xl py-5 px-6 mb-2 md:mb-4">
 					<div className="flex justify-between items-center mb-4">
+						{/* Header */}
 						<div>
 							<Headline hasMargin={false} level={4} size="text-lg">
 								{lastWill.title}
 							</Headline>
 							<p className="text-gray-500">erstellt am {lastWill.date.toLocaleDateString()}</p>
 						</div>
+
+						{/* Actions */}
 						<div className="flex gap-2">
 							<IconButton icon="draw" />
 							<IconButton icon="edit" />
@@ -76,6 +80,7 @@ const MyLastWills = () => {
 						</div>
 					</div>
 
+					{/* Steps */}
 					<div className="flex flex-col xl:flex-row items-center space-y-2 xl:space-y-0 xl:space-x-4">
 						{lastWill.steps.map((step, index) => (
 							<div
