@@ -11,7 +11,7 @@ describe('Account Register Page', () => {
 			cy.datacy('submit-button').click()
 
 			// Cause of mock
-			cy.wait(1001)
+			cy.wait(1055)
 
 			cy.url().should('include', '/account/profile')
 		})

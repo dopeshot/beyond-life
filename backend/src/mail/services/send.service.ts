@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common'
 import { Transporter, createTransport } from 'nodemailer'
 import { MailModuleConfig } from '../interfaces/mail-module.interface'
 import { MODULE_OPTIONS_TOKEN } from '../metadata/mail.module-definition'
-import { MailData } from '../interfaces/mail.interface'
+import { MailData } from '../../db/entities/mail-event.entity'
 
 /**
  * @description Service reliable for actually talking to the http server
@@ -37,7 +37,7 @@ export class MailSendService {
     })
   }
 
-  private renderTemplate(templateName: string, content: never): string {
+  private renderTemplate(templateName: string, content: string): string {
     // TODO: Add template lookup/render as soon as we have templates
     return ''
   }

@@ -7,10 +7,10 @@ import {
   forwardRef,
 } from '@nestjs/common'
 import { MailSendService } from './send.service'
-import { MailData } from '../interfaces/mail.interface'
 import { MailEventService } from '../../db/services/mail-event.service'
-import { MailEventEntity } from '../../db/entities/mail-event.entity'
 import { Cron } from '@nestjs/schedule'
+import { MailData, MailEvent } from '../../db/entities/mail-event.entity'
+import { ObjectId } from 'mongoose'
 
 /**
  * @description Service reliable for scheduling the sending of emails
@@ -38,7 +38,7 @@ export class MailScheduleService {
   }
 
   async scheduleMailAtDate(scheduleDate: Date, mail: MailData): Promise<void> {
-    const mailEvent: Partial<MailEventEntity> = {
+    const mailEvent: Partial<MailEvent> = {
       scheduledAt: scheduleDate,
       hasBeenSent: false,
       hasBeenRescheduled: false,
@@ -52,7 +52,7 @@ export class MailScheduleService {
   }
 
   private async rescheduleMails(
-    ids: number[],
+    ids: ObjectId[],
     newSendDate?: Date,
   ): Promise<void> {
     if (ids.length == 0) {
@@ -75,17 +75,17 @@ export class MailScheduleService {
       return
     }
     // TODO: This lacks error handling
-    const successIds: number[] = []
-    const failureIds: number[] = []
+    const successIds: ObjectId[] = []
+    const failureIds: ObjectId[] = []
     for (const mail of mails) {
       try {
         await this.mailSendService.sendMail(mail.content)
-        successIds.push(mail.pkMailEventId)
+        successIds.push(mail._id)
       } catch (error) {
         this.logger.warn(
           `Could not send scheduled mail due to an error ${error}`,
         )
-        failureIds.push(mail.pkMailEventId)
+        failureIds.push(mail._id)
       }
     }
     this.logger.log(
