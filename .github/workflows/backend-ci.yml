@@ -15,7 +15,7 @@ on:
 
 jobs:
   setup:
-    uses: .github/workflows/setup.template.yaml
+    uses: ./.github/workflows/setup.template.yaml
     with:
       context: backend
 
