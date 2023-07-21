@@ -31,7 +31,7 @@ jobs:
         with:
           path: ~/.npm
           key: node-modules-${{ hashFiles('package-lock.json') }}
-          
+
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
@@ -41,12 +41,11 @@ jobs:
         shell: bash
         working-directory: backend
     steps:
-    
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: audit
-      run: npm audit --omit=dev
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: audit
+        run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
@@ -75,7 +74,7 @@ jobs:
       - name: tests
         run: npm run ${{ matrix.command }}
 
-  update-types:
+  update-sdk:
     runs-on: ubuntu-latest
     needs: [tests]
     defaults:
@@ -96,18 +95,18 @@ jobs:
         working-directory: ./backend
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
-      - name: Generate types
-        run: ( cd backend && npm run gen:types ) && cp backend/schema.ts frontend/src/generated
+      - name: Generate sdk
+        run: cd backend && npm run gen:types
 
       - name: Cache
         id: cache
         uses: actions/cache@v3
         with:
-          path: frontend/src/generated/schema.ts
+          path: frontend/src/generated
           key: types-${{ github.sha }}
 
   commit-types:
-    needs: [update-types]
+    needs: [update-sdk]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -123,19 +122,18 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
-          path: frontend/src/generated/schema.ts
+          path: frontend/src/generated
           key: types-${{ github.sha }}
-          
+
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
-          git add frontend/src/generated/schema.ts
+          git add frontend/src/generated
           git commit -m "generated" || echo "No changes to commit"
-          
+
       - name: Push
         run: git push
-
 
   docker-build-and-push:
     runs-on: ubuntu-latest
