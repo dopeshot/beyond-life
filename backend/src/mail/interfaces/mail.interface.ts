@@ -1,3 +1,3 @@
-enum MailTemplates {
+export enum MailTemplates {
   VERIFY = 'VERIFY',
 }
