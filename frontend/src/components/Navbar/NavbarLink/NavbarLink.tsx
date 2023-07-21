@@ -17,7 +17,7 @@ type NavbarLinkProps = {
  * Navbar Link to use in Navbar. Handles the to and onClick and have an active state.
  */
 export const NavbarLink: React.FC<NavbarLinkProps> = ({ to, children, datacy, onClick, isActive = false }) => {
-	if (!to && !onClick) <p className="text-red-500">Error: You must define to or onClick prop.</p>
+	if (!to && !onClick) return <p className="text-red-500">Error: You must define to or onClick prop.</p>
 
 	// CSS classes
 	const classes = `${

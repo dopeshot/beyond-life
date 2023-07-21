@@ -1,27 +1,37 @@
 'use client'
-import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { profileLinks } from '../../../../../content/profilelinks'
 import { Headline } from '../../../../components/Headline/Headline'
-import { Icon } from '../../../../components/Icon/Icon'
-import { routes } from '../../../../services/routes/routes'
+import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
 
 /**
  * Profile Page
  */
 const Profile = () => {
+	const pathname = usePathname()
+
 	return (
 		<div className="container mt-5">
-			<div className="border-2 border-gray-200 rounded-xl md:w-1/3 p-5">
-				<div className="flex flex-row">
+			<div className="border-2 border-gray-200 rounded-xl md:w-1/4 p-5">
+				<div className="flex flex-row mb-2">
 					<Headline size="text-2xl mx-auto">email@gmail.com</Headline>
 				</div>
 
-				<hr className="border mb-2" />
+				<hr className="border mb-2 md:mb-4" />
 
 				<div>
-					<Link className="flex items-center gap-2" href={routes.profile.myLastWills}>
-						<Icon icon="history_edu" />
-						<span>Meine Testamente</span>
-					</Link>
+					{profileLinks.map((link) => (
+						<ProfileSideBarLink
+							key={link.href}
+							icon={link.icon}
+							onClick={link.onClick}
+							href={link.href}
+							isActive={'href' in link && link.href === pathname}
+							datacy={`profile-link-${link.href}`}
+						>
+							{link.name}
+						</ProfileSideBarLink>
+					))}
 				</div>
 			</div>
 		</div>
