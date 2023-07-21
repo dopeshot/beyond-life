@@ -13,7 +13,7 @@ export type LastWillState = {
 
 const initialState: LastWillState = {
 	progressKeys: [],
-	isLoading: true,
+	isLoading: false,
 	financialAssets: [
 		{
 			id: nanoid(),
