@@ -16,7 +16,7 @@ services:
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
     links:
       - db:db
-        
+
   frontend:
     image: ghcr.io/dopeshot/beyond-life/frontend:main
     restart: "always"
@@ -26,13 +26,14 @@ services:
       - backend:backend
 
   db:
-    image: mongo:6.0.8 
+    image: mongo:6.0.8
     ports:
       - 27017:27017
     restart: "always"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PW:-admin}
+      - MONGO_INITDB_DATABASE:=${MONGO_DB:-siebtesleben}
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
       interval: 10s
