@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { FAQContent } from '../../../../../../content/faq'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-import { FAQContent } from '../page'
 
 type FAQSinglePageProps = {
 	params: {
@@ -44,11 +44,13 @@ export default function FAQSinglePage({ params }: FAQSinglePageProps) {
 
 	return (
 		<div className="container mt-5 md:mt-10">
-			<Route kind="tertiary" icon="arrow_back" href={routes.misc.faq.index} className="mb-2">
-				Zurück zur Übersicht
-			</Route>
-			<Headline>{question.question}</Headline>
-			<div className="md:w-2/3">{question.answer}</div>
+			<div className="md:w-2/3">
+				<Route kind="tertiary" icon="arrow_back" href={routes.misc.faq.index} className="mb-2">
+					Zurück zur Übersicht
+				</Route>
+				<Headline>{question.question}</Headline>
+				<div>{question.answer}</div>
+			</div>
 		</div>
 	)
 }
