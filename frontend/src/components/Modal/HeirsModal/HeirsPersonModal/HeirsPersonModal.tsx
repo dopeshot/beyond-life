@@ -144,7 +144,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								name="ownChild"
 								labelText="Frage zum Kind"
 								inputRequired
-								options={[{ id: 'ownChild', label: 'Ist das Kind ihr eigenes?' }]}
+								options={[{ value: 'ownChild', label: 'Ist das Kind ihr eigenes?' }]}
 							/>
 						</div>
 

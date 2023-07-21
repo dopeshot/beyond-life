@@ -45,9 +45,9 @@ export const Default: Story = {
 		name: 'checkbox',
 		labelText: 'What food do you like?',
 		options: [
-			{ id: 1, label: 'Icecream', icon: 'icecream' },
-			{ id: 2, label: 'Cake', icon: 'cake' },
-			{ id: 3, label: 'Egg', icon: 'egg' },
+			{ value: 1, label: 'Icecream', icon: 'icecream' },
+			{ value: 2, label: 'Cake', icon: 'cake' },
+			{ value: 3, label: 'Egg', icon: 'egg' },
 		],
 	},
 }
