@@ -2,7 +2,7 @@ import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import { FinancialAsset, Item } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 
-type LastWillState = {
+export type LastWillState = {
 	progressKeys: SidebarPages[]
 
 	// parts
