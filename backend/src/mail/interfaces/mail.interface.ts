@@ -1,3 +1,13 @@
 export enum MailTemplates {
-  VERIFY = 'VERIFY',
+  VERIFY = 'verify',
 }
+
+export interface VerifyMailData {
+  verifyUrl: string;
+}
+
+export interface SampleMailData {
+  test: string;
+}
+
+export type MailTemplateContent = VerifyMailData | SampleMailData;
