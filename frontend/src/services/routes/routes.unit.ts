@@ -9,10 +9,6 @@ describe('Router', () => {
 		it('should return account login path', () => {
 			expect(routes.account.login).to.equal('/account/login')
 		})
-
-		it('should return account profile path', () => {
-			expect(routes.account.profile).to.equal('/account/profile')
-		})
 	})
 
 	describe('lastWill routes', () => {

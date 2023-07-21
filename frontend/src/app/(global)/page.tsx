@@ -22,7 +22,7 @@ const Home = () => {
 					<Link href={routes.account.register}>Register</Link>
 				</li>
 				<li className="mb-2">
-					<Link href={routes.account.profile}>Profile</Link>
+					<Link href={routes.profile.myLastWills}>Profile</Link>
 				</li>
 				<li>
 					<Link href={routes.lastWill.index}>Testament Index</Link>
