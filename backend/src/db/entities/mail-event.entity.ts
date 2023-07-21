@@ -1,52 +1,52 @@
-import { prop } from '@typegoose/typegoose';
-import { ObjectId } from 'mongoose';
-import { MailTemplates } from '../../mail/interfaces/mail.interface';
+import { prop } from '@typegoose/typegoose'
+import { ObjectId } from 'mongoose'
+import { MailTemplates } from '../../mail/interfaces/mail.interface'
 
 class MailContent {
   @prop()
-  subject: string;
+  subject: string
   @prop()
-  contentRaw?: string;
+  contentRaw?: string
   @prop()
-  contentTemplate?: MailTemplates;
+  contentTemplate?: MailTemplates
   @prop()
-  templateContent?: string;
+  templateContent?: string
 }
 
 class MailRecipient {
   @prop()
-  recipient: string;
+  recipient: string
 
   @prop({ type: () => [String] })
-  cc?: string[];
+  cc?: string[]
 
   @prop()
-  from?: string;
+  from?: string
 }
 
 export class MailData {
   @prop({ type: () => MailRecipient, _id: false })
-  recipient: MailRecipient;
+  recipient: MailRecipient
 
   @prop({ type: () => MailContent, _id: false })
-  content: MailContent;
+  content: MailContent
 }
 
 /**
  * @description Entity with all user information
  */
 export class MailEvent {
-  _id: ObjectId;
+  _id: ObjectId
 
   @prop({ required: true })
-  scheduledAt: Date;
+  scheduledAt: Date
 
   @prop({ required: true, type: () => MailData, _id: false })
-  content: MailData;
+  content: MailData
 
   @prop({ required: true })
-  hasBeenSent: boolean;
+  hasBeenSent: boolean
 
   @prop({ required: true })
-  hasBeenRescheduled: boolean;
+  hasBeenRescheduled: boolean
 }

@@ -12,12 +12,12 @@ export class MockConfigService {
     DB_DB: 'siebtesleben',
     DB_HOST: 'localhost',
     DB_PORT: '27017',
-  };
+  }
 
   /**
    * @description Return value if existant in predetermined object
    */
   get(key: string) {
-    return this.values[key];
+    return this.values[key]
   }
 }

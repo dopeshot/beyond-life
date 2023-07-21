@@ -2,8 +2,6 @@
 /dist
 /node_modules
 
-openapitools.json
-
 # Logs
 logs
 *.log
