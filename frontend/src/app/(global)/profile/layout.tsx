@@ -1,14 +1,8 @@
 'use client'
-import { Metadata } from 'next'
 import { usePathname } from 'next/navigation'
 import { profileLinks } from '../../../../content/profilelinks'
 import { Headline } from '../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
-
-export const metadata: Metadata = {
-	title: 'Siebtes Leben',
-	description: '',
-}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname()
