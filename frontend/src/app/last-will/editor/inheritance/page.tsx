@@ -1,4 +1,5 @@
 'use client'
+import { nanoid } from '@reduxjs/toolkit'
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
@@ -156,7 +157,14 @@ const Inheritance = () => {
 										{/* Add Financial Asset Button */}
 										<Button
 											datacy="button-add-financial-asset"
-											onClick={() => console.log('TODO')}
+											onClick={() =>
+												arrayHelpers.push({
+													id: nanoid(),
+													where: '',
+													amount: '',
+													currency: '€',
+												})
+											}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"
 											kind="tertiary"
@@ -223,7 +231,13 @@ const Inheritance = () => {
 										{/* Add Item Button */}
 										<Button
 											datacy="button-add-item"
-											onClick={() => console.log('TODO')}
+											onClick={() =>
+												arrayHelpers.push({
+													id: nanoid(),
+													name: '',
+													description: '',
+												} satisfies Item)
+											}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"
 											kind="tertiary"
