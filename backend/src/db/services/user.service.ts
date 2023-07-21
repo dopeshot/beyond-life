@@ -106,4 +106,12 @@ export class UserService {
   async deleteUserById(_id: ObjectId) {
     await this.userModel.deleteOne({ _id })
   }
+
+  // TODO: Implement
+  async updateUserPaymentInformations(
+    id: ObjectId,
+    userData: Partial<User>,
+  ) /*: Promise<User>*/ {
+    return null
+  }
 }

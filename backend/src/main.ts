@@ -52,7 +52,9 @@ async function bootstrap() {
     SwaggerModule.setup('swagger', app, document)
   }
 
-  app.enableCors()
+  app.enableCors({
+    origin: 'http://localhost:5173/*',
+  }) // TODO: only allow our frontend url
 
   await app.listen(process.env.PORT || 3001)
 }

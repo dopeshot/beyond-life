@@ -43,6 +43,25 @@ export class User {
     description: 'Has the users mail been verified?',
   })
   hasVerifiedEmail: boolean
+
+  @Expose()
+  @prop({ required: false })
+  @ApiPropertyOptional({
+    description: 'Stripe customer id',
+    example: 'cus_1234567890',
+  })
+  stripeCustomerId: string
+
+  @Expose()
+  @prop({ required: true, default: 'free' })
+  @ApiPropertyOptional({
+    description: 'Payment plan of the user',
+    example: 'free',
+  })
+  paymentPlan: string
+
+  @prop({ required: false, default: [] })
+  paymentHistory: string[]
 }
 
 export type UserModel = User & Document

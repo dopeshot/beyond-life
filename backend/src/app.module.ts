@@ -6,8 +6,9 @@ import { AppController } from './app.controller'
 import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
 import { MailModule } from './mail/mail.module'
-import { SharedModule } from './shared/shared.module'
+import { PaymentsModule } from './payments/payments.module'
 import { ProfileModule } from './profile/profile.module'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { ProfileModule } from './profile/profile.module'
     DbModule,
     AuthModule,
     ProfileModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [],
