@@ -1,12 +1,14 @@
 export type FinancialAsset = {
-	id: string
 	where?: string
 	amount?: number
 	currency?: string
-}
+} & Id
 
 export type Item = {
-	id: string
 	name?: string
 	description?: string
+} & Id
+
+type Id = {
+	id: string
 }

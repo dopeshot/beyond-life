@@ -1,12 +1,12 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 import { FinancialAsset, Item } from '../types/lastWill'
 
-type InheritanceState = {
+type LastWillState = {
 	financialAssets: FinancialAsset[]
 	items: Item[]
 }
 
-const initialState: InheritanceState = {
+const initialState: LastWillState = {
 	financialAssets: [
 		{
 			id: nanoid(),
@@ -35,11 +35,11 @@ const initialState: InheritanceState = {
 	],
 }
 
-const inheritanceSlice = createSlice({
-	name: 'inheritance',
+const lastWillSlice = createSlice({
+	name: 'lastWill',
 	initialState,
 	reducers: {},
 })
 
-export const inheritanceReducer = inheritanceSlice.reducer
-export const {} = inheritanceSlice.actions
+export const lastWillReducer = lastWillSlice.reducer
+export const {} = lastWillSlice.actions

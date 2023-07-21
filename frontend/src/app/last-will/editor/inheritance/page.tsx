@@ -24,12 +24,8 @@ const Inheritance = () => {
 	const router = useRouter()
 
 	// Global State
-
-	// New Global State
-	const [financialAssets, items] = useAppSelector((state) => [
-		state.inheritance.financialAssets,
-		state.inheritance.items,
-	])
+	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
+	const items = useAppSelector((state) => state.lastWill.items)
 
 	// TODO: Replace with new global state ids
 	const PREVIOUS_LINK = routes.lastWill.heirs('lastWill.common.id')

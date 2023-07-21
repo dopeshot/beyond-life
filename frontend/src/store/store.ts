@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { inheritanceReducer } from './inheritance'
+import { lastWillReducer } from './lastwill'
 
 export const store = configureStore({
 	reducer: {
-		inheritance: inheritanceReducer,
+		lastWill: lastWillReducer,
 	},
 })
 
