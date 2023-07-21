@@ -53,7 +53,7 @@ export const FAQContent = [
 		question: 'Was ist der Unterschied zwischen einem öffentlichen und einem handschriftlichen Testament?',
 		answer: (
 			<>
-				<p className='mb-4'>
+				<p className="mb-4">
 					Ein handschriftliches Testament ist eine Form des Testaments, die vom Erblasser persönlich und handschriftlich
 					verfasst und unterschrieben wird. Es erfordert keine Beglaubigung oder Beurkundung durch einen Notar und kann
 					jederzeit erstellt werden.
@@ -103,24 +103,23 @@ export const FAQContent = [
 		answer: (
 			<>
 				<p>
-					Wenn Sie kein Testament erstellen, wird Ihr Vermögen nach den gesetzlichen Erbfolgeregeln verteilt. Dies kann zu Streitigkeiten unter den Erben führen und dazu führen, dass Ihr Vermögen nicht nach Ihren Wünschen verteilt wird. Wenn Sie keine Angehörigen haben, wird Ihr Vermögen an den Staat fallen.
+					Wenn Sie kein Testament erstellen, wird Ihr Vermögen nach den gesetzlichen Erbfolgeregeln verteilt. Dies kann
+					zu Streitigkeiten unter den Erben führen und dazu führen, dass Ihr Vermögen nicht nach Ihren Wünschen verteilt
+					wird. Wenn Sie keine Angehörigen haben, wird Ihr Vermögen an den Staat fallen.
 				</p>
 			</>
 		),
 	},
 	{
 		slug: '8',
-		question: 'Was ist der Unterschied zwischen einem öffentlichen und einem handschriftlichen Testament?',
+		question: 'Was ist ein Vermächtnis und wie unterscheidet es sich von einer Erbschaft?',
 		answer: (
 			<>
 				<p>
-					Ein handschriftliches Testament ist eine Form des Testaments, die vom Erblasser persönlich und handschriftlich
-					verfasst und unterschrieben wird. Es erfordert keine Beglaubigung oder Beurkundung durch einen Notar und kann
-					jederzeit erstellt werden. Ein öffentliches Testament hingegen wird von einem Notar erstellt, nachdem der
-					Erblasser ihm seinen letzten Willen mündlich oder in einer schriftlichen Erklärung mitgeteilt hat. Der Notar
-					verfasst das Testament dann und liest es dem Erblasser vor. Nach dessen Zustimmung unterschreiben sowohl der
-					Erblasser als auch der Notar das Dokument. Das öffentliche Testament ist rechtssicher, da es vom Notar
-					beurkundet wird, aber es fallen Notargebühren an.
+					Sie haben auch die Möglichkeit, jemanden in Ihrem Testament zu bedenken, ohne denjenigen als Erben einzusetzen
+					und mit Verantwortung und Verbindlichkeiten zu belasten. Dies können Sie durch die Anordnung eines
+					Vermächtnisses tun.
+					Mit Hilfe eines Vermächtnisses können Sie einen ganz bestimmten Teil Ihres Nachlassvermögens zuwenden; zum Beispiel eine gewisse Summe an Bargeld, ein Sparkonto, Wertpapiere, ein Kunstwerk oder eine Immobilie.
 				</p>
 			</>
 		),
