@@ -14,15 +14,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname()
 
 	return (
-		<div className="md:flex gap-10 container my-5">
-			<div className="md:sticky top-5 lg:w-1/3 xl:w-1/4 h-full">
-				<div className="border-2 border-gray-200 rounded-xl pt-5 pb-3 px-5 mb-5 md:mb-0">
+		<div className="flex flex-col md:flex-row gap-5 md:gap-10 container my-5">
+			{/* Sidebar */}
+			<div className="order-1 md:-order-1 md:sticky top-5 lg:w-1/3 xl:w-1/4 h-full">
+				<div className="border-2 border-gray-200 rounded-xl pt-5 pb-3 px-5">
+					{/* Header */}
 					<div className="flex flex-row mb-2">
 						<Headline size="text-xl md:text-2xl mx-auto">email@gmail.com</Headline>
 					</div>
 
 					<hr className="border mb-2 md:mb-4" />
 
+					{/* Links */}
 					<div>
 						{profileLinks.map((link) => (
 							<ProfileSideBarLink
@@ -39,6 +42,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					</div>
 				</div>
 			</div>
+
+			{/* Content */}
 			<div className="w-full lg:w-2/3 xl:w-3/4">{children}</div>
 		</div>
 	)
