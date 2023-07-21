@@ -17,16 +17,16 @@ services:
       - JWT_VERIFY_SECRET=${BACKEND_JWT_VERIFY_SECRET:-evenmoresecret}
       - JWT_VERIFY_EXPIRE_TIME=${BACKEND_JWT_VERIFY_EXPIRE_TIME:-1d}
       - BACKEND_DOMAIN=${BACKEND_BACKEND_DOMAIN:-http://localhost:3001}
-      - MAIL_HOST=${BACKEND_MAIL_HOST:-smtp_server}}
+      - MAIL_HOST=${BACKEND_MAIL_HOST:-smtp}
       - MAIL_HOST_PORT=${BACKEND_MAIL_HOST_PORT:-25}
       - MAIL_IS_SECURE=${BACKLEND_MAIL_IS_SECURE:-false}
-      - MAIL_AUTH_USERNAME=${BACKEND_MAIL_AUTH_USERNANE:-mail}
+      - MAIL_AUTH_USERNAME=${BACKEND_MAIL_AUTH_USERNAME:-mail}
       - MAIL_AUTH_PW=${BACKEND_MAIL_AUTH_PW:-mail}
       - MAIL_DEFAULT_SENDE=${BACKEND_MAIL_DEFAULT_SENDER:-hello@siebtesleben.de}
       - NODE_ENV=${BACKEND_NODE_ENV:-development}
     links:
       - db:db
-      - smtp_server:smtp_server
+      - smtp:smtp
 
   frontend:
     image: ghcr.io/dopeshot/beyond-life/frontend:main
@@ -36,14 +36,15 @@ services:
     links:
       - backend:backend
 
-  smtp_server:
+  smtp:
     image: rnwood/smtp4dev:v3
+    restart: "always"
     ports:
-      - "5000:80"
       - "25:25"
-      - "143:143"
+      - 5000:80
+      - 143:143
     environment:
-      - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNANE:-mail}
+      - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNAME:-mail}
       - RelayOptions__Password=${BACKEND_MAIL_AUTH_PW:-mail}
 
   db:
