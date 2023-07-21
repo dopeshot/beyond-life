@@ -106,7 +106,7 @@ jobs:
           key: types-${{ github.sha }}
 
   commit-types:
-    needs: [update-types]
+    needs: [update-sdk]
     runs-on: ubuntu-latest
     defaults:
       run:
