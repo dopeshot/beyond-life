@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-import { hash as bhash, compare } from 'bcrypt'
+import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
@@ -42,11 +42,7 @@ export class AuthService {
    */
   async register(body: RegisterDTO): Promise<TokenResponse> {
     // hash password
-    const hash = await bhash(body.password, 10)
-    const newUser = await this.userService.insertUser({
-      ...body,
-      password: hash,
-    })
+    const newUser = await this.userService.insertUser(body)
     /* istanbul ignore if */
     if (!newUser) {
       this.logger.error(
