@@ -31,7 +31,7 @@ jobs:
         with:
           path: ~/.npm
           key: node-modules-${{ hashFiles('package-lock.json') }}
-          
+
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
@@ -41,19 +41,20 @@ jobs:
         shell: bash
         working-directory: backend
     steps:
-    
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: audit
-      run: npm audit --omit=dev
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: audit
+        run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
     needs: setup
     strategy:
       matrix:
-        command: ["test", "test:e2e"]
+        command: 
+        - test
+        - test:e2e
     defaults:
       run:
         shell: bash
@@ -75,74 +76,14 @@ jobs:
       - name: tests
         run: npm run ${{ matrix.command }}
 
-  update-types:
-    runs-on: ubuntu-latest
-    needs: [tests]
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Load cache
-        id: load-cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-
-      - name: node modules
-        working-directory: ./backend
-        run: npm ci --audit:false --cache ~/.npm --prefer-offline
-
-      - name: Generate types
-        run: ( cd backend && npm run gen:types ) && cp backend/schema.ts frontend/src/generated
-
-      - name: Cache
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/src/generated/schema.ts
-          key: types-${{ github.sha }}
-
-  commit-types:
-    needs: [update-types]
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.BOT_PAT }}
-          ref: ${{ github.head_ref }}
-
-      - name: Load cache
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: frontend/src/generated/schema.ts
-          key: types-${{ github.sha }}
-          
-      - name: Commit
-        run: |
-          git config user.name ${{ secrets.BOT_NAME }}
-          git config user.email ${{ secrets.BOT_MAIL }}
-          git add frontend/src/generated/schema.ts
-          git commit -m "generated" || echo "No changes to commit"
-          
-      - name: Push
-        run: git push
-
-
   docker-build-and-push:
     runs-on: ubuntu-latest
     needs: [tests]
     strategy:
       matrix:
-        platform: ["linux/amd64", "linux/arm64"]
+        platform: 
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v3

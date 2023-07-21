@@ -1,42 +1,28 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { prop } from '@typegoose/typegoose'
 import { Exclude, Expose } from 'class-transformer'
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { ObjectId } from 'mongoose'
 
 /**
  * @description Entity with all user information
  */
-@Index('email_unique', ['email'], { unique: true })
-@Index('users_pkey', ['pkUserId'], { unique: true })
-@Index('username_unique', ['username'], { unique: true })
-@Entity('users', { schema: 'public' })
-export class UserEntity {
-  @Expose()
-  @PrimaryGeneratedColumn({ type: 'integer', name: 'pk_user_id' })
-  @ApiProperty({ description: 'User ID', example: 1 })
-  pkUserId: number
-
-  @Expose()
-  @Column('character varying', { name: 'username', unique: true, length: 24 })
-  @ApiProperty({
-    description: 'Public username of user',
-    example: 'CoffeeLover',
-  })
-  username: string
+export class User {
+  _id: ObjectId
 
   @Expose({ groups: ['self'] })
-  @Column('character varying', { name: 'email', unique: true, length: 128 })
-  @ApiPropertyOptional({
+  @prop({ required: true, unique: true })
+  @ApiProperty({
     description: 'Email of the user. Only exposed to self',
     example: 'test@test.test',
   })
   email: string
 
   @Exclude()
-  @Column('text', { name: 'password', nullable: true })
-  password: string | null
+  @prop({ required: true })
+  password: string
 
   @Expose({ groups: ['self'] })
-  @Column('timestamp with time zone', { name: 'last_login', nullable: true })
+  @prop()
   @ApiPropertyOptional({
     description: 'Last login for the user. Only exposed to self',
     example: Date.now(),
@@ -44,13 +30,12 @@ export class UserEntity {
   lastLogin: Date | null
 
   @Expose()
-  @Column({
-    type: 'timestamp with time zone',
-    name: 'created_at',
-  })
+  @prop()
   @ApiPropertyOptional({
     description: 'Creation date of user',
     example: Date.now(),
   })
   createdAt: Date
 }
+
+export type UserModel = User & Document

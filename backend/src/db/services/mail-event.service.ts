@@ -1,46 +1,56 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { LessThan, Repository } from 'typeorm'
-import { MailEventEntity } from '../entities/mail-event.entity'
+import { MailEvent } from '../entities/mail-event.entity'
+import { InjectModel } from '@m8a/nestjs-typegoose'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { ObjectId } from 'mongoose'
 
 @Injectable()
 export class MailEventService {
   private readonly logger = new Logger(MailEventService.name)
 
   constructor(
-    @InjectRepository(MailEventEntity)
-    private readonly mailEventEntity: Repository<MailEventEntity>,
+    @InjectModel(MailEvent)
+    private readonly mailEventModel: ReturnModelType<typeof MailEvent>,
   ) {}
 
-  async createEvent(event: Partial<MailEventEntity>): Promise<MailEventEntity> {
-    const newEvent = this.mailEventEntity.create(event)
-    await this.mailEventEntity.save(newEvent)
+  async createEvent(event: Partial<MailEvent>): Promise<MailEvent> {
+    const newEvent = await this.mailEventModel.create(event)
     return newEvent
   }
 
-  async getOpenEventsBefore(endDate: Date): Promise<MailEventEntity[]> {
-    const events = this.mailEventEntity.findBy({
-      scheduledAt: LessThan(endDate),
-    })
+  async getOpenEventsBefore(endDate: Date): Promise<MailEvent[]> {
+    const events = this.mailEventModel
+      .find({
+        scheduledAt: {
+          $lte: endDate,
+        },
+      })
+      .lean()
     return events
   }
 
-  async markMailsAsSend(ids: number[]): Promise<void> {
+  async markMailsAsSend(ids: ObjectId[]): Promise<void> {
     if (ids.length == 0) {
       this.logger.log('Empty update will not be executed')
       return
     }
-    await this.mailEventEntity.update(ids, { hasBeenSent: true })
+    await this.mailEventModel.updateMany(
+      { _id: { $in: ids } },
+      { hasBeenSent: true },
+    )
   }
 
-  async rescheduleMails(ids: number[], newDate: Date): Promise<void> {
+  async rescheduleMails(ids: ObjectId[], newDate: Date): Promise<void> {
     if (ids.length == 0) {
       this.logger.log('Empty update will not be executed')
       return
     }
-    await this.mailEventEntity.update(ids, {
-      scheduledAt: newDate,
-      hasBeenRescheduled: true,
-    })
+    await this.mailEventModel.updateMany(
+      { _id: { $in: ids } },
+      {
+        scheduledAt: newDate,
+        hasBeenRescheduled: true,
+      },
+    )
   }
 }
