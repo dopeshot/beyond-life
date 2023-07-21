@@ -1,7 +1,7 @@
 'use client'
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
@@ -10,8 +10,10 @@ import { TextInput } from '../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../components/Headline/Headline'
 import { IconButton } from '../../../../components/IconButton/IconButton'
 import { routes } from '../../../../services/routes/routes'
-import { useAppSelector } from '../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { setProgressKeys } from '../../../../store/lastwill'
 import { FinancialAsset, Item } from '../../../../types/lastWill'
+import { SidebarPages } from '../../../../types/sidebar'
 
 type InheritanceFormPayload = {
 	financialAssets: FinancialAsset[]
@@ -29,6 +31,8 @@ const Inheritance = () => {
 	// Global State
 	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
 	const items = useAppSelector((state) => state.lastWill.items)
+
+	const dispatch = useAppDispatch()
 
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.heirs(id)
@@ -75,10 +79,9 @@ const Inheritance = () => {
 	})
 
 	// Use to handle sidebar display state and progress
-	// TODO: Replace with global state
-	// useEffect(() => {
-	// services.setProgressKey({ progressKey: SidebarPages.INHERITANCE })
-	// }, [services])
+	useEffect(() => {
+		dispatch(setProgressKeys(SidebarPages.INHERITANCE))
+	}, [dispatch])
 
 	return (
 		<div className="container mt-5">

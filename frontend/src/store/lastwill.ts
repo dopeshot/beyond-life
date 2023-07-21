@@ -1,12 +1,17 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import { FinancialAsset, Item } from '../types/lastWill'
+import { SidebarPages } from '../types/sidebar'
 
 type LastWillState = {
+	progressKeys: SidebarPages[]
+
+	// parts
 	financialAssets: FinancialAsset[]
 	items: Item[]
 }
 
 const initialState: LastWillState = {
+	progressKeys: [],
 	financialAssets: [
 		{
 			id: nanoid(),
@@ -38,8 +43,12 @@ const initialState: LastWillState = {
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
-	reducers: {},
+	reducers: {
+		setProgressKeys: (state, action: PayloadAction<SidebarPages>) => {
+			state.progressKeys.push(action.payload)
+		},
+	},
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const {} = lastWillSlice.actions
+export const { setProgressKeys } = lastWillSlice.actions
