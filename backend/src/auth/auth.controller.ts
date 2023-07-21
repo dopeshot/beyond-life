@@ -17,8 +17,11 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
+  ApiServiceUnavailableResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -93,9 +96,15 @@ export class AuthController {
   @Get('verify-email')
   @UseGuards(VerifyTokenGuard)
   @ApiOperation({ summary: 'Verify a users email' })
-  @ApiBearerAuth('verify_token')
+  @ApiQuery({ name: 'token', description: 'Verify jwt token', type: String })
   @ApiOkResponse({
     description: 'Email has been verified',
+  })
+  @ApiNotFoundResponse({
+    description: 'User with that email has not been found',
+  })
+  @ApiConflictResponse({
+    description: 'User`s email has already been verified',
   })
   async verifyMail(@Req() { user }: RequestWithVerifyContent) {
     await this.authService.verifyUserMail(user.email)
@@ -109,6 +118,12 @@ export class AuthController {
   @ApiBearerAuth('access_token')
   @ApiOkResponse({
     description: 'Verify email has been send',
+  })
+  @ApiServiceUnavailableResponse({
+    description: 'Email server could not be reached',
+  })
+  @ApiNotFoundResponse({
+    description: 'Specified user could not be found (this SHOULD never happen)',
   })
   async requestVerifyMail(@Req() { user }: RequestWithJWTPayload) {
     await this.authService.requestUserVerifyMail(user.id)

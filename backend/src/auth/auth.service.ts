@@ -160,6 +160,9 @@ export class AuthService {
     } as JWTPayload)
   }
 
+  /**
+   * @description Verify users email
+   */
   async verifyUserMail(mail: string) {
     const user = await this.userService.findOneByEmail(mail)
 
@@ -172,12 +175,16 @@ export class AuthService {
     }
 
     try {
+      this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)
     } catch (error) {
       throw new InternalServerErrorException('Update could not be made')
     }
   }
 
+  /**
+   * @description Request that verification email is send to users email address
+   */
   async requestUserVerifyMail(id: ObjectId) {
     const user = await this.userService.findOneById(id)
     // This should never happen, however it is a valid failsave
