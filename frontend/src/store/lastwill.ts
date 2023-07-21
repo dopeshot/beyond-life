@@ -4,6 +4,7 @@ import { SidebarPages } from '../types/sidebar'
 
 export type LastWillState = {
 	progressKeys: SidebarPages[]
+	isLoading: boolean
 
 	// parts
 	financialAssets: FinancialAsset[]
@@ -12,6 +13,7 @@ export type LastWillState = {
 
 const initialState: LastWillState = {
 	progressKeys: [],
+	isLoading: true,
 	financialAssets: [
 		{
 			id: nanoid(),

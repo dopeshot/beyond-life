@@ -31,6 +31,7 @@ const Inheritance = () => {
 	// Global State
 	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
 	const items = useAppSelector((state) => state.lastWill.items)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
 	const dispatch = useAppDispatch()
 
@@ -236,7 +237,7 @@ const Inheritance = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							loading={false} // TODO: replace with new global state
+							loading={isLoading}
 							dirty={dirty}
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							previousHref={PREVIOUS_LINK}
