@@ -417,6 +417,22 @@ describe('AuthController (e2e)', () => {
         expect(res.statusCode).toEqual(HttpStatus.OK)
         expect(mock.getSentMail().length).toEqual(1)
       })
+
+      it('should not send mail if user email is already verified', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: true },
+        )
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get('/auth/request-verify-email')
+          .set('Authorization', `Bearer ${token}`)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(mock.getSentMail().length).toEqual(1)
+      })
+
       it('should send valid token in said email', async () => {
         // ACT
         const res = await request(app.getHttpServer())
