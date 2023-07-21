@@ -1,6 +1,6 @@
 'use client'
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Fragment } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
@@ -22,14 +22,17 @@ type InheritanceFormPayload = {
  */
 const Inheritance = () => {
 	const router = useRouter()
+	const searchparams = useSearchParams()
+
+	const id = searchparams.get('id') || 'ID_IS_MISSING'
 
 	// Global State
 	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
 	const items = useAppSelector((state) => state.lastWill.items)
 
-	// TODO: Replace with new global state ids
-	const PREVIOUS_LINK = routes.lastWill.heirs('lastWill.common.id')
-	const NEXT_LINK = routes.lastWill.succession('lastWill.common.id')
+	// Prepare links
+	const PREVIOUS_LINK = routes.lastWill.heirs(id)
+	const NEXT_LINK = routes.lastWill.succession(id)
 
 	// Formik
 	const initalFormValues: InheritanceFormPayload = {
