@@ -3,11 +3,11 @@ export enum MailTemplates {
 }
 
 export interface VerifyMailData {
-  verifyUrl: string;
+  verifyUrl: string
 }
 
 export interface SampleMailData {
-  test: string;
+  test: string
 }
 
-export type MailTemplateContent = VerifyMailData | SampleMailData;
+export type MailTemplateContent = VerifyMailData | SampleMailData
