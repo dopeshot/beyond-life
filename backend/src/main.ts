@@ -36,14 +36,6 @@ async function bootstrap() {
         },
         'refresh_token',
       )
-      .addBearerAuth(
-        {
-          description: `Please enter verify token in following format: Bearer <JWT>`,
-          scheme: 'Bearer',
-          type: 'http',
-        },
-        'refresh_token',
-      )
       .build()
     const document = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: false,
