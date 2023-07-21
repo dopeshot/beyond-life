@@ -10,55 +10,61 @@ export const metadata = {
 export const FAQContent = [
 	{
 		slug: '1',
-		question: 'Wie viel kostet das Tool?',
+		question: 'Was ist ein Testament und warum sollte ich eins erstellen?',
 		answer: (
 			<>
-				<p className="mb-4">
-					Nunc duis id aenean gravida tincidunt eu, tempor ullamcorper. Viverra aliquam arcu, viverra et, cursus.
-					Aliquet pretium cursus adipiscing gravida et consequat lobortis arcu velit.
+				<p>
+					Ein Testament ist ein rechtliches Dokument, das Ihre Wünsche bezüglich der Verteilung Ihres Vermögens nach
+					Ihrem Tod festlegt. Es stellt sicher, dass Ihr Vermögen gemäß Ihren Wünschen und nicht nach den gesetzlichen
+					Erbfolgeregeln verteilt wird. Ein Testament bietet Kontrolle, vermeidet mögliche Streitigkeiten unter
+					Angehörigen und erlaubt es Ihnen, finanzielle Vorkehrungen für Ihre Lieben zu treffen.
 				</p>
-
-				<ul>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-				</ul>
 			</>
 		),
 	},
 	{
 		slug: '2',
-		question: 'Wie viel kostet das Tool?',
+		question: 'Was bringt es, das Testament mit Siebtes Leben zu erstellen?',
 		answer: (
 			<>
-				<p className="mb-4">
-					Nunc duis id aenean gravida tincidunt eu, tempor ullamcorper. Viverra aliquam arcu, viverra et, cursus.
-					Aliquet pretium cursus adipiscing gravida et consequat lobortis arcu velit.
+				<p>
+					Die Erstellung eines Testaments mit "Siebtes Leben" bietet eine intuitive und strukturierte Herangehensweise,
+					die Ihnen dabei hilft, alle relevanten Aspekte zu bedenken. Unser spezifischer Fragebogen führt Sie durch den
+					Prozess und hilft, Unklarheiten oder Vergessenes zu vermeiden.
 				</p>
-
-				<ul>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-				</ul>
 			</>
 		),
 	},
 	{
 		slug: '3',
-		question: 'Wie viel kostet das Tool?',
+		question: 'Welche formalen Anforderungen muss ein privates Testament erfüllen, um gültig zu sein?',
 		answer: (
 			<>
-				<p className="mb-4">
-					Nunc duis id aenean gravida tincidunt eu, tempor ullamcorper. Viverra aliquam arcu, viverra et, cursus.
-					Aliquet pretium cursus adipiscing gravida et consequat lobortis arcu velit.
+				<p>
+					Ein privates Testament muss der Erblasser handschriftlich, eigenhändig und lesbar verfassen. Das Testament
+					muss das Datum und den Ort, den vollen Namen und die Unterschrift enthalten.
 				</p>
-
-				<ul>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-					<li>Nunc duis id aenean gravida tincidunt eu,</li>
-				</ul>
 			</>
 		),
 	},
+	{
+		slug: '4',
+		question: 'Was ist der Unterschied zwischen einem öffentlichen und einem handschriftlichen Testament?',
+		answer: (
+			<>
+				<p>
+					Ein handschriftliches Testament ist eine Form des Testaments, die vom Erblasser persönlich und handschriftlich
+					verfasst und unterschrieben wird. Es erfordert keine Beglaubigung oder Beurkundung durch einen Notar und kann
+					jederzeit erstellt werden. Ein öffentliches Testament hingegen wird von einem Notar erstellt, nachdem der
+					Erblasser ihm seinen letzten Willen mündlich oder in einer schriftlichen Erklärung mitgeteilt hat. Der Notar
+					verfasst das Testament dann und liest es dem Erblasser vor. Nach dessen Zustimmung unterschreiben sowohl der
+					Erblasser als auch der Notar das Dokument. Das öffentliche Testament ist rechtssicher, da es vom Notar
+					beurkundet wird, aber es fallen Notargebühren an.
+				</p>
+			</>
+		),
+	},
+	
 ]
 
 const FAQOverview = () => {
