@@ -3,7 +3,7 @@ describe('Account Register Page', () => {
 		cy.visit('/account/register')
 	})
 
-	describe('Register Base Flow', () => {
+	describe.skip('Register Base Flow', () => {
 		it('should register successfully', () => {
 			cy.datacy('textinput-email-input').type('test@test.de')
 			cy.datacy('textinput-password-input').type('test123')

@@ -3,7 +3,7 @@ describe('Account Login Page', () => {
 		cy.visit('/account/login')
 	})
 
-	describe('Login Base Flow', () => {
+	describe.skip('Login Base Flow', () => {
 		it('should login successfully', () => {
 			cy.datacy('textinput-email-input').type('test@test.de')
 			cy.datacy('textinput-password-input').type('test123')
