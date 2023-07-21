@@ -1,6 +1,9 @@
-import { prop } from '@typegoose/typegoose'
+import { Severity, prop } from '@typegoose/typegoose'
 import { ObjectId } from 'mongoose'
-import { MailTemplates } from '../../mail/interfaces/mail.interface'
+import {
+  MailTemplateContent,
+  MailTemplates,
+} from '../../mail/interfaces/mail.interface'
 
 class MailContent {
   @prop()
@@ -9,8 +12,9 @@ class MailContent {
   contentRaw?: string
   @prop()
   contentTemplate?: MailTemplates
-  @prop()
-  templateContent?: string
+  // Allow mixed to support various template forms
+  @prop({ allowMixed: Severity.ALLOW })
+  templateContent?: MailTemplateContent
 }
 
 class MailRecipient {

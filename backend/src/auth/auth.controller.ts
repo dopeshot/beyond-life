@@ -17,17 +17,23 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
-  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
+  ApiServiceUnavailableResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { JwtGuard } from '../shared/guards/jwt.guard'
+import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { AuthService } from './auth.service'
 import { LoginDTO } from './dtos/login.dto'
 import { RegisterDTO } from './dtos/register.dto'
 import { RefreshTokenGuard } from './guards/refresh-token.guard'
+import { VerifyTokenGuard } from './guards/verify-token.guard'
 import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface'
+import { RequestWithVerifyContent } from './interfaces/request-with-verify-payload.interface'
 import { TokenResponse } from './responses/token.response'
 
 @Controller('auth')
@@ -69,7 +75,7 @@ export class AuthController {
     return new TokenResponse(await this.authService.login(loginData))
   }
 
-  @Post('refresh')
+  @Post('refresh-token')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: 'Fetch new access token using refresh token' })
@@ -85,5 +91,41 @@ export class AuthController {
     @Req() { user }: RequestWithDbUser,
   ): Promise<TokenResponse> {
     return new TokenResponse(await this.authService.getAuthPayload(user))
+  }
+
+  @Get('verify-email')
+  @UseGuards(VerifyTokenGuard)
+  @ApiOperation({ summary: 'Verify a users email' })
+  @ApiQuery({ name: 'token', description: 'Verify jwt token', type: String })
+  @ApiOkResponse({
+    description: 'Email has been verified',
+  })
+  @ApiNotFoundResponse({
+    description: 'User with that email has not been found',
+  })
+  @ApiConflictResponse({
+    description: 'User`s email has already been verified',
+  })
+  async verifyMail(@Req() { user }: RequestWithVerifyContent) {
+    await this.authService.verifyUserMail(user.email)
+  }
+
+  @Get('request-verify-email')
+  @UseGuards(JwtGuard)
+  @ApiOperation({
+    summary: 'Request a verfication email for the users email address',
+  })
+  @ApiBearerAuth('access_token')
+  @ApiOkResponse({
+    description: 'Verify email has been send',
+  })
+  @ApiServiceUnavailableResponse({
+    description: 'Email server could not be reached',
+  })
+  @ApiNotFoundResponse({
+    description: 'Specified user could not be found (this SHOULD never happen)',
+  })
+  async requestVerifyMail(@Req() { user }: RequestWithJWTPayload) {
+    await this.authService.requestUserVerifyMail(user.id)
   }
 }

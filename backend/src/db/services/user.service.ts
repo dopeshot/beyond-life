@@ -1,13 +1,13 @@
+import { InjectModel } from '@m8a/nestjs-typegoose'
 import {
   ConflictException,
   Injectable,
   Logger,
   ServiceUnavailableException,
 } from '@nestjs/common'
-import { User } from '../entities/users.entity'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { InjectModel } from '@m8a/nestjs-typegoose'
 import { ObjectId, Schema } from 'mongoose'
+import { User } from '../entities/users.entity'
 
 @Injectable()
 export class UserService {
@@ -63,5 +63,20 @@ export class UserService {
         throw new ConflictException('Email is already taken.')
       else if (error instanceof ServiceUnavailableException) throw error
     }
+  }
+
+  /**
+   * @description Set users email verify value
+   */
+  async updateUserEmailVerify(email: string, newVerifyValue?: boolean) {
+    if (!newVerifyValue) {
+      newVerifyValue = true
+    }
+    await this.userModel.updateOne(
+      { email },
+      {
+        hasVerifiedEmail: newVerifyValue,
+      },
+    )
   }
 }

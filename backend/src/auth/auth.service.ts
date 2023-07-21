@@ -1,20 +1,31 @@
 import {
+  ConflictException,
   HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
+  ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { hash as bhash, compare } from 'bcrypt'
+import { ObjectId } from 'mongoose'
+import { MailData } from '../db/entities/mail-event.entity'
+import { User } from '../db/entities/users.entity'
+import { UserService } from '../db/services/user.service'
+import {
+  MailTemplates,
+  VerifyMailData,
+} from '../mail/interfaces/mail.interface'
+import { MailScheduleService } from '../mail/services/scheduler.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
 import { LoginDTO } from './dtos/login.dto'
-import { RefreshJWTPayload } from './interfaces/refresh-jwt-payload.interface'
 import { RegisterDTO } from './dtos/register.dto'
+import { RefreshJWTPayload } from './interfaces/refresh-jwt-payload.interface'
+import { VerifyJWTPayload } from './interfaces/verify-jwt-payload.interface'
 import { TokenResponse } from './responses/token.response'
-import { UserService } from '../db/services/user.service'
-import { User } from '../db/entities/users.entity'
 
 @Injectable()
 export class AuthService {
@@ -23,6 +34,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailScheduleService,
   ) {}
 
   /**
@@ -44,7 +56,50 @@ export class AuthService {
       // This is only a safeguard that should never be reached (in theory)
       throw new InternalServerErrorException()
     }
+
+    try {
+      await this.sendEmailVerify(newUser)
+    } catch (error) {
+      this.logger.warn(
+        `Sending verify mail failed due to an error. User registration continued anyway ${error}`,
+      )
+    }
+
     return await this.getAuthPayload(newUser)
+  }
+
+  /**
+   *
+   * @description Send verification email for user
+   */
+  private async sendEmailVerify(user: User) {
+    const verifyToken = this.jwtService.sign(
+      {
+        email: user.email,
+      } as VerifyJWTPayload,
+      {
+        secret: this.configService.get('JWT_VERIFY_SECRET'),
+        expiresIn: this.configService.get('JWT_VERIFY_EXPIRE_TIME'),
+      },
+    )
+
+    const mailContent: VerifyMailData = {
+      verifyUrl: `${this.configService.get(
+        'BACKEND_DOMAIN',
+      )}/auth/verify-email?token=${verifyToken}`,
+    }
+    const mail: MailData = {
+      recipient: {
+        recipient: user.email,
+      },
+      content: {
+        subject: 'Email verifizieren',
+        templateContent: mailContent,
+        contentTemplate: MailTemplates.VERIFY,
+      },
+    }
+
+    await this.mailService.scheduleMailNow(mail)
   }
 
   /**
@@ -103,5 +158,50 @@ export class AuthService {
       id: user._id,
       email: user.email,
     } as JWTPayload)
+  }
+
+  /**
+   * @description Verify users email
+   */
+  async verifyUserMail(mail: string) {
+    const user = await this.userService.findOneByEmail(mail)
+
+    if (!user) {
+      throw new NotFoundException('No user with that email address exists')
+    }
+
+    if (user.hasVerifiedEmail) {
+      throw new ConflictException('This user already verified their email')
+    }
+
+    try {
+      this.logger.debug(`Verifying user mail`)
+      await this.userService.updateUserEmailVerify(mail)
+    } catch (error) {
+      throw new InternalServerErrorException('Update could not be made')
+    }
+  }
+
+  /**
+   * @description Request that verification email is send to users email address
+   */
+  async requestUserVerifyMail(id: ObjectId) {
+    const user = await this.userService.findOneById(id)
+    // This should never happen, however it is a valid failsave
+    if (!user) {
+      throw new NotFoundException('No user')
+    }
+
+    // Dont do anything here, throwing an error is more confusing than helpful
+    if (user.hasVerifiedEmail) {
+      return
+    }
+    try {
+      await this.sendEmailVerify(user)
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        'Mail could not be send as of now. Please try again later',
+      )
+    }
   }
 }
