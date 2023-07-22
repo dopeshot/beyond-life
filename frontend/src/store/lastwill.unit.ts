@@ -1,5 +1,6 @@
 import { SidebarPages } from '../types/sidebar'
 import { LastWillState, lastWillReducer, setInheritance, setProgressKeys } from './lastwill'
+
 describe('lastWillSlice', () => {
 	const initialState: LastWillState = {
 		isLoading: false,

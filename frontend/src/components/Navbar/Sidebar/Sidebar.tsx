@@ -16,6 +16,7 @@ export type SidebarProps = {
  */
 export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 	const progressKeys = useAppSelector((state) => state.lastWill.data.progressKeys)
+
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 hidden h-auto w-80 min-w-[20rem] bg-yellow-400 sm:hidden lg:block">
 			{/* Logo */}
