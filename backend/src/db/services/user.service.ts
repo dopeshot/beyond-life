@@ -114,4 +114,15 @@ export class UserService {
   ) /*: Promise<User>*/ {
     return null
   }
+
+  async updateUserStripeCustomer(_id: ObjectId, stripeCustomerId: string) {
+    await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
+  }
+
+  async updateUserPaymentHistory(_id: ObjectId, paymentHistory: string) {
+    await this.userModel.findByIdAndUpdate(
+      { _id },
+      { $push: { paymentHistory } },
+    )
+  }
 }
