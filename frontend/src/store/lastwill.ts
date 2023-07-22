@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/t
 import { InheritanceFormPayload } from '../app/(app)/last-will/editor/inheritance/page'
 import { FinancialAsset, Item } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
+import { RootState } from './store'
 
 export type LastWillState = {
 	// DO NOT SYNC THIS WITH BACKEND
@@ -31,15 +32,14 @@ const initialState: LastWillState = {
 	},
 }
 
-export const sendLastWillState = createAsyncThunk(
-	'lastWill/sendLastWillState',
-	async ({ lastWillId, lastWillState }: { lastWillId: string; lastWillState: LastWillState }) => {
-		console.log('sendLastWillState', { lastWillId, lastWillState })
-		const data = await new Promise<LastWillState>((resolve) => setTimeout(() => resolve(lastWillState), 10))
-		console.log('sended data', data)
-		return data
-	}
-)
+export const sendLastWillState = createAsyncThunk('lastWill/sendLastWillState', async (params, { getState }) => {
+	const state = getState() as RootState
+
+	const lastWillData = state.lastWill.data
+
+	const response = await new Promise<LastWillState['data']>((resolve) => setTimeout(() => resolve(lastWillData), 100))
+	return response
+})
 
 export const fetchLastWillState = createAsyncThunk(
 	'lastWill/fetchLastWillState',
@@ -111,6 +111,14 @@ const lastWillSlice = createSlice({
 			state.isInitialized = true
 
 			state.data = action.payload
+		})
+
+		builder.addCase(sendLastWillState.pending, (state) => {
+			state.isLoading = true
+		})
+
+		builder.addCase(sendLastWillState.fulfilled, (state) => {
+			state.isLoading = false
 		})
 	},
 })

@@ -12,7 +12,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { setInheritance, setProgressKeys } from '../../../../../store/lastwill'
+import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill'
 import { FinancialAsset, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
@@ -48,6 +48,7 @@ const Inheritance = () => {
 		try {
 			// Update inheritance global state only if values have changed
 			dispatch(setInheritance(values))
+			await dispatch(sendLastWillState())
 
 			// Redirect to previous or next page
 			router.push(href)
