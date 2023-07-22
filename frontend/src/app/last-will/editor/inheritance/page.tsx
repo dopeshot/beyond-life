@@ -1,7 +1,7 @@
 'use client'
 import { nanoid } from '@reduxjs/toolkit'
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
@@ -25,11 +25,9 @@ type InheritanceFormPayload = {
  */
 const Inheritance = () => {
 	const router = useRouter()
-	const searchparams = useSearchParams()
-
-	const id = searchparams.get('id') || 'ID_IS_MISSING'
 
 	// Global State
+	const _id = useAppSelector((state) => state.lastWill._id)
 	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
 	const items = useAppSelector((state) => state.lastWill.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
@@ -37,8 +35,8 @@ const Inheritance = () => {
 	const dispatch = useAppDispatch()
 
 	// Prepare links
-	const PREVIOUS_LINK = routes.lastWill.heirs(id)
-	const NEXT_LINK = routes.lastWill.succession(id)
+	const PREVIOUS_LINK = routes.lastWill.heirs(_id)
+	const NEXT_LINK = routes.lastWill.succession(_id)
 
 	// Formik
 	const initalFormValues: InheritanceFormPayload = {
