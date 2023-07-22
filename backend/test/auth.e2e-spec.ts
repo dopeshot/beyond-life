@@ -589,6 +589,77 @@ describe('AuthController (e2e)', () => {
     })
   })
 
+  describe('/auth/forgot-password-submit (POST)', () => {
+    let token
+    beforeEach(async () => {
+      const user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+      token = jwtService.sign(
+        {
+          id: user._id,
+        } as PasswordResetJWTPayload,
+        {
+          secret: configService.get('JWT_PASSWORD_RESET_SECRET'),
+        },
+      )
+    })
+
+    describe('Positive Tests', () => {
+      it('should reset password for user with valid token', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({ token })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(comparePassword(SAMPLE_USER.password, user.password)).toEqual(
+          false,
+        )
+        expect(comparePassword('newPassword', user.password)).toEqual(true)
+      })
+    })
+
+    describe('Negative Tests', () => {
+      it('should fail if user does not exist anymore', async () => {
+        // ARRANGE
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({
+            token,
+          })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR)
+      })
+
+      it('should with invalid token', async () => {
+        // ARRANGE
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({
+            token: `${token}a`,
+          })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
+      })
+    })
+  })
+
   describe('Test of the entire register and login flow', () => {
     it('should allow for the user to create an account, login with credentials and then login with refresh token', async () => {
       // ACT 1

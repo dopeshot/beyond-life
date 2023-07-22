@@ -267,6 +267,13 @@ export class AuthService {
    * @description Reset user password
    */
   async setNewUserPassword(id: ObjectId, newPassword: string) {
+    const user = await this.userService.findOneById(id)
+    // This SHOULD never happen => Therefore internal server error
+    if (!user) {
+      throw new InternalServerErrorException(
+        'This user does not seem to exist anymore',
+      )
+    }
     try {
       await this.userService.updateUserPassword(id, newPassword)
     } catch (error) {

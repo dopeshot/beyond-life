@@ -17,6 +17,7 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -159,6 +160,10 @@ export class AuthController {
   })
   @ApiServiceUnavailableResponse({
     description: 'Password could not be updated',
+  })
+  @ApiInternalServerErrorResponse({
+    description:
+      'The user was deleted or cannot be found anymore...something is off',
   })
   @ApiBearerAuth('password_reset_token')
   async setNewPassword(
