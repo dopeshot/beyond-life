@@ -13,8 +13,8 @@ const Buy = () => {
 		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4 lg:p-8 xl:p-20">
 			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
 				<div className="mb-12">
-					<Headline className="!font-bold">Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
-					<p className="text-xl font-bold">Schalten Sie es jetzt frei</p>
+					<Headline>Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
+					<p className="text-xl">Schalten Sie es jetzt frei</p>
 				</div>
 
 				{/* TODO onClick weiterleiten zu stripe */}
