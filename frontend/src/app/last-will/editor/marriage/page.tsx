@@ -136,7 +136,10 @@ const Marriage = () => {
 								<Checkbox
 									name="partnerGermanCitizenship"
 									options={[
-										{ id: 'partnerGermanCitizenship', label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?' },
+										{
+											value: 'partnerGermanCitizenship',
+											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
+										},
 									]}
 								/>
 

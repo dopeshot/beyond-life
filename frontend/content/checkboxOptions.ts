@@ -1,38 +1,38 @@
-import { SelectableOption } from '../src/types/forms'
+import { ComponentOptions } from '../src/types/form'
 
-export const testatorMoreInfosOptions: SelectableOption[] = [
+export const testatorMoreInfosOptions: ComponentOptions[] = [
 	{
-		id: 'testatorHandicapped',
+		value: 'testatorHandicapped',
 		label: 'Haben Sie eine Behinderung?',
 	},
 	{
-		id: 'testatorInsolvent',
+		value: 'testatorInsolvent',
 		label: 'Sind Sie insolvent?',
 	},
 ]
 
-export const partnerMoreInfosOptions: SelectableOption[] = [
+export const partnerMoreInfosOptions: ComponentOptions[] = [
 	{
-		id: 'partnerHandicapped',
+		value: 'partnerHandicapped',
 		label: 'Hat ihr Partner eine Behinderung?',
 	},
 	{
-		id: 'partnerInsolvent',
+		value: 'partnerInsolvent',
 		label: 'Ist ihr Partner insolvent?',
 	},
 	{
-		id: 'partnerBerlinWill',
+		value: 'partnerBerlinWill',
 		label: 'Wollen Sie ein Berliner Testament?',
 	},
 ]
 
-export const personMoreInfosOptions: SelectableOption[] = [
+export const personMoreInfosOptions: ComponentOptions[] = [
 	{
-		id: 'personHandicapped',
+		value: 'personHandicapped',
 		label: 'Hat die Person eine Behinderung?',
 	},
 	{
-		id: 'personInsolvent',
+		value: 'personInsolvent',
 		label: 'Ist die Person insolvent?',
 	},
 ]
