@@ -14,9 +14,9 @@ export const metadata = {
  */
 const Advertisement = () => {
 	return (
-		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-16 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4">
+		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-10 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4 lg:p-20">
 			<div className="order-2 mx-0 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
-				<div className="mb-8 flex flex-col">
+				<div className="mb-12">
 					<Headline>Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
 					<p className="text-xl font-bold">Schalten Sie es jetzt frei</p>
 				</div>
