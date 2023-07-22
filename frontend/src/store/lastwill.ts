@@ -6,6 +6,7 @@ export type LastWillState = {
 	_id: string
 	progressKeys: SidebarPages[]
 	isLoading: boolean
+	isInitialized: boolean
 
 	// parts
 	financialAssets: FinancialAsset[]
@@ -16,13 +17,15 @@ const initialState: LastWillState = {
 	_id: '',
 	progressKeys: [],
 	isLoading: false,
+	isInitialized: false,
 	financialAssets: [],
 	items: [],
 }
 
-export const fetchInitialState = createAsyncThunk(
-	'lastWill/fetchInitialState',
+export const fetchLastWillState = createAsyncThunk(
+	'lastWill/fetchLastWillState',
 	async ({ lastWillId }: { lastWillId: string }) => {
+		console.log('fetchLastWillState', { lastWillId })
 		const data = await new Promise<LastWillState>((resolve) =>
 			setTimeout(
 				() =>
@@ -30,7 +33,7 @@ export const fetchInitialState = createAsyncThunk(
 						_id: lastWillId,
 						progressKeys: [],
 						isLoading: false,
-
+						isInitialized: false,
 						financialAssets: [
 							{
 								id: nanoid(),
@@ -58,7 +61,7 @@ export const fetchInitialState = createAsyncThunk(
 							},
 						],
 					} satisfies LastWillState),
-				100
+				1000
 			)
 		)
 		return data
@@ -72,13 +75,17 @@ const lastWillSlice = createSlice({
 		setProgressKeys: (state, action: PayloadAction<SidebarPages>) => {
 			state.progressKeys.push(action.payload)
 		},
+		resetLastWill: (state, action: PayloadAction<boolean>) => {
+			state.isInitialized = action.payload
+		},
 	},
 	extraReducers(builder) {
-		builder.addCase(fetchInitialState.pending, (state) => {
+		builder.addCase(fetchLastWillState.pending, (state) => {
 			state.isLoading = true
 		})
-		builder.addCase(fetchInitialState.fulfilled, (state, action) => {
+		builder.addCase(fetchLastWillState.fulfilled, (state, action) => {
 			state.isLoading = false
+			state.isInitialized = true
 			state._id = action.payload._id
 			state.progressKeys = action.payload.progressKeys
 			state.financialAssets = action.payload.financialAssets
@@ -88,4 +95,4 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys } = lastWillSlice.actions
+export const { setProgressKeys, resetLastWill } = lastWillSlice.actions
