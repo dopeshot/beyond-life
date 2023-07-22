@@ -11,16 +11,16 @@ const data: CheckboxProps = {
 	helperText: 'Please select all that apply.',
 	options: [
 		{
-			id: 1,
+			value: 1,
 			label: 'Icecream',
 		},
 		{
-			id: 2,
+			value: 2,
 			label: 'Cake',
 			icon: 'cake',
 		},
 		{
-			id: 3,
+			value: 3,
 			label: 'Egg',
 			icon: 'egg',
 		},
@@ -65,25 +65,25 @@ describe('Checkbox', () => {
 
 	it('should display all options', () => {
 		data.options.forEach((option) => {
-			cy.datacy(`checkbox-${data.name}-option-${option.id}`).should('contain', option.label)
+			cy.datacy(`checkbox-${data.name}-option-${option.value}`).should('contain', option.label)
 		})
 	})
 
 	it('should check box when click on it', () => {
-		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').check().should('be.checked')
-		cy.datacy(`checkbox-${data.name}-option-${data.options[1].id}`, ' input').should('not.be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].value}`, ' input').check().should('be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[1].value}`, ' input').should('not.be.checked')
 	})
 
 	it('should uncheck box when click on it after it is checked', () => {
-		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').check().should('be.checked')
-		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' input').click().should('not.be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].value}`, ' input').check().should('be.checked')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].value}`, ' input').click().should('not.be.checked')
 	})
 
 	it('should display icon before label when defined', () => {
-		cy.datacy(`checkbox-${data.name}-option-${data.options[1].id}`, ' i').should('exist')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[1].value}`, ' i').should('exist')
 	})
 
 	it('should not display icon before label when not defined', () => {
-		cy.datacy(`checkbox-${data.name}-option-${data.options[0].id}`, ' i').should('not.exist')
+		cy.datacy(`checkbox-${data.name}-option-${data.options[0].value}`, ' i').should('not.exist')
 	})
 })
