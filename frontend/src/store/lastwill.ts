@@ -22,6 +22,16 @@ const initialState: LastWillState = {
 	items: [],
 }
 
+export const sendLastWillState = createAsyncThunk(
+	'lastWill/sendLastWillState',
+	async ({ lastWillId, lastWillState }: { lastWillId: string; lastWillState: LastWillState }) => {
+		console.log('sendLastWillState', { lastWillId, lastWillState })
+		const data = await new Promise<LastWillState>((resolve) => setTimeout(() => resolve(lastWillState), 10))
+		console.log('sended data', data)
+		return data
+	}
+)
+
 export const fetchLastWillState = createAsyncThunk(
 	'lastWill/fetchLastWillState',
 	async ({ lastWillId }: { lastWillId: string }) => {
