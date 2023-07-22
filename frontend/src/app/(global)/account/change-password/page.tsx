@@ -43,7 +43,7 @@ const ChangePassword = () => {
 		await new Promise((resolve) => setTimeout(resolve, 1000))
 		setIsLoading(false)
 
-		router.push(routes.account.login)
+		router.push(routes.account.login())
 	}
 
 	return (

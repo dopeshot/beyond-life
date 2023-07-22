@@ -68,12 +68,12 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 
 					{/* Navlinks End */}
 					<li className="order-1 md:order-none md:ml-auto">
-						<Route kind="secondary" href={routes.account.login}>
+						<Route kind="secondary" href={routes.account.login()}>
 							Login
 						</Route>
 					</li>
 					<li>
-						<NavbarLink to={routes.account.register} isActive={routes.account.register === pathname}>
+						<NavbarLink to={routes.account.register()} isActive={routes.account.register() === pathname}>
 							Register
 						</NavbarLink>
 					</li>
