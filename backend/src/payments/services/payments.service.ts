@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
@@ -54,19 +55,29 @@ export class PaymentsService {
 
     let customerId: string
     let amount = paymentPlans[paymentBody.plan]
-    if (user.stripeCustomerId) {
-      // Check if the saved stripeCustomerId saved is still valid
-      customerId = (await this.stripe.customers.retrieve(user.stripeCustomerId))
-        .id
+    // Check if the saved stripeCustomerId saved is still valid
+    try {
+      if (user.stripeCustomerId) {
+        customerId = (
+          await this.stripe.customers.retrieve(user.stripeCustomerId)
+        ).id
+      } else {
+        customerId = (await this.createStripeCustomer(user._id, user.email)).id
+      }
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException(
+        "Couldn't properly communicate with Stripe",
+      )
+    }
 
+    if (user.paymentPlan !== 'free') {
       if (paymentBody.plan === user.paymentPlan)
-        throw new ForbiddenException('You cannot rebuy a plan')
+        throw new ForbiddenException('You cannot rebuy a plan') // Actually I would love to allow it if it means more money
       if (paymentPlans[paymentBody.plan] < paymentPlans[user.paymentPlan]) {
-        throw new ForbiddenException('You cannot downgrade your plan')
+        throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
       }
       amount = paymentPlans[paymentBody.plan] - paymentPlans[user.paymentPlan]
-    } else {
-      customerId = (await this.createStripeCustomer(user._id, user.email)).id
     }
 
     try {
