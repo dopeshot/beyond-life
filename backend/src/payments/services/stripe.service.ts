@@ -12,10 +12,10 @@ export class StripeService {
     })
   }
 
-  async customer_create(name: string, email: string) {
+  async customer_create(_id: string, email: string) {
     try {
       const customer = await this.stripe.customers.create({
-        name,
+        name: _id,
         email,
       })
       return customer.id

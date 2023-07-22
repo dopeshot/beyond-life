@@ -11,7 +11,6 @@ import { User } from '../src/db/entities/users.entity'
 import { paymentPlans } from '../src/payments/interfaces/payments'
 import { PaymentsModule } from '../src/payments/payments.module'
 import { StripeService } from '../src/payments/services/stripe.service'
-import { ProfileModule } from '../src/profile/profile.module'
 import { SharedModule } from '../src/shared/shared.module'
 import { MockStripeService } from './__mocks__/stripeservice'
 import { MockConfigService } from './helpers/config-service.helper'
@@ -35,7 +34,6 @@ describe('PaymentsController (e2e)', () => {
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),
         rootTypegooseTestModule(),
-        ProfileModule,
         PaymentsModule,
       ],
     })
