@@ -21,22 +21,6 @@ import {
 } from './helpers/mongo.helper'
 import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
 
-class StripeMock {
-  constructor(private apiKey: string) {}
-
-  paymentIntents = {
-    //create: (options: any) => any
-    create: (options: any) => {
-      console.log('create', options)
-
-      return {
-        status: 'succeeded',
-        amount_received: paymentPlans[options.amount],
-      }
-    },
-  }
-}
-
 describe('PaymentsController (e2e)', () => {
   let app: INestApplication
   let jwtService: JwtService
