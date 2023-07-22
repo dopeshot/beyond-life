@@ -3,6 +3,7 @@ import { LastWillState, lastWillReducer, setProgressKeys } from './lastwill'
 
 describe('should add progress key to global store', () => {
 	const initialState: LastWillState = {
+		_id: 'TESTING_ID',
 		isLoading: false,
 		progressKeys: [],
 		financialAssets: [],
