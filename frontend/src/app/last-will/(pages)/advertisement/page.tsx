@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import image from '../../../../assets/images/layout/testamentPreview.jpg'
-import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
 import { Icon } from '../../../../components/Icon/Icon'
+import { routes } from '../../../../services/routes/routes'
 
 export const metadata = {
 	title: 'Auth | Siebtes Leben',
@@ -39,12 +40,12 @@ const Advertisement = () => {
 
 				{/* Buttons */}
 				<div className="flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:justify-between">
-					<Button icon="login" kind="tertiary" className="w-auto">
+					<Route icon="login" href={routes.account.login({ funnel: true })} kind="tertiary" className="w-auto">
 						Login
-					</Button>
-					<Button icon="arrow_forward" className="sm:w-max">
+					</Route>
+					<Route icon="arrow_forward" href={routes.account.register({ funnel: true })} className="sm:w-max">
 						Account erstellen
-					</Button>
+					</Route>
 				</div>
 			</div>
 
