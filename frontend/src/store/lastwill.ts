@@ -1,4 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import { InheritanceFormPayload } from '../app/(app)/last-will/editor/inheritance/page'
 import { FinancialAsset, Item } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 
@@ -7,6 +8,7 @@ export type LastWillState = {
 	isLoading: boolean
 	isInitialized: boolean
 
+	// SYNC THIS WITH BACKEND
 	data: {
 		_id: string
 		progressKeys: SidebarPages[]
@@ -92,13 +94,7 @@ const lastWillSlice = createSlice({
 				state.data.progressKeys.push(action.payload)
 			}
 		},
-		setInheritance: (
-			state,
-			action: PayloadAction<{
-				financialAssets: LastWillState['data']['financialAssets']
-				items: LastWillState['data']['items']
-			}>
-		) => {
+		setInheritance: (state, action: PayloadAction<InheritanceFormPayload>) => {
 			state.data.financialAssets = action.payload.financialAssets
 			state.data.items = action.payload.items
 		},
@@ -114,11 +110,7 @@ const lastWillSlice = createSlice({
 			state.isLoading = false
 			state.isInitialized = true
 
-			// TODO: Make this shorter
-			state.data._id = action.payload._id
-			state.data.progressKeys = action.payload.progressKeys
-			state.data.financialAssets = action.payload.financialAssets
-			state.data.items = action.payload.items
+			state.data = action.payload
 		})
 	},
 })

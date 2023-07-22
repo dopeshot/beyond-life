@@ -16,7 +16,7 @@ import { setInheritance, setProgressKeys } from '../../../../../store/lastwill'
 import { FinancialAsset, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-type InheritanceFormPayload = {
+export type InheritanceFormPayload = {
 	financialAssets: FinancialAsset[]
 	items: Item[]
 }
