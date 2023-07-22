@@ -1,7 +1,9 @@
 import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Schema } from 'mongoose'
@@ -24,25 +26,54 @@ export class PaymentsService {
     })
   }
 
-  async createStripeCustomer(name: Schema.Types.ObjectId, email: string) {
-    const customer = await this.stripe.customers.create({
-      name: name.toString(),
-      email,
-    })
-    return customer
+  async createStripeCustomer(_id: Schema.Types.ObjectId, email: string) {
+    try {
+      const customer = await this.stripe.customers.create({
+        name: _id.toString(),
+        email,
+      })
+
+      await this.userService.updateUserStripeCustomer(_id, customer.id)
+
+      return customer
+    } catch (error) {
+      this.logger.error(error)
+      throw error // Because it is passed further
+    }
   }
 
-  async createStripePayment(paymentBody: PaymentDTO) {
-    // TODO: Check current payment => upgrade or buy
-    try {
-      const customer = await this.createStripeCustomer(
-        new Schema.ObjectId('joe'),
-        'test@test.test',
+  async createStripePayment(
+    paymentBody: PaymentDTO,
+    userId: Schema.Types.ObjectId,
+  ) {
+    const user = await this.userService.findOneById(userId)
+    if (!user)
+      throw new UnauthorizedException(
+        'This user does not exist and cannot make a purchase',
       )
+
+    let customerId: string
+    let amount = paymentPlans[paymentBody.plan]
+    if (user.stripeCustomerId) {
+      // Check if the saved stripeCustomerId saved is still valid
+      customerId = (await this.stripe.customers.retrieve(user.stripeCustomerId))
+        .id
+
+      if (paymentBody.plan === user.paymentPlan)
+        throw new ForbiddenException('You cannot rebuy a plan')
+      if (paymentPlans[paymentBody.plan] < paymentPlans[user.paymentPlan]) {
+        throw new ForbiddenException('You cannot downgrade your plan')
+      }
+      amount = paymentPlans[paymentBody.plan] - paymentPlans[user.paymentPlan]
+    } else {
+      customerId = (await this.createStripeCustomer(user._id, user.email)).id
+    }
+
+    try {
       const paymentData: Stripe.Response<Stripe.PaymentIntent> =
         await this.stripe.paymentIntents.create({
-          customer: customer.id,
-          amount: paymentPlans[paymentBody.plan],
+          customer: customerId,
+          amount,
           payment_method: paymentBody.paymentMethodId,
           currency: 'eur',
           confirm: true,
