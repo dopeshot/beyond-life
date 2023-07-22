@@ -16,6 +16,7 @@ import {
 } from '@nestjs/swagger'
 import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.interface'
 import { JwtGuard } from '../shared/guards/jwt.guard'
+import { ChangeEmailDTO } from './dtos/change-email.dto'
 import { ChangePasswordDto } from './dtos/change-password.dto'
 import { ProfileService } from './profile.service'
 
@@ -46,5 +47,15 @@ export class ProfileController {
     @Body() { oldPassword, password }: ChangePasswordDto,
   ) {
     await this.profileService.updatePassword(user.id, oldPassword, password)
+  }
+
+  @Post('change-email')
+  @UseGuards(JwtGuard)
+  @HttpCode(HttpStatus.OK)
+  async updateUserEmail(
+    @Req() { user }: RequestWithJWTPayload,
+    @Body() { email }: ChangeEmailDTO,
+  ) {
+    await this.profileService.updateUserEmail(user.id, email)
   }
 }
