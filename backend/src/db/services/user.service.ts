@@ -60,7 +60,6 @@ export class UserService {
       return user
     } catch (error) {
       this.logger.error(error)
-      // Necessary due to incomplete typeorm type
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
       else if (error instanceof ServiceUnavailableException) throw error
@@ -99,7 +98,6 @@ export class UserService {
       )
     } catch (error) {
       this.logger.error(error)
-      // Necessary due to incomplete typeorm type
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
     }
