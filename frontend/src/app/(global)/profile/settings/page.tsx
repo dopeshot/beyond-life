@@ -21,40 +21,40 @@ type AccountDelete = {
 	delete: [boolean?]
 }
 
+const initalEmailChangeValues: EmailChange = {
+	newEmail: '',
+}
+
+const initialPasswordChangeValues: PasswordChange = {
+	oldPassword: '',
+	newPassword: '',
+	newPasswordConfirm: '',
+}
+
+const initalAccountDeleteValues: AccountDelete = {
+	delete: [],
+}
+
+const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
+	newEmail: string()
+		.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
+		.required('Bitte geben Sie eine E-Mail Adresse ein.'),
+})
+
+const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({
+	oldPassword: string().required('Bitte geben Sie Ihr aktuelles Passwort ein.'),
+	newPassword: string()
+		.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.')
+		.required('Bitte geben Sie ein neues Passwort ein.'),
+	newPasswordConfirm: string()
+		.oneOf([ref('newPassword')], 'Passwörter stimmen nicht überein.')
+		.required('Bitte bestätigen Sie Ihr neues Passwort.'),
+})
+
 /**
  * Account Settings Page
  */
 const AccountSettings = () => {
-	const initalEmailChangeValues: EmailChange = {
-		newEmail: '',
-	}
-
-	const initialPasswordChangeValues: PasswordChange = {
-		oldPassword: '',
-		newPassword: '',
-		newPasswordConfirm: '',
-	}
-
-	const initalAccountDeleteValues: AccountDelete = {
-		delete: [],
-	}
-
-	const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
-		newEmail: string()
-			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
-			.required('Bitte geben Sie eine E-Mail Adresse ein.'),
-	})
-
-	const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({
-		oldPassword: string().required('Bitte geben Sie Ihr aktuelles Passwort ein.'),
-		newPassword: string()
-			.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.')
-			.required('Bitte geben Sie ein neues Passwort ein.'),
-		newPasswordConfirm: string()
-			.oneOf([ref('newPassword')], 'Passwörter stimmen nicht überein.')
-			.required('Bitte bestätigen Sie Ihr neues Passwort.'),
-	})
-
 	const onSubmitEmailChange = (values: EmailChange) => {
 		console.log(values)
 	}
@@ -92,7 +92,7 @@ const AccountSettings = () => {
 							</div>
 							<div className="flex justify-end">
 								<Button type="submit" kind="secondary" disabled={!(dirty && isValid)}>
-									E-Mail ändern
+									E-Mail senden
 								</Button>
 							</div>
 						</Form>
@@ -112,7 +112,11 @@ const AccountSettings = () => {
 					{({ dirty, isValid }: FormikProps<PasswordChange>) => (
 						<Form>
 							<div className="lg:w-2/3">
-								<TextInput name="oldPassword" labelText="Aktuelles Passwort" placeholder="Gebe das alte Passwort ein" />
+								<PasswordInput
+									name="oldPassword"
+									labelText="Aktuelles Passwort"
+									placeholder="Gebe das alte Passwort ein"
+								/>
 								<PasswordInput name="newPassword" labelText="Neues Passwort" placeholder="Gebe das neue Passwort ein" />
 								<PasswordInput
 									name="newPasswordConfirm"
