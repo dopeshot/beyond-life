@@ -61,7 +61,7 @@ export const fetchLastWillState = createAsyncThunk(
 							},
 						],
 					} satisfies LastWillState),
-				1000
+				10
 			)
 		)
 		return data
