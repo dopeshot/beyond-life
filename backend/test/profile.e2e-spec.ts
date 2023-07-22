@@ -104,7 +104,7 @@ describe('AuthController (e2e)', () => {
     })
 
     describe('Negative Tests', () => {
-      it('should fail for invalid token', async () => {
+      it('should fail with invalid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .post('/profile/change-password')
@@ -128,13 +128,13 @@ describe('AuthController (e2e)', () => {
             password: 'newPassword',
           })
           .set({
-            Authorization: `Bearer ${token}a`,
+            Authorization: `Bearer ${token}`,
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
       })
 
-      it('should if user does not exist', async () => {
+      it('should fail if user does not exist', async () => {
         // ARRANGE
         await userModel.deleteOne({ email: SAMPLE_USER.email })
         // ACT
@@ -145,7 +145,7 @@ describe('AuthController (e2e)', () => {
             password: 'newPassword',
           })
           .set({
-            Authorization: `Bearer ${token}a`,
+            Authorization: `Bearer ${token}`,
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
