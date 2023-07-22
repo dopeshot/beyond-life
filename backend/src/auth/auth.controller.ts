@@ -133,7 +133,7 @@ export class AuthController {
     await this.authService.requestUserVerifyMail(user.id)
   }
 
-  @Post('/auth/forgot-password')
+  @Post('forgot-password')
   @ApiOperation({ description: 'Request a password reset email' })
   @ApiCreatedResponse({ description: 'Password reset email has been send' })
   @ApiBody({
@@ -146,7 +146,7 @@ export class AuthController {
     await this.authService.startForgottenPasswordFlow(email)
   }
 
-  @Post('/auth/forgot-password-submit')
+  @Post('forgot-password-submit')
   @UseGuards(PasswordResetTokenGuard)
   @ApiOperation({
     description: 'Submit new password for user',
