@@ -1,8 +1,21 @@
 export const routes = {
 	index: '/',
 	account: {
-		register: '/account/register',
-		login: '/account/login',
+		// register: '/account/register',
+		register: (options?: { funnel: boolean }) => {
+			if (!options) return '/account/register'
+
+			const queryString = new URLSearchParams(`funnel=${options.funnel}`).toString()
+
+			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
+		},
+		login: (options?: { funnel: boolean }) => {
+			if (!options) return '/account/login'
+
+			const queryString = new URLSearchParams(`funnel=${options.funnel}`).toString()
+
+			return `/account/login${queryString !== '' ? `?${queryString}` : ''}`
+		},
 		profile: '/account/profile',
 		resetPassword: '/account/reset-password',
 	},
