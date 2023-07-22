@@ -1,83 +1,93 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { QueryFailedError, Repository } from 'typeorm'
-import { UserEntity } from '../entities/users.entity'
+import { InjectModel } from '@m8a/nestjs-typegoose'
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common'
+import { ReturnModelType } from '@typegoose/typegoose'
+import { ObjectId, Schema } from 'mongoose'
+import { User } from '../entities/users.entity'
+import { hash as bhash } from 'bcrypt'
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name)
 
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userEntity: Repository<UserEntity>,
+    @InjectModel(User)
+    private readonly userModel: ReturnModelType<typeof User>,
   ) {}
 
   /**
    * @description Fetch one user based on email
    */
-  async findOneByEmail(email: string): Promise<UserEntity> {
-    return await this.userEntity.findOneBy({ email: email })
+  async findOneByEmail(email: string): Promise<User> {
+    return await this.userModel.findOne({ email: email }).lean()
   }
 
   /**
    * @description Fetch one user based on id
    */
-  async findOneById(id: number): Promise<UserEntity> {
-    return await this.userEntity.findOneBy({ pkUserId: id })
+  async findOneById(id: Schema.Types.ObjectId): Promise<User> {
+    return await this.userModel.findOne({ _id: id }).lean()
   }
 
   /**
    * @description Set user last login time to current time (based on db system time)
    */
-  async setLoginTimestamp(id: number): Promise<void> {
-    const dbTime = await this.getCurrentDbTime()
+  async setLoginTimestamp(id: ObjectId): Promise<void> {
     // Use postgres function to get the current timestamp. This allows for consistent time measurements even with multiple auth services running
-    await this.userEntity.update(id, {
-      lastLogin: dbTime.now,
-    })
+    await this.userModel.updateOne(
+      { _id: id },
+      {
+        lastLogin: new Date(),
+      },
+    )
   }
 
   /**
    * @description Insert user and handle constraint violations
    */
-  async insertUser(userData: Partial<UserEntity>): Promise<UserEntity> {
+  async insertUser(userData: Partial<User>): Promise<User> {
     try {
-      const user = this.userEntity.create(userData)
-      // This is a non ideal way of inserting the date, especially since postgres already has a default value
-      // However pg-mem has imperfections in the SQL parser that force us to set the createdAt date on the server rather than in the db directly
-      // This problem is related to https://github.com/oguimbal/pg-mem/issues/239
-      const insertedUser = await this.userEntity.save({
-        ...user,
-        createdAt: await (await this.getCurrentDbTime()).now,
+      userData.password = await this.hashPassword(userData.password)
+      const user: User = await this.userModel.create({
+        ...userData,
+        createdAt: new Date(),
       })
-      return insertedUser
+
+      return user
     } catch (error) {
       this.logger.error(error)
       // Necessary due to incomplete typeorm type
-      if (error instanceof QueryFailedError && 'code' in error) {
-        if (error.code === '23505') {
-          // Only if there is a constraint a specified conflict can be thrown, otherwise throw unspecified conflict
-          if ('constraint' in error) {
-            if (error.constraint === 'username_unique') {
-              throw new ConflictException('Username already in use')
-            }
-            if (error.constraint === 'email_unique') {
-              throw new ConflictException('Email already in use')
-            }
-          }
-          throw new ConflictException('Unknown conflict')
-        }
-      }
-      throw error
+      if (error.code === 11000 && error.keyPattern.email)
+        throw new ConflictException('Email is already taken.')
+      else if (error instanceof ServiceUnavailableException) throw error
     }
   }
 
   /**
-   * @description Get the system time of postgres instance
+   * @description Set users email verify value
    */
-  // ignore this in tests as the SQL query is not supported by pg-mem i.e. it has to be mocked
-  /* istanbul ignore next */
-  async getCurrentDbTime(): Promise<{ now: string }> {
-    return (await this.userEntity.query('SELECT NOW()::timestamptz'))[0]
+  async updateUserEmailVerify(email: string, newVerifyValue?: boolean) {
+    if (!newVerifyValue) {
+      newVerifyValue = true
+    }
+    await this.userModel.updateOne(
+      { email },
+      {
+        hasVerifiedEmail: newVerifyValue,
+      },
+    )
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    return await bhash(password, 10)
+  }
+
+  async updateUserPassword(id: ObjectId, password: string) {
+    const hashedPw = await this.hashPassword(password)
+    await this.userModel.updateOne({ _id: id }, { password: hashedPw })
   }
 }

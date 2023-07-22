@@ -1,5 +1,5 @@
 import { HeirsTypes } from '../src/store/last-will/heirs/state'
-import { ComponentOptions, DropdownButtonOptions } from '../src/types/dropdownOptions'
+import { ComponentOptions, DropdownButtonOptions } from '../src/types/form'
 
 export const genderOptions: ComponentOptions[] = [
 	{

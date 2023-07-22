@@ -9,10 +9,6 @@ describe('Router', () => {
 		it('should return account login path', () => {
 			expect(routes.account.login).to.equal('/account/login')
 		})
-
-		it('should return account profile path', () => {
-			expect(routes.account.profile).to.equal('/account/profile')
-		})
 	})
 
 	describe('lastWill routes', () => {
@@ -54,12 +50,20 @@ describe('Router', () => {
 	})
 
 	describe('misc routes', () => {
+		it('should return imprint path', () => {
+			expect(routes.misc.imprint).to.equal('/misc/imprint')
+		})
+
 		it('should return privacy policy path', () => {
 			expect(routes.misc.privacy).to.equal('/misc/privacy-policy')
 		})
 
-		it('should return terms of service path', () => {
-			expect(routes.misc.terms).to.equal('/misc/terms-of-service')
+		it('should return faq overview', () => {
+			expect(routes.misc.faq.index).to.equal('/misc/faq')
+		})
+
+		it('should return faq question', () => {
+			expect(routes.misc.faq.single('test')).to.equal('/misc/faq/test')
 		})
 	})
 })

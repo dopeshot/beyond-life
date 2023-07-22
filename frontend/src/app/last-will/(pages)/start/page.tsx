@@ -43,12 +43,7 @@ const Start = () => {
 			{/* Left Image with Text */}
 			<header className="relative mb-5 rounded-2xl bg-black bg-opacity-50 bg-cover bg-no-repeat bg-blend-darken lg:mb-0 lg:w-1/2 xl:w-1/3">
 				{/* Image absolute */}
-				<Image
-					className="absolute -z-10 h-full rounded-2xl object-cover object-center"
-					src={image}
-					alt="Couple"
-					placeholder="blur"
-				/>
+				<Image className="absolute -z-10 h-full rounded-2xl object-cover object-center" src={image} alt="Couple" />
 
 				{/* Content */}
 				<div className="flex h-full flex-col justify-center p-5 md:p-10">

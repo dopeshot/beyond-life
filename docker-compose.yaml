@@ -8,16 +8,26 @@ services:
     environment:
       - DB_USER_NAME=${BACKEND_DB_USER_NAME:-admin}
       - DB_USER_PW=${BACKEND_DB_USER_PW:-admin}
-      - DB_DB=${BACKEND_DB_DB:-beyond_life}
       - DB_HOST=${BACKEND_DB_HOST:-db}
-      - DB_PORT=${BACKEND_DB_PORT:-5432}
+      - DB_PORT=${BACKEND_DB_PORT:-27017}
       - JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET:-verysecret}
       - JWT_REFRESH_EXPIRE_TIME=${BACKEND_JWT_REFRESH_EXPIRE_TIME:-10d}
       - JWT_SECRET=${BACKEND_JWT_SECRET:-secret}
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
+      - JWT_VERIFY_SECRET=${BACKEND_JWT_VERIFY_SECRET:-evenmoresecret}
+      - JWT_VERIFY_EXPIRE_TIME=${BACKEND_JWT_VERIFY_EXPIRE_TIME:-1d}
+      - BACKEND_DOMAIN=${BACKEND_BACKEND_DOMAIN:-http://localhost:3001}
+      - MAIL_HOST=${BACKEND_MAIL_HOST:-smtp}
+      - MAIL_HOST_PORT=${BACKEND_MAIL_HOST_PORT:-25}
+      - MAIL_IS_SECURE=${BACKLEND_MAIL_IS_SECURE:-false}
+      - MAIL_AUTH_USERNAME=${BACKEND_MAIL_AUTH_USERNAME:-mail}
+      - MAIL_AUTH_PW=${BACKEND_MAIL_AUTH_PW:-mail}
+      - MAIL_DEFAULT_SENDE=${BACKEND_MAIL_DEFAULT_SENDER:-hello@siebtesleben.de}
+      - NODE_ENV=${BACKEND_NODE_ENV:-development}
     links:
       - db:db
-        
+      - smtp:smtp
+
   frontend:
     image: ghcr.io/dopeshot/beyond-life/frontend:main
     restart: "always"
@@ -26,25 +36,29 @@ services:
     links:
       - backend:backend
 
-  db:
-    image: postgres:15
-    ports:
-      - 5432:5432
+  smtp:
+    image: rnwood/smtp4dev:v3
     restart: "always"
-    volumes:
-      - postgres_data_volume:/var/lib/pgsql/data
-      - ./db/setup:/docker-entrypoint-initdb.d/
+    ports:
+      - "25:25"
+      - 5000:80
+      - 143:143
     environment:
-      - POSTGRES_USER=${PG_USER:-admin}
-      - POSTGRES_PASSWORD=${PG_PW:-admin}
-      - POSTGRES_DB=${PG_DB:-beyond_life}
-    healthcheck:
-      # Healthcheck is based on the fact that the final postgres instance (after setup)
-      # runs with PID 1
-      test: ["CMD-SHELL", "pidof postgres | grep -q 1 && exit 0 || exit 1"]
-      interval: 60s
-      timeout: 5s
-      retries: 3
+      - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNAME:-mail}
+      - RelayOptions__Password=${BACKEND_MAIL_AUTH_PW:-mail}
 
-volumes:
-  postgres_data_volume:
+  db:
+    image: mongo:6.0.8
+    ports:
+      - 27017:27017
+    restart: "always"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PW:-admin}
+      - MONGO_INITDB_DATABASE:=${MONGO_DB:-siebtesleben}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s

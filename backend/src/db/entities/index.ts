@@ -1,3 +1,4 @@
-import { UserEntity } from './users.entity'
+import { MailEvent } from './mail-event.entity'
+import { User } from './users.entity'
 
-export const ENTITIES = [UserEntity]
+export const MODELS = [User, MailEvent]

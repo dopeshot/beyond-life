@@ -19,6 +19,10 @@ export const routes = {
 		profile: '/account/profile',
 		resetPassword: '/account/reset-password',
 	},
+	profile: {
+		myLastWills: '/profile/last-will',
+		settings: '/profile/settings',
+	},
 	lastWill: {
 		index: '/last-will',
 		start: '/last-will/start',
@@ -48,7 +52,11 @@ export const routes = {
 		final: (id: string) => `/last-will/editor/final?id=${id}`,
 	},
 	misc: {
+		faq: {
+			index: '/misc/faq',
+			single: (slug: string) => `/misc/faq/${slug}`,
+		},
+		imprint: '/misc/imprint',
 		privacy: '/misc/privacy-policy',
-		terms: '/misc/terms-of-service',
 	},
 }

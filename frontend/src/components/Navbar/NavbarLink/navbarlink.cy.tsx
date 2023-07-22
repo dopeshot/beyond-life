@@ -5,7 +5,7 @@ describe('NavbarLink', () => {
 	describe('Default Render', () => {
 		beforeEach(() => {
 			cy.mount(
-				<NavbarLink datacy="navbar-link" to="/home">
+				<NavbarLink datacy="navbar-link" href="/home">
 					Home
 				</NavbarLink>
 			)
@@ -19,7 +19,7 @@ describe('NavbarLink', () => {
 	describe('Link Prop', () => {
 		it('renders a link', () => {
 			cy.mount(
-				<NavbarLink datacy="navbar-link" to="/home">
+				<NavbarLink datacy="navbar-link" href="/home">
 					Home
 				</NavbarLink>
 			)
@@ -28,7 +28,7 @@ describe('NavbarLink', () => {
 
 		it('prevents click when link is active', () => {
 			cy.mount(
-				<NavbarLink datacy="navbar-link" to="/home" isActive>
+				<NavbarLink datacy="navbar-link" href="/home" isActive>
 					Home
 				</NavbarLink>
 			)
@@ -37,7 +37,7 @@ describe('NavbarLink', () => {
 	})
 
 	describe('OnClick Prop', () => {
-		it('renders a button with onClick', () => {
+		it('renders a buthrefn with onClick', () => {
 			cy.mount(
 				<NavbarLink datacy="navbar-link" onClick={() => console.log('Clicked!')}>
 					Click me
@@ -46,7 +46,7 @@ describe('NavbarLink', () => {
 			cy.datacy('navbar-link').should('be.visible')
 		})
 
-		it('disables button when link is active', () => {
+		it('disables buthrefn when link is active', () => {
 			cy.mount(
 				<NavbarLink datacy="navbar-link" onClick={() => console.log('Clicked!')} isActive>
 					Click me
@@ -59,7 +59,7 @@ describe('NavbarLink', () => {
 	describe('IsActive Prop', () => {
 		it('renders an active link', () => {
 			cy.mount(
-				<NavbarLink datacy="navbar-link" to="/home" isActive>
+				<NavbarLink datacy="navbar-link" href="/home" isActive>
 					Home
 				</NavbarLink>
 			)
@@ -68,7 +68,7 @@ describe('NavbarLink', () => {
 
 		it('renders an inactive link', () => {
 			cy.mount(
-				<NavbarLink datacy="navbar-link" to="/home">
+				<NavbarLink datacy="navbar-link" href="/home">
 					Home
 				</NavbarLink>
 			)
