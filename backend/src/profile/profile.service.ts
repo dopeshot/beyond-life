@@ -1,4 +1,5 @@
 import {
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -44,6 +45,11 @@ export class ProfileService {
     try {
       await this.userService.updateUserEmail(id, newEmail)
     } catch (error) {
+      // If error is already httpexception => Continue throwing
+      if (error instanceof HttpException) {
+        throw error
+      }
+
       this.logger.warn(`Could not update user email due to an error ${error}`)
       throw new InternalServerErrorException(
         'Something went wrong, please try again later',

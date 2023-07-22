@@ -307,6 +307,25 @@ describe('AuthController (e2e)', () => {
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
       })
+
+      it('should fail if email is already in use', async () => {
+        // ARRANGE
+        await userModel.create({
+          ...SAMPLE_USER,
+          email: 'different@email.com',
+        })
+        // ACT
+        const res = await request(app.getHttpServer())
+          .patch('/profile/change-email')
+          .send({
+            email: 'different@email.com',
+          })
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CONFLICT)
+      })
     })
   })
 })

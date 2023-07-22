@@ -92,9 +92,16 @@ export class UserService {
   }
 
   async updateUserEmail(id: ObjectId, email: string) {
-    await this.userModel.updateOne(
-      { _id: id },
-      { email, hasVerifiedEmail: false },
-    )
+    try {
+      await this.userModel.updateOne(
+        { _id: id },
+        { email, hasVerifiedEmail: false },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      // Necessary due to incomplete typeorm type
+      if (error.code === 11000 && error.keyPattern.email)
+        throw new ConflictException('Email is already taken.')
+    }
   }
 }
