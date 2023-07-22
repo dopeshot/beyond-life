@@ -92,6 +92,9 @@ export class UserService {
   }
 
   async updateUserEmail(id: ObjectId, email: string) {
-    await this.userModel.updateOne({ _id: id }, { email })
+    await this.userModel.updateOne(
+      { _id: id },
+      { email, hasVerifiedEmail: false },
+    )
   }
 }

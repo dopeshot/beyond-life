@@ -8,7 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import {
+  ApiBearerAuth,
   ApiBody,
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -42,6 +44,7 @@ export class ProfileController {
     description:
       'Either jwt was invalid, old password was wrong or user does not exist anymore',
   })
+  @ApiBearerAuth('access_token')
   async updatePassword(
     @Req() { user }: RequestWithJWTPayload,
     @Body() { oldPassword, password }: ChangePasswordDto,
@@ -52,6 +55,19 @@ export class ProfileController {
   @Post('change-email')
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    description:
+      'Change a users email address and therefore also send a new verify mail',
+  })
+  @ApiBody({ type: ChangeEmailDTO })
+  @ApiBearerAuth('access_token')
+  @ApiOkResponse({ description: 'Email has been updated.' })
+  @ApiUnauthorizedResponse({
+    description: 'Jwt invalid or user does not exist',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Db write could not performed or other internal error',
+  })
   async updateUserEmail(
     @Req() { user }: RequestWithJWTPayload,
     @Body() { email }: ChangeEmailDTO,
