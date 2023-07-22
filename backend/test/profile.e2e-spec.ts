@@ -177,12 +177,13 @@ describe('AuthController (e2e)', () => {
     })
 
     describe('Positive Tests', () => {
+    const newMail = 'newmail@mail.mail'
       it('should set new email', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: 'newmail@mail.mail',
+            email: newMail ,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -192,10 +193,10 @@ describe('AuthController (e2e)', () => {
         const oldUser = await userModel.findOne({
           email: SAMPLE_USER.email,
         })
-
         expect(oldUser).toBeNull()
+        
         const updatedUser = await userModel.findOne({
-          email: 'newmail@mail.mail',
+          email: newMail ,
         })
         expect(updatedUser).toBeDefined()
       })
@@ -210,7 +211,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: 'newmail@mail.mail',
+             email: newMail ,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -218,7 +219,7 @@ describe('AuthController (e2e)', () => {
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
         const updatedUser = await userModel.findOne({
-          email: 'newmail@mail.mail',
+           email: newMail ,
         })
         expect(updatedUser.hasVerifiedEmail).toEqual(false)
       })
@@ -228,7 +229,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: 'newmail@mail.mail',
+            email: newMail ,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -258,7 +259,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: 'newmail@mail.mail',
+            email: newMail ,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -273,7 +274,7 @@ describe('AuthController (e2e)', () => {
         })
 
         expect(tokenPayload.email).not.toEqual(SAMPLE_USER.email)
-        expect(tokenPayload.email).toEqual('newmail@mail.mail')
+        expect(tokenPayload.email).toEqual(newMail)
       })
     })
 
