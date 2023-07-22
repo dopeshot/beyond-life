@@ -64,4 +64,6 @@ describe('lastWillSlice', () => {
 			expect(newState).to.deep.equal(initialState)
 		})
 	})
+
+	// TODO: Add reset tests
 })
