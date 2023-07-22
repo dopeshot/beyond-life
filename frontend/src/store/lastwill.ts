@@ -73,7 +73,9 @@ const lastWillSlice = createSlice({
 	initialState,
 	reducers: {
 		setProgressKeys: (state, action: PayloadAction<SidebarPages>) => {
-			state.progressKeys.push(action.payload)
+			if (!state.progressKeys.includes(action.payload)) {
+				state.progressKeys.push(action.payload)
+			}
 		},
 		setInheritance: (
 			state,
