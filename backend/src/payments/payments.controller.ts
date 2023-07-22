@@ -15,9 +15,7 @@ export class PaymentsController {
   @ApiOperation({ summary: 'Create payment intent' })
   async createPayments(@Body() paymentBody: PaymentDTO) {
     console.log('paymentBody: ', paymentBody)
-    const payment = await this.paymentService.createStripePaymentIntent(
-      paymentBody,
-    )
+    const payment = await this.paymentService.createStripePayment(paymentBody)
     console.log('payment: ', payment)
 
     return payment

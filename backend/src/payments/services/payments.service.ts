@@ -28,19 +28,26 @@ export class PaymentsService {
     return customer
   }
 
-  async createStripePaymentIntent(paymentBody: PaymentDTO) {
+  async createStripePayment(paymentBody: PaymentDTO) {
     // TODO: Check current payment => upgrade or buy
-    const customer = await this.createStripeCustomer(
-      new Schema.ObjectId('joe'),
-      'test@test.test',
-    )
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      customer: customer.id,
-      amount: paymentPlans[paymentBody.plan],
-      payment_method: paymentBody.paymentMethodId,
-      currency: 'eur',
-      confirm: true,
-    })
-    return paymentIntent
+    try {
+      const customer = await this.createStripeCustomer(
+        new Schema.ObjectId('joe'),
+        'test@test.test',
+      )
+      const paymentData: Stripe.Response<Stripe.PaymentIntent> =
+        await this.stripe.paymentIntents.create({
+          customer: customer.id,
+          amount: paymentPlans[paymentBody.plan],
+          payment_method: paymentBody.paymentMethodId,
+          currency: 'eur',
+          confirm: true,
+        })
+      const { status, amount_received } = paymentData
+      return { status, amount_received }
+    } catch (error) {
+      this.logger.error(error)
+      throw error
+    }
   }
 }
