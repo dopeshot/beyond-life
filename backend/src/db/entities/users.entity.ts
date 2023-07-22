@@ -60,6 +60,7 @@ export class User {
   })
   paymentPlan: string
 
+  @Expose({ groups: ['admin'] })
   @prop({ required: false, default: [] })
   paymentHistory: string[]
 }
