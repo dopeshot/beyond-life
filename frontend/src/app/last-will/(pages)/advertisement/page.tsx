@@ -5,11 +5,6 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { Icon } from '../../../../components/Icon/Icon'
 import { routes } from '../../../../services/routes/routes'
 
-export const metadata = {
-	title: 'Auth | Siebtes Leben',
-	description: '',
-}
-
 /**
  * Login/Register Page with ads for last will.
  */

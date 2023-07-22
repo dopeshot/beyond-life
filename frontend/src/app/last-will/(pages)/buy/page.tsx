@@ -5,11 +5,6 @@ import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
 import { Headline } from '../../../../components/Headline/Headline'
 import { Icon } from '../../../../components/Icon/Icon'
 
-export const metadata = {
-	title: 'Kaufen | Siebtes Leben',
-	description: '',
-}
-
 /**
  * Paywall Page
  */
