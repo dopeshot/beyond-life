@@ -1,4 +1,4 @@
-import { Headline } from '../../../../components/Headline/Headline'
+import { Headline } from '../../../../../components/Headline/Headline'
 
 /**
  * Account Settings Page

@@ -1,7 +1,7 @@
 'use client'
-import { Headline } from '../../../../components/Headline/Headline'
-import { Icon } from '../../../../components/Icon/Icon'
-import { IconButton } from '../../../../components/IconButton/IconButton'
+import { Headline } from '../../../../../components/Headline/Headline'
+import { Icon } from '../../../../../components/Icon/Icon'
+import { IconButton } from '../../../../../components/IconButton/IconButton'
 
 /**
  * Profile My LastWills Page
@@ -57,13 +57,13 @@ const MyLastWills = () => {
 	return (
 		<>
 			<Headline level={3}>
-				Meine Testamente <span className="text-base text-gray-600 ml-2">(2)</span>
+				Meine Testamente <span className="ml-2 text-base text-gray-600">(2)</span>
 			</Headline>
 
 			{/* Last Will List */}
 			{lastWills.map((lastWill) => (
-				<div key={lastWill.id} className="border-2 border-gray-200 rounded-xl py-5 px-6 mb-2 md:mb-4">
-					<div className="flex justify-between items-center mb-4">
+				<div key={lastWill.id} className="mb-2 rounded-xl border-2 border-gray-200 px-6 py-5 md:mb-4">
+					<div className="mb-4 flex items-center justify-between">
 						{/* Header */}
 						<div>
 							<Headline hasMargin={false} level={4} size="text-lg">
@@ -81,11 +81,11 @@ const MyLastWills = () => {
 					</div>
 
 					{/* Steps */}
-					<div className="flex flex-col xl:flex-row items-center space-y-2 xl:space-y-0 xl:space-x-4">
+					<div className="flex flex-col items-center space-y-2 xl:flex-row xl:space-x-4 xl:space-y-0">
 						{lastWill.steps.map((step, index) => (
 							<div
 								key={step.label}
-								className="flex flex-col items-center xl:flex-row xl:items-center space-y-2 xl:space-y-0 xl:space-x-2"
+								className="flex flex-col items-center space-y-2 xl:flex-row xl:items-center xl:space-x-2 xl:space-y-0"
 							>
 								{/* Label with icon */}
 								<div className="flex items-center space-x-1">
@@ -100,7 +100,7 @@ const MyLastWills = () => {
 
 								{/* Line */}
 								{index < lastWill.steps.length - 1 && (
-									<div className="self-center w-[2px] h-4 xl:h-[2px] xl:w-12 bg-gray-200"></div>
+									<div className="h-4 w-[2px] self-center bg-gray-200 xl:h-[2px] xl:w-12"></div>
 								)}
 							</div>
 						))}

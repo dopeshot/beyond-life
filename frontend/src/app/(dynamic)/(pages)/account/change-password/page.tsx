@@ -3,10 +3,10 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
-import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
-import { PasswordInput } from '../../../../components/Form/PasswordInput/PasswordInput'
-import { Headline } from '../../../../components/Headline/Headline'
-import { routes } from '../../../../services/routes/routes'
+import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
+import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
+import { Headline } from '../../../../../components/Headline/Headline'
+import { routes } from '../../../../../services/routes/routes'
 
 type ChangePasswordFormValues = {
 	newPassword: string

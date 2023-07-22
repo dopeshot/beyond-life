@@ -3,10 +3,10 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
-import { Button } from '../../../../components/ButtonsAndLinks/Button/Button'
-import { TextInput } from '../../../../components/Form/TextInput/TextInput'
-import { Headline } from '../../../../components/Headline/Headline'
-import { routes } from '../../../../services/routes/routes'
+import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
+import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
+import { Headline } from '../../../../../components/Headline/Headline'
+import { routes } from '../../../../../services/routes/routes'
 
 type ResetPasswordFormValues = {
 	email: string
