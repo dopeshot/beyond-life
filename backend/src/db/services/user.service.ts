@@ -6,6 +6,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
+import { hash as bhash } from 'bcrypt'
 import { ObjectId, Schema } from 'mongoose'
 import { User } from '../entities/users.entity'
 
@@ -50,6 +51,7 @@ export class UserService {
    */
   async insertUser(userData: Partial<User>): Promise<User> {
     try {
+      userData.password = await this.hashPassword(userData.password)
       const user: User = await this.userModel.create({
         ...userData,
         createdAt: new Date(),
@@ -58,7 +60,6 @@ export class UserService {
       return user
     } catch (error) {
       this.logger.error(error)
-      // Necessary due to incomplete typeorm type
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
       else if (error instanceof ServiceUnavailableException) throw error
@@ -78,5 +79,27 @@ export class UserService {
         hasVerifiedEmail: newVerifyValue,
       },
     )
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    return await bhash(password, 10)
+  }
+
+  async updateUserPassword(id: ObjectId, password: string) {
+    const hashedPw = await this.hashPassword(password)
+    await this.userModel.updateOne({ _id: id }, { password: hashedPw })
+  }
+
+  async updateUserEmail(id: ObjectId, email: string) {
+    try {
+      await this.userModel.updateOne(
+        { _id: id },
+        { email, hasVerifiedEmail: false },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      if (error.code === 11000 && error.keyPattern.email)
+        throw new ConflictException('Email is already taken.')
+    }
   }
 }

@@ -407,6 +407,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should send verify Email', async () => {
         // ACT

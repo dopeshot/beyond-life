@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
 import { MailModule } from './mail/mail.module'
 import { SharedModule } from './shared/shared.module'
+import { ProfileModule } from './profile/profile.module'
 
 @Module({
   imports: [
@@ -38,7 +39,7 @@ import { SharedModule } from './shared/shared.module'
             configService.get('MAIL_IS_SECURE'),
           ),
           auth: {
-            user: configService.get('MAIL_AUTH_USERNANE'),
+            user: configService.get('MAIL_AUTH_USERNAME'),
             pass: configService.get('MAIL_AUTH_PW'),
           },
         },
@@ -49,6 +50,7 @@ import { SharedModule } from './shared/shared.module'
     SharedModule,
     DbModule,
     AuthModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [],
