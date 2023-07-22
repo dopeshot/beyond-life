@@ -1,10 +1,10 @@
 'use client'
 import { useEffect } from 'react'
-import { Headline } from '../../../../components/Headline/Headline'
-import { Icon } from '../../../../components/Icon/Icon'
-import { LastWill } from '../../../../components/LastWill/LastWill'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { SidebarPages } from '../../../../types/sidebar'
+import { Headline } from '../../../../../components/Headline/Headline'
+import { Icon } from '../../../../../components/Icon/Icon'
+import { LastWill } from '../../../../../components/LastWill/LastWill'
+import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
+import { SidebarPages } from '../../../../../types/sidebar'
 
 /**
  * Final Page for copy last will.
