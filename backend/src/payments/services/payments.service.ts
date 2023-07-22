@@ -1,46 +1,35 @@
 import {
   ForbiddenException,
   Injectable,
-  InternalServerErrorException,
   Logger,
-  ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { UserService } from '../../db/services/user.service'
-import { MailScheduleService } from '../../mail/services/scheduler.service'
 import { PaymentDTO, paymentPlans } from '../interfaces/payments'
+import { StripeService } from './stripe.service'
 
 @Injectable()
 export class PaymentsService {
   private logger = new Logger(PaymentsService.name)
   private stripe: Stripe
   constructor(
-    private readonly mailSendService: MailScheduleService,
+    private stripeService: StripeService,
     private configService: ConfigService,
     private readonly userService: UserService,
-  ) {
-    this.stripe = new Stripe(configService.get('STRIPE_SECRET_KEY'), {
-      apiVersion: '2022-11-15',
-    })
-  }
+  ) {}
 
   async createStripeCustomer(_id: Schema.Types.ObjectId, email: string) {
-    try {
-      const customer = await this.stripe.customers.create({
-        name: _id.toString(),
-        email,
-      })
+    const customerId = await this.stripeService.customer_create(
+      _id.toString(),
+      email,
+    )
 
-      await this.userService.updateUserStripeCustomer(_id, customer.id)
+    await this.userService.updateUserStripeCustomer(_id, customerId)
 
-      return customer
-    } catch (error) {
-      this.logger.error(error)
-      throw error // Because it is passed further
-    }
+    return customerId
   }
 
   async createStripePayment(
@@ -50,51 +39,37 @@ export class PaymentsService {
     const user = await this.userService.findOneById(userId)
     if (!user)
       throw new UnauthorizedException(
-        'This user does not exist and cannot make a purchase',
+        'This user does not exist and cannot make a purchase', // How unfortunate, we always want money
       )
 
-    let customerId: string
-    let amount = paymentPlans[paymentBody.plan]
     // Check if the saved stripeCustomerId saved is still valid
-    try {
-      if (user.stripeCustomerId) {
-        customerId = (
-          await this.stripe.customers.retrieve(user.stripeCustomerId)
-        ).id
-      } else {
-        customerId = (await this.createStripeCustomer(user._id, user.email)).id
-      }
-    } catch (error) {
-      this.logger.error(error)
-      throw new ServiceUnavailableException(
-        "Couldn't properly communicate with Stripe",
+    const customerId = user.stripeCustomerId
+      ? await this.stripeService.customer_retrieve(user.stripeCustomerId)
+      : await this.createStripeCustomer(userId, user.email)
+
+    // Check for forbidden actions
+    if (paymentBody.plan === user.paymentPlan)
+      throw new ForbiddenException('You cannot rebuy a plan') // Actually I would love to allow it if it means more money
+    if (paymentPlans[paymentBody.plan] < paymentPlans[user.paymentPlan]) {
+      throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
+    }
+    const amount =
+      paymentPlans[paymentBody.plan] - paymentPlans[user.paymentPlan]
+
+    const payment = await this.stripeService.paymentIntent_create(
+      amount,
+      customerId,
+      paymentBody.paymentMethodId,
+    )
+
+    if (payment.status === 'succeeded') {
+      await this.userService.updateUserPaymentPlan(userId, paymentBody.plan)
+      await this.userService.updateUserPaymentHistory(
+        userId,
+        paymentBody.paymentMethodId,
       )
     }
 
-    if (user.paymentPlan !== 'free') {
-      if (paymentBody.plan === user.paymentPlan)
-        throw new ForbiddenException('You cannot rebuy a plan') // Actually I would love to allow it if it means more money
-      if (paymentPlans[paymentBody.plan] < paymentPlans[user.paymentPlan]) {
-        throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
-      }
-      amount = paymentPlans[paymentBody.plan] - paymentPlans[user.paymentPlan]
-    }
-
-    try {
-      const paymentData: Stripe.Response<Stripe.PaymentIntent> =
-        await this.stripe.paymentIntents.create({
-          customer: customerId,
-          amount,
-          payment_method: paymentBody.paymentMethodId,
-          currency: 'eur',
-          confirm: true,
-        })
-      return paymentData
-    } catch (error) {
-      this.logger.error(error)
-      throw new InternalServerErrorException(
-        "Couldn't properly communicate with Stripe",
-      )
-    }
+    return payment
   }
 }
