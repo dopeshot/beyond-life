@@ -20,13 +20,14 @@ export class PaymentDTO {
   paymentMethodId: string
 }
 
-type PaymentOptions = 'single' | 'family'
+type PaymentOptions = 'free' | 'single' | 'family'
 
 type Plans = {
   [key in PaymentOptions]: number
 }
 
 export const paymentPlans: Plans = {
+  free: 0,
   single: 4900,
   family: 14900,
 }
