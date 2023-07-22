@@ -67,6 +67,12 @@ export class User {
     type: () => [String],
   })
   paymentHistory: string[]
+
+  _koooHELLOoobbbiii
+  kkDIDuCheckThisbiii
+  kkooTellUsoobbbiii
+  koobii
+  _kobi
 }
 
 export type UserModel = User & Document
