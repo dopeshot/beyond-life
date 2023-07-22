@@ -12,7 +12,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { setProgressKeys } from '../../../../../store/lastwill'
+import { setInheritance, setProgressKeys } from '../../../../../store/lastwill'
 import { FinancialAsset, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
@@ -47,7 +47,7 @@ const Inheritance = () => {
 	const onSubmit = async (values: InheritanceFormPayload, href: string) => {
 		try {
 			// Update inheritance global state only if values have changed
-			console.log(values)
+			dispatch(setInheritance(values))
 
 			// Redirect to previous or next page
 			router.push(href)

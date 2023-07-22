@@ -75,6 +75,16 @@ const lastWillSlice = createSlice({
 		setProgressKeys: (state, action: PayloadAction<SidebarPages>) => {
 			state.progressKeys.push(action.payload)
 		},
+		setInheritance: (
+			state,
+			action: PayloadAction<{
+				financialAssets: LastWillState['financialAssets']
+				items: LastWillState['items']
+			}>
+		) => {
+			state.financialAssets = action.payload.financialAssets
+			state.items = action.payload.items
+		},
 		resetLastWill: (state, action: PayloadAction<boolean>) => {
 			state.isInitialized = action.payload
 		},
@@ -86,6 +96,8 @@ const lastWillSlice = createSlice({
 		builder.addCase(fetchLastWillState.fulfilled, (state, action) => {
 			state.isLoading = false
 			state.isInitialized = true
+
+			// TODO: Make this shorter
 			state._id = action.payload._id
 			state.progressKeys = action.payload.progressKeys
 			state.financialAssets = action.payload.financialAssets
@@ -95,4 +107,4 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill } = lastWillSlice.actions
+export const { setProgressKeys, resetLastWill, setInheritance } = lastWillSlice.actions
