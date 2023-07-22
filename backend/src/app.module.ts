@@ -38,7 +38,7 @@ import { SharedModule } from './shared/shared.module'
             configService.get('MAIL_IS_SECURE'),
           ),
           auth: {
-            user: configService.get('MAIL_AUTH_USERNANE'),
+            user: configService.get('MAIL_AUTH_USERNAME'),
             pass: configService.get('MAIL_AUTH_PW'),
           },
         },
