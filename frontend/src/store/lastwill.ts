@@ -3,23 +3,30 @@ import { FinancialAsset, Item } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 
 export type LastWillState = {
-	_id: string
-	progressKeys: SidebarPages[]
+	// DO NOT SYNC THIS WITH BACKEND
 	isLoading: boolean
 	isInitialized: boolean
 
-	// parts
-	financialAssets: FinancialAsset[]
-	items: Item[]
+	data: {
+		_id: string
+		progressKeys: SidebarPages[]
+
+		// parts
+		financialAssets: FinancialAsset[]
+		items: Item[]
+	}
 }
 
 const initialState: LastWillState = {
-	_id: '',
-	progressKeys: [],
 	isLoading: false,
 	isInitialized: false,
-	financialAssets: [],
-	items: [],
+
+	data: {
+		_id: '',
+		progressKeys: [],
+		financialAssets: [],
+		items: [],
+	},
 }
 
 export const sendLastWillState = createAsyncThunk(
@@ -36,14 +43,12 @@ export const fetchLastWillState = createAsyncThunk(
 	'lastWill/fetchLastWillState',
 	async ({ lastWillId }: { lastWillId: string }) => {
 		console.log('fetchLastWillState', { lastWillId })
-		const data = await new Promise<LastWillState>((resolve) =>
+		const data = await new Promise<LastWillState['data']>((resolve) =>
 			setTimeout(
 				() =>
 					resolve({
 						_id: lastWillId,
 						progressKeys: [],
-						isLoading: false,
-						isInitialized: false,
 						financialAssets: [
 							{
 								id: nanoid(),
@@ -70,7 +75,7 @@ export const fetchLastWillState = createAsyncThunk(
 								description: '',
 							},
 						],
-					} satisfies LastWillState),
+					} satisfies LastWillState['data']),
 				10
 			)
 		)
@@ -83,19 +88,19 @@ const lastWillSlice = createSlice({
 	initialState,
 	reducers: {
 		setProgressKeys: (state, action: PayloadAction<SidebarPages>) => {
-			if (!state.progressKeys.includes(action.payload)) {
-				state.progressKeys.push(action.payload)
+			if (!state.data.progressKeys.includes(action.payload)) {
+				state.data.progressKeys.push(action.payload)
 			}
 		},
 		setInheritance: (
 			state,
 			action: PayloadAction<{
-				financialAssets: LastWillState['financialAssets']
-				items: LastWillState['items']
+				financialAssets: LastWillState['data']['financialAssets']
+				items: LastWillState['data']['items']
 			}>
 		) => {
-			state.financialAssets = action.payload.financialAssets
-			state.items = action.payload.items
+			state.data.financialAssets = action.payload.financialAssets
+			state.data.items = action.payload.items
 		},
 		resetLastWill: (state, action: PayloadAction<boolean>) => {
 			state.isInitialized = action.payload
@@ -110,10 +115,10 @@ const lastWillSlice = createSlice({
 			state.isInitialized = true
 
 			// TODO: Make this shorter
-			state._id = action.payload._id
-			state.progressKeys = action.payload.progressKeys
-			state.financialAssets = action.payload.financialAssets
-			state.items = action.payload.items
+			state.data._id = action.payload._id
+			state.data.progressKeys = action.payload.progressKeys
+			state.data.financialAssets = action.payload.financialAssets
+			state.data.items = action.payload.items
 		})
 	},
 })

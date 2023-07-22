@@ -27,9 +27,9 @@ const Inheritance = () => {
 	const router = useRouter()
 
 	// Global State
-	const _id = useAppSelector((state) => state.lastWill._id)
-	const financialAssets = useAppSelector((state) => state.lastWill.financialAssets)
-	const items = useAppSelector((state) => state.lastWill.items)
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const financialAssets = useAppSelector((state) => state.lastWill.data.financialAssets)
+	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
 	const dispatch = useAppDispatch()
