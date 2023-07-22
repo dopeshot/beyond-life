@@ -36,6 +36,14 @@ async function bootstrap() {
         },
         'refresh_token',
       )
+      .addBearerAuth(
+        {
+          description: `Please enter password reset token in following format: Bearer <JWT>`,
+          scheme: 'Bearer',
+          type: 'http',
+        },
+        'password_reset_token',
+      )
       .build()
     const document = SwaggerModule.createDocument(app, config, {
       ignoreGlobalPrefix: false,

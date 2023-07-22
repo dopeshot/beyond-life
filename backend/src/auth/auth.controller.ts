@@ -28,10 +28,14 @@ import {
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { AuthService } from './auth.service'
+import { ForgotPasswordDTO } from './dtos/forgot-password.dto'
 import { LoginDTO } from './dtos/login.dto'
 import { RegisterDTO } from './dtos/register.dto'
+import { SubmitNewPasswordDTO } from './dtos/submit-new-password.dto'
+import { PasswordResetTokenGuard } from './guards/pw-reset-token.guard'
 import { RefreshTokenGuard } from './guards/refresh-token.guard'
 import { VerifyTokenGuard } from './guards/verify-token.guard'
+import { RequestWithPasswordResetPayload } from './interfaces/request-with-pw-reset-jwt-payload.interface'
 import { RequestWithDbUser } from './interfaces/request-with-refresh-payload.interface'
 import { RequestWithVerifyContent } from './interfaces/request-with-verify-payload.interface'
 import { TokenResponse } from './responses/token.response'
@@ -127,5 +131,40 @@ export class AuthController {
   })
   async requestVerifyMail(@Req() { user }: RequestWithJWTPayload) {
     await this.authService.requestUserVerifyMail(user.id)
+  }
+
+  @Post('/auth/forgot-password')
+  @ApiOperation({ description: 'Request a password reset email' })
+  @ApiCreatedResponse({ description: 'Password reset email has been send' })
+  @ApiBody({
+    type: ForgotPasswordDTO,
+  })
+  @ApiServiceUnavailableResponse({
+    description: ' Mail could not be send',
+  })
+  async startForgottenPasswordFlow(@Body() { email }: ForgotPasswordDTO) {
+    await this.authService.startForgottenPasswordFlow(email)
+  }
+
+  @Post('/auth/forgot-password-submit')
+  @UseGuards(PasswordResetTokenGuard)
+  @ApiOperation({
+    description: 'Submit new password for user',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Token was invalid or has expired',
+  })
+  @ApiCreatedResponse({
+    description: 'Password has been updated',
+  })
+  @ApiServiceUnavailableResponse({
+    description: 'Password could not be updated',
+  })
+  @ApiBearerAuth('password_reset_token')
+  async setNewPassword(
+    @Req() { user }: RequestWithPasswordResetPayload,
+    @Body() { password }: SubmitNewPasswordDTO,
+  ) {
+    await this.authService.setNewUserPassword(user.id, password)
   }
 }

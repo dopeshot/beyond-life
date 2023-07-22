@@ -16,13 +16,16 @@ import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
 import { UserService } from '../db/services/user.service'
 import {
+  MailTemplateContent,
   MailTemplates,
+  PasswordResetMailData,
   VerifyMailData,
 } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
 import { LoginDTO } from './dtos/login.dto'
 import { RegisterDTO } from './dtos/register.dto'
+import { PasswordResetJWTPayload } from './interfaces/pw-reset-jwt-payload.interface'
 import { RefreshJWTPayload } from './interfaces/refresh-jwt-payload.interface'
 import { VerifyJWTPayload } from './interfaces/verify-jwt-payload.interface'
 import { TokenResponse } from './responses/token.response'
@@ -197,6 +200,81 @@ export class AuthService {
     } catch (error) {
       throw new ServiceUnavailableException(
         'Mail could not be send as of now. Please try again later',
+      )
+    }
+  }
+
+  /**
+   * @description Send password reset email
+   */
+
+  async startForgottenPasswordFlow(email: string) {
+    const user = await this.userService.findOneByEmail(email)
+
+    if (!user) {
+      // No error to prevent mail checking
+      return
+    }
+
+    // Default to case that user does not have a verified email i.e. they have to contact support
+    let mailContent: MailTemplateContent = {}
+    let mailTemplate = MailTemplates.PASSWORD_RESET_SUPPORT
+
+    if (user.hasVerifiedEmail) {
+      const resetToken = this.jwtService.sign(
+        {
+          id: user._id,
+        } as PasswordResetJWTPayload,
+        {
+          secret: this.configService.get('JWT_PASSWORD_RESET_SECRET'),
+          expiresIn: this.configService.get('JWT_PASSWORD_RESET_EXPIRE_TIME'),
+        },
+      )
+      const resetUrl = `${this.configService.get(
+        'BACKEND_DOMAIN',
+      )}/auth/verify-email?token=${resetToken}`
+
+      mailContent = {
+        resetUrl,
+      } as PasswordResetMailData
+      mailTemplate = MailTemplates.PASSWORD_RESET
+    }
+
+    const mailData: MailData = {
+      content: {
+        subject: 'Email reset',
+        templateContent: mailContent,
+        contentTemplate: mailTemplate,
+      },
+      recipient: {
+        recipient: email,
+      },
+    }
+
+    try {
+      await this.mailService.scheduleMailNow(mailData)
+    } catch (error) {
+      this.logger.warn(
+        `Could not send password reset email due to an error ${error}`,
+      )
+      throw new ServiceUnavailableException(
+        'We cannot send emails right now, please try again later',
+      )
+    }
+  }
+
+  /**
+   * @description Reset user password
+   */
+  async setNewUserPassword(id: ObjectId, newPassword: string) {
+    try {
+      await this.userService.updateUserPassword(id, newPassword)
+    } catch (error) {
+      this.logger.warn(
+        `Could not update a user password due to an error ${error}`,
+      )
+      throw new ServiceUnavailableException(
+        'Password could not be set, please try again later',
       )
     }
   }
