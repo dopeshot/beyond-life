@@ -27,7 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		return () => {
 			dispatch(resetLastWill())
 		}
-	}, [])
+		// This has to be empty to work because it will retrigger when dispatch is defined new
+	}, []) // eslint-disable-line
 	return (
 		<>
 			{!isInitialized ? (
