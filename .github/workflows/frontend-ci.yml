@@ -53,8 +53,9 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        # Run arm and amd build separately 
-        version: ["te:cli", "tc:cli"]
+        command: 
+          - te:cli
+          - tc:cli
     defaults:
       run:
         shell: bash
@@ -80,7 +81,7 @@ jobs:
           working-directory: ./frontend
           build: npm run build
           start: npm run serve
-          command: npm run ${{ matrix.version }}
+          command: npm run ${{ matrix.command }}
           
       - uses: actions/upload-artifact@v3
         if: always()
@@ -99,7 +100,9 @@ jobs:
     strategy:
       matrix:
         # Run arm and amd build separately 
-        version: [linux/amd64, linux/arm64]
+        version: 
+          - linux/amd64
+          - linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v3

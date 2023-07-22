@@ -1,21 +1,13 @@
-enum MailTemplates {
-  VERIFY = 'VERIFY',
+export enum MailTemplates {
+  VERIFY = 'verify',
 }
 
-interface MailContent {
-  subject: string
-  contentRaw?: string
-  contentTemplate?: MailTemplates
-  templateContent?: never
+export interface VerifyMailData {
+  verifyUrl: string
 }
 
-interface MailRecipient {
-  recipient: string
-  cc?: string[]
-  from?: string
+export interface SampleMailData {
+  test: string
 }
 
-export interface MailData {
-  recipient: MailRecipient
-  content: MailContent
-}
+export type MailTemplateContent = VerifyMailData | SampleMailData

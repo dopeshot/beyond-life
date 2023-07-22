@@ -1,38 +1,51 @@
 /* eslint-disable prettier/prettier */
+import { getConnectionToken } from '@m8a/nestjs-typegoose'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
+import { PassportModule } from '@nestjs/passport'
 import { Test, TestingModule } from '@nestjs/testing'
+import { Connection, Model } from 'mongoose'
+import * as nodemailer from 'nodemailer'
+import { NodemailerMock } from 'nodemailer-mock'
 import * as request from 'supertest'
-import { DataSource } from 'typeorm'
-import { AppModule } from '../src/app.module'
+import { AuthModule } from '../src/auth/auth.module'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
-import { UserService } from '../src/db/services/user.service'
-import { comparePassword } from './helpers/general.helper'
-import { SAMPLE_USER } from './helpers/sample-data.helper'
+import { VerifyJWTPayload } from '../src/auth/interfaces/verify-jwt-payload.interface'
+import { DbModule } from '../src/db/db.module'
+import { User } from '../src/db/entities/users.entity'
+import { MailModule } from '../src/mail/mail.module'
+import { JWTPayload } from '../src/shared/interfaces/jwt-payload.interface'
+import { SharedModule } from '../src/shared/shared.module'
 import { MockConfigService } from './helpers/config-service.helper'
-import { setupDataSource } from './helpers/db.helper'
+import { comparePassword } from './helpers/general.helper'
+import { getVerifyTokenFromMail } from './helpers/mail.helper'
 import {
-  createUser,
-  deleteUserByAttribute,
-  getUserByAttribute,
-} from './helpers/user.helper'
+  closeInMongodConnection,
+  rootTypegooseTestModule,
+} from './helpers/mongo.helper'
+import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
+const { mock } = nodemailer as unknown as NodemailerMock
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication
-  let dataSource: DataSource
   let jwtService: JwtService
+  let connection: Connection
+  let userModel: Model<User>
   let configService: ConfigService
-  let userService: UserService
 
   beforeEach(async () => {
-    dataSource = await setupDataSource()
-
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        DbModule,
+        SharedModule,
+        ConfigModule.forRoot({ isGlobal: true }),
+        PassportModule,
+        rootTypegooseTestModule(),
+        MailModule.forRoot({ transport: {} as any, defaultSender: '' }),
+        AuthModule,
+      ],
     })
-      .overrideProvider(DataSource)
-      .useValue(dataSource)
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
       .compile()
@@ -41,21 +54,17 @@ describe('AuthController (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 
     jwtService = app.get<JwtService>(JwtService)
+    connection = await app.get(getConnectionToken())
     configService = app.get<ConfigService>(ConfigService)
-    userService = app.get<UserService>(UserService)
+    userModel = connection.model<User>('User')
 
     await app.init()
-
-    // Mock value for Db time as this value is not available
-    jest
-      .spyOn(userService, 'getCurrentDbTime')
-      .mockImplementation(async () => ({
-        now: new Date(Date.now()).toISOString(),
-      }))
   })
 
   afterEach(async () => {
     await app.close()
+    await closeInMongodConnection()
+    mock.reset()
   })
 
   describe('/auth/register (POST)', () => {
@@ -76,11 +85,12 @@ describe('AuthController (e2e)', () => {
 
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        const user = await getUserByAttribute(dataSource, {
-          email: SAMPLE_USER.email,
-        })
+        const user = await userModel
+          .findOne({
+            email: SAMPLE_USER.email,
+          })
+          .lean()
         expect(user.email).toEqual(SAMPLE_USER.email)
-        expect(user.username).toEqual(SAMPLE_USER.username)
         expect(comparePassword(SAMPLE_USER.password, user.password)).toEqual(
           true,
         )
@@ -92,15 +102,49 @@ describe('AuthController (e2e)', () => {
           .post('/auth/register')
           .send(SAMPLE_USER)
         // ASSERT
-        const tokePayload = jwtService.verify(res.body.access_token, {
+        const tokenPayload = jwtService.verify(res.body.access_token, {
           secret: configService.get<string>('JWT_SECRET'),
         })
-        expect(tokePayload).toEqual(
+        expect(tokenPayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
-            username: SAMPLE_USER.username,
           }),
         )
+      })
+
+      it('should send verify email', async () => {
+        // ACT
+        await request(app.getHttpServer())
+          .post('/auth/register')
+          .send(SAMPLE_USER)
+        // ASSERT
+        expect(mock.getSentMail().length).toEqual(1)
+      })
+
+      it('should pass if email cannot be send', async () => {
+        // ARRANGE
+        mock.setShouldFail(true)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/register')
+          .send(SAMPLE_USER)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+      })
+
+      it('should send valid token in verify mail', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/register')
+          .send(SAMPLE_USER)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        const sendMail = mock.getSentMail()[0]
+        const verifyToken = getVerifyTokenFromMail(sendMail.html as string)
+        const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
+          secret: configService.get<string>('JWT_VERIFY_SECRET'),
+        })
+        expect(tokenPayload.email).toEqual(SAMPLE_USER.email)
       })
     })
 
@@ -140,23 +184,8 @@ describe('AuthController (e2e)', () => {
 
       it('should fail for duplicate email', async () => {
         // ARRANGE
-        await createUser(dataSource, {
+        await userModel.create({
           email: SAMPLE_USER.email,
-          ...SAMPLE_USER,
-        })
-        // ACT
-        const res = await request(app.getHttpServer())
-          .post('/auth/register')
-          .send(SAMPLE_USER)
-
-        // ASSERT
-        expect(res.statusCode).toEqual(HttpStatus.CONFLICT)
-      })
-
-      it('should fail for duplicate username', async () => {
-        // ARRANGE
-        await createUser(dataSource, {
-          username: SAMPLE_USER.username,
           ...SAMPLE_USER,
         })
         // ACT
@@ -174,7 +203,10 @@ describe('AuthController (e2e)', () => {
     describe('Positive Tests', () => {
       it('should return token for correct data ', async () => {
         // ARRANGE
-        await createUser(dataSource, SAMPLE_USER)
+        await userModel.create({
+          ...SAMPLE_USER,
+          password: await SAMPLE_USER_PW_HASH(),
+        })
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/login')
@@ -190,7 +222,10 @@ describe('AuthController (e2e)', () => {
 
       it('should return valid token', async () => {
         // ARRANGE
-        await createUser(dataSource, SAMPLE_USER)
+        await userModel.create({
+          ...SAMPLE_USER,
+          password: await SAMPLE_USER_PW_HASH(),
+        })
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/login')
@@ -205,7 +240,6 @@ describe('AuthController (e2e)', () => {
         expect(tokePayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
-            username: SAMPLE_USER.username,
           }),
         )
       })
@@ -237,13 +271,16 @@ describe('AuthController (e2e)', () => {
     })
   })
 
-  describe('/auth/refresh (POST)', () => {
+  describe('/auth/refresh-token (POST)', () => {
     let token
     beforeEach(async () => {
-      const user = await createUser(dataSource, SAMPLE_USER)
+      const user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
       token = jwtService.sign(
         {
-          id: user.pkUserId,
+          id: user._id,
           email: user.email,
         } as RefreshJWTPayload,
         { secret: configService.get('JWT_REFRESH_SECRET') },
@@ -253,7 +290,7 @@ describe('AuthController (e2e)', () => {
       it('should allow for auth with valid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
@@ -266,7 +303,7 @@ describe('AuthController (e2e)', () => {
       it('should fail to auth with invalid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}a`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
@@ -274,13 +311,174 @@ describe('AuthController (e2e)', () => {
 
       it('should fail to auth for non existant user', async () => {
         // ARRANGE
-        await deleteUserByAttribute(dataSource, { email: SAMPLE_USER.email })
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/auth/refresh')
+          .post('/auth/refresh-token')
           .set('Authorization', `Bearer ${token}a`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe('/auth/verify-email (GET)', () => {
+    let token
+    beforeEach(async () => {
+      const user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+      token = jwtService.sign(
+        {
+          email: user.email,
+        } as VerifyJWTPayload,
+        { secret: configService.get('JWT_VERIFY_SECRET') },
+      )
+    })
+    describe('Positive Tests', () => {
+      it('should verify user email with valid token', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/auth/verify-email`)
+          .query({
+            token,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(user.hasVerifiedEmail).toEqual(true)
+      })
+    })
+    describe('Negative Tests', () => {
+      it('should fail for invalid token', async () => {
+        // ACT
+        const res = await request(app.getHttpServer()).get(
+          `/auth/verify-email?token=${token}a`,
+        )
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should fail for invalid email in token', async () => {
+        // ARRANGE
+        token = jwtService.sign(
+          {
+            email: 'idontexist@imagination.de',
+          } as VerifyJWTPayload,
+          { secret: configService.get('JWT_VERIFY_SECRET') },
+        )
+        // ACT
+        const res = await request(app.getHttpServer()).get(
+          `/auth/verify-email?token=${token}`,
+        )
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.NOT_FOUND)
+      })
+
+      it('should fail already verified user', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: true },
+        )
+        // ACT
+        const res = await request(app.getHttpServer()).get(
+          `/auth/verify-email?token=${token}`,
+        )
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CONFLICT)
+      })
+    })
+  })
+
+  describe('/auth/request-verify-email (GET)', () => {
+    let token
+    beforeEach(async () => {
+      const user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+      token = jwtService.sign(
+        {
+          id: user._id,
+          email: user.email,
+        } as JWTPayload,
+        { secret: configService.get('JWT_SECRET') },
+      )
+    })
+    describe('Positive Tests', () => {
+      it('should send verify Email', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get('/auth/request-verify-email')
+          .set('Authorization', `Bearer ${token}`)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(mock.getSentMail().length).toEqual(1)
+      })
+
+      it('should not send mail if user email is already verified', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: true },
+        )
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get('/auth/request-verify-email')
+          .set('Authorization', `Bearer ${token}`)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(mock.getSentMail().length).toEqual(0)
+      })
+
+      it('should send valid token in said email', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get('/auth/request-verify-email')
+          .set('Authorization', `Bearer ${token}`)
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        const sendMail = mock.getSentMail()[0]
+        const verifyToken = getVerifyTokenFromMail(sendMail.html as string)
+        const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
+          secret: configService.get<string>('JWT_VERIFY_SECRET'),
+        })
+        expect(tokenPayload.email).toEqual(SAMPLE_USER.email)
+      })
+
+      describe('Negative Tests', () => {
+        it('should fail if the user does not exist', async () => {
+          // ARRANGE
+          await userModel.deleteOne({ email: SAMPLE_USER.email })
+          // ACT
+          const res = await request(app.getHttpServer())
+            .get('/auth/request-verify-email')
+            .set('Authorization', `Bearer ${token}`)
+          // ASSERT
+          expect(res.statusCode).toEqual(HttpStatus.NOT_FOUND)
+        })
+
+        it('should fail for invalid auth token', async () => {
+          // ACT
+          const res = await request(app.getHttpServer())
+            .get('/auth/request-verify-email')
+            .set('Authorization', `Bearer ${token}a`)
+          // ASSERT
+          expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
+        })
+
+        it('should fail if mail could not be send', async () => {
+          // ARRANGE
+          mock.setShouldFail(true)
+          // ACT
+          const res = await request(app.getHttpServer())
+            .get('/auth/request-verify-email')
+            .set('Authorization', `Bearer ${token}`)
+          // ASSERT
+          expect(res.statusCode).toEqual(HttpStatus.SERVICE_UNAVAILABLE)
+        })
       })
     })
   })
@@ -301,7 +499,7 @@ describe('AuthController (e2e)', () => {
       expect(loginRes.statusCode).toEqual(HttpStatus.OK)
       // ACT 3
       const refreshRes = await request(app.getHttpServer())
-        .post('/auth/refresh')
+        .post('/auth/refresh-token')
         .set('Authorization', `Bearer ${loginRes.body.refresh_token}`)
       // ASSERT 3
       expect(refreshRes.statusCode).toEqual(HttpStatus.OK)

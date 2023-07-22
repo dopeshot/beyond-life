@@ -1,3 +1,22 @@
+'use client'
+import { routes } from '../../../services/routes/routes'
+import { NavbarLink } from '../NavbarLink/NavbarLink'
+
+const footerLinks = [
+	{
+		title: 'FAQ',
+		href: routes.misc.faq.index,
+	},
+	{
+		title: 'Impressum',
+		href: routes.misc.imprint,
+	},
+	{
+		title: 'Datenschutz',
+		href: routes.misc.privacy,
+	},
+]
+
 /**
  * Display Footer with copyright and legal links.
  */
@@ -12,9 +31,11 @@ export const GlobalFooter: React.FC = () => {
 				</div>
 
 				<ul className="flex flex-col gap-3 md:flex-row">
-					<li>Impressum</li>
-					<li>Datenschutz</li>
-					<li>Nutzungsbedingungen</li>
+					{footerLinks.map((link) => (
+						<li key={link.title}>
+							<NavbarLink href={link.href}>{link.title}</NavbarLink>
+						</li>
+					))}
 				</ul>
 			</div>
 		</footer>

@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { DataSource } from 'typeorm'
-import { ConfigService } from '@nestjs/config'
-import { setupDataSource } from './helpers/db.helper'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import {
   INestApplication,
   ServiceUnavailableException,
@@ -9,29 +7,32 @@ import {
 } from '@nestjs/common'
 import { MockConfigService } from './helpers/config-service.helper'
 import { MailScheduleService } from '../src/mail/services/scheduler.service'
-import { MailData } from '../src/mail/interfaces/mail.interface'
-import {
-  getMailEventsByAttribute,
-  insertMailEvent,
-} from './helpers/mail-events.helper'
 import { NodemailerMock } from 'nodemailer-mock'
 import * as nodemailer from 'nodemailer'
-import { MailEventEntity } from '../src/db/entities/mail-event.entity'
-import { AppModule } from '../src/app.module'
+import { MailData, MailEvent } from '../src/db/entities/mail-event.entity'
+import { Connection, Model } from 'mongoose'
+import { getConnectionToken } from '@m8a/nestjs-typegoose'
+import {
+  closeInMongodConnection,
+  rootTypegooseTestModule,
+} from './helpers/mongo.helper'
+import { MailModule } from '../src/mail/mail.module'
 const { mock } = nodemailer as unknown as NodemailerMock
 
 describe('MailModule', () => {
   let app: INestApplication
-  let dataSource: DataSource
+  let connection: Connection
+  let mailEventModel: Model<MailEvent>
   let mailScheduleService: MailScheduleService
 
   beforeEach(async () => {
-    dataSource = await setupDataSource()
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        rootTypegooseTestModule(),
+        MailModule.forRoot({ transport: {} as any, defaultSender: '' }),
+      ],
     })
-      .overrideProvider(DataSource)
-      .useValue(dataSource)
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
       .compile()
@@ -40,6 +41,8 @@ describe('MailModule', () => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 
     mailScheduleService = app.get<MailScheduleService>(MailScheduleService)
+    connection = await app.get(getConnectionToken())
+    mailEventModel = connection.model<MailEvent>('MailEvent')
 
     await app.init()
   })
@@ -47,6 +50,7 @@ describe('MailModule', () => {
   afterEach(async () => {
     mock.reset()
     await app.close()
+    await closeInMongodConnection()
   })
 
   describe('Schedule mail', () => {
@@ -56,6 +60,7 @@ describe('MailModule', () => {
       const mailData: MailData = {
         recipient: {
           recipient: 'test@test.test',
+          cc: [],
         },
         content: {
           subject: 'test',
@@ -65,8 +70,8 @@ describe('MailModule', () => {
       // ACT
       await mailScheduleService.scheduleMailAtDate(scheduleDate, mailData)
       // ASSERT
-      expect((await getMailEventsByAttribute(dataSource)).length).toEqual(1)
-      const mailEvent = (await getMailEventsByAttribute(dataSource))[0]
+      expect((await mailEventModel.find()).length).toEqual(1)
+      const mailEvent = (await mailEventModel.find().lean())[0]
       expect(mailEvent.content).toEqual(mailData)
       expect(new Date(mailEvent.scheduledAt).getTime()).toEqual(
         scheduleDate.getTime(),
@@ -128,13 +133,13 @@ describe('MailModule', () => {
             contentRaw: 'this is raw content',
           },
         }
-        const mailEventEntityData: Partial<MailEventEntity> = {
+        const mailEventEntityData: Partial<MailEvent> = {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
           hasBeenSent: false,
         }
-        await insertMailEvent(dataSource, mailEventEntityData)
+        await mailEventModel.create(mailEventEntityData)
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
@@ -151,18 +156,18 @@ describe('MailModule', () => {
             contentRaw: 'this is raw content',
           },
         }
-        const mailEventEntityData: Partial<MailEventEntity> = {
+        const mailEventEntityData: Partial<MailEvent> = {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
           hasBeenSent: false,
         }
-        await insertMailEvent(dataSource, mailEventEntityData)
+        await mailEventModel.create(mailEventEntityData)
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
         expect(mock.getSentMail().length).toEqual(1)
-        const alteredMailEvent = (await getMailEventsByAttribute(dataSource))[0]
+        const alteredMailEvent = (await mailEventModel.find())[0]
         expect(alteredMailEvent.hasBeenSent).toEqual(true)
       })
     })
@@ -178,18 +183,18 @@ describe('MailModule', () => {
             contentRaw: 'this is raw content',
           },
         }
-        const mailEventEntityData: Partial<MailEventEntity> = {
+        const mailEventEntityData: Partial<MailEvent> = {
           content: mailData,
           scheduledAt: new Date(),
           hasBeenRescheduled: false,
           hasBeenSent: false,
         }
-        await insertMailEvent(dataSource, mailEventEntityData)
+        await mailEventModel.create(mailEventEntityData)
         mock.setShouldFail(true)
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
-        const alteredMailEvent = (await getMailEventsByAttribute(dataSource))[0]
+        const alteredMailEvent = (await mailEventModel.find())[0]
         expect(alteredMailEvent.hasBeenRescheduled).toEqual(true)
         expect(alteredMailEvent.hasBeenSent).toEqual(false)
         expect(alteredMailEvent.scheduledAt.getTime()).toBeGreaterThanOrEqual(

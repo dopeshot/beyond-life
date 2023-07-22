@@ -1,12 +1,12 @@
+import { TypegooseModule } from '@m8a/nestjs-typegoose'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { AppController } from './app.controller'
-import { SharedModule } from './shared/shared.module'
-import { DbModule } from './db/db.module'
-import { AuthModule } from './auth/auth.module'
-import { MailModule } from './mail/mail.module'
 import { ScheduleModule } from '@nestjs/schedule'
+import { AppController } from './app.controller'
+import { AuthModule } from './auth/auth.module'
+import { DbModule } from './db/db.module'
+import { MailModule } from './mail/mail.module'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
   imports: [
@@ -14,17 +14,16 @@ import { ScheduleModule } from '@nestjs/schedule'
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
+    TypegooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get<string>('DB_USER_NAME'),
-        password: configService.get<string>('DB_USER_PW'),
-        database: configService.get<string>('DB_DB'),
-        autoLoadEntities: true,
-        synchronize: false,
+        authSource: 'admin',
+        uri: `mongodb://${configService.get(
+          'DB_USER_NAME',
+        )}:${configService.get('DB_USER_PW')}@${configService.get(
+          'DB_HOST',
+        )}:${configService.get('DB_PORT')}/${configService.get('DB_DB')}`,
+        family: 4,
       }),
       inject: [ConfigService],
     }),
