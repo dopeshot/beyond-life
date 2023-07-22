@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Post,
+  Req,
   SerializeOptions,
   UseGuards,
   UseInterceptors,
@@ -16,6 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger'
 import { JwtGuard } from '../shared/guards/jwt.guard'
+import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { PaymentDTO, PaymentResponse } from './interfaces/payments'
 import { PaymentsService } from './services/payments.service'
 
@@ -38,10 +40,14 @@ export class PaymentsController {
   })
   @ApiBearerAuth('access-token')
   @UseGuards(JwtGuard)
-  async createPayments(@Body() paymentBody: PaymentDTO) {
-    console.log('paymentBody: ', paymentBody)
-    const payment = await this.paymentService.createStripePayment(paymentBody)
-    console.log('payment: ', payment)
+  async createPayments(
+    @Body() paymentBody: PaymentDTO,
+    @Req() { user }: RequestWithJWTPayload,
+  ) {
+    const payment = await this.paymentService.createStripePayment(
+      paymentBody,
+      user.id,
+    )
 
     return new PaymentResponse(payment)
   }
