@@ -37,7 +37,6 @@ export class UserService {
    * @description Set user last login time to current time (based on db system time)
    */
   async setLoginTimestamp(id: ObjectId): Promise<void> {
-    // Use postgres function to get the current timestamp. This allows for consistent time measurements even with multiple auth services running
     await this.userModel.updateOne(
       { _id: id },
       {
@@ -117,6 +116,10 @@ export class UserService {
 
   async updateUserStripeCustomer(_id: ObjectId, stripeCustomerId: string) {
     await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
+  }
+
+  async updateUserPaymentPlan(_id: ObjectId, paymentPlan: string) {
+    await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
   }
 
   async updateUserPaymentHistory(_id: ObjectId, paymentHistory: string) {
