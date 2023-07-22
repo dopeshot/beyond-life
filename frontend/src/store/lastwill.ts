@@ -44,7 +44,6 @@ export const sendLastWillState = createAsyncThunk('lastWill/sendLastWillState', 
 export const fetchLastWillState = createAsyncThunk(
 	'lastWill/fetchLastWillState',
 	async ({ lastWillId }: { lastWillId: string }) => {
-		console.log('fetchLastWillState', { lastWillId })
 		const data = await new Promise<LastWillState['data']>((resolve) =>
 			setTimeout(
 				() =>
