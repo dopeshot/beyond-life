@@ -1,10 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common'
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { UserService } from '../../db/services/user.service'
 import { MailScheduleService } from '../../mail/services/scheduler.service'
-import { PaymentDTO, paymentPlans } from '../interfaces/payment-plans'
+import { PaymentDTO, paymentPlans } from '../interfaces/payments'
 
 @Injectable()
 export class PaymentsService {
@@ -43,11 +47,12 @@ export class PaymentsService {
           currency: 'eur',
           confirm: true,
         })
-      const { status, amount_received } = paymentData
-      return { status, amount_received }
+      return paymentData
     } catch (error) {
       this.logger.error(error)
-      throw error
+      throw new InternalServerErrorException(
+        "Couldn't properly communicate with Stripe",
+      )
     }
   }
 }

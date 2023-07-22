@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Expose } from 'class-transformer'
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
 
 export class PaymentDTO {
@@ -19,13 +20,33 @@ export class PaymentDTO {
   paymentMethodId: string
 }
 
-export type PaymentOptions = 'single' | 'family'
+type PaymentOptions = 'single' | 'family'
 
-export type Plans = {
+type Plans = {
   [key in PaymentOptions]: number
 }
 
 export const paymentPlans: Plans = {
   single: 4900,
   family: 14900,
+}
+
+export class PaymentResponse {
+  @ApiProperty({
+    description: 'Payment status',
+    example: 'succeeded',
+  })
+  @Expose()
+  status: string
+
+  @ApiProperty({
+    description: 'Amount received',
+    example: 4900,
+  })
+  @Expose()
+  amount_received: number
+
+  constructor(partial: Partial<PaymentResponse>) {
+    Object.assign(this, partial)
+  }
 }
