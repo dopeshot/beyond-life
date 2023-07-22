@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
-import { InheritanceFormPayload } from '../app/(app)/last-will/editor/inheritance/page'
+import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
 import { FinancialAsset, Item } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
