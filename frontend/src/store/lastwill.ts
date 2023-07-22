@@ -99,7 +99,10 @@ const lastWillSlice = createSlice({
 			state.data.items = action.payload.items
 		},
 		resetLastWill: (state) => {
-			state = initialState
+			state.isLoading = false
+			state.isInitialized = false
+
+			state.data = initialState.data
 		},
 	},
 	extraReducers(builder) {
