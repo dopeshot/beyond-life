@@ -48,6 +48,7 @@ const Inheritance = () => {
 		try {
 			// Update inheritance global state only if values have changed
 			dispatch(setInheritance(values))
+			// TODO: not sure if we actually can call two dispatches at the same time
 			await dispatch(sendLastWillState())
 
 			// Redirect to previous or next page
