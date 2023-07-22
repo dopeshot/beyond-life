@@ -4,19 +4,38 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
 import { Connection, Model } from 'mongoose'
-import { mock } from 'nodemailer-mock'
 import * as request from 'supertest'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { User } from '../src/db/entities/users.entity'
+import { paymentPlans } from '../src/payments/interfaces/payments'
+import { PaymentsModule } from '../src/payments/payments.module'
+import { StripeService } from '../src/payments/services/stripe.service'
 import { ProfileModule } from '../src/profile/profile.module'
 import { SharedModule } from '../src/shared/shared.module'
+import { MockStripeService } from './__mocks__/stripeservice'
 import { MockConfigService } from './helpers/config-service.helper'
 import {
   closeInMongodConnection,
   rootTypegooseTestModule,
 } from './helpers/mongo.helper'
 import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
+
+class StripeMock {
+  constructor(private apiKey: string) {}
+
+  paymentIntents = {
+    //create: (options: any) => any
+    create: (options: any) => {
+      console.log('create', options)
+
+      return {
+        status: 'succeeded',
+        amount_received: paymentPlans[options.amount],
+      }
+    },
+  }
+}
 
 describe('PaymentsController (e2e)', () => {
   let app: INestApplication
@@ -33,10 +52,13 @@ describe('PaymentsController (e2e)', () => {
         ConfigModule.forRoot({ isGlobal: true }),
         rootTypegooseTestModule(),
         ProfileModule,
+        PaymentsModule,
       ],
     })
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
+      .overrideProvider(StripeService)
+      .useClass(MockStripeService)
       .compile()
 
     app = await moduleFixture.createNestApplication()
@@ -47,39 +69,18 @@ describe('PaymentsController (e2e)', () => {
     configService = app.get<ConfigService>(ConfigService)
     userModel = connection.model<User>('User')
 
-    // TODO: mock Stripe
-    jest.mock('stripe', () => {
-      return jest.fn().mockImplementation(() => {
-        return {
-          customers: {
-            create: jest.fn().mockResolvedValue({
-              id: 'someid',
-            }),
-            retrieve: jest.fn().mockResolvedValue({
-              id: 'someid',
-            }),
-          },
-          paymentIntents: {
-            create: jest.fn().mockResolvedValue({
-              id: 'someid',
-            }),
-          },
-        }
-      })
-    })
-
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
-    mock.reset()
+    await app.close()
   })
 
   describe('/payments (POST)', () => {
     let token
     beforeEach(async () => {
+      await userModel.deleteMany({})
       const user = await userModel.create({
         ...SAMPLE_USER,
         password: await SAMPLE_USER_PW_HASH(),
@@ -93,23 +94,76 @@ describe('PaymentsController (e2e)', () => {
       )
     })
 
-    it('should return CREATED and create a new payment', async () => {
-      const response = await request(app.getHttpServer())
-        .post('/payments')
-        .set('Authorization', `Bearer ${token}`)
-        .send({
-          plan: 'single',
-          paymentMethodId: 'someid',
-        })
-        .expect(HttpStatus.CREATED)
+    describe('Positive Tests', () => {
+      it('should return CREATED and create a new payment', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/payments')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+            paymentMethodId: 'id_from_client',
+          })
+          .expect(HttpStatus.CREATED)
 
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          amount: 100,
-          currency: 'usd',
-          description: 'test payment',
-        }),
-      )
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            status: 'succeeded',
+            amount_received: paymentPlans['single'],
+          }),
+        )
+      })
+
+      it('should update the user', async () => {
+        await request(app.getHttpServer())
+          .post('/payments')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+            paymentMethodId: 'id_from_client',
+          })
+          .expect(HttpStatus.CREATED)
+
+        const user = await userModel.findOne()
+        expect(user.paymentPlan).toEqual('single')
+        expect(user.stripeCustomerId).toEqual('cus_123')
+        expect(user.paymentHistory).toContain('id_from_client')
+      })
+    })
+
+    describe('Negative Tests', () => {
+      it('should return BAD_REQUEST if plan is not valid', async () => {
+        await request(app.getHttpServer())
+          .post('/payments')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'not_valid_plan',
+            paymentMethodId: 'id_from_client',
+          })
+          .expect(HttpStatus.BAD_REQUEST)
+      })
+
+      it('should be guarded', async () => {
+        await request(app.getHttpServer())
+          .post('/payments')
+          .set('Authorization', `Bearer ${token}a`)
+          .send({
+            plan: 'single',
+            paymentMethodId: 'id_from_client',
+          })
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should fail without user', async () => {
+        await userModel.deleteMany({})
+        await request(app.getHttpServer())
+          .post('/payments')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+            paymentMethodId: 'id_from_client',
+          })
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
     })
   })
 })
