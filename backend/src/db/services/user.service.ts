@@ -8,6 +8,7 @@ import {
 import { ReturnModelType } from '@typegoose/typegoose'
 import { ObjectId, Schema } from 'mongoose'
 import { User } from '../entities/users.entity'
+import { hash as bhash } from 'bcrypt'
 
 @Injectable()
 export class UserService {
@@ -50,6 +51,7 @@ export class UserService {
    */
   async insertUser(userData: Partial<User>): Promise<User> {
     try {
+      userData.password = await this.hashPassword(userData.password)
       const user: User = await this.userModel.create({
         ...userData,
         createdAt: new Date(),
@@ -78,5 +80,14 @@ export class UserService {
         hasVerifiedEmail: newVerifyValue,
       },
     )
+  }
+
+  private async hashPassword(password: string): Promise<string> {
+    return await bhash(password, 10)
+  }
+
+  async updateUserPassword(id: ObjectId, password: string) {
+    const hashedPw = await this.hashPassword(password)
+    await this.userModel.updateOne({ _id: id }, { password: hashedPw })
   }
 }
