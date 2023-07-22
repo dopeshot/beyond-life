@@ -27,7 +27,7 @@ import {
 import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
 const { mock } = nodemailer as unknown as NodemailerMock
 
-describe('AuthController (e2e)', () => {
+describe('ProfileController (e2e)', () => {
   let app: INestApplication
   let jwtService: JwtService
   let connection: Connection
@@ -83,6 +83,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_SECRET') },
       )
     })
+    
     describe('Positive Tests', () => {
       it('should set new password', async () => {
         // ACT
