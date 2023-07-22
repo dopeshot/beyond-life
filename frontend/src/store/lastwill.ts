@@ -98,8 +98,8 @@ const lastWillSlice = createSlice({
 			state.data.financialAssets = action.payload.financialAssets
 			state.data.items = action.payload.items
 		},
-		resetLastWill: (state, action: PayloadAction<boolean>) => {
-			state.isInitialized = action.payload
+		resetLastWill: (state) => {
+			state = initialState
 		},
 	},
 	extraReducers(builder) {

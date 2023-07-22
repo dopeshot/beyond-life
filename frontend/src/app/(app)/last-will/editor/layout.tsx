@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		)
 
 		return () => {
-			dispatch(resetLastWill(false))
+			dispatch(resetLastWill())
 		}
 	}, [])
 	return (
