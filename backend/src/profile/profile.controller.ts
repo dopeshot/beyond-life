@@ -3,6 +3,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -52,7 +53,7 @@ export class ProfileController {
     await this.profileService.updatePassword(user.id, oldPassword, password)
   }
 
-  @Post('change-email')
+  @Patch('change-email')
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({

@@ -161,6 +161,7 @@ describe('AuthController (e2e)', () => {
 
   describe('/profile/change-email (POST)', () => {
     let token
+
     beforeEach(async () => {
       const user = await userModel.create({
         ...SAMPLE_USER,
@@ -174,11 +175,12 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should set new email', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'newmail@mail.mail',
           })
@@ -206,7 +208,7 @@ describe('AuthController (e2e)', () => {
         )
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'newmail@mail.mail',
           })
@@ -224,7 +226,7 @@ describe('AuthController (e2e)', () => {
       it('should send verify email', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'newmail@mail.mail',
           })
@@ -239,7 +241,7 @@ describe('AuthController (e2e)', () => {
       it('should not send verify email if provided email is not new', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: SAMPLE_USER.email,
           })
@@ -254,7 +256,7 @@ describe('AuthController (e2e)', () => {
       it('should include correct token in verify mail', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'newmail@mail.mail',
           })
@@ -279,7 +281,7 @@ describe('AuthController (e2e)', () => {
       it('should fail with invalid token', async () => {
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'not@gonna.happen',
           })
@@ -295,7 +297,7 @@ describe('AuthController (e2e)', () => {
         await userModel.deleteOne({ email: SAMPLE_USER.email })
         // ACT
         const res = await request(app.getHttpServer())
-          .post('/profile/change-email')
+          .patch('/profile/change-email')
           .send({
             email: 'not@gonna.happen',
           })
