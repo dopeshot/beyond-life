@@ -25,15 +25,15 @@ const Advertisement = () => {
 				<div className="mb-16 flex flex-col gap-2">
 					<div className="flex items-center gap-6">
 						<Icon icon="check" className="text-yellow-700" />
-						<p>Zählt ein Leben lang</p>
+						<p>Sorgfältig und präzise formuliert</p>
 					</div>
 					<div className="flex items-center gap-6">
 						<Icon icon="sync" className="text-yellow-700" />
-						<p>Flexibel und anpassbar</p>
+						<p>Nur noch abschreiben und signieren</p>
 					</div>
 					<div className="flex items-center gap-6">
 						<Icon icon="lock" className="text-yellow-700" />
-						<p>Zählt ein Leben lang</p>
+						<p>Stabilität und Sicherheit für Ihre Zukunft</p>
 					</div>
 				</div>
 
