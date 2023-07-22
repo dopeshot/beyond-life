@@ -12,9 +12,12 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiOperation,
+  ApiServiceUnavailableResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
@@ -38,7 +41,16 @@ export class PaymentsController {
   @ApiInternalServerErrorResponse({
     description: 'The interaction with Stripe is possibly broken',
   })
+  @ApiForbiddenResponse({
+    description: 'The change in plan is not allowed',
+  })
   @ApiBearerAuth('access-token')
+  @ApiUnauthorizedResponse({
+    description: 'Jwt invalid or user does not exist',
+  })
+  @ApiServiceUnavailableResponse({
+    description: ' Payment service is unavailable',
+  })
   @UseGuards(JwtGuard)
   async createPayments(
     @Body() paymentBody: PaymentDTO,
