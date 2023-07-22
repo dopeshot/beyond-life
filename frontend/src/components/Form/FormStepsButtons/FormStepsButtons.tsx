@@ -35,6 +35,7 @@ export const FormStepsButtons: React.FC<FormStepsButtonsProps> = ({
 				<Button
 					datacy="button-previous-submit"
 					type="button"
+					loading={loading}
 					onClick={previousOnClick}
 					className="order-1 md:order-none"
 					kind="tertiary"
