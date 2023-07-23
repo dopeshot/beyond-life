@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --verbose"
   },
   "dependencies": {
+    "@golevelup/nestjs-webhooks": "^0.2.16",
     "@m8a/nestjs-typegoose": "^11.0.2",
     "@nestjs/common": "^10.1.0",
     "@nestjs/config": "^3.0.0",
