@@ -34,19 +34,53 @@ export class StripeService {
     }
   }
 
-  async paymentIntent_create(
-    amount: number,
-    customerId: string,
-    payment_method: string,
-  ) {
+  async paymentIntent_create(amount: number, customerId: string) {
     try {
       return await this.stripe.paymentIntents.create({
         customer: customerId,
         amount,
-        payment_method,
+        automatic_payment_methods: { enabled: true },
         currency: 'eur',
-        confirm: true,
       })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Payment service is unavailable')
+    }
+  }
+
+  async checkout_session_create(plan: string) {
+    const price =
+      plan === 'single'
+        ? this.configService.get('STRIPE_ITEM_SINGLE')
+        : this.configService.get('STRIPE_ITEM_FAMILY')
+    try {
+      return await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card', 'paypal', 'klarna'],
+        line_items: [
+          {
+            price,
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: 'https://dolbaum.com/',
+        cancel_url: 'https://dolbaum.com/',
+      })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Payment service is unavailable')
+    }
+  }
+
+  async webhook_constructEvent(payload: any, signature: string) {
+    const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET')
+    console.log('payload', payload)
+    try {
+      return this.stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        webhookSecret,
+      )
     } catch (error) {
       this.logger.error(error)
       throw new ServiceUnavailableException('Payment service is unavailable')

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Expose } from 'class-transformer'
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
+import { IsEnum } from 'class-validator'
 
 export class PaymentDTO {
   @IsEnum(['single', 'family'])
@@ -10,24 +10,15 @@ export class PaymentDTO {
     example: 'single',
   })
   plan: PaymentOptions
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty({
-    description: 'Payment Method',
-    example: 'idk',
-  })
-  paymentMethodId: string
 }
 
-type PaymentOptions = 'free' | 'single' | 'family'
+type PaymentOptions = 'single' | 'family'
 
 type Plans = {
   [key in PaymentOptions]: number
 }
 
 export const paymentPlans: Plans = {
-  free: 0,
   single: 4900,
   family: 14900,
 }

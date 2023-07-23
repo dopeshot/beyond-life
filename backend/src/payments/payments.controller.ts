@@ -1,13 +1,4 @@
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Post,
-  Req,
-  SerializeOptions,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common'
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiBody,
@@ -26,8 +17,8 @@ import { PaymentsService } from './services/payments.service'
 
 @ApiTags('payments')
 @Controller('payments')
-@UseInterceptors(ClassSerializerInterceptor)
-@SerializeOptions({ strategy: 'excludeAll' })
+// @UseInterceptors(ClassSerializerInterceptor)
+// @SerializeOptions({ strategy: 'excludeAll' })
 export class PaymentsController {
   constructor(private paymentService: PaymentsService) {}
 
@@ -61,6 +52,23 @@ export class PaymentsController {
       user.id,
     )
 
-    return new PaymentResponse(payment)
+    return payment
+  }
+
+  @Post('checkout')
+  //@UseGuards(JwtGuard)
+  async createCheckoutSession(@Body() { plan }: { plan: string }) {
+    const session = await this.paymentService.createCheckoutSession(plan)
+    console.log(session)
+    return session
+  }
+
+  @Post('webhook')
+  async webhook(@Req() req: any) {
+    try {
+      await this.paymentService.handleWebhook(req)
+    } catch (error) {
+      console.log
+    }
   }
 }

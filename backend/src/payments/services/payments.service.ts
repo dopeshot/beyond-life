@@ -32,6 +32,11 @@ export class PaymentsService {
     return customerId
   }
 
+  async createCheckoutSession(plan: string) {
+    const session = await this.stripeService.checkout_session_create(plan)
+    return session
+  }
+
   async createStripePayment(
     paymentBody: PaymentDTO,
     userId: Schema.Types.ObjectId,
@@ -59,17 +64,19 @@ export class PaymentsService {
     const payment = await this.stripeService.paymentIntent_create(
       amount,
       customerId,
-      paymentBody.paymentMethodId,
     )
 
     if (payment.status === 'succeeded') {
       await this.userService.updateUserPaymentPlan(userId, paymentBody.plan)
-      await this.userService.updateUserPaymentHistory(
-        userId,
-        paymentBody.paymentMethodId,
-      )
+      // TODO: get the id from payment I guess?
+      //await this.userService.updateUserPaymentHistory(userId)
     }
 
     return payment
+  }
+
+  async handleWebhook(req: Request) {
+    const signature = req.headers['stripe-signature']
+    await this.stripeService.webhook_constructEvent(req.body, signature)
   }
 }
