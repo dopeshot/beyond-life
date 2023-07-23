@@ -1,0 +1,52 @@
+import { MaterialSymbol } from 'material-symbols'
+import { Button } from '../ButtonsAndLinks/Button/Button'
+import { Icon } from '../Icon/Icon'
+
+export type PaymentPlanDescriptionItem = {
+	text: string
+	icon: MaterialSymbol
+}
+
+export type PaymentPlanProps = {
+	title: string
+	price?: string
+	hasButton?: boolean
+	descriptionItems?: PaymentPlanDescriptionItem[]
+	handleSubmit?: (plan: string) => void
+	size?: 'md' | 'lg'
+}
+
+export const PaymentPlan: React.FC<PaymentPlanProps> = ({
+	title,
+	price = '',
+	hasButton = true,
+	descriptionItems = [],
+	handleSubmit = () => {},
+	size = 'lg',
+}) => {
+	return (
+		<div
+			className={`flex w-full flex-col gap-4 rounded-xl border-2 px-6 py-3 ${
+				size === 'lg' ?? 'xl:gap-6 xl:px-10 xl:py-6'
+			}`}
+		>
+			<div>
+				<p className={`text-xl font-bold ${size === 'lg' ?? ' lg:text-2xl'}`}>{title}</p>
+				<p className={`text-3xl font-bold ${size === 'lg' ?? 'lg:text-4xl'}`}>{price}</p>
+			</div>
+
+			{hasButton && <Button onClick={() => handleSubmit('single')}>Auswählen</Button>}
+
+			<div className="text-base">
+				{descriptionItems.map((item) => {
+					return (
+						<div key={item.text} className="flex items-center gap-2">
+							<Icon icon={item.icon} className="text-yellow-700" />
+							<p>{item.text}</p>
+						</div>
+					)
+				})}
+			</div>
+		</div>
+	)
+}
