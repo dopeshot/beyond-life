@@ -11,6 +11,5 @@ import { VerifyTokenStrategy } from './strategies/verify-token.strategy'
   imports: [DbModule, SharedModule, PassportModule],
   providers: [AuthService, RefreshTokenStrategy, VerifyTokenStrategy],
   controllers: [AuthController],
-  exports: [AuthService],
 })
 export class AuthModule {}

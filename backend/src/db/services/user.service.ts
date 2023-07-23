@@ -6,9 +6,9 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { hash as bhash } from 'bcrypt'
 import { ObjectId, Schema } from 'mongoose'
 import { User } from '../entities/users.entity'
+import { hash as bhash } from 'bcrypt'
 
 @Injectable()
 export class UserService {
@@ -60,6 +60,7 @@ export class UserService {
       return user
     } catch (error) {
       this.logger.error(error)
+      // Necessary due to incomplete typeorm type
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
       else if (error instanceof ServiceUnavailableException) throw error
@@ -88,18 +89,5 @@ export class UserService {
   async updateUserPassword(id: ObjectId, password: string) {
     const hashedPw = await this.hashPassword(password)
     await this.userModel.updateOne({ _id: id }, { password: hashedPw })
-  }
-
-  async updateUserEmail(id: ObjectId, email: string) {
-    try {
-      await this.userModel.updateOne(
-        { _id: id },
-        { email, hasVerifiedEmail: false },
-      )
-    } catch (error) {
-      this.logger.error(error)
-      if (error.code === 11000 && error.keyPattern.email)
-        throw new ConflictException('Email is already taken.')
-    }
   }
 }

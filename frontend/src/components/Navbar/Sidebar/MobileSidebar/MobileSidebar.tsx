@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { sidebarElements } from '../../../../../content/sidebar'
 import { fontArbutusSlab } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
-import { useAppSelector } from '../../../../store/hooks'
+import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarButtonState } from '../../../../types/sidebar'
 import { Icon } from '../../../Icon/Icon'
 import { SidebarProps } from '../Sidebar'
@@ -16,7 +16,7 @@ import { SidebarButton } from '../SidebarButton/SidebarButton'
 export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 	const [isOpen, setIsOpen] = useState(false)
 
-	const progressKeys = useAppSelector((state) => state.lastWill.data.progressKeys)
+	const { lastWill } = useLastWillContext()
 
 	const currentElementIndex = sidebarElements.findIndex((element) => path.includes(element.page))
 
@@ -67,7 +67,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 							state={
 								path.includes(element.page) // button is active if url contains the page name
 									? SidebarButtonState.ACTIVE
-									: progressKeys.includes(element.page)
+									: lastWill.common.progressKeys.includes(element.page)
 									? SidebarButtonState.DEFAULT // button is default if page was visited yet
 									: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 							}
