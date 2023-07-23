@@ -1,6 +1,7 @@
 import 'material-symbols'
+import { Provider } from 'react-redux'
 import '../../../app/globals.css'
-import { LastWillContextProvider } from '../../../store/last-will/LastWillContext'
+import { store } from '../../../store/store'
 import { Sidebar } from './Sidebar'
 
 const data = {
@@ -11,9 +12,9 @@ describe('Sidebar', () => {
 	describe('Basic Render', () => {
 		beforeEach(() => {
 			cy.mount(
-				<LastWillContextProvider>
+				<Provider store={store}>
 					<Sidebar {...data} />
-				</LastWillContextProvider>
+				</Provider>
 			)
 		})
 
