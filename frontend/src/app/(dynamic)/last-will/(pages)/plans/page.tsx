@@ -10,9 +10,9 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const Plans = () => {
 	return (
-		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4 lg:p-20">
+		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:flex-row lg:gap-4 lg:p-20">
 			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
-				<div className="mb-12">
+				<div className="mb-6">
 					<Headline className="font-normal">Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
 					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
 				</div>
@@ -20,7 +20,7 @@ const Plans = () => {
 				{/* Plans */}
 				<div className="flex w-full flex-col gap-4">
 					{/* Free Plan */}
-					<div className="flex w-fit items-center gap-4 px-6 py-3">
+					<div className="flex w-fit items-center gap-4 px-6 py-2">
 						<p className="text-xl font-bold">Free</p>
 
 						<div className="flex gap-4 text-base">
@@ -29,7 +29,7 @@ const Plans = () => {
 						</div>
 					</div>
 
-					<div className="mb-10 flex flex-col gap-4 md:flex-row">
+					<div className="mb-6 flex flex-col gap-4 md:flex-row">
 						{/* Basic Plan */}
 						<div className="flex w-auto flex-row gap-4 rounded-xl border-2 px-6 py-3 md:flex-col xl:gap-6 xl:px-10 xl:py-6">
 							<div className="w-32">
@@ -91,7 +91,7 @@ const Plans = () => {
 
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/2">
-				<div className="h-full max-h-[580px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
+				<div className="h-full max-h-[540px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
 					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />
