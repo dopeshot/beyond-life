@@ -26,7 +26,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	// Redux
 	const dispatch = useAppDispatch()
 
-	// Local State
+	// Local state
 	const [isLoading, setIsLoading] = useState(false)
 
 	// Formik

@@ -1,12 +1,17 @@
 'use client'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
+import { useAppSelector } from '../../../../../store/hooks'
 
 /**
  * Profile My LastWills Page
  */
 const MyLastWills = () => {
+	const isAuthenticaed = useAppSelector((state) => state.auth.isAuthenticated)
+	console.log(isAuthenticaed)
+
 	const lastWills: {
 		id: number
 		title: string
@@ -111,4 +116,4 @@ const MyLastWills = () => {
 	)
 }
 
-export default MyLastWills
+export default isAuth(MyLastWills, 'protected')

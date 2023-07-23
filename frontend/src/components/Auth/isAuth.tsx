@@ -1,0 +1,32 @@
+import { RedirectType } from 'next/dist/client/components/redirect'
+import { redirect } from 'next/navigation'
+import { routes } from '../../services/routes/routes'
+import { useAppSelector } from '../../store/hooks'
+
+/**
+ * Use this HOC to protect routes from unauthorized access.
+ * Protected routes are only accessible when the user is authenticated.
+ * Guest routes are only accessible when the user is not authenticated.
+ * @param Component The component to protect
+ * @param routeType The type of route protected or guest.
+ * @returns The protected component or redirects.
+ */
+const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 'guest') => {
+	return function NewComponent({ props }: any) {
+		const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+
+		console.log(isAuthenticated)
+
+		if (routeType === 'protected' && !isAuthenticated) {
+			redirect(routes.account.login, RedirectType.replace)
+		}
+
+		if (routeType === 'guest' && isAuthenticated) {
+			redirect(routes.index, RedirectType.replace)
+		}
+
+		return <Component {...props} />
+	}
+}
+
+export default isAuth

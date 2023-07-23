@@ -54,13 +54,7 @@ export const loginApi = createAsyncThunk(
 	'auth/login',
 	async ({ email, password }: { email: string; password: string }) => {
 		try {
-			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email, password }),
-			})
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, { email, password })
 			const tokens: Tokens = await response.data
 
 			setAxiosAuthHeader(tokens.access_token)
@@ -144,6 +138,8 @@ const authSlice = createSlice({
 			.addCase(loginApi.fulfilled, (state, action) => {
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
+				saveSession(state.sessionData)
+				state.isLoading = false
 			})
 			.addCase(registerApi.pending, (state) => {
 				state.isLoading = true
@@ -151,6 +147,8 @@ const authSlice = createSlice({
 			.addCase(registerApi.fulfilled, (state, action) => {
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
+				saveSession(state.sessionData)
+				state.isLoading = false
 			})
 	},
 })
