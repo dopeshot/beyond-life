@@ -12,43 +12,7 @@ export class StripeService {
     })
   }
 
-  async customer_create(_id: string, email: string) {
-    try {
-      const customer = await this.stripe.customers.create({
-        name: _id,
-        email,
-      })
-      return customer.id
-    } catch (error) {
-      this.logger.error(error)
-      throw new ServiceUnavailableException('Payment service is unavailable')
-    }
-  }
-
-  async customer_retrieve(customerId: string) {
-    try {
-      return (await this.stripe.customers.retrieve(customerId)).id
-    } catch (error) {
-      this.logger.error(error)
-      throw new ServiceUnavailableException('Payment service is unavailable')
-    }
-  }
-
-  async paymentIntent_create(amount: number, customerId: string) {
-    try {
-      return await this.stripe.paymentIntents.create({
-        customer: customerId,
-        amount,
-        automatic_payment_methods: { enabled: true },
-        currency: 'eur',
-      })
-    } catch (error) {
-      this.logger.error(error)
-      throw new ServiceUnavailableException('Payment service is unavailable')
-    }
-  }
-
-  async checkout_session_create(plan: string) {
+  async checkout_session_create(plan: string, userId: string) {
     const price =
       plan === 'single'
         ? this.configService.get('STRIPE_ITEM_SINGLE')
@@ -56,6 +20,7 @@ export class StripeService {
     try {
       return await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
+        metadata: { plan, userId },
         line_items: [
           {
             price,
@@ -74,7 +39,6 @@ export class StripeService {
 
   async webhook_constructEvent(payload: any, signature: string) {
     const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET')
-    console.log('payload', payload)
     try {
       return this.stripe.webhooks.constructEvent(
         payload,

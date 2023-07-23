@@ -22,27 +22,14 @@ import { PaymentsService } from './services/payments.service'
 export class PaymentsController {
   constructor(private paymentService: PaymentsService) {}
 
-  @Post()
   @ApiBody({ type: PaymentDTO })
   @ApiOperation({ summary: 'Create payment intent' })
   @ApiCreatedResponse({
     description: 'Payment intent created',
     type: PaymentResponse,
   })
-  @ApiInternalServerErrorResponse({
-    description: 'The interaction with Stripe is possibly broken',
-  })
-  @ApiForbiddenResponse({
-    description: 'The change in plan is not allowed',
-  })
-  @ApiBearerAuth('access-token')
-  @ApiUnauthorizedResponse({
-    description: 'Jwt invalid or user does not exist',
-  })
-  @ApiServiceUnavailableResponse({
-    description: ' Payment service is unavailable',
-  })
   @UseGuards(JwtGuard)
+  @Post()
   async createPayments(
     @Body() paymentBody: PaymentDTO,
     @Req() { user }: RequestWithJWTPayload,
@@ -56,8 +43,22 @@ export class PaymentsController {
   }
 
   // TODO: add swagger
-  @Post('checkout')
+  @ApiInternalServerErrorResponse({
+    description: 'The interaction with Stripe is possibly broken',
+  })
+  @ApiForbiddenResponse({
+    description: 'The change in plan is not allowed',
+  })
+  @ApiBearerAuth('access-token')
+  @ApiUnauthorizedResponse({
+    description: 'Jwt invalid or user does not exist',
+  })
+  @ApiServiceUnavailableResponse({
+    description: ' Payment service is unavailable',
+  })
+  @ApiBody({ type: PaymentDTO })
   @UseGuards(JwtGuard)
+  @Post('checkout')
   async createCheckoutSession(
     @Body() { plan }: PaymentDTO,
     @Req() { user }: RequestWithJWTPayload,

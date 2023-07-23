@@ -21,19 +21,11 @@ export class PaymentsService {
     private readonly userService: UserService,
   ) {}
 
-  async createStripeCustomer(_id: Schema.Types.ObjectId, email: string) {
-    const customerId = await this.stripeService.customer_create(
-      _id.toString(),
-      email,
+  async createCheckoutSession(plan: string, userId: Schema.Types.ObjectId) {
+    const session = await this.stripeService.checkout_session_create(
+      plan,
+      userId.toString(),
     )
-
-    await this.userService.updateUserStripeCustomer(_id, customerId)
-
-    return customerId
-  }
-
-  async createCheckoutSession(plan: string) {
-    const session = await this.stripeService.checkout_session_create(plan)
     return session
   }
 
@@ -48,9 +40,9 @@ export class PaymentsService {
       )
 
     // Check if the saved stripeCustomerId saved is still valid
-    const customerId = user.stripeCustomerId
-      ? await this.stripeService.customer_retrieve(user.stripeCustomerId)
-      : await this.createStripeCustomer(userId, user.email)
+    // const customerId = user.stripeCustomerId
+    //   ? await this.stripeService.customer_retrieve(user.stripeCustomerId)
+    //   : await this.createStripeCustomer(userId, user.email)
 
     // Check for forbidden actions
     if (paymentBody.plan === user.paymentPlan)
@@ -61,22 +53,33 @@ export class PaymentsService {
     const amount =
       paymentPlans[paymentBody.plan] - paymentPlans[user.paymentPlan]
 
-    const payment = await this.stripeService.paymentIntent_create(
-      amount,
-      customerId,
-    )
+    // const payment = await this.stripeService.paymentIntent_create(
+    //   amount,
+    //   customerId: "jeff",
+    // )
 
-    if (payment.status === 'succeeded') {
-      await this.userService.updateUserPaymentPlan(userId, paymentBody.plan)
-      // TODO: get the id from payment I guess?
-      //await this.userService.updateUserPaymentHistory(userId)
-    }
+    // if (payment.status === 'succeeded') {
+    //   await this.userService.updateUserPaymentPlan(userId, paymentBody.plan)
+    //   // TODO: get the id from payment I guess?
+    //   //await this.userService.updateUserPaymentHistory(userId)
+    // }
 
-    return payment
+    // return payment
   }
 
   async handleWebhook(req: Request) {
     const signature = req.headers['stripe-signature']
-    await this.stripeService.webhook_constructEvent(req.body, signature)
+    const event = await this.stripeService.webhook_constructEvent(
+      req.body,
+      signature,
+    )
+    const eventWithMetadata = event as Stripe.Event & {
+      data: { object: { metadata: any } }
+    }
+    // TODO: is charge succeeded or payment intent succeded the relevant one
+    if (event.type === 'checkout.session.completed') {
+      console.log('event: ', JSON.stringify(eventWithMetadata))
+      console.log('event: ', eventWithMetadata.data.object.metadata)
+    }
   }
 }
