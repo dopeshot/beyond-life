@@ -13,15 +13,16 @@ import { useAppSelector } from '../../store/hooks'
  */
 const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 'guest') => {
 	return function NewComponent({ props }: any) {
+		const isLoading = useAppSelector((state) => state.auth.isLoading)
 		const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-		console.log(isAuthenticated)
+		if (isLoading) return <div>Loading...</div> // TODO: implement loading component
 
-		if (routeType === 'protected' && !isAuthenticated) {
+		if (routeType === 'protected' && !isAuthenticated && !isLoading) {
 			redirect(routes.account.login, RedirectType.replace)
 		}
 
-		if (routeType === 'guest' && isAuthenticated) {
+		if (routeType === 'guest' && isAuthenticated && !isLoading) {
 			redirect(routes.index, RedirectType.replace)
 		}
 

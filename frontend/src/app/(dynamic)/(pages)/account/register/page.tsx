@@ -1,3 +1,4 @@
+'use client'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { AccountForm } from '../../../../../components/Form/AccountForm/AccountForm'

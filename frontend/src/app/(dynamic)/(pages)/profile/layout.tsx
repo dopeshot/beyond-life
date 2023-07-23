@@ -1,10 +1,11 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import { profileLinks } from '../../../../../content/profilelinks'
+import isAuth from '../../../../components/Auth/isAuth'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
 
 	return (
@@ -40,3 +41,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		</div>
 	)
 }
+
+export default isAuth(Layout, 'protected')
