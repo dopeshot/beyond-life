@@ -63,8 +63,9 @@ const Buy = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/2">
 				<div className="h-full max-h-[580px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
-					<Image className="h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
 				</div>
+				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />
 			</div>
 		</div>
 	)
