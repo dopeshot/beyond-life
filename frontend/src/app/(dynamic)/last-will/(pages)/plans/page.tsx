@@ -1,8 +1,10 @@
 import Image from 'next/image'
+import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
 import { routes } from '../../../../../services/routes/routes'
 
 /**
@@ -30,51 +32,16 @@ const Plans = () => {
 					</div>
 
 					<div className="mb-6 flex flex-col gap-4 md:flex-row">
-						{/* Basic Plan */}
-						<div className="flex w-auto flex-row gap-4 rounded-xl border-2 px-6 py-3 md:flex-col xl:gap-6 xl:px-10 xl:py-6">
-							<div className="w-32">
-								<p className="text-xl font-bold lg:text-2xl">Basic</p>
-								<p className="text-3xl font-bold lg:text-4xl">49€</p>
-							</div>
-
-							<div className="text-base">
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>1 Testament</p>
-								</div>
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>Immer anpassbar</p>
-								</div>
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>Verschlüsselt</p>
-								</div>
-							</div>
-						</div>
-
-						{/* Premium Plan */}
-						<div className="flex w-auto flex-row gap-4 rounded-xl border-2 px-6 py-3 md:flex-col xl:gap-6 xl:px-10 xl:py-6">
-							<div className="w-32">
-								<p className="text-xl font-bold lg:text-2xl">Premium</p>
-								<p className="text-3xl font-bold lg:text-4xl">149€</p>
-							</div>
-
-							<div className="text-base">
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>5 Testamente</p>
-								</div>
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>Immer anpassbar</p>
-								</div>
-								<div className="flex items-center gap-2">
-									<Icon icon="check" className="text-yellow-700" />
-									<p>Verschlüsselt</p>
-								</div>
-							</div>
-						</div>
+						{PaymentPlans.map((plan) => (
+							<PaymentPlan
+								key={plan.title}
+								title={plan.title}
+								price={plan.price}
+								hasButton={false}
+								size="md"
+								descriptionItems={plan.descriptionItems}
+							/>
+						))}
 					</div>
 				</div>
 
