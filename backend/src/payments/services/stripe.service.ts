@@ -20,7 +20,7 @@ export class StripeService {
       })
       return customer.id
     } catch (error) {
-      this.logger.log(error)
+      this.logger.error(error)
       throw new ServiceUnavailableException('Payment service is unavailable')
     }
   }
@@ -29,7 +29,7 @@ export class StripeService {
     try {
       return (await this.stripe.customers.retrieve(customerId)).id
     } catch (error) {
-      this.logger.log(error)
+      this.logger.error(error)
       throw new ServiceUnavailableException('Payment service is unavailable')
     }
   }
@@ -48,7 +48,7 @@ export class StripeService {
         confirm: true,
       })
     } catch (error) {
-      this.logger.log(error)
+      this.logger.error(error)
       throw new ServiceUnavailableException('Payment service is unavailable')
     }
   }
