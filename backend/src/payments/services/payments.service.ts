@@ -45,8 +45,13 @@ export class PaymentsService {
       signature,
     )
     const eventWithMetadata = event as Stripe.Event & {
-      data: { object: { metadata: any } }
+      data: { object: { metadata: { plan: string; userId: string } } }
     }
+
+    await this.userService.updateUserPaymentPlan(
+      eventWithMetadata.data.object.metadata.userId,
+      eventWithMetadata.data.object.metadata.plan,
+    )
     // TODO: is charge succeeded or payment intent succeded the relevant one
     if (event.type === 'checkout.session.completed') {
       console.log('event: ', JSON.stringify(eventWithMetadata))

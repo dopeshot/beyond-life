@@ -118,14 +118,7 @@ export class UserService {
     await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 
-  async updateUserPaymentPlan(_id: ObjectId, paymentPlan: string) {
+  async updateUserPaymentPlan(_id: string, paymentPlan: string) {
     await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
-  }
-
-  async updateUserPaymentHistory(_id: ObjectId, paymentHistory: string) {
-    await this.userModel.findByIdAndUpdate(
-      { _id },
-      { $push: { paymentHistory } },
-    )
   }
 }

@@ -45,28 +45,12 @@ export class User {
   hasVerifiedEmail: boolean
 
   @Expose()
-  @prop({ required: false })
-  @ApiPropertyOptional({
-    description: 'Stripe customer id',
-    example: 'cus_1234567890',
-  })
-  stripeCustomerId: string
-
-  @Expose()
   @prop({ required: true, default: 'free' })
   @ApiPropertyOptional({
     description: 'Payment plan of the user',
     example: 'free',
   })
   paymentPlan: string
-
-  @Expose({ groups: ['admin'] })
-  @prop({
-    required: false,
-    default: [],
-    type: () => [String],
-  })
-  paymentHistory: string[]
 
   _koooHELLOoobbbiii
   kkDIDuCheckThisbiii
