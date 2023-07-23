@@ -1,8 +1,11 @@
 import { Field } from 'formik'
+import { useState } from 'react'
 import { ComponentOptions } from '../../../types/form'
 import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
+import Tooltip from './Tooltip/Tooltip'
+import { IconButton } from '../../IconButton/IconButton'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -22,7 +25,15 @@ export type CheckboxProps = {
  */
 
 // MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
-export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, inputRequired = false }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({
+	name,
+	labelText,
+	helperText,
+	options,
+	inputRequired = false,
+}) => {
+	const [tooltipVisible, setTooltipVisible] = useState(false)
+
 	return (
 		<>
 			{labelText && (
@@ -43,6 +54,16 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					<Field type="checkbox" className="mr-2" name={name} value={`${option.value}`} />
 					{option.icon && <Icon icon={option.icon} />}
 					<span>{option.label}</span>
+					{option.tooltip && (
+						<div className="relative">
+							<IconButton
+								icon="help"
+								className="ml-2"
+								onClick={() => setTooltipVisible(!tooltipVisible)}
+							/>
+							{tooltipVisible && <Tooltip>{option.tooltip}</Tooltip>}
+						</div>
+					)}
 				</label>
 			))}
 			<p datacy={`checkbox-${name}-helpertext`} className="text-sm text-gray-500">
