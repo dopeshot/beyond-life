@@ -21,40 +21,52 @@ const Buy = () => {
 				{/* Price Plans */}
 				<div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					{/* Basic Plan */}
-					<div className="w-auto rounded-xl border-2 px-6 py-3">
-						<div className="mb-4">
-							<p className="text-xl font-bold">Basic</p>
-							<p className="text-3xl font-bold">49€</p>
+					<div className="flex w-auto flex-col gap-4 rounded-xl border-2 px-6 py-3 xl:gap-6 xl:px-10 xl:py-6">
+						<div>
+							<p className="text-2xl font-bold">Basic</p>
+							<p className="text-4xl font-bold">49€</p>
 						</div>
 
-						<Button className="mb-4">Auswählen</Button>
+						<Button>Auswählen</Button>
 
-						<div className="flex gap-2">
-							<Icon icon="check" className="text-yellow-700" />
-							<p>1 Testament</p>
-						</div>
-						<div className="flex gap-2">
-							<Icon icon="check" className="text-yellow-700" />
-							<p>Immer anpassbar</p>
+						<div className="text-base">
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>1 Testament</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>Immer anpassbar</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>Verschlüsselt</p>
+							</div>
 						</div>
 					</div>
 
 					{/* Premium Plan */}
-					<div className="w-auto rounded-xl border-2 px-6 py-3">
-						<div className="mb-4">
-							<p className="text-xl font-bold">Premium</p>
-							<p className="text-3xl font-bold">149€</p>
+					<div className="flex w-auto flex-col gap-4 rounded-xl border-2 px-6 py-3 xl:gap-6 xl:px-10 xl:py-6">
+						<div>
+							<p className="text-2xl font-bold">Premium</p>
+							<p className="text-4xl font-bold">149€</p>
 						</div>
 
-						<Button className="mb-4">Auswählen</Button>
+						<Button>Auswählen</Button>
 
-						<div className="flex gap-2">
-							<Icon icon="check" className="text-yellow-700" />
-							<p>5 Testaments</p>
-						</div>
-						<div className="flex gap-2">
-							<Icon icon="check" className="text-yellow-700" />
-							<p>Immer anpassbar</p>
+						<div className="text-base">
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>5 Testamente</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>Immer anpassbar</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<Icon icon="check" className="text-yellow-700" />
+								<p>Verschlüsselt</p>
+							</div>
 						</div>
 					</div>
 				</div>
