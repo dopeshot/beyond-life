@@ -26,21 +26,32 @@ export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 }) => {
 	return (
 		<div
+			datacy={`paymentPlan-${title}`}
 			className={`flex w-full flex-col gap-4 rounded-xl border-2 px-6 py-3 ${
 				size === 'lg' ?? 'xl:gap-6 xl:px-10 xl:py-6'
 			}`}
 		>
 			<div>
 				<p className={`text-xl font-bold ${size === 'lg' ?? ' lg:text-2xl'}`}>{title}</p>
-				<p className={`text-3xl font-bold ${size === 'lg' ?? 'lg:text-4xl'}`}>{price}</p>
+				<p datacy={`paymentPlan-${title}-price`} className={`text-3xl font-bold ${size === 'lg' ?? 'lg:text-4xl'}`}>
+					{price}
+				</p>
 			</div>
 
-			{hasButton && <Button onClick={() => handleSubmit('single')}>Auswählen</Button>}
+			{hasButton && (
+				<Button datacy={`paymentPlan-${title}-button`} onClick={() => handleSubmit('single')}>
+					Auswählen
+				</Button>
+			)}
 
 			<div className="text-base">
-				{descriptionItems.map((item) => {
+				{descriptionItems.map((item, index) => {
 					return (
-						<div key={item.text} className="flex items-center gap-2">
+						<div
+							datacy={`paymentPlan-${title}-description-item${index}`}
+							key={item.text}
+							className="flex items-center gap-2"
+						>
 							<Icon icon={item.icon} className="text-yellow-700" />
 							<p>{item.text}</p>
 						</div>
