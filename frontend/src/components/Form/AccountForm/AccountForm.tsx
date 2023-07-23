@@ -3,9 +3,9 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
-import { login } from '../../../services/auth/login'
-import { register } from '../../../services/auth/register'
 import { routes } from '../../../services/routes/routes'
+import { loginApi, registerApi } from '../../../store/auth/auth'
+import { useAppDispatch } from '../../../store/hooks'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { PasswordInput } from '../PasswordInput/PasswordInput'
@@ -22,6 +22,9 @@ type AccountDto = {
 
 export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const router = useRouter()
+
+	// Redux
+	const dispatch = useAppDispatch()
 
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
@@ -42,10 +45,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const onLoginFormSubmit = async (values: AccountDto) => {
 		// Login
 		setIsLoading(true)
-		login({
-			email: values.email,
-			password: values.password,
-		})
+		await dispatch(loginApi({ email: values.email, password: values.password }))
 		setIsLoading(false)
 
 		// Redirect to profile page
@@ -56,10 +56,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const onRegisterFormSubmit = async (values: AccountDto) => {
 		// Register
 		setIsLoading(true)
-		register({
-			email: values.email,
-			password: values.password,
-		})
+		await dispatch(registerApi({ email: values.email, password: values.password }))
 		setIsLoading(false)
 
 		// Redirect to profile page
