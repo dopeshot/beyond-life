@@ -14,7 +14,7 @@ const Buy = () => {
 			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
 				<div className="mb-12">
 					<Headline>Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
-					<p className="text-xl">Schalten Sie es jetzt frei</p>
+					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
 				</div>
 
 				{/* TODO onClick weiterleiten zu stripe */}
