@@ -55,20 +55,25 @@ export class PaymentsController {
     return payment
   }
 
+  // TODO: add swagger
   @Post('checkout')
-  //@UseGuards(JwtGuard)
-  async createCheckoutSession(@Body() { plan }: { plan: string }) {
-    const session = await this.paymentService.createCheckoutSession(plan)
-    console.log(session)
+  @UseGuards(JwtGuard)
+  async createCheckoutSession(
+    @Body() { plan }: PaymentDTO,
+    @Req() { user }: RequestWithJWTPayload,
+  ) {
+    const session = await this.paymentService.createCheckoutSession(
+      plan,
+      user.id,
+    )
+    console.log('session: ', session)
     return session
   }
 
+  // This is the endpoint for Stripe handled information
+  // This endpoint receives rawBody data
   @Post('webhook')
   async webhook(@Req() req: any) {
-    try {
-      await this.paymentService.handleWebhook(req)
-    } catch (error) {
-      console.log
-    }
+    await this.paymentService.handleWebhook(req)
   }
 }
