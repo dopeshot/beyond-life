@@ -10,17 +10,17 @@ import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
  * Paywall Page
  */
 const Buy = () => {
-	const handleSubmit = async (planType: 'single' | 'family') => {
-		const res = await fetch(`${process.env.VITE_API_CHECKOUT}`, {
+	const handleSubmit = async (plan: 'single' | 'family') => {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_API_CHECKOUT}`, {
 			method: 'POST',
 
 			body: JSON.stringify({
-				planType,
+				plan,
 			}),
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.VITE_BEARER_TOKEN}`,
+				Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
 			},
 		})
 		const data = await res.json()
