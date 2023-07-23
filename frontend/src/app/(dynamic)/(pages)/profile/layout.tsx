@@ -25,12 +25,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 					{/* Links */}
 					<div>
-						{profileLinks(dispatch).map((link) => (
+						{profileLinks(dispatch).map((link, index) => (
 							<ProfileSideBarLink
 								key={link.icon}
 								{...link}
 								isActive={'href' in link && link.href === pathname}
-								datacy={`profile-link-${link.href}`}
+								datacy={`profile-link-${index}`}
 							>
 								{link.name}
 							</ProfileSideBarLink>

@@ -17,6 +17,12 @@ Cypress.Commands.add('mockLogin', () => {
 	}).as('mockLogin')
 })
 
+Cypress.Commands.add('mockRegister', () => {
+	cy.intercept('POST', `${apiUrl}/auth/register`, {
+		fixture: 'auth/tokens.json',
+	}).as('mockRegister')
+})
+
 /**** Mocks ****/
 Cypress.Commands.add('login', ({ route, visitOptions }) => {
 	cy.mockLogin()
