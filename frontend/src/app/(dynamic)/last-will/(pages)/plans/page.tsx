@@ -10,26 +10,71 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const Plans = () => {
 	return (
-		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-10 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4 lg:p-20">
+		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:h-[calc(100vh-130px-60px)] lg:flex-row lg:gap-4 lg:p-20">
 			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
 				<div className="mb-12">
 					<Headline className="font-normal">Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
 					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
 				</div>
 
-				{/* Features */}
-				<div className="mb-16 flex flex-col gap-2">
-					<div className="flex items-center gap-6">
-						<Icon icon="check" className="text-yellow-700" />
-						<p>Sorgfältig und präzise formuliert</p>
+				{/* Plans */}
+				<div className="flex w-full flex-col gap-4">
+					{/* Free Plan */}
+					<div className="flex w-fit items-center gap-4 px-6 py-3">
+						<p className="text-xl font-bold">Free</p>
+
+						<div className="flex gap-4 text-base">
+							<Icon icon="check" className="text-yellow-700" />
+							<p>Dein Testament wird sicher gespeichert</p>
+						</div>
 					</div>
-					<div className="flex items-center gap-6">
-						<Icon icon="sync" className="text-yellow-700" />
-						<p>Nur noch abschreiben und signieren</p>
-					</div>
-					<div className="flex items-center gap-6">
-						<Icon icon="lock" className="text-yellow-700" />
-						<p>Stabilität und Sicherheit für Ihre Zukunft</p>
+
+					<div className="mb-10 flex flex-col gap-4 md:flex-row">
+						{/* Basic Plan */}
+						<div className="flex w-auto flex-row gap-4 rounded-xl border-2 px-6 py-3 md:flex-col xl:gap-6 xl:px-10 xl:py-6">
+							<div className="w-32">
+								<p className="text-xl font-bold lg:text-2xl">Basic</p>
+								<p className="text-3xl font-bold lg:text-4xl">49€</p>
+							</div>
+
+							<div className="text-base">
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>1 Testament</p>
+								</div>
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>Immer anpassbar</p>
+								</div>
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>Verschlüsselt</p>
+								</div>
+							</div>
+						</div>
+
+						{/* Premium Plan */}
+						<div className="flex w-auto flex-row gap-4 rounded-xl border-2 px-6 py-3 md:flex-col xl:gap-6 xl:px-10 xl:py-6">
+							<div className="w-32">
+								<p className="text-xl font-bold lg:text-2xl">Premium</p>
+								<p className="text-3xl font-bold lg:text-4xl">149€</p>
+							</div>
+
+							<div className="text-base">
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>5 Testamente</p>
+								</div>
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>Immer anpassbar</p>
+								</div>
+								<div className="flex items-center gap-2">
+									<Icon icon="check" className="text-yellow-700" />
+									<p>Verschlüsselt</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 
