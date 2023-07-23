@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { ComponentOptions } from '../../../types/form'
 import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
+import { IconButton } from '../../IconButton/IconButton'
 import { Label } from '../Label/Label'
 import Tooltip from './Tooltip/Tooltip'
-import { IconButton } from '../../IconButton/IconButton'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -25,13 +25,7 @@ export type CheckboxProps = {
  */
 
 // MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
-export const Checkbox: React.FC<CheckboxProps> = ({
-	name,
-	labelText,
-	helperText,
-	options,
-	inputRequired = false,
-}) => {
+export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, inputRequired = false }) => {
 	const [tooltipVisible, setTooltipVisible] = useState(false)
 
 	return (
@@ -56,12 +50,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 					<span>{option.label}</span>
 					{option.tooltip && (
 						<div className="relative">
-							<IconButton
-								icon="help"
-								className="ml-2"
-								onClick={() => setTooltipVisible(!tooltipVisible)}
-							/>
-							{tooltipVisible && <Tooltip>{option.tooltip}</Tooltip>}
+							<div
+								className="relative"
+								onMouseEnter={() => setTooltipVisible(true)}
+								onMouseLeave={() => setTooltipVisible(false)}
+							>
+								<IconButton icon="help" iconClassName="text-base" className="ml-1 h-5 w-5 hover:bg-opacity-10" />
+								{tooltipVisible && <Tooltip>{option.tooltip}</Tooltip>}
+							</div>
 						</div>
 					)}
 				</label>
