@@ -1,8 +1,15 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiOperation,
@@ -12,35 +19,14 @@ import {
 } from '@nestjs/swagger'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
-import { PaymentDTO, PaymentResponse } from './interfaces/payments'
+import { PaymentDTO } from './interfaces/payments'
 import { PaymentsService } from './services/payments.service'
 
 @ApiTags('payments')
 @Controller('payments')
-// @UseInterceptors(ClassSerializerInterceptor)
-// @SerializeOptions({ strategy: 'excludeAll' })
+// No Serialization coz we are working with Stripe objects
 export class PaymentsController {
   constructor(private paymentService: PaymentsService) {}
-
-  @ApiBody({ type: PaymentDTO })
-  @ApiOperation({ summary: 'Create payment intent' })
-  @ApiCreatedResponse({
-    description: 'Payment intent created',
-    type: PaymentResponse,
-  })
-  @UseGuards(JwtGuard)
-  @Post()
-  async createPayments(
-    @Body() paymentBody: PaymentDTO,
-    @Req() { user }: RequestWithJWTPayload,
-  ) {
-    const payment = await this.paymentService.createStripePayment(
-      paymentBody,
-      user.id,
-    )
-
-    return payment
-  }
 
   // TODO: add swagger
   @ApiInternalServerErrorResponse({
@@ -57,7 +43,9 @@ export class PaymentsController {
     description: ' Payment service is unavailable',
   })
   @ApiBody({ type: PaymentDTO })
+  @ApiOperation({ summary: 'Create a checkout session' })
   @UseGuards(JwtGuard)
+  @ApiBearerAuth('access_token')
   @Post('checkout')
   async createCheckoutSession(
     @Body() { plan }: PaymentDTO,
@@ -71,9 +59,9 @@ export class PaymentsController {
     return session
   }
 
-  // This is the endpoint for Stripe handled information
-  // This endpoint receives rawBody data
+  // This is the endpoint for Stripe handled information and receives rawBody data
   @Post('webhook')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async webhook(@Req() req: any) {
     await this.paymentService.handleWebhook(req)
   }

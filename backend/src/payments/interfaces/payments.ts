@@ -15,10 +15,11 @@ export class PaymentDTO {
 type PaymentOptions = 'single' | 'family'
 
 type Plans = {
-  [key in PaymentOptions]: number
+  [key in PaymentOptions & 'free']: number
 }
 
 export const paymentPlans: Plans = {
+  free: 0,
   single: 4900,
   family: 14900,
 }
