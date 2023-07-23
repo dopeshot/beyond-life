@@ -5,10 +5,6 @@ import { AccountForm } from '../../../../../components/Form/AccountForm/AccountF
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 
-export const metadata = {
-	title: 'Login | Siebtes Leben',
-}
-
 /**
  * Login Page
  */

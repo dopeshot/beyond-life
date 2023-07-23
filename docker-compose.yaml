@@ -50,7 +50,7 @@ services:
   db:
     image: mongo:6.0.8
     ports:
-      - 27017:27017
+      - 27018:27017
     restart: "always"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
