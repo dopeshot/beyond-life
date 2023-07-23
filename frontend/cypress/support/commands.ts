@@ -14,7 +14,7 @@ Cypress.Commands.add('datacy', (datacy, customSelector = '') => {
 Cypress.Commands.add('mockLogin', () => {
 	cy.intercept('POST', `${apiUrl}/auth/login`, {
 		fixture: 'auth/tokens.json',
-	}).as('login')
+	}).as('mockLogin')
 })
 
 /**** Mocks ****/
