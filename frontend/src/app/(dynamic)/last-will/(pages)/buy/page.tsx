@@ -23,8 +23,8 @@ const Buy = () => {
 					{/* Basic Plan */}
 					<div className="flex w-auto flex-col gap-4 rounded-xl border-2 px-6 py-3 xl:gap-6 xl:px-10 xl:py-6">
 						<div>
-							<p className="text-2xl font-bold">Basic</p>
-							<p className="text-4xl font-bold">49€</p>
+							<p className="text-xl font-bold lg:text-2xl">Basic</p>
+							<p className="text-3xl font-bold lg:text-4xl">49€</p>
 						</div>
 
 						<Button>Auswählen</Button>
@@ -48,8 +48,8 @@ const Buy = () => {
 					{/* Premium Plan */}
 					<div className="flex w-auto flex-col gap-4 rounded-xl border-2 px-6 py-3 xl:gap-6 xl:px-10 xl:py-6">
 						<div>
-							<p className="text-2xl font-bold">Premium</p>
-							<p className="text-4xl font-bold">149€</p>
+							<p className="text-xl font-bold lg:text-2xl">Premium</p>
+							<p className="text-3xl font-bold lg:text-4xl">149€</p>
 						</div>
 
 						<Button>Auswählen</Button>
