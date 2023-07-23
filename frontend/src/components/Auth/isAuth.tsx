@@ -12,6 +12,7 @@ import { useAppSelector } from '../../store/hooks'
  * @returns The protected component or redirects.
  */
 const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 'guest') => {
+	// eslint-disable-next-line
 	return function NewComponent({ props }: any) {
 		const isLoading = useAppSelector((state) => state.auth.isLoading)
 		const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
