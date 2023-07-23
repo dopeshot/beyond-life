@@ -1,5 +1,6 @@
+import { Provider } from 'react-redux'
 import '../../../../app/globals.css'
-import { LastWillContextProvider } from '../../../../store/last-will/LastWillContext'
+import { store } from '../../../../store/store'
 import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { SidebarButton } from './SidebarButton'
 
@@ -14,9 +15,9 @@ describe('SidebarButton', () => {
 	describe('Basic Render', () => {
 		beforeEach(() => {
 			cy.mount(
-				<LastWillContextProvider>
+				<Provider store={store}>
 					<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.ACTIVE} />
-				</LastWillContextProvider>
+				</Provider>
 			)
 		})
 
@@ -38,9 +39,9 @@ describe('SidebarButton', () => {
 	describe('Active State', () => {
 		it('should not display icon', () => {
 			cy.mount(
-				<LastWillContextProvider>
+				<Provider store={store}>
 					<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.ACTIVE} />
-				</LastWillContextProvider>
+				</Provider>
 			)
 			cy.datacy('sidebarbutton-icon').should('not.exist')
 		})
@@ -49,9 +50,9 @@ describe('SidebarButton', () => {
 	describe('Inactive State', () => {
 		it('should display icon', () => {
 			cy.mount(
-				<LastWillContextProvider>
+				<Provider store={store}>
 					<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.DEFAULT} />
-				</LastWillContextProvider>
+				</Provider>
 			)
 			cy.datacy('sidebarbutton-icon').should('be.visible')
 		})
@@ -60,9 +61,9 @@ describe('SidebarButton', () => {
 	describe('Disabled State', () => {
 		it('should not display icon', () => {
 			cy.mount(
-				<LastWillContextProvider>
+				<Provider store={store}>
 					<SidebarButton datacy="sidebarbutton" {...data} state={SidebarButtonState.DISABLED} />
-				</LastWillContextProvider>
+				</Provider>
 			)
 			cy.datacy('sidebarbutton-icon').should('not.exist')
 		})

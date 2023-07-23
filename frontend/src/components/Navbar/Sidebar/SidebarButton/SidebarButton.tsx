@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { routes } from '../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { useAppSelector } from '../../../../store/hooks'
 import { SidebarButtonState, SidebarPages } from '../../../../types/sidebar'
 import { IconButton } from '../../../IconButton/IconButton'
 
@@ -32,12 +32,13 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
 	datacy,
 	onClick = () => {},
 }: SidebarButtonProps) => {
-	const { lastWill } = useLastWillContext()
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+
 	return (
 		<Link
 			datacy={datacy}
 			onClick={onClick}
-			href={routes.lastWill[type](lastWill.common.id)}
+			href={routes.lastWill[type](_id)}
 			className={`flex h-[5rem] select-none items-center justify-between p-4 pl-6 pr-2 ${
 				state === SidebarButtonState.ACTIVE
 					? 'bg-black text-white'
