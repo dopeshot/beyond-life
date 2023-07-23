@@ -1,6 +1,6 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { routes } from '../../../services/routes/routes'
@@ -22,6 +22,7 @@ type AccountDto = {
 
 export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const router = useRouter()
+	const searchparams = useSearchParams()
 
 	// Redux
 	const dispatch = useAppDispatch()
@@ -48,9 +49,9 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		await dispatch(loginApi({ email: values.email, password: values.password }))
 		setIsLoading(false)
 
-		// Redirect to profile page
-		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.profile.myLastWills)
+		// Redirect to callback url or home
+		const callbackUrl = searchparams.get('callbackUrl') ?? routes.index
+		router.push(callbackUrl)
 	}
 
 	const onRegisterFormSubmit = async (values: AccountDto) => {
@@ -59,9 +60,9 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		await dispatch(registerApi({ email: values.email, password: values.password }))
 		setIsLoading(false)
 
-		// Redirect to profile page
-		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.profile.myLastWills)
+		// Redirect to callback url or home
+		const callbackUrl = searchparams.get('callbackUrl') ?? routes.index
+		router.push(callbackUrl)
 	}
 
 	return (
