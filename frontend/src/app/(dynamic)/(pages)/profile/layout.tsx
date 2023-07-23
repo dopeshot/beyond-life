@@ -4,9 +4,12 @@ import { profileLinks } from '../../../../../content/profilelinks'
 import isAuth from '../../../../components/Auth/isAuth'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
+import { useAppDispatch } from '../../../../store/hooks'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
+
+	const dispatch = useAppDispatch()
 
 	return (
 		<div className="container my-5 flex flex-col gap-5 md:flex-row md:gap-10">
@@ -22,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 					{/* Links */}
 					<div>
-						{profileLinks.map((link) => (
+						{profileLinks(dispatch).map((link) => (
 							<ProfileSideBarLink
 								key={link.icon}
 								{...link}
