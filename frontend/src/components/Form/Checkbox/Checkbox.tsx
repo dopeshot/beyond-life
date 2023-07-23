@@ -1,11 +1,10 @@
 import { Field } from 'formik'
-import { useState } from 'react'
 import { ComponentOptions } from '../../../types/form'
 import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { IconButton } from '../../IconButton/IconButton'
+import { Tooltip } from '../../Tooltip/Tooltip'
 import { Label } from '../Label/Label'
-import Tooltip from './Tooltip/Tooltip'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -26,8 +25,6 @@ export type CheckboxProps = {
 
 // MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, inputRequired = false }) => {
-	const [tooltipVisible, setTooltipVisible] = useState(false)
-
 	return (
 		<>
 			{labelText && (
@@ -49,15 +46,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					{option.icon && <Icon icon={option.icon} />}
 					<span>{option.label}</span>
 					{option.tooltip && (
-						<div className="relative">
-							<div
-								className="relative"
-								onMouseEnter={() => setTooltipVisible(true)}
-								onMouseLeave={() => setTooltipVisible(false)}
-							>
-								<IconButton icon="help" iconClassName="text-base" className="ml-1 h-5 w-5 hover:bg-opacity-10" />
-								{tooltipVisible && <Tooltip>{option.tooltip}</Tooltip>}
-							</div>
+						<div className="flex">
+							<Tooltip content={option.tooltip} position="bottom" delay={100} wrapperClassname="ml-2">
+								<IconButton
+									icon="info"
+									iconClassName="text-base"
+									className="h-5 w-5 text-gray-500 hover:bg-opacity-10"
+								/>
+							</Tooltip>
 						</div>
 					)}
 				</label>
