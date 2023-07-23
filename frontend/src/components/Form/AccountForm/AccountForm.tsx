@@ -3,6 +3,8 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { login } from '../../../services/auth/login'
+import { register } from '../../../services/auth/register'
 import { routes } from '../../../services/routes/routes'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
@@ -38,11 +40,12 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	})
 
 	const onLoginFormSubmit = async (values: AccountDto) => {
-		console.log(values)
-
-		// Simulate request
+		// Login
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		login({
+			email: values.email,
+			password: values.password,
+		})
 		setIsLoading(false)
 
 		// Redirect to profile page
@@ -51,11 +54,12 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	}
 
 	const onRegisterFormSubmit = async (values: AccountDto) => {
-		console.log(values)
-
-		// Simulate request
+		// Register
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		register({
+			email: values.email,
+			password: values.password,
+		})
 		setIsLoading(false)
 
 		// Redirect to profile page
