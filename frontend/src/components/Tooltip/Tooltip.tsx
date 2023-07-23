@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-type TooltipProps = {
+export type TooltipProps = {
 	/** Tooltip content for example a text. */
 	content: React.ReactNode
 	/** Content when you hover, tooltip is shown. */
