@@ -55,7 +55,8 @@ async function bootstrap() {
   }
 
   app.enableCors({
-    origin: 'http://localhost:5173/*',
+    origin: ['http://localhost:3000', 'http://192.168.178.154/*'],
+    credentials: true,
   }) // TODO: only allow our frontend url
 
   await app.listen(process.env.PORT || 3001)
