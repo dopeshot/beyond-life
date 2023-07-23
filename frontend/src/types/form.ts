@@ -8,7 +8,7 @@ export type ComponentOptions = {
 	/** Icon in front of label. */
 	icon?: MaterialSymbol
 	/** Tooltip which is shown when hovering over option. */
-	tooltip?: string
+	helperText?: string
 }
 
 export type DropdownButtonOptions = {

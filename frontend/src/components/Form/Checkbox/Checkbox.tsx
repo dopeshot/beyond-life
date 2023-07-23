@@ -59,13 +59,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					<Field type="checkbox" className="mr-2" name={name} value={`${option.value}`} />
 					{option.icon && <Icon icon={option.icon} />}
 					<span>{option.label}</span>
-					{option.tooltip && (
+					{option.helperText && (
 						<div className="flex">
 							<IconButton 
 								icon="info" 
 								iconClassName="text-base" 
 								className="h-5 w-5 text-gray-500 hover:bg-opacity-10" 
-								onClick={() => handleIconClick(option.tooltip ?? "Keine Hilfetext vorhanden", option.label)} 
+								onClick={() => handleIconClick(option.helperText ?? "Keine Hilfetext vorhanden", option.label)} 
 							/>
 						</div>
 					)}
