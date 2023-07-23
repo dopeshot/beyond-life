@@ -17,7 +17,6 @@ const Buy = () => {
 					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
 				</div>
 
-				{/* TODO onClick weiterleiten zu stripe */}
 				{/* Price Plans */}
 				<div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					{/* Basic Plan */}
