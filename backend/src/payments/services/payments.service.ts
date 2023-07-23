@@ -44,6 +44,9 @@ export class PaymentsService {
       req.body,
       signature,
     )
+    // We only really care for the completion of the checkout, everything else is relevant on the frontend site
+    if (event.type !== 'checkout.session.completed') return
+
     const eventWithMetadata = event as Stripe.Event & {
       data: { object: { metadata: { plan: string; userId: string } } }
     }
@@ -52,10 +55,5 @@ export class PaymentsService {
       eventWithMetadata.data.object.metadata.userId,
       eventWithMetadata.data.object.metadata.plan,
     )
-    // TODO: is charge succeeded or payment intent succeded the relevant one
-    if (event.type === 'checkout.session.completed') {
-      console.log('event: ', JSON.stringify(eventWithMetadata))
-      console.log('event: ', eventWithMetadata.data.object.metadata)
-    }
   }
 }
