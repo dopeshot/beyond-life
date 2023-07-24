@@ -12,6 +12,8 @@ export type FormDatepickerProps = {
 	hasMargin?: boolean
 	/** Autocomplete attribute for the input field. */
 	autoComplete?: string
+	/** Custom datacy for testing. */
+	datacy?: string
 }
 
 /**
@@ -22,7 +24,8 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 	labelText,
 	inputRequired,
 	hasMargin = false,
-	autoComplete = "on",
+	datacy,
+	autoComplete = 'on',
 }) => {
 	return (
 		<Field name={name}>
@@ -42,7 +45,7 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 					{/* Input */}
 					<div className="relative my-1 flex w-full items-center justify-between rounded-lg border border-gray-100 bg-gray-100 px-4 py-2 text-gray-800 focus-within:outline-1 focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2 sm:mb-0">
 						<input
-							datacy={`${name}-datepicker-input`}
+							datacy={datacy ?? `datepicker-${name}-input`}
 							type="date"
 							autoComplete={autoComplete}
 							{...fieldProps.field}
