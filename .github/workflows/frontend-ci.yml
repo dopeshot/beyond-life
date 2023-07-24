@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/setup.template.yaml
     with:
       context: frontend
-          
+
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
@@ -28,20 +28,18 @@ jobs:
         shell: bash
         working-directory: frontend
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: audit
-      run: npm audit --omit=dev
-
+      - name: audit
+        run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
     needs: setup
     strategy:
       matrix:
-        command: 
+        command:
           - te:cli
           - tc:cli
     defaults:
@@ -70,7 +68,7 @@ jobs:
           build: npm run build
           start: npm run serve
           command: npm run ${{ matrix.command }}
-          
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -81,6 +79,48 @@ jobs:
             frontend/cypress/screenshots/*
             frontend/cypress/videos/*
             frontend/coverage
+
+      - name: rename report
+        runs: mv frontend/coverage/coverage-final.json frontend/coverage/coverage-final-${{ matrix.command }}.json
+
+      - uses: actions/upload-artifacts@v3
+        with:
+          name: coverage-report
+          path:
+            - frontend/coverage/coverage-final-${{ matrix.command }}.json
+
+  merge-coverage-and-create-badge:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: coverage-artifacts
+          path: coverage
+
+      - name: merge coverages
+        run: npx --yes istanbul-merge --out merged/coverage.json $(find coverage -type f )
+
+      - name: output coverage report
+        run: npx nyc report -t merged --reporter text
+
+      - name: generate badge
+        run: |
+          cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
+          color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
+          npx --yes badge-maker coverage $cov $color > .github/badges/frontend-coverage.svg
+
+      - name: Commit
+        run: |
+          git config user.name ${{ secrets.BOT_NAME }}
+          git config user.email ${{ secrets.BOT_MAIL }}
+          git add .github/badges/frontend-coverage.svg 
+          git commit -m "generated" || echo "No changes to commit"
+
+      - name: Push
 
   docker-build-and-push:
     needs: tests
