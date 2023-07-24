@@ -1,6 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
@@ -13,14 +14,16 @@ import { Label } from '../../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-import { useAppSelector } from '../../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import {
 	MatrimonialProperty,
 	PartnerMoreInfos,
 	RelationshipStatus,
 } from '../../../../../store/last-will/marriage/state'
+import { setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 import { Person } from '../../../../../types/lastWill'
+import { SidebarPages } from '../../../../../types/sidebar'
 
 export type MarriageFormPayload = {
 	// Person
@@ -52,6 +55,8 @@ const Marriage = () => {
 		state.lastWill.data.heirs.find((heir) => 'type' in heir && heir.type === 'partner')
 	) as Person // TODO: could be undefined as well
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+
+	const dispatch = useAppDispatch()
 
 	const PREVIOUS_LINK = routes.lastWill.testator(_id)
 	const NEXT_LINK = routes.lastWill.heirs(_id)
@@ -103,10 +108,10 @@ const Marriage = () => {
 		}
 	}
 
-	// Use to handle save current page
-	// useEffect(() => {
-	// 	services.setProgressKey({ progressKey: SidebarPages.MARRIAGE })
-	// }, [services])
+	// Use to handle sidebar display state and progress
+	useEffect(() => {
+		dispatch(setProgressKeys(SidebarPages.MARRIAGE))
+	}, [dispatch])
 
 	return (
 		<div className="container mt-5">
