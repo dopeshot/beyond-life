@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { prop } from '@typegoose/typegoose'
 import { Exclude, Expose } from 'class-transformer'
 import { ObjectId } from 'mongoose'
+import { CheckoutInformation } from '../../payments/interfaces/payments'
 
 /**
  * @description Entity with all user information
@@ -51,6 +52,22 @@ export class User {
     example: 'free',
   })
   paymentPlan: string
+
+  @Expose()
+  @prop({ required: true, default: 'free' })
+  @ApiPropertyOptional({
+    description: 'Checkout status',
+    example: { status: 'free', lastInformationTime: 1234567 },
+  })
+  checkoutInformation: CheckoutInformation
+
+  @Expose()
+  @prop({ required: false })
+  @ApiPropertyOptional({
+    description: 'Stripe customer id',
+    example: 'cus_...',
+  })
+  stripeCustomerId: string
 
   _koooHELLOoobbbiii
   kkDIDuCheckThisbiii
