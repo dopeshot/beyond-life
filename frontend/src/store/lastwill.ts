@@ -67,16 +67,16 @@ export const fetchLastWillState = createAsyncThunk(
 					resolve({
 						_id: lastWillId,
 						testator: {
-							name: 'STORE_EXAMPLE_NAME',
+							name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
 							gender: 'male',
 							birthDate: '00.00.0000',
 							birthPlace: '00.00.0000',
 							isHandicapped: false,
 							isInsolvent: true,
-							city: 'STORE_CITY',
-							houseNumber: 'STORE_HOUSENUMBER',
-							zipCode: 'STORE_ZIPCODE',
-							street: 'STORE_STREET',
+							city: 'GL_STORE_TESTATOR_CITY',
+							houseNumber: 'GL_STORE_TESTATOR_HOUSENUMBER',
+							zipCode: 'GL_STORE_TESTATOR_ZIPCODE',
+							street: 'GL_STORE_TESTATOR_STREET',
 						},
 						progressKeys: [],
 						financialAssets: [
@@ -105,7 +105,22 @@ export const fetchLastWillState = createAsyncThunk(
 								description: '',
 							},
 						],
-						heirs: [],
+						heirs: [
+							{
+								type: 'partner',
+								id: nanoid(),
+								name: 'GL_STORE_PARTNER_EXAMPLE_NAME',
+								gender: 'male',
+								birthDate: '00.00.0000',
+								birthPlace: '00.00.0000',
+								isHandicapped: true,
+								isInsolvent: true,
+								city: 'GL_STORE_PARTNER_CITY',
+								houseNumber: 'GL_STORE_PARTNER_HOUSENUMBER',
+								zipCode: 'GL_STORE_PARTNER_ZIPCODE',
+								street: 'GL_STORE_PARTNER_STREET',
+							},
+						],
 					} satisfies LastWillState['data']),
 				10
 			)
