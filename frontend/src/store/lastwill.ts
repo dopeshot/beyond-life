@@ -166,45 +166,33 @@ const lastWillSlice = createSlice({
 			state.data.testator = testator
 		},
 		setMarriage: (state, action: PayloadAction<MarriageFormPayload>) => {
-			if (action.payload.relationshipStatus === 'married') {
-				const oldPartner = state.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+			const oldPartner = state.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+			const hasParnter = oldPartner !== undefined
+
+			const partner: Person = {
+				type: 'partner',
+				id: hasParnter ? oldPartner.id : nanoid(),
+				name: action.payload.name,
+				gender: action.payload.gender,
+				birthDate: action.payload.birthDate,
+				birthPlace: action.payload.birthPlace,
+				isHandicapped: action.payload.moreInfos ? action.payload.moreInfos.includes('isHandicapped') : false,
+				isInsolvent: action.payload.moreInfos ? action.payload.moreInfos.includes('isInsolvent') : false,
+
+				street: action.payload.street,
+				houseNumber: action.payload.houseNumber,
+				zipCode: action.payload.zipCode,
+				city: action.payload.city,
+			}
+
+			// Set state
+			if (hasParnter) {
 				const oldPartnerIndex = state.data.heirs.findIndex(
 					(heir): heir is Person => 'type' in heir && heir.type === 'partner'
 				)
-				const hasParnter = oldPartner !== undefined
-
-				// TODO: we could merge this better
-				const partner: Person = {
-					type: 'partner',
-					id: hasParnter ? oldPartner.id : nanoid(),
-					name: action.payload.name,
-					gender: action.payload.gender,
-					birthDate: action.payload.birthDate,
-					birthPlace: action.payload.birthPlace,
-					isHandicapped: action.payload.moreInfos ? action.payload.moreInfos.includes('isHandicapped') : false,
-					isInsolvent: action.payload.moreInfos ? action.payload.moreInfos.includes('isInsolvent') : false,
-
-					street: action.payload.street,
-					houseNumber: action.payload.houseNumber,
-					zipCode: action.payload.zipCode,
-					city: action.payload.city,
-				}
-
-				// Set state
-				if (hasParnter) {
-					state.data.heirs[oldPartnerIndex] = partner
-				} else {
-					state.data.heirs.push(partner)
-				}
+				state.data.heirs[oldPartnerIndex] = partner
 			} else {
-				const hasParnter = state.data.heirs.some((heir): heir is Person => 'type' in heir && heir.type === 'partner')
-
-				if (hasParnter) {
-					const partnerIndex = state.data.heirs.findIndex(
-						(heir): heir is Person => 'type' in heir && heir.type === 'partner'
-					)
-					state.data.heirs.splice(partnerIndex, 1)
-				}
+				state.data.heirs.push(partner)
 			}
 
 			state.data.common.isBerlinWill = action.payload.moreInfos
