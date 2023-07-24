@@ -50,7 +50,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		setIsLoading(false)
 
 		// Redirect to callback url or home
-		const callbackUrl = searchparams.get('callbackUrl') ?? routes.index
+		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
 		router.push(callbackUrl)
 	}
 
@@ -61,7 +61,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		setIsLoading(false)
 
 		// Redirect to callback url or home
-		const callbackUrl = searchparams.get('callbackUrl') ?? routes.index
+		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
 		router.push(callbackUrl)
 	}
 

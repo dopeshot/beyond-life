@@ -1,0 +1,42 @@
+import { usePathname } from 'next/navigation'
+import { routes } from '../../../services/routes/routes'
+import { logout } from '../../../store/auth/auth'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Route } from '../../ButtonsAndLinks/Route/Route'
+import { NavbarLink } from '../NavbarLink/NavbarLink'
+
+/**
+ * Login and Register or Profile and Logout Links depending on if the user is authenticated.
+ */
+export const RightNavbarLinks: React.FC = () => {
+	const pathname = usePathname()
+
+	const dispatch = useAppDispatch()
+	const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+
+	return isAuthenticated ? (
+		<>
+			<li className="order-1 py-[10px] md:order-none md:ml-auto">
+				<NavbarLink href={routes.profile.myLastWills} isActive={pathname.includes('/profile')}>
+					Profile
+				</NavbarLink>
+			</li>
+			<li>
+				<NavbarLink onClick={() => dispatch(logout())}>Logout</NavbarLink>
+			</li>
+		</>
+	) : (
+		<>
+			<li className="order-1 md:order-none md:ml-auto">
+				<Route kind="secondary" href={routes.account.login}>
+					Login
+				</Route>
+			</li>
+			<li>
+				<NavbarLink href={routes.account.register} isActive={routes.account.register === pathname}>
+					Register
+				</NavbarLink>
+			</li>
+		</>
+	)
+}
