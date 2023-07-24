@@ -12,9 +12,23 @@ export class StripeService {
     })
   }
 
-  async checkout_session_create(plan: string, price: string, userId: string) {
+  async customer_create(email: string) {
     try {
-      return await this.stripe.checkout.sessions.create({
+      return await this.stripe.customers.create({ email })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Payment service is unavailable')
+    }
+  }
+
+  async checkout_session_create(
+    plan: string,
+    price: string,
+    userId: string,
+    customer: string,
+  ) {
+    try {
+      const stripeSession = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
         metadata: { plan, userId },
         line_items: [
@@ -26,7 +40,9 @@ export class StripeService {
         mode: 'payment',
         success_url: this.configService.get('STRIPE_SUCCESS_URL'),
         cancel_url: this.configService.get('STRIPE_CANCEL_URL'),
+        customer,
       })
+      return stripeSession
     } catch (error) {
       this.logger.error(error)
       throw new ServiceUnavailableException('Payment service is unavailable')
