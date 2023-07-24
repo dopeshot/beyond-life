@@ -110,6 +110,17 @@ export const fetchLastWillState = createAsyncThunk(
 	}
 )
 
+export const createTestator = (testatorPayload: TestatorFormPayload): Testator => {
+	// Extract moreInfos from payload
+	const { moreInfos, ...formTestator } = testatorPayload
+
+	return {
+		...formTestator,
+		isHandicapped: moreInfos ? moreInfos.includes('isHandicapped') : false,
+		isInsolvent: moreInfos ? moreInfos.includes('isInsolvent') : false,
+	}
+}
+
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
@@ -124,14 +135,8 @@ const lastWillSlice = createSlice({
 			state.data.items = action.payload.items
 		},
 		setTestator: (state, action: PayloadAction<TestatorFormPayload>) => {
-			// Extract moreInfos from payload
-			const { moreInfos, ...formTestator } = action.payload
-
-			state.data.testator = {
-				...formTestator,
-				isHandicapped: moreInfos ? moreInfos.includes('isHandicapped') : false,
-				isInsolvent: moreInfos ? moreInfos.includes('isInsolvent') : false,
-			}
+			const testator = createTestator(action.payload)
+			state.data.testator = testator
 		},
 		resetLastWill: (state) => {
 			state.isLoading = false
