@@ -10,6 +10,8 @@ export type FormDatepickerProps = {
 	inputRequired?: boolean
 	/** When true add margin to datepicker like other inputs. */
 	hasMargin?: boolean
+	/** Autocomplete attribute for the input field. */
+	autoComplete?: string
 }
 
 /**
@@ -19,7 +21,8 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 	name,
 	labelText,
 	inputRequired,
-	hasMargin = false
+	hasMargin = false,
+	autoComplete = "off",
 }) => {
 	return (
 		<Field name={name}>
@@ -41,6 +44,7 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 						<input
 							datacy={`${name}-datepicker-input`}
 							type="date"
+							autoComplete={autoComplete}
 							{...fieldProps.field}
 							className="h-6 w-full bg-transparent !outline-none"
 						/>

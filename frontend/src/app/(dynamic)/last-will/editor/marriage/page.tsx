@@ -23,6 +23,7 @@ import {
 } from '../../../../../store/last-will/marriage/state'
 import { Gender } from '../../../../../types/gender'
 import { SidebarPages } from '../../../../../types/sidebar'
+import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 
 /**
  * Marriage Page
@@ -170,7 +171,7 @@ const Marriage = () => {
 												options={genderOptions}
 											/>
 											{/* // TODO(Zoe-Bot): Replace with datepicker */}
-											<TextInput name="partnerDateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+											<FormDatepicker name="partnerDateOfBirth" labelText="Geburtstag"/>
 											<TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
 										</div>
 
