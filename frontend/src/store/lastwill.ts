@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
-import { FinancialAsset, Item } from '../types/lastWill'
+import { FinancialAsset, Item, Testator } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
 
@@ -15,6 +15,7 @@ export type LastWillState = {
 		progressKeys: SidebarPages[]
 
 		// parts
+		testator: Testator
 		financialAssets: FinancialAsset[]
 		items: Item[]
 	}
@@ -26,6 +27,18 @@ const initialState: LastWillState = {
 
 	data: {
 		_id: '',
+		testator: {
+			name: '',
+			gender: 'male',
+			birthDate: '',
+			birthPlace: '',
+			isHandicapped: false,
+			isInsolvent: false,
+			city: '',
+			houseNumber: '',
+			zipCode: '',
+			street: '',
+		},
 		progressKeys: [],
 		financialAssets: [],
 		items: [],
@@ -49,6 +62,18 @@ export const fetchLastWillState = createAsyncThunk(
 				() =>
 					resolve({
 						_id: lastWillId,
+						testator: {
+							name: 'STORE_EXAMPLE_NAME',
+							gender: 'male',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: false,
+							isInsolvent: true,
+							city: 'STORE_CITY',
+							houseNumber: 'STORE_HOUSENUMBER',
+							zipCode: 'STORE_ZIPCODE',
+							street: 'STORE_STREET',
+						},
 						progressKeys: [],
 						financialAssets: [
 							{
