@@ -52,8 +52,8 @@ const Marriage = () => {
 	// Gloabl State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const partner = useAppSelector((state) =>
-		state.lastWill.data.heirs.find((heir) => 'type' in heir && heir.type === 'partner')
-	) as Person // TODO: could be undefined as well
+		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
 	const dispatch = useAppDispatch()
@@ -62,7 +62,10 @@ const Marriage = () => {
 	const NEXT_LINK = routes.lastWill.heirs(_id)
 
 	// Formik
-	const { isHandicapped, isInsolvent, ...formPartner } = partner
+	const { isHandicapped, isInsolvent, ...formPartner } = partner ?? {
+		isHandicapped: false,
+		isInsolvent: false,
+	}
 	const isBerlinWill = true
 	const isPartnerGermanCitizenship = true
 	const matrimonialProperty = 'communityOfGain'
