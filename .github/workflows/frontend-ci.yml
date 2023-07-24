@@ -79,7 +79,10 @@ jobs:
             frontend/cypress/videos/*
 
       - name: ls
-        run: ls && pwd
+        run: ls -a && pwd
+
+      - name: ls2
+        run ls -a ..
 
       - name: rename report
         run: mv coverage/coverage-final.json coverage/coverage-final-${{ matrix.command }}.json
