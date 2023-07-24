@@ -10,6 +10,7 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiOperation,
@@ -45,16 +46,15 @@ export class PaymentsController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth('access_token')
   @Post('checkout')
+  @ApiCreatedResponse({
+    description: 'Checkout session created',
+    type: Object, // Swagger doesn't work with Stripe objects
+  })
   async createCheckoutSession(
     @Body() { plan }: PaymentDTO,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    const session = await this.paymentService.createCheckoutSession(
-      plan,
-      user.id,
-    )
-    console.log('session: ', session)
-    return session
+    return await this.paymentService.createCheckoutSession(plan, user.id)
   }
 
   // This is the endpoint for Stripe handled information and receives rawBody data
