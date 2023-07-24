@@ -1,0 +1,31 @@
+name: Npm package setup
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.context }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: install npm dependencies
+        run: npm ci --no-audit --cache ~/.npm
+
+      - name: Cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+        

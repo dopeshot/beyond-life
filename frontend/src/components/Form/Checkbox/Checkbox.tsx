@@ -1,5 +1,5 @@
 import { Field } from 'formik'
-import { SelectableOption } from '../../../types/forms'
+import { ComponentOptions } from '../../../types/form'
 import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
@@ -10,7 +10,7 @@ export type CheckboxProps = {
 	/** Provide a label to provide a description of the Checkbox input that you are exposing to the user. */
 	labelText?: string
 	/** A list of options to choose from. */
-	options: SelectableOption[]
+	options: ComponentOptions[]
 	/** Provides assistance on how to fill out a field. */
 	helperText?: string
 	/** When set to true, a '*' symbol will be displayed next to the label, indicating that the field is required. */
@@ -36,11 +36,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 			)}
 			{options.map((option) => (
 				<label
-					datacy={`checkbox-${name}-option-${option.id}`}
-					key={option.id}
+					datacy={`checkbox-${name}-option-${option.value}`}
+					key={option.value.toString()}
 					className="my-1 flex cursor-pointer items-center"
 				>
-					<Field type="checkbox" className="mr-2" name={name} value={`${option.id}`} />
+					<Field type="checkbox" className="mr-2" name={name} value={`${option.value}`} />
 					{option.icon && <Icon icon={option.icon} />}
 					<span>{option.label}</span>
 				</label>

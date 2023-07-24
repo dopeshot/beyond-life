@@ -2,7 +2,7 @@ export type NavLink = {
 	text: string
 } & (
 	| {
-			to: string
+			href: string
 	  }
 	| {
 			onClick: () => void

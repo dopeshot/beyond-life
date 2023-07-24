@@ -1,0 +1,89 @@
+name: frontend-pipeline
+
+on:
+  push:
+    branches:
+      - "stable"
+      - "main"
+  pull_request:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend-ci.yml"
+      - ".github/workflows/docker-build-and-push.template.yml"
+      - ".github/workflows/setup.template.yaml"
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup.template.yaml
+    with:
+      context: frontend
+          
+  audit:
+    runs-on: ubuntu-latest
+    # Only run on PRs against stable and on stable itself
+    if: github.ref == 'stable' || github.base_ref == 'stable'
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: audit
+      run: npm audit --omit=dev
+
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        command: 
+          - te:cli
+          - tc:cli
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Load cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: node modules
+        run: npm ci --audit:false --cache ~/.npm --prefer-offline
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        timeout-minutes: 15
+        with:
+          working-directory: ./frontend
+          build: npm run build
+          start: npm run serve
+          command: npm run ${{ matrix.command }}
+          
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-test-reports
+          path: |
+            frontend/cypress/results/*
+            frontend/cypress/reports/*
+            frontend/cypress/screenshots/*
+            frontend/cypress/videos/*
+            frontend/coverage
+
+  docker-build-and-push:
+    needs: tests
+    uses: ./.github/workflows/docker-build-and-push.template.yml
+    with:
+      context: frontend

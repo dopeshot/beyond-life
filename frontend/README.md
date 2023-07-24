@@ -13,7 +13,7 @@ npm run dev # Run in watch
 
 ```sh
 npm run build
-npm run start # Starts that build
+npm run serve # Starts that build
 ```
 
 ### Testing
@@ -33,6 +33,10 @@ npm run tc:cli
 
 - [Entwurf 1](https://xd.adobe.com/view/2ab1e96c-ee16-4089-b7a6-39cb1e78a9d8-7fe2/)
 - [Entwurf 2](https://xd.adobe.com/view/59069299-3ece-4bf1-b5b1-45dd53a5bab8-0c55/)
+
+### Sitemap
+
+- [Sitemap](https://octopus.do/b695fio525c)
 
 ### Tools
 

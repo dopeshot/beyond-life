@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { UserEntity } from './entities/users.entity'
 import { UserService } from './services/user.service'
+import { MailEventService } from './services/mail-event.service'
+import { TypegooseModule } from '@m8a/nestjs-typegoose'
+import { MODELS } from './entities'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
-  providers: [UserService],
-  exports: [UserService],
+  imports: [TypegooseModule.forFeature([...MODELS])],
+  providers: [UserService, MailEventService],
+  exports: [UserService, MailEventService],
 })
 export class DbModule {}
