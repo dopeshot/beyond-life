@@ -28,7 +28,7 @@ export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 	return (
 		<div
 			datacy={`paymentPlan-${title}`}
-			className={`flex w-full flex-col gap-4 rounded-xl border-2 px-6 py-3 ${
+			className={`flex w-full flex-col gap-5 rounded-xl border-2 px-6 py-3 ${
 				size === 'lg' ?? 'xl:gap-6 xl:px-10 xl:py-6'
 			}`}
 		>

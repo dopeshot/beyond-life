@@ -126,25 +126,27 @@ const Home: React.FC = () => {
 
 				{/* Section: Pricing */}
 				<div className="container mb-16 md:mb-28">
-					{/* Header */}
-					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
-						<Headline level={2}>Einfaches Preismodell</Headline>
-						<p>Transparente Kosten, keine versteckten Gebühren - Ihr Testament zu einem fairen Preis.</p>
-					</div>
+					<div className="mx-auto w-full">
+						{/* Header */}
+						<div className="mb-4 flex flex-col items-center text-center md:mb-8">
+							<Headline level={2}>Einfaches Preismodell</Headline>
+							<p>Transparente Kosten, keine versteckten Gebühren - Ihr Testament zu einem fairen Preis.</p>
+						</div>
 
-					{/* Plans */}
-					<div className="flex w-full flex-col gap-4">
-						<div className="mb-6 flex flex-col gap-4 md:flex-row">
-							{[FreePlan, ...PaymentPlans].map((plan) => (
-								<PaymentPlan
-									key={plan.title}
-									title={plan.title}
-									price={plan.price}
-									hasButton={false}
-									size="md"
-									descriptionItems={plan.descriptionItems}
-								/>
-							))}
+						{/* Plans */}
+						<div className="flex w-full flex-col gap-4">
+							<div className="mb-6 flex flex-col gap-4 md:flex-row">
+								{[FreePlan, ...PaymentPlans].map((plan) => (
+									<PaymentPlan
+										key={plan.title}
+										title={plan.title}
+										price={plan.price}
+										hasButton={false}
+										size="md"
+										descriptionItems={plan.descriptionItems}
+									/>
+								))}
+							</div>
 						</div>
 					</div>
 				</div>
