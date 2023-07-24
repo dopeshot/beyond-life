@@ -119,6 +119,12 @@ export class UserService {
   }
 
   async updateUserPaymentPlan(_id: string, paymentPlan: string) {
-    await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
+    try {
+      await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
+    } catch (error) {
+      this.logger.log(error)
+      // No Exception because we don't return anything anyway
+      // This should also never happen, because this means the data from Stripe is falsy which we sent to Stripe
+    }
   }
 }
