@@ -20,10 +20,11 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 	labelText,
 	inputRequired,
 	hasMargin = false,
+	...props
 }) => {
 	return (
 		<Field name={name}>
-			{(props: FieldProps<string>) => (
+			{(fieldProps: FieldProps<string | number>) => (
 				<div datacy={`${name}-datepicker-div`} className={`relative ${hasMargin ? 'mb-2 md:mb-4' : ''}`}>
 					{/* Label */}
 					{labelText && <Label datacy={`${name}-datepicker-labelText`} name={name} labelText={labelText} isLegend inputRequired={inputRequired} />}
@@ -33,10 +34,9 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 						<input
 							datacy={`${name}-datepicker-input`}
 							type="date"
+							{...fieldProps.field}
+							{...props}
 							className="w-full h-6 bg-transparent !outline-none"
-							onChange={(event) => {
-								props.form.setFieldValue(props.field.name, event.target.value)
-							}}
 						/>
 					</div>
 				</div>
