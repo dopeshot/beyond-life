@@ -37,7 +37,7 @@ export const BaseError: React.FC<BaseErrorProps> = ({
 				style={{ backgroundImage: `url(${headerBackground.src})` }}
 				className="flex min-h-screen flex-col bg-black bg-opacity-50 bg-cover bg-center bg-no-repeat bg-blend-darken"
 			>
-				<Navbar>
+				<Navbar isStaticPage>
 					<div className="mr-5">
 						<NavbarLogo />
 					</div>
