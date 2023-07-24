@@ -1,3 +1,5 @@
+const { fontFamily } = require("tailwindcss/defaultTheme")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
@@ -77,7 +79,11 @@ module.exports = {
                     700: '#000000',
                 },
             },
+            fontFamily: {
+                'serif': ['Arbutus Slab', ...fontFamily.serif],
+                'sans': ['Plus Jakarta Sans', ...fontFamily.sans],
+            },
         },
-    },
-    plugins: [],
+        plugins: [],
+    }
 }

@@ -40,8 +40,7 @@ export const Headline: React.FC<HeadlineProps> = ({
 	const CustomTag = `h${level}` as keyof JSX.IntrinsicElements
 
 	const hasSerifFont = level === 1 || level === 2
-	// TODO: #135 readd font
-	const fontStyle = hasSerifFont ? ` ` : ' '
+	const fontStyle = hasSerifFont ? ` font-serif ` : ' '
 
 	return (
 		<CustomTag
