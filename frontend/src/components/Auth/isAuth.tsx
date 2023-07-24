@@ -18,7 +18,7 @@ const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 
 		const isLoading = useAppSelector((state) => state.auth.isLoading)
 		const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-		if (isLoading) return <div>Loading...</div> // TODO: implement loading component
+		if (isLoading) return <div className="container mt-5">Loading...</div>
 
 		if (routeType === 'protected' && !isAuthenticated && !isLoading) {
 			redirect(routes.account.login(), RedirectType.replace)
