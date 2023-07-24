@@ -60,6 +60,9 @@ jobs:
       - name: node modules
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
+      - name: fallback to babel
+        run: cp ._babelrc .babelrc
+
       - name: Cypress run
         uses: cypress-io/github-action@v5
         timeout-minutes: 15
