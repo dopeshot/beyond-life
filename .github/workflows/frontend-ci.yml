@@ -10,8 +10,7 @@ on:
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"
-      - ".github/workflows/docker-build-and-push.template.yml"
-      - ".github/workflows/setup.template.yaml"
+      - ".github/workflows/*.template.yml"
 
 jobs:
   setup:
@@ -81,56 +80,24 @@ jobs:
             frontend/cypress/screenshots/*
             frontend/cypress/videos/*
 
+      - name: rename report
+        run: mv coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+
       - name: ls
         run: ls -a && pwd
 
       - name: ls2
         run: ls -a ..
-
-      - name: rename report
-        run: mv coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
-
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
-  merge-coverage-and-create-badge:
-    runs-on: ubuntu-latest
+  generate-codecov-badge:
     needs: tests
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: coverage-artifacts
-          path: coverage
-
-      - name: ls
-        run: ls coverage
-
-      - name: merge coverages
-        run: npx --yes istanbul-merge --out merged/coverage.json $(find coverage -type f )
-
-      - name: output coverage report
-        run: npx nyc report -t merged --reporter text
-
-      - name: generate badge
-        run: |
-          cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
-          color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
-          npx --yes badge-maker coverage $cov $color > .github/badges/frontend-coverage.svg
-
-      - name: Commit
-        run: |
-          git config user.name ${{ secrets.BOT_NAME }}
-          git config user.email ${{ secrets.BOT_MAIL }}
-          git add .github/badges/frontend-coverage.svg 
-          git commit -m "generated" || echo "No changes to commit"
-
-      - name: Push
-        run: git push
+    uses: ./github/workflows/codecov.template.yml
+    with:
+      context: frontend
 
   docker-build-and-push:
     needs: tests

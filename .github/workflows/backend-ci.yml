@@ -10,8 +10,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"
-      - ".github/workflows/docker-build-and-push.template.yml"
-      - ".github/workflows/setup.template.yaml"
+      - ".github/workflows/*.template.yaml"
 
 jobs:
   setup:
@@ -39,9 +38,9 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        command: 
-        - test
-        - test:e2e
+        command:
+          - test
+          - test:e2e
     defaults:
       run:
         shell: bash

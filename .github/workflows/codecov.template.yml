@@ -1,0 +1,45 @@
+name: Build and commit codecov badge
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+
+jobs:
+  merge-coverage-and-create-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: coverage-artifacts
+          path: coverage
+
+      - name: ls
+        run: ls coverage
+
+      - name: merge coverages
+        run: npx --yes istanbul-merge --out merged/coverage.json $(find coverage -type f )
+
+      - name: output coverage report
+        run: npx nyc report -t merged --reporter text
+
+      - name: generate badge
+        run: |
+          cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
+          color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
+          npx --yes badge-maker coverage $cov $color > .github/badges/$${{ inputs.context }}-coverage.svg
+
+      - name: Commit
+        run: |
+          git config user.name ${{ secrets.BOT_NAME }}
+          git config user.email ${{ secrets.BOT_MAIL }}
+          git add .github/badges/$${{ inputs.context }}-coverage.svg 
+          git commit -m "generated" || echo "No changes to commit"
+
+      - name: Push
+        run: git push
