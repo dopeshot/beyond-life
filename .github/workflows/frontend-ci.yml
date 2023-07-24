@@ -81,7 +81,7 @@ jobs:
             frontend/cypress/videos/*
 
       - name: rename report
-        run: mv coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+        run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
       - name: ls
         run: ls -a && pwd
