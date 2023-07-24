@@ -31,23 +31,23 @@ export const RightNavbarLinks: React.FC = () => {
 		<>
 			<li className="order-1 py-[10px] md:order-none md:ml-auto">
 				<NavbarLink href={routes.profile.myLastWills} isActive={pathname.includes('/profile')}>
-					Profile
+					Mein Profil
 				</NavbarLink>
 			</li>
 			<li>
-				<NavbarLink onClick={() => dispatch(logout())}>Logout</NavbarLink>
+				<NavbarLink onClick={() => dispatch(logout())}>Ausloggen</NavbarLink>
 			</li>
 		</>
 	) : (
 		<>
 			<li className="order-1 md:order-none md:ml-auto">
 				<Route kind="secondary" href={routes.account.login()}>
-					Login
+					Einloggen
 				</Route>
 			</li>
 			<li>
 				<NavbarLink href={routes.account.register()} isActive={routes.account.register() === pathname}>
-					Register
+					Registrieren
 				</NavbarLink>
 			</li>
 		</>
