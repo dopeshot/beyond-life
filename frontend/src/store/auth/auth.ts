@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import {
 	LOCAL_STORAGE_KEY,
 	createSession,
-	refreshToken,
+	refreshTokenApi,
 	saveSession,
 	setAxiosAuthHeader,
 } from '../../services/auth/session'
@@ -70,7 +70,7 @@ export const loginApi = createAsyncThunk(
  * Get session data from local storage and update the access token if it has expired.
  * @returns session data or null if no session data is found
  */
-export const getSessionData = createAsyncThunk('auth/getSessionData', async () => {
+export const refreshToken = createAsyncThunk('auth/getSessionData', async () => {
 	// Get session from local storage
 	const sessionData = localStorage.getItem(LOCAL_STORAGE_KEY)
 
@@ -79,7 +79,7 @@ export const getSessionData = createAsyncThunk('auth/getSessionData', async () =
 
 		// Update token if expired
 		if (Date.now() > parsedSessionData.decodedAccessToken.exp * 1000) {
-			const tokens = await refreshToken(parsedSessionData.refreshToken)
+			const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
 
 			// Refresh token failed
 			if (tokens === null) {
@@ -109,6 +109,12 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
+		login: (state, action: PayloadAction<SessionData>) => {
+			state.isAuthenticated = true
+			state.sessionData = action.payload
+
+			saveSession(action.payload)
+		},
 		logout: (state) => {
 			// Clear local storage
 			localStorage.removeItem(LOCAL_STORAGE_KEY)
@@ -120,15 +126,15 @@ const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(getSessionData.pending, (state) => {
+			.addCase(refreshToken.pending, (state) => {
 				state.isLoading = true
 			})
-			.addCase(getSessionData.fulfilled, (state, action) => {
+			.addCase(refreshToken.fulfilled, (state, action) => {
 				state.isLoading = false
 				state.isAuthenticated = action.payload !== null
 				state.sessionData = action.payload
 			})
-			.addCase(getSessionData.rejected, (state) => {
+			.addCase(refreshToken.rejected, (state) => {
 				state.isLoading = false
 				state.isAuthenticated = false
 			})
@@ -154,4 +160,4 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer
-export const { logout } = authSlice.actions
+export const { logout, login } = authSlice.actions

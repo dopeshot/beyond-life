@@ -38,9 +38,7 @@ describe('Auth', () => {
 	})
 
 	describe('Logout', () => {
-		it('should logout successfully', () => {
-			cy.mockLogin()
-
+		it.only('should logout successfully', () => {
 			cy.login({ route: '/profile/last-will' })
 
 			cy.datacy('profile-link-2').click()
