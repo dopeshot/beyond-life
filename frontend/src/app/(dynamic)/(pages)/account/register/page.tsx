@@ -20,7 +20,7 @@ const Register = () => {
 
 			<div className="flex items-baseline justify-center gap-2 text-sm">
 				<p className="font-medium text-gray-500">Sie haben schon einen Account?</p>
-				<Route href={routes.account.login} kind="tertiary">
+				<Route href={routes.account.login()} kind="tertiary">
 					Jetzt Einloggen
 				</Route>
 			</div>

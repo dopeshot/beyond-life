@@ -16,10 +16,10 @@ const Home = () => {
 			</div>
 			<ul>
 				<li>
-					<Link href={routes.account.login}>Login</Link>
+					<Link href={routes.account.login()}>Login</Link>
 				</li>
 				<li>
-					<Link href={routes.account.register}>Register</Link>
+					<Link href={routes.account.register()}>Register</Link>
 				</li>
 				<li className="mb-2">
 					<Link href={routes.profile.myLastWills}>Profile</Link>

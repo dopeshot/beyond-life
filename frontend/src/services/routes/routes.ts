@@ -1,8 +1,24 @@
 export const routes = {
 	index: '/',
 	account: {
-		register: '/account/register',
-		login: '/account/login',
+		register: (options?: { callbackUrl: string }) => {
+			if (!options) return '/account/register'
+
+			const queryString = new URLSearchParams({
+				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+			}).toString()
+
+			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
+		},
+		login: (options?: { callbackUrl: string }) => {
+			if (!options) return '/account/login'
+
+			const queryString = new URLSearchParams({
+				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+			}).toString()
+
+			return `/account/login${queryString !== '' ? `?${queryString}` : ''}`
+		},
 		resetPassword: '/account/reset-password',
 	},
 	profile: {

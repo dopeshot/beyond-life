@@ -20,7 +20,7 @@ const Login = () => {
 
 			<div className="flex items-baseline justify-center gap-2 text-sm">
 				<p className="font-medium text-gray-500">Noch keinen Account?</p>
-				<Route href={routes.account.register} kind="tertiary">
+				<Route href={routes.account.register()} kind="tertiary">
 					Jetzt Registrieren
 				</Route>
 			</div>

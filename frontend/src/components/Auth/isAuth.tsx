@@ -21,7 +21,7 @@ const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 
 		if (isLoading) return <div>Loading...</div> // TODO: implement loading component
 
 		if (routeType === 'protected' && !isAuthenticated && !isLoading) {
-			redirect(routes.account.login, RedirectType.replace)
+			redirect(routes.account.login(), RedirectType.replace)
 		}
 
 		if (routeType === 'guest' && isAuthenticated && !isLoading) {
