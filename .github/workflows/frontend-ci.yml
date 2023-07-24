@@ -84,14 +84,6 @@ jobs:
       - name: rename report
         run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
-      - name: ls
-        run: ls -a && pwd
-
-      - name: test
-        run: echo
-
-      - name: ls2
-        run: ls -a ..
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-report

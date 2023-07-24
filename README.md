@@ -1,5 +1,7 @@
 # beyond-life
 
+![frontend codecov](.github/badges/frontend-coverage.svg)
+
 ## Quick start
 
 To run the application locally simply run:

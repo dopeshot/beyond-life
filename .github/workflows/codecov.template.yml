@@ -29,9 +29,6 @@ jobs:
           name: coverage-report
           path: coverage
 
-      - name: ls
-        run: ls coverage
-
       - name: merge coverages
         run: npx --yes istanbul-merge --out merged/coverage.json $(find coverage -type f )
 
@@ -42,16 +39,13 @@ jobs:
         run: |
           cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
           color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
-          npx --yes badge-maker coverage $cov $color > .github/badges/$${{ inputs.context }}-coverage.svg
-
-      - name: test
-        run: echo ${{ secrets.BOT_NAME }}
+          npx --yes badge-maker coverage ${{ inputs.context }}${cov}%  $color > .github/badges/${{ inputs.context }}-coverage.svg
 
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
-          git add .github/badges/$${{ inputs.context }}-coverage.svg 
+          git add .github/badges/${{ inputs.context }}-coverage.svg 
           git commit -m "generated" || echo "No changes to commit"
 
       - name: Push
