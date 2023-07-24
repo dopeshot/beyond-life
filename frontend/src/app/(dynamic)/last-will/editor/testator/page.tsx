@@ -12,7 +12,7 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { setTestator } from '../../../../../store/lastwill'
+import { sendLastWillState, setTestator } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 
 export type TestatorFormPayload = {
@@ -72,6 +72,8 @@ const Testator = () => {
 		try {
 			// Update marriage global state
 			dispatch(setTestator(values))
+
+			await dispatch(sendLastWillState())
 
 			// Redirect to previous or next page
 			router.push(href)
