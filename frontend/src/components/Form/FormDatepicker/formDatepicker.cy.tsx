@@ -20,8 +20,8 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const data = {
 	name: 'birthday',
-    labelText: 'Geburtsdatum',
-    required: true,
+	labelText: 'Geburtsdatum',
+	required: true,
 }
 
 describe('Datepicker', () => {
@@ -33,7 +33,7 @@ describe('Datepicker', () => {
 		)
 	})
 
-    it('should initial set placeholder', () => {
+	it('should initial set placeholder', () => {
 		cy.datacy(`${data.name}-datepicker-div`).should('contain', data.labelText)
 	})
 
