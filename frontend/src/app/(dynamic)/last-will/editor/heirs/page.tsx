@@ -70,10 +70,9 @@ const Heirs = () => {
 				<table className="mb-4 mt-2 w-full border-collapse md:mt-8">
 					<thead>
 						{/* Table Header */}
-						<tr className="text-left">
-							<th className="w-6/4 pr-4">Name</th>
-							<th className="w-3/12 px-4 md:w-5/12">Wer/Was</th>
-							<th className="w-1/12 px-4">Actions</th>
+						<tr>
+							<th className="w-11/12"></th>
+							<th className="w-1/12"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,12 +80,18 @@ const Heirs = () => {
 						{lastWill.heirs.persons.map((person) => (
 							<tr datacy={`persons-row-${person.firstName}`} key={person.id} className="border-b border-gray-300">
 								<td className="table-cell pr-4">
-									<div className="flex flex-col md:flex-row">
-										<p className="mr-1">{person.firstName}</p>
-										<p>{person.lastName}</p>
-									</div>
+									<p className="font-bold">{person.firstName}</p>
+									<p>
+										{(() => {
+											if (person.gender === 'male' && heirsTypes[person.heirsType].displayType === 'Geschwister')
+												return 'Bruder'
+											if (person.gender === 'female' && heirsTypes[person.heirsType].displayType === 'Geschwister')
+												return 'Schwester'
+											if (heirsTypes[person.heirsType].displayType === 'Geschwister') return 'Geschwisterteil'
+											return heirsTypes[person.heirsType].displayType
+										})()}
+									</p>
 								</td>
-								<td className="p-4">{heirsTypes[person.heirsType].displayType}</td>
 								<td className="p-4">
 									<div className="flex">
 										<IconButton
@@ -116,9 +121,9 @@ const Heirs = () => {
 								className="border-b border-gray-300"
 							>
 								<td className="pr-4">
-									<p className="mr-1">{organisation.name}</p>
+									<p className="font-bold">{organisation.name}</p>
+									<p>Organisation</p>
 								</td>
-								<td className="p-4">Organisation</td>
 								<td className="p-4">
 									<div className="flex">
 										<IconButton
