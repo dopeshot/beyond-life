@@ -172,7 +172,7 @@ export class AuthService {
     if (user.hasVerifiedEmail) {
       throw new ConflictException('This user already verified their email')
     }
-    //TODO: update email for stripe customer????
+
     try {
       this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)

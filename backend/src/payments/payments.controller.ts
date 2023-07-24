@@ -28,22 +28,20 @@ import { PaymentsService } from './services/payments.service'
 export class PaymentsController {
   constructor(private paymentService: PaymentsService) {}
 
-  // TODO: add swagger
   @ApiInternalServerErrorResponse({
     description: 'The interaction with Stripe is possibly broken',
   })
   @ApiForbiddenResponse({
     description: 'The change in plan is not allowed',
   })
-  @ApiBearerAuth('access-token')
   @ApiUnauthorizedResponse({
     description: 'Jwt invalid or user does not exist',
   })
   @ApiServiceUnavailableResponse({
     description: ' Payment service is unavailable',
   })
-  @ApiBody({ type: PaymentDTO })
   @ApiOperation({ summary: 'Create a checkout session' })
+  @ApiBody({ type: PaymentDTO })
   @UseGuards(JwtGuard)
   @ApiBearerAuth('access_token')
   @Post('checkout')

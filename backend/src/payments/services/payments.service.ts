@@ -38,6 +38,7 @@ export class PaymentsService {
     return session
   }
 
+  // Make sure Stripe is configured to only send the relevant events, in our case checkout.session.completed
   async handleWebhook(req: Request) {
     const signature = req.headers['stripe-signature']
     const event = await this.stripeService.webhook_constructEvent(
@@ -45,15 +46,15 @@ export class PaymentsService {
       signature,
     )
     // We only really care for the completion of the checkout, everything else is relevant on the frontend site
-    if (event.type !== 'checkout.session.completed') return
+    if (!(event.type === 'checkout.session.completed')) return
 
-    const eventWithMetadata = event as Stripe.Event & {
-      data: { object: { metadata: { plan: string; userId: string } } }
-    }
+    const checkoutSession = event.data.object as Stripe.Checkout.Session
+    if (checkoutSession.payment_status !== 'paid') return
 
+    // This is idempotent, there is no problem that if the request comes again, that the user is already on the plan
     await this.userService.updateUserPaymentPlan(
-      eventWithMetadata.data.object.metadata.userId,
-      eventWithMetadata.data.object.metadata.plan,
+      checkoutSession.metadata.userId,
+      checkoutSession.metadata.plan,
     )
   }
 }
