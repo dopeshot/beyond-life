@@ -13,15 +13,15 @@ export const testatorMoreInfosOptions: ComponentOptions[] = [
 
 export const partnerMoreInfosOptions: ComponentOptions[] = [
 	{
-		value: 'partnerHandicapped',
+		value: 'isHandicapped',
 		label: 'Hat ihr Partner eine Behinderung?',
 	},
 	{
-		value: 'partnerInsolvent',
+		value: 'isInsolvent',
 		label: 'Ist ihr Partner insolvent?',
 	},
 	{
-		value: 'partnerBerlinWill',
+		value: 'isBerlinWill',
 		label: 'Wollen Sie ein Berliner Testament?',
 	},
 ]
