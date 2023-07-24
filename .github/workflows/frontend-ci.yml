@@ -65,8 +65,7 @@ jobs:
         timeout-minutes: 15
         with:
           working-directory: ./frontend
-          build: npm run build
-          start: npm run serve
+          start: npm run dev
           command: npm run ${{ matrix.command }}
 
       - uses: actions/upload-artifact@v3
@@ -83,7 +82,7 @@ jobs:
         run: ls && pwd
 
       - name: rename report
-        run: mv frontend/coverage/coverage-final.json frontend/coverage/coverage-final-${{ matrix.command }}.json
+        run: mv coverage/coverage-final.json coverage/coverage-final-${{ matrix.command }}.json
 
       - uses: actions/upload-artifact@v3
         with:
