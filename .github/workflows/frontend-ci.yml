@@ -105,6 +105,7 @@ jobs:
     secrets:
       BOT_NAME: ${{ secrets.BOT_NAME }}
       BOT_MAIL: ${{ secrets.BOT_MAIL }}
+      BOT_PAT: ${{ secrets.BOT_PAT }}
 
   docker-build-and-push:
     needs: tests
