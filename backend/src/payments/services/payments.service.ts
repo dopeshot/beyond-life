@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { UserService } from '../../db/services/user.service'
-import { paymentPlans } from '../interfaces/payments'
+import { PaymentOptions, paymentPlans } from '../interfaces/payments'
 import { StripeService } from './stripe.service'
 
 @Injectable()
@@ -43,11 +43,28 @@ export class PaymentsService {
           ? this.configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY')
           : this.configService.get('STRIPE_ITEM_FAMILY')
 
+    let customer = user.stripeCustomerId
+    if (!customer) {
+      customer = (await this.stripeService.customer_create(user.email)).id
+      await this.userService.updateUserStripeCustomerId(
+        user._id.toString(),
+        customer,
+      )
+    }
+
     const session = await this.stripeService.checkout_session_create(
       plan,
       price,
       user._id.toString(),
+      customer,
     )
+
+    await this.userService.updateUserCheckoutInformation(customer, {
+      status: 'pending',
+      lastInformationTime: session.created,
+    })
+
+    this.logger.debug('session: ', session)
     return session
   }
 
@@ -58,7 +75,31 @@ export class PaymentsService {
       req.body,
       signature,
     )
+
     // We only really care for the completion of the checkout, everything else is relevant on the frontend site
+    // We can disable/enable the webhook allowed types in the Stripe dashboard but save is save
+    this.logger.debug(event.type, event.created, event)
+
+    if (
+      event.type === 'charge.failed' ||
+      event.type === 'payment_intent.failed' ||
+      event.type === 'checkout.session.expired' ||
+      event.type === 'checkout.session.canceled'
+    ) {
+      const object = event.data.object as
+        | Stripe.Charge
+        | Stripe.PaymentIntent
+        | Stripe.Checkout.Session
+      await this.userService.updateUserCheckoutInformation(
+        object.customer as string,
+        {
+          status: 'failed',
+          lastInformationTime: event.created,
+        },
+      )
+      return
+    }
+
     if (!(event.type === 'checkout.session.completed')) return
 
     const checkoutSession = event.data.object as Stripe.Checkout.Session
@@ -67,7 +108,15 @@ export class PaymentsService {
     // This is idempotent, there is no problem that if the request comes again, that the user is already on the plan
     await this.userService.updateUserPaymentPlan(
       checkoutSession.metadata.userId,
-      checkoutSession.metadata.plan,
+      checkoutSession.metadata.plan as PaymentOptions,
+    )
+
+    await this.userService.updateUserCheckoutInformation(
+      checkoutSession.customer as string,
+      {
+        status: 'paid',
+        lastInformationTime: event.created,
+      },
     )
   }
 }
