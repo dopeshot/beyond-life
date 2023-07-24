@@ -169,7 +169,7 @@ const Testator = () => {
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
-							loading={false}
+							loading={isLoading}
 							dirty={dirty}
 							previousHref={PREVIOUS_LINK}
 							nextHref={NEXT_LINK}
