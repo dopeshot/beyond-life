@@ -1,4 +1,6 @@
-import example from '../src/assets/images/tutorial/example.png'
+import final from '../src/assets/images/tutorial/Final.png'
+import heirs from '../src/assets/images/tutorial/Heirs.png'
+import testator from '../src/assets/images/tutorial/Testator.png'
 import { CardWithIconProps } from '../src/components/Layout/CardWithIcon/CardWithIcon'
 
 // TODO: this content folder is a bit out of place... We should find a good solution for this.
@@ -46,25 +48,24 @@ export const cardContent: CardWithIconProps[] = [
 	},
 ]
 
-// TODO(Zoe-Bot): Replace with actual images
 export const tutorialSteps = [
 	{
 		stepNumber: 1,
-		image: example,
+		image: testator,
 		title: 'Eingabe der notwendigen Daten',
 		description:
 			'Beginnen Sie Ihre Testamentserstellung, indem Sie die erforderlichen Daten in unseren benutzerfreundlichen Fragebogen eingeben. Es ist einfach und unkompliziert.',
 	},
 	{
 		stepNumber: 2,
-		image: example,
+		image: heirs,
 		title: 'Erbschaftseditor',
 		description:
 			'Mit den von Ihnen bereitgestellten Informationen erzeugen wir automatisch Ihren persönlichen Erbschaftseditor. Hier können Sie Ihr Erbe frei an Ihre Erben verteilen.',
 	},
 	{
 		stepNumber: 3,
-		image: example,
+		image: final,
 		title: 'Erstellung Ihres Testaments',
 		description:
 			'Basierend auf Ihren Angaben erstellt unser System Ihr individuelles Testament. Sie müssen es nur noch selbst abschreiben und unterschreiben.',
