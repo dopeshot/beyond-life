@@ -63,7 +63,8 @@
 			"cypress/**/*.{ts,tsx}",
 			"src/**/*.cy.{ts,tsx}",
 			"src/**/*.unit.{ts,tsx}",
-			"src/types/**/*"
+			"src/types/**/*",
+			"src/**/*.stories.{ts,tsx}"
 		]
 	}
 }
