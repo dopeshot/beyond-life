@@ -10,7 +10,7 @@ import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsMod
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
-import { useAppSelector } from '../../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
 import {
 	ChildRelationShip,
@@ -19,6 +19,7 @@ import {
 	Person,
 	PersonMoreInfos,
 } from '../../../../../store/last-will/heirs/state'
+import { setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 import { SidebarPages } from '../../../../../types/sidebar'
 
@@ -57,6 +58,8 @@ const Heirs = () => {
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
+	const dispatch = useAppDispatch()
+
 	const PREVIOUS_LINK = routes.lastWill.marriage(_id)
 	const NEXT_LINK = routes.lastWill.inheritance(_id)
 
@@ -70,8 +73,8 @@ const Heirs = () => {
 
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.HEIRS })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.HEIRS))
+	}, [dispatch])
 
 	// Functions
 	const setDropdownOption = (type: HeirsTypes) => {
