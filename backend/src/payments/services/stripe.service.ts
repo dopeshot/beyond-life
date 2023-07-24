@@ -1,7 +1,6 @@
 import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Stripe } from 'stripe'
-import { User } from '../../db/entities/users.entity'
 
 @Injectable()
 export class StripeService {
@@ -13,20 +12,11 @@ export class StripeService {
     })
   }
 
-  async checkout_session_create(plan: string, user: User) {
-    let price: string
-
-    if (plan === 'single') price = this.configService.get('STRIPE_ITEM_SINGLE')
-    if (plan === 'family')
-      price =
-        user.paymentPlan === 'single'
-          ? this.configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY')
-          : this.configService.get('STRIPE_ITEM_FAMILY')
-
+  async checkout_session_create(plan: string, price: string, userId: string) {
     try {
       return await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
-        metadata: { plan, userId: user._id.toString() },
+        metadata: { plan, userId },
         line_items: [
           {
             price,

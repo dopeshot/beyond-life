@@ -34,7 +34,20 @@ export class PaymentsService {
       throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
     }
 
-    const session = await this.stripeService.checkout_session_create(plan, user)
+    let price: string
+
+    if (plan === 'single') price = this.configService.get('STRIPE_ITEM_SINGLE')
+    if (plan === 'family')
+      price =
+        user.paymentPlan === 'single'
+          ? this.configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY')
+          : this.configService.get('STRIPE_ITEM_FAMILY')
+
+    const session = await this.stripeService.checkout_session_create(
+      plan,
+      price,
+      user._id.toString(),
+    )
     return session
   }
 
