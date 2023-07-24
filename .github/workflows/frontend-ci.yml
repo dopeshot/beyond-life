@@ -88,12 +88,12 @@ jobs:
         run: ls -a ..
 
       - name: rename report
-        run: mv coverage/coverage-final.json coverage/coverage-final-${{ matrix.command }}.json
+        run: mv coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: frontend/coverage/coverage-final-${{ matrix.command }}.json
+          path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
   merge-coverage-and-create-badge:
     runs-on: ubuntu-latest
