@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: coverage-artifacts
+          name: coverage-report
           path: coverage
 
       - name: ls
