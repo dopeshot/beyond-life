@@ -12,6 +12,7 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { setTestator } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 
 export type TestatorFormPayload = {
@@ -70,10 +71,10 @@ const Testator = () => {
 		// This functions only gets called if values have changed
 		try {
 			// Update marriage global state
-			// services.submitTestator(values)
-			console.log('values: ', values)
+			dispatch(setTestator(values))
+
 			// Redirect to previous or next page
-			// router.push(href)
+			router.push(href)
 		} catch (error) {
 			// TODO: This feedback should be visible for the user
 			console.error('An error occured while submitting the form: ', error)

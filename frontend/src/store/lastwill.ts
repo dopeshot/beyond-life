@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
+import { TestatorFormPayload } from '../app/(dynamic)/last-will/editor/testator/page'
 import { FinancialAsset, Item, Testator } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
@@ -122,6 +123,16 @@ const lastWillSlice = createSlice({
 			state.data.financialAssets = action.payload.financialAssets
 			state.data.items = action.payload.items
 		},
+		setTestator: (state, action: PayloadAction<TestatorFormPayload>) => {
+			// Extract moreInfos from payload
+			const { moreInfos, ...formTestator } = action.payload
+
+			state.data.testator = {
+				...formTestator,
+				isHandicapped: moreInfos ? moreInfos.includes('isHandicapped') : false,
+				isInsolvent: moreInfos ? moreInfos.includes('isInsolvent') : false,
+			}
+		},
 		resetLastWill: (state) => {
 			state.isLoading = false
 			state.isInitialized = false
@@ -151,4 +162,4 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill, setInheritance } = lastWillSlice.actions
+export const { setProgressKeys, resetLastWill, setInheritance, setTestator } = lastWillSlice.actions

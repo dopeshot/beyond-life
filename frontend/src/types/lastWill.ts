@@ -4,7 +4,7 @@ export type Testator = {
 
 type Person = {
 	type: PersonType
-	name: string
+	name?: string
 	gender?: Gender
 	birthDate?: string
 	birthPlace?: string
