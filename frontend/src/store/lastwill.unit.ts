@@ -19,29 +19,30 @@ describe('lastWillSlice', () => {
 
 	describe('inheritance', () => {
 		it('should set inheritance', () => {
+			const financialAsset = {
+				id: 'ID_1',
+				where: 'Meine Bank',
+				amount: 100,
+				currency: '€',
+			}
+
+			const item = {
+				id: 'ID_3',
+				name: 'Mein Fahrrad',
+				description: 'Bitte damit fahren!',
+			}
+
 			const action = setInheritance({
-				financialAssets: [
-					{
-						id: 'ID_1',
-						where: 'Meine Bank',
-						amount: 100,
-						currency: '€',
-					},
-				],
-				items: [
-					{
-						id: 'ID_3',
-						name: 'Mein Fahrrad',
-						description: 'Bitte damit fahren!',
-					},
-				],
+				financialAssets: [financialAsset],
+				items: [item],
 			})
+
 			const newState = lastWillReducer(initialStateTesting, action)
 
 			expect(newState.data.financialAssets).to.have.lengthOf(1)
-			expect(newState.data.financialAssets[0].id).to.equal('ID_1')
+			expect(newState.data.financialAssets[0]).to.be.deep.equal(financialAsset)
 			expect(newState.data.items).to.have.lengthOf(1)
-			expect(newState.data.items[0].id).to.equal('ID_3')
+			expect(newState.data.items[0]).to.be.deep.equal(item)
 		})
 	})
 
