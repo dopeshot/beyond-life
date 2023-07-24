@@ -22,6 +22,7 @@ export type Person = {
 
 export type Organisation = {
 	name?: string
+	type: 'organisation'
 } & Address &
 	Id
 

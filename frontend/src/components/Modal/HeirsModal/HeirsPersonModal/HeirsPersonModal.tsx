@@ -2,8 +2,8 @@ import { Form, Formik } from 'formik'
 import { ObjectSchema, array, mixed, number, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions, heirsTypes } from '../../../../../content/dropdownOptions'
+import { PersonFormPayload } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { PersonFormPayload } from '../../../../store/last-will/heirs/actions'
 import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from '../../../../store/last-will/heirs/state'
 import { Gender } from '../../../../types/gender'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -32,8 +32,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 	const initialFormValues: PersonFormPayload = {
 		id: editPerson?.id ?? null,
-		firstName: editPerson?.firstName ?? '',
-		lastName: editPerson?.lastName ?? '',
+		name: editPerson?.firstName ?? '',
 		gender: editPerson?.gender ?? undefined,
 		dateOfBirth: editPerson?.dateOfBirth ?? '',
 		placeOfBirth: editPerson?.placeOfBirth ?? '',
@@ -49,8 +48,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
 		id: number().required().nullable(),
-		firstName: string(),
-		lastName: string(),
+		name: string(),
 		gender: string<Gender>(),
 		dateOfBirth: string(),
 		placeOfBirth: string(),
@@ -87,8 +85,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 						{/* Name */}
 						<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
-							<TextInput name="firstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-							<TextInput name="lastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+							<TextInput name="name" inputRequired labelText="Vor- und Nachname" placeholder="Vor- und Nachname" />
 						</div>
 
 						{/* Gender and Birth */}

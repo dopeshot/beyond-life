@@ -10,9 +10,42 @@ import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsMod
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
+import { useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { HeirsTypes, Organisation, Person } from '../../../../../store/last-will/heirs/state'
+import {
+	ChildRelationShip,
+	HeirsTypes,
+	Organisation,
+	Person,
+	PersonMoreInfos,
+} from '../../../../../store/last-will/heirs/state'
+import { Gender } from '../../../../../types/gender'
 import { SidebarPages } from '../../../../../types/sidebar'
+
+export type PersonFormPayload = {
+	id: number | null
+	name?: string
+	gender?: Gender
+	dateOfBirth?: string
+	placeOfBirth?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
+	city?: string
+	moreInfos?: PersonMoreInfos[]
+	childRelationShip?: ChildRelationShip
+	ownChild?: string[]
+	heirsType: HeirsTypes
+}
+
+export type OrganisationFormPayload = {
+	id: number | null
+	name?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: number | string
+	city?: string
+}
 
 /**
  * Heirs Page
@@ -20,9 +53,12 @@ import { SidebarPages } from '../../../../../types/sidebar'
 const Heirs = () => {
 	// Global State
 	const { lastWill, services } = useLastWillContext()
+	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
-	const PREVIOUS_LINK = routes.lastWill.marriage(lastWill.common.id)
-	const NEXT_LINK = routes.lastWill.inheritance(lastWill.common.id)
+	const PREVIOUS_LINK = routes.lastWill.marriage(_id)
+	const NEXT_LINK = routes.lastWill.inheritance(_id)
 
 	// Local State
 	const [isPersonModalOpen, setIsPersonModalOpen] = useState(false)
@@ -229,9 +265,9 @@ const Heirs = () => {
 
 			{/* Form Steps Buttons */}
 			<FormStepsButtons
-				loading={lastWill.common.isLoading}
+				loading={isLoading}
 				dirty={false}
-				previousOnClick={async () => console.log('TODO')}
+				previousOnClick={async () => console.log('TODO: Maybe fetch here ')}
 				previousHref={PREVIOUS_LINK}
 				nextHref={NEXT_LINK}
 			/>

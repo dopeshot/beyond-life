@@ -166,7 +166,7 @@ const lastWillSlice = createSlice({
 			state.data.testator = testator
 		},
 		setMarriage: (state, action: PayloadAction<MarriageFormPayload>) => {
-			const oldPartner = state.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+			const oldPartner = state.data.heirs.find((heir): heir is Person => heir.type === 'partner')
 			const hasParnter = oldPartner !== undefined
 
 			const partner: Person = {
@@ -187,9 +187,7 @@ const lastWillSlice = createSlice({
 
 			// Set state
 			if (hasParnter) {
-				const oldPartnerIndex = state.data.heirs.findIndex(
-					(heir): heir is Person => 'type' in heir && heir.type === 'partner'
-				)
+				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
 				state.data.heirs[oldPartnerIndex] = partner
 			} else {
 				state.data.heirs.push(partner)
