@@ -1,4 +1,3 @@
-const codeCoverageTask = require('@bahmutov/cypress-code-coverage/plugin')
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
@@ -11,7 +10,8 @@ export default defineConfig({
 	},
 	component: {
 		setupNodeEvents(on, config) {
-			return Object.assign({}, config, codeCoverageTask(on, config))
+			require('@cypress/code-coverage/task')(on, config)
+			return config
 		},
 		specPattern: '**/*.{cy,unit}.{js,jsx,ts,tsx}',
 		devServer: {
