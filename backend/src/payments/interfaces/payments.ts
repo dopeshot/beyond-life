@@ -12,7 +12,13 @@ export class PaymentDTO {
   plan: PaymentOptions
 }
 
-type PaymentOptions = 'single' | 'family'
+export type PaymentOptions = 'single' | 'family'
+type CheckoutStatus = 'free' | 'pending' | 'paid' | 'failed'
+
+export type CheckoutInformation = {
+  status: CheckoutStatus
+  lastInformationTime: number
+}
 
 type Plans = {
   [key in PaymentOptions & 'free']: number
