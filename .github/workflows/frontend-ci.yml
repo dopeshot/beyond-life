@@ -82,7 +82,7 @@ jobs:
         run: ls -a && pwd
 
       - name: ls2
-        run ls -a ..
+        run: ls -a ..
 
       - name: rename report
         run: mv coverage/coverage-final.json coverage/coverage-final-${{ matrix.command }}.json
