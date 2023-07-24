@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { PaymentPlans } from '../../../../../../content/paymentPlans'
+import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -12,8 +12,8 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const Plans = () => {
 	return (
-		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:flex-row lg:gap-4 lg:p-20">
-			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-1/2 lg:p-4">
+		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-28 lg:flex-row lg:gap-4 lg:p-20">
+			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-2/3 lg:p-4 xl:w-1/2">
 				<div className="mb-6">
 					<Headline className="font-normal">Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
 					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
@@ -21,18 +21,8 @@ const Plans = () => {
 
 				{/* Plans */}
 				<div className="flex w-full flex-col gap-4">
-					{/* Free Plan */}
-					<div className="flex w-fit items-center gap-4 px-6 py-2">
-						<p className="text-xl font-bold">Free</p>
-
-						<div className="flex gap-4 text-base">
-							<Icon icon="check" className="text-yellow-700" />
-							<p>Dein Testament wird sicher gespeichert</p>
-						</div>
-					</div>
-
 					<div className="mb-6 flex flex-col gap-4 md:flex-row">
-						{PaymentPlans.map((plan) => (
+						{[FreePlan, ...PaymentPlans].map((plan) => (
 							<PaymentPlan
 								key={plan.title}
 								title={plan.title}
@@ -57,8 +47,8 @@ const Plans = () => {
 			</div>
 
 			{/* Image */}
-			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/2">
-				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
+			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/3 xl:w-1/2">
+				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:w-auto lg:rounded-3xl xl:h-full">
 					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />

@@ -47,12 +47,8 @@ export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 			<div className="text-base">
 				{descriptionItems.map((item, index) => {
 					return (
-						<div
-							datacy={`paymentPlan-${title}-description-item${index}`}
-							key={item.text}
-							className="flex items-center gap-2"
-						>
-							<Icon icon={item.icon} className="text-yellow-700" />
+						<div datacy={`paymentPlan-${title}-description-item${index}`} key={item.text} className="mb-2 flex gap-2">
+							<Icon icon={item.icon} className="pt-0.5 text-yellow-700" />
 							<p>{item.text}</p>
 						</div>
 					)

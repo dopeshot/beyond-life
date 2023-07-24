@@ -2,9 +2,11 @@
 import Image from 'next/image'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
+import { routes } from '../../../../../services/routes/routes'
 
 /**
  * Paywall Page
@@ -37,7 +39,7 @@ const Buy = () => {
 				</div>
 
 				{/* Price Plans */}
-				<div className="flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+				<div className="mb-4 flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					{PaymentPlans.map((plan) => (
 						<PaymentPlan
 							key={plan.title}
@@ -47,6 +49,12 @@ const Buy = () => {
 							handleSubmit={() => handleSubmit(plan.title === 'Basic' ? 'single' : 'family')}
 						/>
 					))}
+				</div>
+
+				<div className="flex w-full justify-end">
+					<Route icon="arrow_forward" href={routes.profile.myLastWills}>
+						Später entscheiden
+					</Route>
 				</div>
 			</div>
 
