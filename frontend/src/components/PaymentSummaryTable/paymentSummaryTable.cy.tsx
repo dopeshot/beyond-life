@@ -1,5 +1,5 @@
 import 'material-symbols'
-import '../../../app/globals.css'
+import '../../app/globals.css'
 import { PaymentSummaryTable, tableSection } from './PaymentSummaryTable'
 
 const tableData: tableSection[] = [
@@ -17,7 +17,7 @@ const tableData: tableSection[] = [
 
 describe('PaymentSummaryTable', () => {
 	it('should display PaymentSummaryTable', () => {
-		cy.mount(<PaymentSummaryTable tableData={[]} />)
+		cy.mount(<PaymentSummaryTable tableData={tableData} />)
 		cy.datacy('paymentSummaryTable').should('be.visible')
 	})
 
