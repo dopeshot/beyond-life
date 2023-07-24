@@ -13,6 +13,19 @@ export const RightNavbarLinks: React.FC = () => {
 
 	const dispatch = useAppDispatch()
 	const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+	const isLoading = useAppSelector((state) => state.auth.isLoading)
+
+	if (isLoading)
+		return (
+			<>
+				<li className="order-1 py-[10px] md:order-none md:ml-auto">
+					<div className="h-6 w-14 animate-pulse bg-gray-300"></div>
+				</li>
+				<li>
+					<div className="h-6 w-14 animate-pulse bg-gray-300"></div>
+				</li>
+			</>
+		)
 
 	return isAuthenticated ? (
 		<>
