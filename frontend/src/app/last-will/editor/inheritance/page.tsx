@@ -220,7 +220,7 @@ const Inheritance = () => {
 													id: Math.max(...values.items.map((items) => items.id)) + 1,
 													name: '',
 													description: '',
-												} satisfies Item)
+												} as Item)
 											}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"

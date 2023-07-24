@@ -1,5 +1,3 @@
-import { fontArbutusSlab } from '../../services/font/font'
-
 type HeadlineProps = {
 	/** Content of Headline. */
 	children: React.ReactNode
@@ -42,7 +40,8 @@ export const Headline: React.FC<HeadlineProps> = ({
 	const CustomTag = `h${level}` as keyof JSX.IntrinsicElements
 
 	const hasSerifFont = level === 1 || level === 2
-	const fontStyle = hasSerifFont ? ` ${fontArbutusSlab.className} ` : ' '
+	// TODO: font
+	const fontStyle = hasSerifFont ? ` ` : ' '
 
 	return (
 		<CustomTag

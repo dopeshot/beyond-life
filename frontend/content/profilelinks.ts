@@ -1,4 +1,3 @@
-import { MaterialSymbol } from 'material-symbols'
 import { routes } from '../src/services/routes/routes'
 
 export const profileLinks = [
@@ -15,16 +14,15 @@ export const profileLinks = [
 	{
 		name: 'Ausloggen',
 		icon: 'logout',
+		href: '',
 		onClick: () => console.log('logout'),
-	},
-] satisfies ((
-	| {
-			href: string
-	  }
-	| {
-			onClick: () => void
-	  }
-) & {
+	} as any,
+	// satisfies would be a better way of solving this...
+	// However as of now using satisfies with a proper type is not possible here because of babel during testing
+	// Also see https://github.com/vercel/next.js/pull/51962 ("We have moved on to SWC so why should we care")
+] as {
 	name: string
-	icon: MaterialSymbol
-})[]
+	icon: 'history' | 'settings' | 'history_edu'
+	href: string
+	onclick?: () => void
+}[]

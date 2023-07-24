@@ -1,8 +1,8 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { sidebarElements } from '../../../../../content/sidebar'
-import { fontArbutusSlab } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { SidebarButtonState } from '../../../../types/sidebar'
@@ -38,9 +38,8 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 				</Link>
 
 				<div className="relative flex w-full cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
-					<div className={`flex flex-col text-xl md:text-2xl ${fontArbutusSlab.className} mt-1`}>
-						{sidebarElements[currentElementIndex].title}
-					</div>
+					// TODO: @Zoe-Bot readd font because me dont know how
+					<div className={`mt-1 flex flex-col text-xl md:text-2xl`}>{sidebarElements[currentElementIndex].title}</div>
 					<div className="mb-1 ml-2 flex justify-center text-xs">
 						Menü
 						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-800" />
