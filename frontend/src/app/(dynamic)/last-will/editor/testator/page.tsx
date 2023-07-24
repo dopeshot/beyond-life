@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
@@ -12,8 +13,9 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { sendLastWillState, setTestator } from '../../../../../store/lastwill'
+import { sendLastWillState, setProgressKeys, setTestator } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
+import { SidebarPages } from '../../../../../types/sidebar'
 
 export type TestatorFormPayload = {
 	name?: string
@@ -46,7 +48,7 @@ const Testator = () => {
 	const PREVIOUS_LINK = routes.lastWill.start
 	const NEXT_LINK = routes.lastWill.marriage(_id)
 
-	// TODO: Do we require the spread here?
+	// Convert global state to form state
 	const { isHandicapped, isInsolvent, ...formTestator } = testator
 	const initialFormValues: TestatorFormPayload = {
 		...formTestator,
@@ -65,7 +67,6 @@ const Testator = () => {
 		street: string(),
 		moreInfos: array(),
 	})
-	// TODO: Ensure typescript here
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
 		// This functions only gets called if values have changed
@@ -83,10 +84,11 @@ const Testator = () => {
 		}
 	}
 
-	// TODO:
-	// useEffect(() => {
-	// 	services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
-	// }, [services])
+	// TODO: duplicated code, can we move this to layout?
+	// Use to handle sidebar display state and progress
+	useEffect(() => {
+		dispatch(setProgressKeys(SidebarPages.TESTATOR))
+	}, [dispatch])
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
