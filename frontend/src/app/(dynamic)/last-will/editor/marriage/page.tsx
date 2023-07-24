@@ -16,7 +16,6 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { MarriageFormPayload } from '../../../../../store/last-will/marriage/actions'
 import {
 	MatrimonialProperty,
 	PartnerMoreInfos,
@@ -24,6 +23,23 @@ import {
 } from '../../../../../store/last-will/marriage/state'
 import { Gender } from '../../../../../types/gender'
 import { SidebarPages } from '../../../../../types/sidebar'
+
+export type MarriageFormPayload = {
+	// Person
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	relationshipStatus?: RelationshipStatus
+	partnerGermanCitizenship?: string[]
+	moreInfos?: PartnerMoreInfos[]
+	matrimonialProperty?: MatrimonialProperty
+}
 
 /**
  * Marriage Page
@@ -49,21 +65,19 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
+		name: string(),
+		gender: string<Gender>(),
+		birthDate: string(),
+		birthPlace: string(),
+
+		street: string(),
+		houseNumber: string(),
+		zipCode: string(),
+		city: string(),
+
 		relationshipStatus: string<RelationshipStatus>(),
 		partnerGermanCitizenship: array<string[]>(),
-		partnerFirstName: string(),
-		partnerLastName: string(),
-		partnerGender: string<Gender>(),
-		partnerDateOfBirth: string(),
-		partnerPlaceOfBirth: string(),
-		partnerStreet: string(),
-		partnerHouseNumber: string(),
-		partnerZipCode: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
-		}),
-		partnerCity: string(),
-		partnerMoreInfos: array<PartnerMoreInfos[]>(),
+		moreInfos: array<PartnerMoreInfos[]>(),
 		matrimonialProperty: string<MatrimonialProperty>(),
 	})
 
