@@ -37,7 +37,7 @@ export type MarriageFormPayload = {
 	city?: string
 
 	relationshipStatus?: RelationshipStatus
-	partnerGermanCitizenship?: string[]
+	isPartnerGermanCitizenship?: string[]
 	moreInfos?: string[] // update type
 	matrimonialProperty?: MatrimonialProperty
 }
@@ -55,6 +55,11 @@ const Marriage = () => {
 		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
 	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common.isBerlinWill) ?? false
+	const isPartnerGermanCitizenship =
+		useAppSelector((state) => state.lastWill.data.common.isPartnerGermanCitizenship) ?? false
+	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common.matrimonialProperty)
+	const relationshipStatus = useAppSelector((state) => state.lastWill.data.testator.relationshipStatus)
 
 	const dispatch = useAppDispatch()
 
@@ -66,10 +71,6 @@ const Marriage = () => {
 		isHandicapped: false,
 		isInsolvent: false,
 	}
-	const isBerlinWill = true
-	const isPartnerGermanCitizenship = true
-	const matrimonialProperty = 'communityOfGain'
-	const relationshipStatus = 'married'
 	const initalFormValues: MarriageFormPayload = {
 		...formPartner,
 		moreInfos: [
@@ -77,7 +78,7 @@ const Marriage = () => {
 			...(isInsolvent ? ['isInsolvent'] : []),
 			...(isBerlinWill ? ['isBerlinWill'] : []),
 		],
-		partnerGermanCitizenship: isPartnerGermanCitizenship ? ['partnerGermanCitizenship'] : [],
+		isPartnerGermanCitizenship: isPartnerGermanCitizenship ? ['isPartnerGermanCitizenship'] : [],
 		relationshipStatus: relationshipStatus ?? undefined,
 		matrimonialProperty,
 	}
@@ -94,7 +95,7 @@ const Marriage = () => {
 		city: string(),
 
 		relationshipStatus: string<RelationshipStatus>(),
-		partnerGermanCitizenship: array<string[]>(),
+		isPartnerGermanCitizenship: array<string[]>(),
 		moreInfos: array<PartnerMoreInfos[]>(),
 		matrimonialProperty: string<MatrimonialProperty>(),
 	})
@@ -177,10 +178,10 @@ const Marriage = () => {
 							<div datacy="partner-fields">
 								{/* Checkbox German Citizenship */}
 								<Checkbox
-									name="partnerGermanCitizenship"
+									name="isPartnerGermanCitizenship"
 									options={[
 										{
-											value: 'partnerGermanCitizenship',
+											value: 'isPartnerGermanCitizenship',
 											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
 										},
 									]}

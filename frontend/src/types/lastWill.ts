@@ -48,3 +48,4 @@ type Address = {
 type PersonType = 'partner' | 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 type Gender = 'male' | 'female' | 'divers'
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
+export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'

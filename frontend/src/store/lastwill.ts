@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/t
 import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
 import { MarriageFormPayload } from '../app/(dynamic)/last-will/editor/marriage/page'
 import { TestatorFormPayload } from '../app/(dynamic)/last-will/editor/testator/page'
-import { FinancialAsset, Item, Organisation, Person, Testator } from '../types/lastWill'
+import { FinancialAsset, Item, MatrimonialProperty, Organisation, Person, Testator } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
 
@@ -14,6 +14,11 @@ export type LastWillState = {
 	// SYNC THIS WITH BACKEND
 	data: {
 		_id: string
+		common: {
+			isBerlinWill?: boolean
+			isPartnerGermanCitizenship?: boolean
+			matrimonialProperty?: MatrimonialProperty
+		}
 		progressKeys: SidebarPages[]
 
 		// parts
@@ -31,6 +36,7 @@ export const initialState: LastWillState = {
 
 	data: {
 		_id: '',
+		common: {},
 		testator: {
 			name: '',
 			gender: 'male',
@@ -67,6 +73,7 @@ export const fetchLastWillState = createAsyncThunk(
 				() =>
 					resolve({
 						_id: lastWillId,
+						common: {},
 						testator: {
 							name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
 							gender: 'male',
@@ -199,6 +206,14 @@ const lastWillSlice = createSlice({
 					state.data.heirs.splice(partnerIndex, 1)
 				}
 			}
+
+			state.data.common.isBerlinWill = action.payload.moreInfos
+				? action.payload.moreInfos.includes('isBerlinWill')
+				: false
+			state.data.common.isPartnerGermanCitizenship =
+				action.payload.isPartnerGermanCitizenship?.includes('isPartnerGermanCitizenship') ?? false
+			state.data.common.matrimonialProperty = action.payload.matrimonialProperty
+			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
 		resetLastWill: (state) => {
 			state.isLoading = false
