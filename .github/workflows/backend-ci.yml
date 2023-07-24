@@ -10,7 +10,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"
-      - ".github/workflows/*.template.yaml"
+      - ".github/workflows/*.template.yml"
 
 jobs:
   setup:
