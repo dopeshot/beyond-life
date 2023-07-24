@@ -61,7 +61,7 @@ jobs:
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
       - name: fallback to babel
-        run: cp ._babelrc .babelrc
+        run: cp .ci.babelrc .babelrc
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
