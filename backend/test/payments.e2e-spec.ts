@@ -8,7 +8,6 @@ import * as request from 'supertest'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { User } from '../src/db/entities/users.entity'
-import { paymentPlans } from '../src/payments/interfaces/payments'
 import { PaymentsModule } from '../src/payments/payments.module'
 import { StripeService } from '../src/payments/services/stripe.service'
 import { SharedModule } from '../src/shared/shared.module'
@@ -59,11 +58,147 @@ describe('PaymentsController (e2e)', () => {
     await app.close()
   })
 
-  describe('/payments (POST)', () => {
+  describe('/payments/checkout (POST)', () => {
     let token
+    let user: User
     beforeEach(async () => {
       await userModel.deleteMany({})
-      const user = await userModel.create({
+      user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+      token = jwtService.sign(
+        {
+          id: user._id,
+          email: user.email,
+        } as RefreshJWTPayload,
+        { secret: configService.get('JWT_SECRET') },
+      )
+    })
+
+    // It doesn't make sense to test Stripe, it returns the session needed to redirect the user
+    // As long as the ENV vars are synchronized with Stripe dashboard, it should work
+    describe('Positive Tests', () => {
+      it('should return CREATED and create a new session', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.CREATED)
+
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            object: 'checkout.session',
+            price: configService.get('STRIPE_ITEM_SINGLE'),
+            metadata: { plan: 'single', userId: user._id.toString() },
+          }),
+        )
+      })
+
+      it('should return correct family pricing', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'family',
+          })
+          .expect(HttpStatus.CREATED)
+
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            object: 'checkout.session',
+            price: configService.get('STRIPE_ITEM_FAMILY'),
+            metadata: { plan: 'single', userId: user._id.toString() },
+          }),
+        )
+      })
+
+      it('should return correct upgrade pricing', async () => {
+        await userModel.updateOne({}, { paymentPlan: 'single' })
+        const res = await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'family',
+          })
+          .expect(HttpStatus.CREATED)
+
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            object: 'checkout.session',
+            price: configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY'),
+            metadata: { plan: 'single', userId: user._id.toString() },
+          }),
+        )
+      })
+    })
+
+    describe('Negative Tests', () => {
+      it('should forbid rebuy', async () => {
+        await userModel.updateOne({}, { paymentPlan: 'single' })
+
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.FORBIDDEN)
+      })
+
+      it('should forbid downgrade', async () => {
+        await userModel.updateOne({}, { paymentPlan: 'family' })
+
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.FORBIDDEN)
+      })
+
+      it('should return BAD_REQUEST if plan is not valid', async () => {
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'not_valid_plan',
+          })
+          .expect(HttpStatus.BAD_REQUEST)
+      })
+
+      it('should be guarded', async () => {
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}a`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should fail without user', async () => {
+        await userModel.deleteMany({})
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe('/payments/webhook (POST)', () => {
+    let token
+    let user: User
+    beforeEach(async () => {
+      await userModel.deleteMany({})
+      user = await userModel.create({
         ...SAMPLE_USER,
         password: await SAMPLE_USER_PW_HASH(),
       })
@@ -77,73 +212,116 @@ describe('PaymentsController (e2e)', () => {
     })
 
     describe('Positive Tests', () => {
-      it('should return CREATED and create a new payment', async () => {
-        const res = await request(app.getHttpServer())
-          .post('/payments')
-          .set('Authorization', `Bearer ${token}`)
-          .send({
-            plan: 'single',
-            paymentMethodId: 'id_from_client',
-          })
-          .expect(HttpStatus.CREATED)
+      it('should return NO_CONTENT and update User', async () => {
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
+          .mockReturnValueOnce(
+            Promise.resolve({
+              type: 'checkout.session.completed',
+              data: {
+                object: {
+                  payment_status: 'paid',
+                  metadata: {
+                    plan: 'single',
+                    userId: user._id.toString(),
+                  },
+                },
+              },
+            }),
+          )
 
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            status: 'succeeded',
-            amount_received: paymentPlans['single'],
-          }),
-        )
-      })
-
-      it('should update the user', async () => {
         await request(app.getHttpServer())
-          .post('/payments')
+          .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
-          .send({
-            plan: 'single',
-            paymentMethodId: 'id_from_client',
-          })
-          .expect(HttpStatus.CREATED)
+          .set('Stripe-Signature', 'valid_signature')
+          .expect(HttpStatus.NO_CONTENT)
 
-        const user = await userModel.findOne()
-        expect(user.paymentPlan).toEqual('single')
-        expect(user.stripeCustomerId).toEqual('cus_123')
-        expect(user.paymentHistory).toContain('id_from_client')
+        expect(spy).toBeCalledTimes(1)
+        const updatedUser = await userModel.findOne({ _id: user._id })
+        expect(updatedUser.paymentPlan).toEqual('single')
+        spy.mockRestore()
       })
     })
 
     describe('Negative Tests', () => {
-      it('should return BAD_REQUEST if plan is not valid', async () => {
+      it('should do nothing if unpaid', async () => {
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
+          .mockReturnValueOnce(
+            Promise.resolve({
+              type: 'checkout.session.completed',
+              data: {
+                object: {
+                  payment_status: 'definetely not paid',
+                  metadata: {
+                    plan: 'single',
+                    userId: user._id.toString(),
+                  },
+                },
+              },
+            }),
+          )
         await request(app.getHttpServer())
-          .post('/payments')
+          .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
-          .send({
-            plan: 'not_valid_plan',
-            paymentMethodId: 'id_from_client',
-          })
-          .expect(HttpStatus.BAD_REQUEST)
+          .set('Stripe-Signature', 'valid_signature')
+          .expect(HttpStatus.NO_CONTENT)
+
+        expect(spy).toBeCalledTimes(1)
+
+        const updatedUser = await userModel.findOne({})
+        expect(updatedUser.paymentPlan).toEqual('free')
+        spy.mockRestore()
       })
 
-      it('should be guarded', async () => {
+      it('should do nothing if not checkout.session.completed', async () => {
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
+          .mockReturnValueOnce(
+            Promise.resolve({
+              type: 'checkout.session.definetely_not_completed',
+              data: {
+                object: {
+                  payment_status: 'definetely not paid',
+                  metadata: {
+                    plan: 'single',
+                    userId: user._id.toString(),
+                  },
+                },
+              },
+            }),
+          )
         await request(app.getHttpServer())
-          .post('/payments')
-          .set('Authorization', `Bearer ${token}a`)
-          .send({
-            plan: 'single',
-            paymentMethodId: 'id_from_client',
-          })
-          .expect(HttpStatus.UNAUTHORIZED)
+          .post('/payments/webhook')
+          .set('Authorization', `Bearer ${token}`)
+          .set('Stripe-Signature', 'valid_signature')
+          .expect(HttpStatus.NO_CONTENT)
+
+        expect(spy).toBeCalledTimes(1)
+
+        const updatedUser = await userModel.findOne({})
+        expect(updatedUser.paymentPlan).toEqual('free')
+        spy.mockRestore()
       })
 
-      it('should fail without user', async () => {
-        await userModel.deleteMany({})
+      it('should do nothing if no user', async () => {
+        userModel.deleteMany({})
+
         await request(app.getHttpServer())
-          .post('/payments')
+          .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
-          .send({
-            plan: 'single',
-            paymentMethodId: 'id_from_client',
-          })
+          .set('Stripe-Signature', 'valid_signature')
+          .expect(HttpStatus.NO_CONTENT)
+
+        const updatedUser = await userModel.findOne({})
+        expect(updatedUser.paymentPlan).toEqual('free')
+      })
+
+      it('should throw error if invalid Signature', async () => {
+        await request(app.getHttpServer())
+          .post('/payments/webhook')
+          .set('Authorization', `Bearer ${token}`)
+          .set('Stripe-Signature', 'jeff_signed_this')
           .expect(HttpStatus.UNAUTHORIZED)
       })
     })

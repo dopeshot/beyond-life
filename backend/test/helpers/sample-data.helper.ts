@@ -6,6 +6,7 @@ export const SAMPLE_USER = {
   password: 'StarWarsIsAVeryNiceMovie',
   email: 'r2d2@jedi.temple',
   createdAt: new Date(Date.now()),
+  paymentPlan: 'free',
 }
 
 export const SAMPLE_USER_PW_HASH = async () =>

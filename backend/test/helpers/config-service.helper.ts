@@ -16,6 +16,10 @@ export class MockConfigService {
     DB_PORT: '27017',
     JWT_PASSWORD_RESET_SECRET: 'evensecretersecret',
     JWT_PASSWORD_RESET_EXPIRE_TIME: '4h',
+    // Actually it would be the Stripe id smth like price_... but for testing we skip Stripe
+    STRIPE_ITEM_SINGLE: 4900,
+    STRIPE_ITEM_FAMILY: 14900,
+    STRIPE_ITEM_SINGLE_TO_FAMILY: 10000,
   }
 
   /**
