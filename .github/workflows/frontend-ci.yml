@@ -88,7 +88,7 @@ jobs:
         run: ls -a && pwd
 
       - name: test
-        run: echo ${{ secrets.BOT_NAME }}
+        run: echo
 
       - name: ls2
         run: ls -a ..
@@ -102,6 +102,9 @@ jobs:
     uses: ./.github/workflows/codecov.template.yml
     with:
       context: frontend
+    secrets:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+      BOT_MAIL: ${{ secrets.BOT_MAIL }}
 
   docker-build-and-push:
     needs: tests

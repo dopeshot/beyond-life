@@ -6,6 +6,12 @@ on:
       context:
         required: true
         type: string
+      bot_name:
+        required: true
+        type: string
+      bot_mail:
+        required: true
+        type: string
 
 jobs:
   merge-coverage-and-create-badge:
