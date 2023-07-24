@@ -8,6 +8,7 @@ import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from '../../..
 import { Gender } from '../../../../types/gender'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
+import { FormDatepicker } from '../../../Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
@@ -100,8 +101,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								hasMargin
 								options={genderOptions}
 							/>
-							{/* // TODO(Zoe-Bot): Replace with datepicker */}
-							<TextInput name="dateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+							<FormDatepicker name="dateOfBirth" labelText="Geburtstag" />
 							<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
 						</div>
 
