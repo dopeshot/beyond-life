@@ -1,4 +1,4 @@
-import headerBackground from '../../../assets/images/layout/headerBackground.jpg'
+import headerBackground from '../../../assets/images/layout/family.jpg'
 import { routes } from '../../../services/routes/routes'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { Headline } from '../../Headline/Headline'
