@@ -95,7 +95,7 @@ jobs:
 
   generate-codecov-badge:
     needs: tests
-    uses: ./github/workflows/codecov.template.yml
+    uses: ./.github/workflows/codecov.template.yml
     with:
       context: frontend
 
