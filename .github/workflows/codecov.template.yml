@@ -39,7 +39,7 @@ jobs:
         run: |
           cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
           color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
-          npx --yes badge-maker coverage ${{ inputs.context }}${cov}%  $color > .github/badges/${{ inputs.context }}-coverage.svg
+          npx --yes badge-maker  ${{ inputs.context }}-coverage ${cov}% $color > .github/badges/${{ inputs.context }}-coverage.svg
 
       - name: Commit
         run: |
