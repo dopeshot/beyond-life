@@ -2,11 +2,11 @@ import { ComponentOptions } from '../src/types/form'
 
 export const testatorMoreInfosOptions: ComponentOptions[] = [
 	{
-		value: 'testatorHandicapped',
+		value: 'isHandicapped',
 		label: 'Haben Sie eine Behinderung?',
 	},
 	{
-		value: 'testatorInsolvent',
+		value: 'isInsolvent',
 		label: 'Sind Sie insolvent?',
 	},
 ]

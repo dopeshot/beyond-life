@@ -2,8 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { ObjectSchema, object, string } from 'yup'
+import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
@@ -12,10 +11,22 @@ import { FormStepsButtons } from '../../../../../components/Form/FormStepsButton
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { TestatorFormPayload } from '../../../../../store/last-will/testator/actions'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { Gender } from '../../../../../types/gender'
-import { SidebarPages } from '../../../../../types/sidebar'
+
+export type TestatorFormPayload = {
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	moreInfos?: string[]
+}
 
 /**
  * Testator Page
@@ -23,28 +34,35 @@ import { SidebarPages } from '../../../../../types/sidebar'
 const Testator = () => {
 	const router = useRouter()
 
-	// Last will state
-	const { lastWill, services } = useLastWillContext()
+	// Global State
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const testator = useAppSelector((state) => state.lastWill.data.testator)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
+	const dispatch = useAppDispatch()
+
+	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.start
-	const NEXT_LINK = routes.lastWill.marriage(lastWill.common.id)
+	const NEXT_LINK = routes.lastWill.marriage(_id)
 
 	// TODO: Do we require the spread here?
+	const { isHandicapped, isInsolvent, ...formTestator } = testator
 	const initialFormValues: TestatorFormPayload = {
-		...lastWill.testator,
+		...formTestator,
+		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
 	}
 
 	// TODO: Ensure all schemas are equal from the strength
 	const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-		firstName: string(),
-		lastName: string(),
+		name: string(),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
 		houseNumber: string(),
-		postalCode: string(),
+		zipCode: string(),
 		city: string(),
 		street: string(),
+		moreInfos: array(),
 	})
 	// TODO: Ensure typescript here
 
@@ -52,19 +70,20 @@ const Testator = () => {
 		// This functions only gets called if values have changed
 		try {
 			// Update marriage global state
-			services.submitTestator(values)
-
+			// services.submitTestator(values)
+			console.log('values: ', values)
 			// Redirect to previous or next page
-			router.push(href)
+			// router.push(href)
 		} catch (error) {
 			// TODO: This feedback should be visible for the user
 			console.error('An error occured while submitting the form: ', error)
 		}
 	}
 
-	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
-	}, [services])
+	// TODO:
+	// useEffect(() => {
+	// 	services.setProgressKey({ progressKey: SidebarPages.TESTATOR })
+	// }, [services])
 
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
@@ -93,8 +112,14 @@ const Testator = () => {
 								<div className="2xl:w-2/3">
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
-										<TextInput name="firstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-										<TextInput name="lastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+										<div className="col-span-2">
+											<TextInput
+												name="name"
+												inputRequired
+												labelText="Vor- und Nachname"
+												placeholder="Vor- und Nachname"
+											/>
+										</div>
 
 										{/* Gender and Birth */}
 										<div className="grid gap-x-3 md:grid-cols-2">
@@ -119,7 +144,7 @@ const Testator = () => {
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="md:col-start-1 md:col-end-2">
-											<TextInput name="postalCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+											<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
 											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
@@ -144,7 +169,7 @@ const Testator = () => {
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
-							loading={lastWill.common.isLoading}
+							loading={false}
 							dirty={dirty}
 							previousHref={PREVIOUS_LINK}
 							nextHref={NEXT_LINK}
