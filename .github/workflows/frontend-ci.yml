@@ -87,6 +87,9 @@ jobs:
       - name: ls
         run: ls -a && pwd
 
+      - name: test
+        run: echo ${{ secrets.BOT_NAME }}
+
       - name: ls2
         run: ls -a ..
       - uses: actions/upload-artifact@v3

@@ -34,6 +34,9 @@ jobs:
           color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
           npx --yes badge-maker coverage $cov $color > .github/badges/$${{ inputs.context }}-coverage.svg
 
+      - name: test
+        run: echo ${{ secrets.BOT_NAME }}
+
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
