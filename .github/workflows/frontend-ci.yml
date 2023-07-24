@@ -123,6 +123,7 @@ jobs:
           git commit -m "generated" || echo "No changes to commit"
 
       - name: Push
+        run: git push
 
   docker-build-and-push:
     needs: tests
