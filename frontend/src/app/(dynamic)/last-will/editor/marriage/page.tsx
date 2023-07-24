@@ -20,7 +20,7 @@ import {
 	PartnerMoreInfos,
 	RelationshipStatus,
 } from '../../../../../store/last-will/marriage/state'
-import { setProgressKeys } from '../../../../../store/lastwill'
+import { sendLastWillState, setMarriage, setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 import { Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
@@ -102,10 +102,12 @@ const Marriage = () => {
 	const onSubmit = async (values: MarriageFormPayload, href: string) => {
 		try {
 			// Update marriage global state only if values have changed
-			// await services.submitMarriage(values)
-			console.log(values)
+			dispatch(setMarriage(values))
+
+			await dispatch(sendLastWillState())
+
 			// Redirect to previous or next page
-			// router.push(href)
+			router.push(href)
 		} catch (error) {
 			console.error('An error occurred while submitting the form: ', error)
 		}

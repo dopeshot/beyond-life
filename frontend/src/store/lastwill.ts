@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
+import { MarriageFormPayload } from '../app/(dynamic)/last-will/editor/marriage/page'
 import { TestatorFormPayload } from '../app/(dynamic)/last-will/editor/testator/page'
 import { FinancialAsset, Item, Organisation, Person, Testator } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
@@ -157,6 +158,48 @@ const lastWillSlice = createSlice({
 			const testator = createTestator(action.payload)
 			state.data.testator = testator
 		},
+		setMarriage: (state, action: PayloadAction<MarriageFormPayload>) => {
+			if (action.payload.relationshipStatus === 'married') {
+				const oldPartner = state.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+				const oldPartnerIndex = state.data.heirs.findIndex(
+					(heir): heir is Person => 'type' in heir && heir.type === 'partner'
+				)
+				const hasParnter = oldPartner !== undefined
+
+				// TODO: we could merge this better
+				const partner: Person = {
+					type: 'partner',
+					id: hasParnter ? oldPartner.id : nanoid(),
+					name: action.payload.name,
+					gender: action.payload.gender,
+					birthDate: action.payload.birthDate,
+					birthPlace: action.payload.birthPlace,
+					isHandicapped: action.payload.moreInfos ? action.payload.moreInfos.includes('isHandicapped') : false,
+					isInsolvent: action.payload.moreInfos ? action.payload.moreInfos.includes('isInsolvent') : false,
+
+					street: action.payload.street,
+					houseNumber: action.payload.houseNumber,
+					zipCode: action.payload.zipCode,
+					city: action.payload.city,
+				}
+
+				// Set state
+				if (hasParnter) {
+					state.data.heirs[oldPartnerIndex] = partner
+				} else {
+					state.data.heirs.push(partner)
+				}
+			} else {
+				const hasParnter = state.data.heirs.some((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+
+				if (hasParnter) {
+					const partnerIndex = state.data.heirs.findIndex(
+						(heir): heir is Person => 'type' in heir && heir.type === 'partner'
+					)
+					state.data.heirs.splice(partnerIndex, 1)
+				}
+			}
+		},
 		resetLastWill: (state) => {
 			state.isLoading = false
 			state.isInitialized = false
@@ -186,4 +229,4 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill, setInheritance, setTestator } = lastWillSlice.actions
+export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage } = lastWillSlice.actions
