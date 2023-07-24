@@ -1,26 +1,19 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getPersonAddHeirsOptions, heirsTypes } from '../../../../../../content/dropdownOptions'
+import { getPersonAddHeirsOptions } from '../../../../../../content/dropdownOptions'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
-import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
-import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import {
-	ChildRelationShip,
-	HeirsTypes,
-	Organisation,
-	Person,
-	PersonMoreInfos,
-} from '../../../../../store/last-will/heirs/state'
+import { ChildRelationShip, HeirsTypes, PersonMoreInfos } from '../../../../../store/last-will/heirs/state'
 import { setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
+import { Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 export type PersonFormPayload = {
@@ -88,9 +81,9 @@ const Heirs = () => {
 
 	const deleteHeirs = async () => {
 		if (selectedPerson !== null) {
-			await services.deletePerson(selectedPerson)
+			// await services.deletePerson(selectedPerson)
 		} else if (selectedOrganisation !== null) {
-			await services.deleteOrganisation(selectedOrganisation)
+			// await services.deleteOrganisation(selectedOrganisation)
 		}
 
 		setIsDeleteModalOpen(false)
@@ -116,81 +109,62 @@ const Heirs = () => {
 					</thead>
 					<tbody>
 						{/* Persons and Organisations */}
-						{lastWill.heirs.persons.map((person) => (
-							<tr datacy={`persons-row-${person.firstName}`} key={person.id} className="border-b border-gray-300">
-								<td className="table-cell pr-4">
-									<p className="font-bold">{person.firstName}</p>
-									<p>
-										{(() => {
-											if (person.gender === 'male' && heirsTypes[person.heirsType].displayType === 'Geschwister')
-												return 'Bruder'
-											if (person.gender === 'female' && heirsTypes[person.heirsType].displayType === 'Geschwister')
-												return 'Schwester'
-											if (heirsTypes[person.heirsType].displayType === 'Geschwister') return 'Geschwisterteil'
-											return heirsTypes[person.heirsType].displayType
-										})()}
-									</p>
-								</td>
-								<td className="p-4">
-									<div className="flex">
-										<IconButton
-											datacy={`persons-editbutton-${person.firstName}`}
-											onClick={() => {
-												setSelectedPerson(person)
-												setIsPersonModalOpen(true)
-											}}
-											icon="edit"
-										/>
-										<IconButton
-											datacy={`persons-deletebutton-${person.firstName}`}
-											onClick={() => {
-												setSelectedPerson(person)
-												setIsDeleteModalOpen(true)
-											}}
-											icon="delete"
-										/>
-									</div>
-								</td>
-							</tr>
-						))}
-						{lastWill.heirs.organisations.map((organisation) => (
-							<tr
-								datacy={`organisations-row-${organisation.name}`}
-								key={organisation.id}
-								className="border-b border-gray-300"
-							>
-								<td className="pr-4">
-									<p className="font-bold">{organisation.name}</p>
-									<p>Organisation</p>
-								</td>
-								<td className="p-4">
-									<div className="flex">
-										<IconButton
-											datacy={`organisations-editbutton-${organisation.name}`}
-											onClick={() => {
-												setSelectedOrganisation(organisation)
-												setIsOrganisationModalOpen(true)
-											}}
-											icon="edit"
-										/>
-										<IconButton
-											datacy={`organisations-deletebutton-${organisation.name}`}
-											onClick={() => {
-												setSelectedOrganisation(organisation)
-												setIsDeleteModalOpen(true)
-											}}
-											icon="delete"
-										/>
-									</div>
-								</td>
-							</tr>
-						))}
+						{heirs.map((heir) => {
+							const isOrganisation = heir.type === 'organisation'
+							const isPerson = heir.type !== 'organisation'
+							const colType = isOrganisation ? 'organisations' : 'persons'
+
+							return (
+								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
+									<td className="pr-4">
+										<p className="font-bold">{heir.name}</p>
+										<p>
+											{(() => {
+												if (isPerson && heir.gender === 'male' && heir.type === 'siblings') return 'Bruder'
+												if (isPerson && heir.gender === 'female' && heir.type === 'siblings') return 'Schwester'
+												if (heir.type === 'siblings') return 'Geschwisterteil'
+												return heir.type
+											})()}
+										</p>
+									</td>
+									<td className="p-4">
+										<div className="flex">
+											<IconButton
+												datacy={`${colType}-editbutton-${heir.name}`}
+												onClick={() => {
+													if (isPerson) {
+														setSelectedPerson(heir)
+														setIsPersonModalOpen(true)
+													} else if (isOrganisation) {
+														setSelectedOrganisation(heir)
+														setIsOrganisationModalOpen(true)
+													}
+												}}
+												icon="edit"
+											/>
+											<IconButton
+												datacy={`${colType}-deletebutton-${heir.name}`}
+												onClick={() => {
+													if (isPerson) {
+														setSelectedPerson(heir)
+													} else if (isOrganisation) {
+														setSelectedOrganisation(heir)
+													}
+													setIsDeleteModalOpen(true)
+												}}
+												icon="delete"
+											/>
+										</div>
+									</td>
+								</tr>
+							)
+						})}
 					</tbody>
 				</table>
 			)}
 
 			{/* Modals */}
-			{isPersonModalOpen && (
+			{/* {isPersonModalOpen && (
 				<HeirsPersonModal
 					isOpenModal={isPersonModalOpen}
 					onClose={() => {
@@ -210,12 +184,12 @@ const Heirs = () => {
 					}}
 					editOrganisation={selectedOrganisation}
 				/>
-			)}
+			)} */}
 			<Modal
 				open={isDeleteModalOpen}
 				headline={`${
 					selectedPerson !== null
-						? selectedPerson.firstName ?? '' + selectedPerson.lastName ?? ''
+						? selectedPerson.name ?? ''
 						: selectedOrganisation !== null
 						? selectedOrganisation.name
 						: ''
