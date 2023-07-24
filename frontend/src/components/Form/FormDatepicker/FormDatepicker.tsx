@@ -22,7 +22,7 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 	labelText,
 	inputRequired,
 	hasMargin = false,
-	autoComplete = "off",
+	autoComplete = "on",
 }) => {
 	return (
 		<Field name={name}>
