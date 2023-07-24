@@ -12,16 +12,16 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const Plans = () => {
 	return (
-		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-28 lg:flex-row lg:gap-4 lg:p-20">
-			<div className="order-2 flex h-full flex-col justify-center lg:order-1 lg:w-2/3 lg:p-4 xl:w-1/2">
-				<div className="mb-6">
-					<Headline className="font-normal">Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
+		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-16 lg:gap-4 xl:flex-row xl:p-20">
+			<div className="order-2 flex h-full flex-col justify-center lg:p-4 lg:pb-0 xl:order-1 xl:w-2/3">
+				<div className="mb-6 xl:mb-16">
+					<Headline>Ihr Testament ist bereit, um abgeschrieben zu werden</Headline>
 					<p className="text-base md:text-xl">Schalten Sie es jetzt frei</p>
 				</div>
 
 				{/* Plans */}
-				<div className="flex w-full flex-col gap-4">
-					<div className="mb-6 flex flex-col gap-4 md:flex-row">
+				<div className="mb-4 flex w-full flex-col gap-4">
+					<div className="flex flex-col gap-4 md:flex-row">
 						{[FreePlan, ...PaymentPlans].map((plan) => (
 							<PaymentPlan
 								key={plan.title}
@@ -47,11 +47,11 @@ const Plans = () => {
 			</div>
 
 			{/* Image */}
-			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/3 xl:w-1/2">
-				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:w-auto lg:rounded-3xl xl:h-full">
+			<div className="order-1 flex w-full items-center justify-center xl:order-2 xl:w-1/3">
+				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:rounded-3xl xl:h-full xl:w-auto">
 					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
 				</div>
-				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />
+				<Icon icon="lock" className="absolute text-[80px] xl:text-[200px]" />
 			</div>
 		</div>
 	)
