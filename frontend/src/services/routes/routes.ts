@@ -24,7 +24,7 @@ export const routes = {
 		settings: '/profile/settings',
 	},
 	lastWill: {
-		index: '/last-will',
+		index: '/',
 		start: '/last-will/start',
 		auth: (options?: { id: string }) => {
 			if (!options) return '/last-will/auth'

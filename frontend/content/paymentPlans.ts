@@ -3,7 +3,11 @@ import { PaymentPlanProps } from '../src/components/PaymentPlan/PaymentPlan'
 export const FreePlan: PaymentPlanProps = {
 	title: 'Free',
 	price: '0€',
-	descriptionItems: [{ text: 'Dein Testament wird sicher gespeichert', icon: 'check' }],
+	descriptionItems: [
+		{ text: 'Testament abschreiben', icon: 'close', iconColor: 'text-gray-500' },
+		{ text: 'Testament bearbeiten', icon: 'close', iconColor: 'text-gray-500' },
+		{ text: 'Sicher gespeichert', icon: 'check' },
+	],
 }
 
 export const PaymentPlans: PaymentPlanProps[] = [
@@ -13,7 +17,7 @@ export const PaymentPlans: PaymentPlanProps[] = [
 		descriptionItems: [
 			{ text: '1 Testament', icon: 'check' },
 			{ text: 'Immer anpassbar', icon: 'check' },
-			{ text: 'Verschlüsselt', icon: 'check' },
+			{ text: 'Sicher verschlüsselt', icon: 'check' },
 		],
 		handleSubmit: () => {
 			'sigle'
@@ -25,7 +29,7 @@ export const PaymentPlans: PaymentPlanProps[] = [
 		descriptionItems: [
 			{ text: '5 Testamente', icon: 'check' },
 			{ text: 'Immer anpassbar', icon: 'check' },
-			{ text: 'Verschlüsselt', icon: 'check' },
+			{ text: 'Sicher verschlüsselt', icon: 'check' },
 		],
 		handleSubmit: () => {
 			'family'

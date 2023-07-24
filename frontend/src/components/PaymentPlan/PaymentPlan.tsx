@@ -5,6 +5,7 @@ import { Icon } from '../Icon/Icon'
 export type PaymentPlanDescriptionItem = {
 	text: string
 	icon: MaterialSymbol
+	iconColor?: string
 }
 
 export type PaymentPlanProps = {
@@ -48,7 +49,10 @@ export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 				{descriptionItems.map((item, index) => {
 					return (
 						<div datacy={`paymentPlan-${title}-description-item${index}`} key={item.text} className="mb-2 flex gap-2">
-							<Icon icon={item.icon} className="pt-0.5 text-yellow-700" />
+							<Icon
+								icon={item.icon}
+								className={`pt-0.5${item.iconColor ? ` ${item.iconColor}` : ' text-yellow-700'}`}
+							/>
 							<p>{item.text}</p>
 						</div>
 					)
