@@ -2,7 +2,7 @@ export type Testator = {
 	relationshipStatus?: RelationshipStatus
 } & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'childType'>
 
-type Person = {
+export type Person = {
 	type: PersonType
 	name?: string
 	gender?: Gender
@@ -17,6 +17,11 @@ type Person = {
 
 	// Heirs
 	childType?: 'natural' | 'adopted' | 'step'
+} & Address &
+	Id
+
+export type Organisation = {
+	name?: string
 } & Address &
 	Id
 
@@ -40,6 +45,6 @@ type Address = {
 	zipCode?: string
 	city?: string
 }
-type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
+type PersonType = 'partner' | 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 type Gender = 'male' | 'female' | 'divers'
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'

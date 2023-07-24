@@ -14,6 +14,7 @@ import { Label } from '../../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
+import { useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
 import { MarriageFormPayload } from '../../../../../store/last-will/marriage/actions'
 import {
@@ -32,6 +33,10 @@ const Marriage = () => {
 	const router = useRouter()
 
 	// Gloabl State
+	const partner = useAppSelector((state) =>
+		state.lastWill.data.heirs.find((heir) => 'type' in heir && heir.type === 'partner')
+	)
+
 	const { lastWill, services } = useLastWillContext()
 
 	const PREVIOUS_LINK = routes.lastWill.testator(lastWill.common.id)
