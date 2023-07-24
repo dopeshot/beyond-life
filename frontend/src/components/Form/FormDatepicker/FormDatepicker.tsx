@@ -19,8 +19,7 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 	name,
 	labelText,
 	inputRequired,
-	hasMargin = false,
-	...props
+	hasMargin = false
 }) => {
 	return (
 		<Field name={name}>
@@ -43,7 +42,6 @@ export const FormDatepicker: React.FC<FormDatepickerProps> = ({
 							datacy={`${name}-datepicker-input`}
 							type="date"
 							{...fieldProps.field}
-							{...props}
 							className="h-6 w-full bg-transparent !outline-none"
 						/>
 					</div>
