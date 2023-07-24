@@ -22,7 +22,7 @@ export type LastWillState = {
 	}
 }
 
-const initialState: LastWillState = {
+export const initialState: LastWillState = {
 	isLoading: false,
 	isInitialized: false,
 

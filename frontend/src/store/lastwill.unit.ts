@@ -1,16 +1,10 @@
 import { SidebarPages } from '../types/sidebar'
-import { LastWillState, lastWillReducer, setInheritance, setProgressKeys } from './lastwill'
+import { LastWillState, initialState, lastWillReducer, setInheritance, setProgressKeys } from './lastwill'
 
 describe('lastWillSlice', () => {
-	const initialState: LastWillState = {
-		isLoading: false,
-		isInitialized: false,
-		data: {
-			_id: 'TESTING_ID',
-			progressKeys: [],
-			financialAssets: [],
-			items: [],
-		},
+	const initialStateTesting: LastWillState = {
+		...initialState,
+		// Override data if needed
 	}
 
 	describe('inheritance', () => {
@@ -32,7 +26,7 @@ describe('lastWillSlice', () => {
 					},
 				],
 			})
-			const newState = lastWillReducer(initialState, action)
+			const newState = lastWillReducer(initialStateTesting, action)
 
 			expect(newState.data.financialAssets).to.have.lengthOf(1)
 			expect(newState.data.financialAssets[0].id).to.equal('ID_1')
@@ -44,10 +38,10 @@ describe('lastWillSlice', () => {
 	describe('progress keys', () => {
 		it(`should add a progress key when ${setProgressKeys} is called`, () => {
 			// Ensure that the initial state is empty
-			expect(initialState.data.progressKeys).to.have.lengthOf(0)
+			expect(initialStateTesting.data.progressKeys).to.have.lengthOf(0)
 
 			const action = setProgressKeys(SidebarPages.TESTATOR)
-			const newState = lastWillReducer(initialState, action)
+			const newState = lastWillReducer(initialStateTesting, action)
 
 			// Ensure that the new state has the progress key
 			expect(newState.data.progressKeys).to.have.lengthOf(1)
@@ -56,13 +50,13 @@ describe('lastWillSlice', () => {
 
 		it('should not modify state when an unknown action type is provided', () => {
 			// Ensure that the initial state is empty
-			expect(initialState.data.progressKeys).to.have.lengthOf(0)
+			expect(initialStateTesting.data.progressKeys).to.have.lengthOf(0)
 
 			const unknownAction = { type: 'UNKNOWN_ACTION', payload: {} }
-			const newState = lastWillReducer(initialState, unknownAction)
+			const newState = lastWillReducer(initialStateTesting, unknownAction)
 
 			// Ensure that the state remains unchanged
-			expect(newState).to.deep.equal(initialState)
+			expect(newState).to.deep.equal(initialStateTesting)
 		})
 	})
 
