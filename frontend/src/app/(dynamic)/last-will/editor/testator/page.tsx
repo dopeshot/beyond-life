@@ -50,6 +50,8 @@ const Testator = () => {
 
 	// Convert global state to form state
 	const { isHandicapped, isInsolvent, ...formTestator } = testator
+
+	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
 		...formTestator,
 		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
