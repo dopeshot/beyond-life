@@ -31,6 +31,8 @@
 		"yup": "^1.1.0"
 	},
 	"devDependencies": {
+		"@bahmutov/cypress-code-coverage": "^2.6.1",
+		"@cypress/code-coverage": "^3.11.0",
 		"@storybook/addon-essentials": "^7.0.12",
 		"@storybook/addon-interactions": "^7.0.12",
 		"@storybook/addon-links": "^7.0.12",
@@ -39,13 +41,26 @@
 		"@storybook/react": "^7.0.12",
 		"@storybook/testing-library": "^0.2.0",
 		"@typescript-eslint/eslint-plugin": "^5.58.0",
+		"babel-plugin-istanbul": "^6.1.1",
 		"cypress": "^12.9.0",
 		"eslint": "^8.38.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-storybook": "^0.6.12",
+		"nyc": "^15.1.0",
 		"prettier": "^2.8.8",
 		"prettier-plugin-tailwindcss": "^0.3.0",
 		"serve": "^14.2.0",
-		"storybook": "^7.0.12"
+		"storybook": "^7.0.12",
+		"swc-plugin-coverage-instrument": "^0.0.19"
+	},
+	"nyc": {
+		"all": true,
+		"excludeAfterRemap": true,
+		"include": "src/**/*.{ts,tsx}",
+		"exclude": [
+			"cypress/**/*.{ts,tsx}",
+			"src/**/*.cy.{ts,tsx}",
+			"src/**/*.unit.{ts,tsx}"
+		]
 	}
 }
