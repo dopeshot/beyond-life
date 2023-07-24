@@ -46,7 +46,7 @@ jobs:
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
           git add .github/badges/${{ inputs.context }}-coverage.svg 
-          git commit -m "generated" || echo "No changes to commit"
+          git commit -m "[no ci] ${{ inputs.context }} coverage" || echo "No changes to commit"
 
       - name: Push
         run: git push
