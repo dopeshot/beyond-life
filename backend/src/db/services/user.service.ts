@@ -8,6 +8,10 @@ import {
 import { ReturnModelType } from '@typegoose/typegoose'
 import { hash as bhash } from 'bcrypt'
 import { ObjectId, Schema } from 'mongoose'
+import {
+  CheckoutInformation,
+  PaymentOptions,
+} from '../../payments/interfaces/payments'
 import { User } from '../entities/users.entity'
 
 @Injectable()
@@ -118,7 +122,7 @@ export class UserService {
     await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 
-  async updateUserPaymentPlan(_id: string, paymentPlan: string) {
+  async updateUserPaymentPlan(_id: string, paymentPlan: PaymentOptions) {
     try {
       await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
     } catch (error) {
@@ -126,5 +130,28 @@ export class UserService {
       // No Exception because we don't return anything anyway
       // This should also never happen, because this means the data from Stripe is falsy which we sent to Stripe
     }
+  }
+
+  async updateUserCheckoutInformation(
+    stripeCustomerId: string,
+    checkoutInformation: CheckoutInformation,
+  ) {
+    try {
+      await this.userModel.findOneAndUpdate(
+        {
+          stripeCustomerId,
+          'checkoutInformation.lastInformationTime': {
+            $lt: checkoutInformation.lastInformationTime,
+          },
+        },
+        { checkoutInformation },
+      )
+    } catch (error) {
+      this.logger.warn(error)
+    }
+  }
+
+  async updateUserStripeCustomerId(_id: string, stripeCustomerId: string) {
+    await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 }
