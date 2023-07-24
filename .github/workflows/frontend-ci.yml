@@ -100,6 +100,8 @@ jobs:
   generate-codecov-badge:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
+    # Dont run this when merging into stable => Bot cannot commit to main
+    if: github.ref != 'stable' || github.base_ref != 'stable'
     with:
       context: frontend
     secrets:
