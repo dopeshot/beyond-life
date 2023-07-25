@@ -134,7 +134,7 @@ export class UserService {
       )
     } catch (error) {
       this.logger.error(error)
-      throw new UnprocessableEntityException(
+      throw new ServiceUnavailableException(
         'Could not update payment plan of the provided customer from Stripe',
       )
     }
@@ -163,7 +163,9 @@ export class UserService {
       )
     } catch (error) {
       this.logger.error(error)
-      throw new ServiceUnavailableException(error)
+      throw new ServiceUnavailableException(
+        'Something went wrong, please try again later!',
+      )
     }
   }
 
