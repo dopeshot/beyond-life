@@ -1,35 +1,45 @@
 import { UnauthorizedException } from '@nestjs/common'
 
 export class MockStripeService {
-  async checkout_session_create(plan: string, price: string, userId: string) {
+  async checkout_session_create(
+    plan: string,
+    price_id: string,
+    customer: string,
+  ) {
     return {
       id: 'cs_test_...',
       object: 'checkout.session',
-      price,
+      price: price_id,
       metadata: {
-        plan: 'single',
-        userId,
+        plan,
       },
       mode: 'payment',
+      created: 123445678,
       payment_method_types: ['card', 'paypal', 'klarna'],
       payment_status: 'unpaid',
       status: 'open',
+      customer,
     }
   }
+
   async webhook_constructEvent(payload: any, signature: string) {
+    // This mocks the signature validation which is done with the webhook secret
     if (signature !== 'valid_signature')
       throw new UnauthorizedException('Invalid signature')
     return {
       type: 'checkout.session.completed',
       data: {
         object: {
+          created: 123445678,
           payment_status: 'paid',
           metadata: {
             plan: 'something',
-            userId: '64baa1b699fd7a8584b469d6',
           },
         },
       },
     }
+  }
+  async customer_create(email: string) {
+    return { id: 'cus_test' }
   }
 }

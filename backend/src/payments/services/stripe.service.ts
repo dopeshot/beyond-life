@@ -23,17 +23,16 @@ export class StripeService {
 
   async checkout_session_create(
     plan: string,
-    price: string,
-    userId: string,
+    price_id: string,
     customer: string,
   ) {
     try {
       const stripeSession = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
-        metadata: { plan, userId },
+        metadata: { plan },
         line_items: [
           {
-            price,
+            price: price_id,
             quantity: 1,
           },
         ],
