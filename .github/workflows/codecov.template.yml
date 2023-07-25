@@ -51,7 +51,11 @@ jobs:
       - name: Push
         run: git push
 
-      - name: Display info on PR
-        uses: ArtiomTr/jest-coverage-report-action@v2
+      - name: Prepare comment
+        run: npx nyc report -t merged --reporter text-summary > comment.txt
+
+      - name: Comment coverage on PR
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          coverage-file: merged/coverage.json
+          filepath: comment.txt
+          reactions: rocket
