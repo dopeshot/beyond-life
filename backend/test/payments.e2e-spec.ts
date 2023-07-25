@@ -130,7 +130,6 @@ describe('PaymentsController (e2e)', () => {
         })
       })
 
-      // TODO: check if customer creation works
       it('should create customer if not in db', async () => {
         await userModel.updateMany({}, { stripeCustomerId: null })
 
@@ -254,6 +253,7 @@ describe('PaymentsController (e2e)', () => {
 
         const updatedUser = await userModel.findOne({ _id: user._id })
         expect(updatedUser.paymentPlan).toEqual('single')
+        expect(updatedUser.checkoutInformation.status).toEqual('paid')
       })
 
       it('should update status to failed if failed type', async () => {
@@ -371,6 +371,3 @@ describe('PaymentsController (e2e)', () => {
     })
   })
 })
-
-// TODO: paid events checken
-// TODO: check customer creation if user doesnt have it
