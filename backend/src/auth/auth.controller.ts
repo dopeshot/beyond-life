@@ -141,7 +141,7 @@ export class AuthController {
     type: ForgotPasswordDTO,
   })
   @ApiServiceUnavailableResponse({
-    description: ' Mail could not be send',
+    description: 'Mail could not be sent',
   })
   async startForgottenPasswordFlow(@Body() { email }: ForgotPasswordDTO) {
     await this.authService.startForgottenPasswordFlow(email)
