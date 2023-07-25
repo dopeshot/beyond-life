@@ -210,10 +210,8 @@ export class AuthService {
   async startForgottenPasswordFlow(email: string) {
     const user = await this.userService.findOneByEmail(email)
 
-    if (!user) {
-      // No error to prevent mail checking
-      return
-    }
+    // No error to prevent mail checking
+    if (!user) return
 
     // Default to case that user does not have a verified email i.e. they have to contact support
     let mailContent: MailTemplateContent = {}
