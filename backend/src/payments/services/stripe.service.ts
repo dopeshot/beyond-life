@@ -48,7 +48,7 @@ export class StripeService {
     }
   }
 
-  async webhook_constructEvent(payload: any, signature: string) {
+  webhook_constructEvent(payload: any, signature: string) {
     const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET')
     try {
       return this.stripe.webhooks.constructEvent(

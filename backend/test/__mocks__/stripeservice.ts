@@ -22,7 +22,7 @@ export class MockStripeService {
     }
   }
 
-  async webhook_constructEvent(payload: any, signature: string) {
+  webhook_constructEvent(payload: any, signature: string) {
     // This mocks the signature validation which is done with the webhook secret
     if (signature !== 'valid_signature')
       throw new UnauthorizedException('Invalid signature')

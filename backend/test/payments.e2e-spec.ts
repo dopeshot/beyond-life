@@ -191,7 +191,7 @@ describe('PaymentsController (e2e)', () => {
           .expect(HttpStatus.UNAUTHORIZED)
       })
 
-      it('should fail without user', async () => {
+      it('should fail if user does not exist', async () => {
         await userModel.deleteMany({})
         await request(app.getHttpServer())
           .post('/payments/checkout')
@@ -228,22 +228,20 @@ describe('PaymentsController (e2e)', () => {
       it('should update User', async () => {
         jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
-          .mockReturnValueOnce(
-            Promise.resolve({
-              type: 'checkout.session.completed',
-              created: 123445678,
-              data: {
-                object: {
-                  created: 123445678,
-                  payment_status: 'paid',
-                  metadata: {
-                    plan: 'single',
-                  },
-                  customer: SAMPLE_USER.stripeCustomerId,
+          .mockReturnValueOnce({
+            type: 'checkout.session.completed',
+            created: 123445678,
+            data: {
+              object: {
+                created: 123445678,
+                payment_status: 'paid',
+                metadata: {
+                  plan: 'single',
                 },
+                customer: SAMPLE_USER.stripeCustomerId,
               },
-            }),
-          )
+            },
+          })
 
         await request(app.getHttpServer())
           .post('/payments/webhook')
@@ -259,22 +257,20 @@ describe('PaymentsController (e2e)', () => {
       it('should update status to failed if failed type', async () => {
         jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
-          .mockReturnValueOnce(
-            Promise.resolve({
-              type: 'charge.failed',
-              created: 123445678,
-              data: {
-                object: {
-                  created: 123445678,
-                  payment_status: 'definetely not paid',
-                  metadata: {
-                    plan: 'single',
-                  },
-                  customer: SAMPLE_USER.stripeCustomerId,
+          .mockReturnValueOnce({
+            type: 'charge.failed',
+            created: 123445678,
+            data: {
+              object: {
+                created: 123445678,
+                payment_status: 'definetely not paid',
+                metadata: {
+                  plan: 'single',
                 },
+                customer: SAMPLE_USER.stripeCustomerId,
               },
-            }),
-          )
+            },
+          })
 
         await request(app.getHttpServer())
           .post('/payments/webhook')
@@ -292,22 +288,20 @@ describe('PaymentsController (e2e)', () => {
       it('should do nothing if unpaid', async () => {
         jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
-          .mockReturnValueOnce(
-            Promise.resolve({
-              type: 'checkout.session.completed',
-              created: 123445678,
-              data: {
-                object: {
-                  created: 123445678,
-                  payment_status: 'definetely not paid',
-                  metadata: {
-                    plan: 'single',
-                  },
-                  customer: SAMPLE_USER.stripeCustomerId,
+          .mockReturnValueOnce({
+            type: 'checkout.session.completed',
+            created: 123445678,
+            data: {
+              object: {
+                created: 123445678,
+                payment_status: 'definetely not paid',
+                metadata: {
+                  plan: 'single',
                 },
+                customer: SAMPLE_USER.stripeCustomerId,
               },
-            }),
-          )
+            },
+          })
         await request(app.getHttpServer())
           .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
@@ -316,27 +310,26 @@ describe('PaymentsController (e2e)', () => {
 
         const updatedUser = await userModel.findOne({})
         expect(updatedUser.paymentPlan).toEqual('free')
+        expect(updatedUser.checkoutInformation.status).not.toEqual('pending')
       })
 
       it('should do nothing if not in wanted event.types', async () => {
         jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
-          .mockReturnValueOnce(
-            Promise.resolve({
-              type: 'checkout.session.definetely_not_completed',
-              created: 123445678,
-              data: {
-                object: {
-                  created: 123445678,
-                  payment_status: 'paid',
-                  metadata: {
-                    plan: 'single',
-                  },
-                  customer: SAMPLE_USER.stripeCustomerId,
+          .mockReturnValueOnce({
+            type: 'checkout.session.definetely_not_completed',
+            created: 123445678,
+            data: {
+              object: {
+                created: 123445678,
+                payment_status: 'paid',
+                metadata: {
+                  plan: 'single',
                 },
+                customer: SAMPLE_USER.stripeCustomerId,
               },
-            }),
-          )
+            },
+          })
         await request(app.getHttpServer())
           .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
