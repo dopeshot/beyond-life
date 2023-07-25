@@ -61,10 +61,8 @@
 		"include": "src/**/*.{ts,tsx}",
 		"exclude": [
 			"cypress/**/*.{ts,tsx}",
-			"src/**/*.cy.{ts,tsx}",
-			"src/**/*.unit.{ts,tsx}",
-			"src/types/**/*",
-			"src/**/*.stories.{ts,tsx}"
+			"src/**/*.{unit,cy,stories}.{ts,tsx}",
+			"src/types/**/*"
 		]
 	}
 }
