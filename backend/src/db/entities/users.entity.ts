@@ -50,6 +50,7 @@ export class User {
   @ApiPropertyOptional({
     description: 'Payment plan of the user',
     example: 'free',
+    enum: ['free', 'single', 'family'],
   })
   paymentPlan: string
 
