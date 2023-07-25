@@ -88,8 +88,20 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 						{/* Name */}
 						<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
-							<TextInput name="firstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-							<TextInput name="lastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+							<TextInput
+								name="firstName"
+								inputRequired
+								labelText="Vorname"
+								placeholder="Vorname"
+								autoComplete="given-name"
+							/>
+							<TextInput
+								name="lastName"
+								inputRequired
+								labelText="Nachname"
+								placeholder="Nachname"
+								autoComplete="family-name"
+							/>
 						</div>
 
 						{/* Gender and Birth */}
@@ -101,14 +113,20 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								hasMargin
 								options={genderOptions}
 							/>
-							<FormDatepicker name="dateOfBirth" labelText="Geburtstag" />
+							<FormDatepicker name="dateOfBirth" labelText="Geburtstag" autoComplete="bday" />
 							<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
 						</div>
 
 						{/* Adress */}
 						<div className="flex gap-x-3">
 							<div className="w-2/3 md:w-3/4">
-								<TextInput name="street" inputRequired labelText="Straße" placeholder="Straße" />
+								<TextInput
+									name="street"
+									inputRequired
+									labelText="Straße"
+									placeholder="Straße"
+									autoComplete="street-address"
+								/>
 							</div>
 							<div className="w-1/3 md:w-1/4">
 								<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
@@ -117,7 +135,13 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 						<div className="flex gap-x-3">
 							<div className="w-1/3 md:w-1/4">
-								<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+								<TextInput
+									name="zipCode"
+									inputRequired
+									labelText="Postleitzahl"
+									placeholder="Postleitzahl"
+									autoComplete="postal-code"
+								/>
 							</div>
 							<div className="w-2/3 md:w-3/4">
 								<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
