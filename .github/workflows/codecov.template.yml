@@ -54,9 +54,11 @@ jobs:
       - name: Prepare comment
         # Overview with details as markdown
         run: |
-          npx nyc report -t merged --reporter text |  sed -n 2,3p  > comment.txt
+          npx nyc report -t merged --reporter text |  sed -n 2,4p  > comment.txt
           echo "<details open><summary> Full coverage report </summary>" >> comment.txt
+          echo >> comment.txt
           npx nyc report -t merged --reporter text |  tail -n +2 | head -n -1 >> comment.txt
+          echo >> comment.txt
           echo "</details>" >> comment.txt
 
       - name: Comment coverage on PR
