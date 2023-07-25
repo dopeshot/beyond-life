@@ -103,7 +103,7 @@ export class UserService {
     }
   }
 
-  async deleteUserById(id: ObjectId) {
-    await this.userModel.deleteOne(id)
+  async deleteUserById(_id: ObjectId) {
+    await this.userModel.deleteOne({ _id })
   }
 }

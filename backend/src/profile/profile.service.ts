@@ -72,7 +72,7 @@ export class ProfileService {
   async deleteProfile(id: ObjectId, password: string) {
     const user = await this.userService.findOneById(id)
 
-    if (!user || !compare(password, user.password)) {
+    if (!user || !(await compare(password, user.password))) {
       throw new UnauthorizedException()
     }
 
@@ -89,11 +89,12 @@ export class ProfileService {
         recipient: user.email,
       },
     }
+
     try {
       await this.mailService.scheduleMailNow(mailData)
     } catch (error) {
       this.logger.error(
-        `Could not send email regarding account deletion. Deletion will continue anyway. ${error}`,
+        `Could not send email regarding account deletion. Deletion will continue anyway.`,
       )
     }
   }

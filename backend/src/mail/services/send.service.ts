@@ -47,7 +47,7 @@ export class MailSendService {
   ): string {
     return renderFile(
       join(this.templateDir, `${templateName}.template.ejs`),
-      content,
+      content || {},
     )
   }
 }
