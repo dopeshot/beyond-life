@@ -5,7 +5,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bodyParser: false,
+  })
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -52,7 +54,10 @@ async function bootstrap() {
     SwaggerModule.setup('swagger', app, document)
   }
 
-  app.enableCors()
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  }) // TODO: only allow our frontend url
 
   await app.listen(process.env.PORT || 3001)
 }

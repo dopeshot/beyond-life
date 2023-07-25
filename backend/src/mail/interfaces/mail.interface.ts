@@ -2,6 +2,7 @@ export enum MailTemplates {
   VERIFY = 'verify',
   PASSWORD_RESET = 'password_reset',
   PASSWORD_RESET_SUPPORT = 'password_reset_support',
+  ACCOUNT_DELETED = 'account_deleted',
 }
 
 export interface VerifyMailData {
