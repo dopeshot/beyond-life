@@ -136,7 +136,7 @@ export class AuthController {
 
   @Post('forgot-password')
   @ApiOperation({ description: 'Request a password reset email' })
-  @ApiCreatedResponse({ description: 'Password reset email has been send' })
+  @ApiCreatedResponse({ description: 'Password reset email has been sent' })
   @ApiBody({
     type: ForgotPasswordDTO,
   })
