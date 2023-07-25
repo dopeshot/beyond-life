@@ -94,14 +94,6 @@ describe('PaymentsController (e2e)', () => {
           metadata: { plan: 'single' },
         })
         const updatedUser = await userModel.findOne()
-        const TESTTEST = await userModel.findOne({
-          stripeCustomerId: SAMPLE_USER.stripeCustomerId,
-          'checkoutInformation.lastInformationTime': {
-            $lt: 2000000000,
-          },
-        })
-        console.log('test:', TESTTEST)
-        console.log('user: ', updatedUser.checkoutInformation)
         expect(updatedUser.checkoutInformation.status).toEqual('pending')
       })
 
@@ -136,6 +128,22 @@ describe('PaymentsController (e2e)', () => {
           price: configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY'),
           metadata: { plan: 'family' },
         })
+      })
+
+      // TODO: check if customer creation works
+      it('should create customer if not in db', async () => {
+        await userModel.updateMany({}, { stripeCustomerId: null })
+
+        await request(app.getHttpServer())
+          .post('/payments/checkout')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            plan: 'single',
+          })
+          .expect(HttpStatus.CREATED)
+
+        const updatedUser = await userModel.findOne({})
+        expect(updatedUser.stripeCustomerId).toEqual('cus_test')
       })
     })
 
@@ -218,12 +226,13 @@ describe('PaymentsController (e2e)', () => {
     })
 
     describe('Positive Tests', () => {
-      it('should return NO_CONTENT and update User', async () => {
-        const spy = jest
+      it('should update User', async () => {
+        jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
           .mockReturnValueOnce(
             Promise.resolve({
               type: 'checkout.session.completed',
+              created: 123445678,
               data: {
                 object: {
                   created: 123445678,
@@ -231,6 +240,7 @@ describe('PaymentsController (e2e)', () => {
                   metadata: {
                     plan: 'single',
                   },
+                  customer: SAMPLE_USER.stripeCustomerId,
                 },
               },
             }),
@@ -246,12 +256,13 @@ describe('PaymentsController (e2e)', () => {
         expect(updatedUser.paymentPlan).toEqual('single')
       })
 
-      it('should do write failed if failed type', async () => {
-        const spy = jest
+      it('should update status to failed if failed type', async () => {
+        jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
           .mockReturnValueOnce(
             Promise.resolve({
               type: 'charge.failed',
+              created: 123445678,
               data: {
                 object: {
                   created: 123445678,
@@ -259,10 +270,12 @@ describe('PaymentsController (e2e)', () => {
                   metadata: {
                     plan: 'single',
                   },
+                  customer: SAMPLE_USER.stripeCustomerId,
                 },
               },
             }),
           )
+
         await request(app.getHttpServer())
           .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
@@ -277,11 +290,12 @@ describe('PaymentsController (e2e)', () => {
 
     describe('Negative Tests', () => {
       it('should do nothing if unpaid', async () => {
-        const spy = jest
+        jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
           .mockReturnValueOnce(
             Promise.resolve({
               type: 'checkout.session.completed',
+              created: 123445678,
               data: {
                 object: {
                   created: 123445678,
@@ -289,6 +303,7 @@ describe('PaymentsController (e2e)', () => {
                   metadata: {
                     plan: 'single',
                   },
+                  customer: SAMPLE_USER.stripeCustomerId,
                 },
               },
             }),
@@ -304,11 +319,12 @@ describe('PaymentsController (e2e)', () => {
       })
 
       it('should do nothing if not in wanted event.types', async () => {
-        const spy = jest
+        jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
           .mockReturnValueOnce(
             Promise.resolve({
               type: 'checkout.session.definetely_not_completed',
+              created: 123445678,
               data: {
                 object: {
                   created: 123445678,
@@ -316,6 +332,7 @@ describe('PaymentsController (e2e)', () => {
                   metadata: {
                     plan: 'single',
                   },
+                  customer: SAMPLE_USER.stripeCustomerId,
                 },
               },
             }),
@@ -330,14 +347,14 @@ describe('PaymentsController (e2e)', () => {
         expect(updatedUser.paymentPlan).toEqual('free')
       })
 
-      it('should do nothing if no matching customer', async () => {
+      it('should throw unprocessible if customerId not in db', async () => {
         await userModel.updateMany({}, { stripeCustomerId: 'not_matching' })
 
         await request(app.getHttpServer())
           .post('/payments/webhook')
           .set('Authorization', `Bearer ${token}`)
           .set('Stripe-Signature', 'valid_signature')
-          .expect(HttpStatus.NO_CONTENT)
+          .expect(HttpStatus.UNPROCESSABLE_ENTITY)
 
         const updatedUser = await userModel.findOne({})
         expect(updatedUser.paymentPlan).toEqual('free')

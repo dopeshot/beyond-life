@@ -28,6 +28,7 @@ export class MockStripeService {
       throw new UnauthorizedException('Invalid signature')
     return {
       type: 'checkout.session.completed',
+      created: 123445678,
       data: {
         object: {
           created: 123445678,
@@ -35,6 +36,7 @@ export class MockStripeService {
           metadata: {
             plan: 'something',
           },
+          customer: 'smth',
         },
       },
     }
