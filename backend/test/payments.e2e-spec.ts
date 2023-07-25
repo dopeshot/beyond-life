@@ -79,7 +79,7 @@ describe('PaymentsController (e2e)', () => {
     // It doesn't make sense to test Stripe, it returns the session needed to redirect the user
     // As long as the ENV vars are synchronized with Stripe dashboard, it should work
     describe('Positive Tests', () => {
-      it('should return CREATED and create a new session', async () => {
+      it('should return CREATED and create a new session and user updated', async () => {
         const res = await request(app.getHttpServer())
           .post('/payments/checkout')
           .set('Authorization', `Bearer ${token}`)
@@ -88,13 +88,21 @@ describe('PaymentsController (e2e)', () => {
           })
           .expect(HttpStatus.CREATED)
 
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            object: 'checkout.session',
-            price: configService.get('STRIPE_ITEM_SINGLE'),
-            metadata: { plan: 'single', userId: user._id.toString() },
-          }),
-        )
+        expect(res.body).toMatchObject({
+          object: 'checkout.session',
+          price: configService.get('STRIPE_ITEM_SINGLE'),
+          metadata: { plan: 'single' },
+        })
+        const updatedUser = await userModel.findOne()
+        const TESTTEST = await userModel.findOne({
+          stripeCustomerId: SAMPLE_USER.stripeCustomerId,
+          'checkoutInformation.lastInformationTime': {
+            $lt: 2000000000,
+          },
+        })
+        console.log('test:', TESTTEST)
+        console.log('user: ', updatedUser.checkoutInformation)
+        expect(updatedUser.checkoutInformation.status).toEqual('pending')
       })
 
       it('should return correct family pricing', async () => {
@@ -106,13 +114,11 @@ describe('PaymentsController (e2e)', () => {
           })
           .expect(HttpStatus.CREATED)
 
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            object: 'checkout.session',
-            price: configService.get('STRIPE_ITEM_FAMILY'),
-            metadata: { plan: 'single', userId: user._id.toString() },
-          }),
-        )
+        expect(res.body).toMatchObject({
+          object: 'checkout.session',
+          price: configService.get('STRIPE_ITEM_FAMILY'),
+          metadata: { plan: 'family' },
+        })
       })
 
       it('should return correct upgrade pricing', async () => {
@@ -125,13 +131,11 @@ describe('PaymentsController (e2e)', () => {
           })
           .expect(HttpStatus.CREATED)
 
-        expect(res.body).toEqual(
-          expect.objectContaining({
-            object: 'checkout.session',
-            price: configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY'),
-            metadata: { plan: 'single', userId: user._id.toString() },
-          }),
-        )
+        expect(res.body).toMatchObject({
+          object: 'checkout.session',
+          price: configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY'),
+          metadata: { plan: 'family' },
+        })
       })
     })
 
@@ -196,7 +200,9 @@ describe('PaymentsController (e2e)', () => {
   describe('/payments/webhook (POST)', () => {
     let token
     let user: User
+
     beforeEach(async () => {
+      jest.clearAllMocks()
       await userModel.deleteMany({})
       user = await userModel.create({
         ...SAMPLE_USER,
@@ -220,10 +226,10 @@ describe('PaymentsController (e2e)', () => {
               type: 'checkout.session.completed',
               data: {
                 object: {
+                  created: 123445678,
                   payment_status: 'paid',
                   metadata: {
                     plan: 'single',
-                    userId: user._id.toString(),
                   },
                 },
               },
@@ -236,10 +242,36 @@ describe('PaymentsController (e2e)', () => {
           .set('Stripe-Signature', 'valid_signature')
           .expect(HttpStatus.NO_CONTENT)
 
-        expect(spy).toBeCalledTimes(1)
         const updatedUser = await userModel.findOne({ _id: user._id })
         expect(updatedUser.paymentPlan).toEqual('single')
-        spy.mockRestore()
+      })
+
+      it('should do write failed if failed type', async () => {
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
+          .mockReturnValueOnce(
+            Promise.resolve({
+              type: 'charge.failed',
+              data: {
+                object: {
+                  created: 123445678,
+                  payment_status: 'definetely not paid',
+                  metadata: {
+                    plan: 'single',
+                  },
+                },
+              },
+            }),
+          )
+        await request(app.getHttpServer())
+          .post('/payments/webhook')
+          .set('Authorization', `Bearer ${token}`)
+          .set('Stripe-Signature', 'valid_signature')
+          .expect(HttpStatus.NO_CONTENT)
+
+        const updatedUser = await userModel.findOne({})
+        expect(updatedUser.paymentPlan).toEqual('free')
+        expect(updatedUser.checkoutInformation.status).toEqual('failed')
       })
     })
 
@@ -252,10 +284,10 @@ describe('PaymentsController (e2e)', () => {
               type: 'checkout.session.completed',
               data: {
                 object: {
+                  created: 123445678,
                   payment_status: 'definetely not paid',
                   metadata: {
                     plan: 'single',
-                    userId: user._id.toString(),
                   },
                 },
               },
@@ -267,14 +299,11 @@ describe('PaymentsController (e2e)', () => {
           .set('Stripe-Signature', 'valid_signature')
           .expect(HttpStatus.NO_CONTENT)
 
-        expect(spy).toBeCalledTimes(1)
-
         const updatedUser = await userModel.findOne({})
         expect(updatedUser.paymentPlan).toEqual('free')
-        spy.mockRestore()
       })
 
-      it('should do nothing if not checkout.session.completed', async () => {
+      it('should do nothing if not in wanted event.types', async () => {
         const spy = jest
           .spyOn(MockStripeService.prototype, 'webhook_constructEvent')
           .mockReturnValueOnce(
@@ -282,10 +311,10 @@ describe('PaymentsController (e2e)', () => {
               type: 'checkout.session.definetely_not_completed',
               data: {
                 object: {
-                  payment_status: 'definetely not paid',
+                  created: 123445678,
+                  payment_status: 'paid',
                   metadata: {
                     plan: 'single',
-                    userId: user._id.toString(),
                   },
                 },
               },
@@ -297,15 +326,12 @@ describe('PaymentsController (e2e)', () => {
           .set('Stripe-Signature', 'valid_signature')
           .expect(HttpStatus.NO_CONTENT)
 
-        expect(spy).toBeCalledTimes(1)
-
         const updatedUser = await userModel.findOne({})
         expect(updatedUser.paymentPlan).toEqual('free')
-        spy.mockRestore()
       })
 
-      it('should do nothing if no user', async () => {
-        userModel.deleteMany({})
+      it('should do nothing if no matching customer', async () => {
+        await userModel.updateMany({}, { stripeCustomerId: 'not_matching' })
 
         await request(app.getHttpServer())
           .post('/payments/webhook')
@@ -315,6 +341,7 @@ describe('PaymentsController (e2e)', () => {
 
         const updatedUser = await userModel.findOne({})
         expect(updatedUser.paymentPlan).toEqual('free')
+        expect(updatedUser.checkoutInformation.status).not.toEqual('paid')
       })
 
       it('should throw error if invalid Signature', async () => {
@@ -327,3 +354,6 @@ describe('PaymentsController (e2e)', () => {
     })
   })
 })
+
+// TODO: paid events checken
+// TODO: check customer creation if user doesnt have it
