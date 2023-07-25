@@ -52,10 +52,11 @@ jobs:
         run: git push
 
       - name: Prepare comment
-        run: npx nyc report -t merged --reporter text-summary > comment.txt
+        run: npx nyc report -t merged --reporter text > comment.txt
 
       - name: Comment coverage on PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           filepath: comment.txt
           reactions: rocket
+          comment_tag: codecov
