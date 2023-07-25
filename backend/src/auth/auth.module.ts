@@ -17,5 +17,6 @@ import { VerifyTokenStrategy } from './strategies/verify-token.strategy'
     PasswordResetTokenStrategy,
   ],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

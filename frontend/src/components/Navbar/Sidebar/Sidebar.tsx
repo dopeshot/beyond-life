@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { sidebarElements } from '../../../../content/sidebar'
-import { useLastWillContext } from '../../../store/last-will/LastWillContext'
+import { useAppSelector } from '../../../store/hooks'
 import { SidebarButtonState } from '../../../types/sidebar'
 import { NavbarLogo } from '../NavbarLogo/NavbarLogo'
 import { SidebarButton } from './SidebarButton/SidebarButton'
@@ -15,7 +15,7 @@ export type SidebarProps = {
  * Sidebar component for navigation
  */
 export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
-	const { lastWill } = useLastWillContext()
+	const progressKeys = useAppSelector((state) => state.lastWill.data.progressKeys)
 
 	return (
 		<div datacy={'sidebar'} className="sticky top-0 hidden h-auto w-80 min-w-[20rem] bg-yellow-400 sm:hidden lg:block">
@@ -36,7 +36,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ path }) => {
 						state={
 							path.includes(element.page) // button is active if url contains the page name
 								? SidebarButtonState.ACTIVE
-								: lastWill.common.progressKeys.includes(element.page)
+								: progressKeys.includes(element.page)
 								? SidebarButtonState.DEFAULT // button is default if page was visited yet
 								: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 						}
