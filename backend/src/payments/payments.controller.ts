@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  RawBodyRequest,
   Req,
   UseGuards,
 } from '@nestjs/common'
@@ -18,6 +19,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { Request } from 'express'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { PaymentDTO } from './interfaces/payments'
@@ -60,7 +62,7 @@ export class PaymentsController {
   // This is the endpoint for Stripe handled information and receives rawBody data
   @Post('webhook')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async webhook(@Req() req: any) {
+  async webhook(@Req() req: RawBodyRequest<Request>) {
     await this.paymentService.handleWebhook(req)
   }
 }

@@ -55,7 +55,7 @@ async function bootstrap() {
   }
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://192.168.178.154/*'],
+    origin: '*',
     credentials: true,
   }) // TODO: only allow our frontend url
 

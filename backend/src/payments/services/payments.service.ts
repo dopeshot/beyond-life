@@ -2,9 +2,11 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
+  RawBodyRequest,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { Request } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
 import { UserService } from '../../db/services/user.service'
@@ -70,11 +72,11 @@ export class PaymentsService {
   }
 
   // Make sure Stripe is configured to only send the relevant events, in our case checkout.session.completed
-  async handleWebhook(req: Request) {
+  async handleWebhook(req: RawBodyRequest<Request>) {
     const signature = req.headers['stripe-signature']
     const event = await this.stripeService.webhook_constructEvent(
       req.body,
-      signature,
+      signature as string,
     )
 
     // We only really care for the completion of the checkout, everything else is relevant on the frontend site
