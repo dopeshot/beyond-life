@@ -52,7 +52,8 @@ jobs:
         run: git push
 
       - name: Prepare comment
-        run: npx nyc report -t merged --reporter text > comment.txt
+        # Start at second line and remove last line to make proper markdown table
+        run: npx nyc report -t merged --reporter text |  tail -n +2 | head -n -1 > comment.txt
 
       - name: Comment coverage on PR
         uses: thollander/actions-comment-pull-request@v2
