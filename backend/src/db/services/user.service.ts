@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
   ServiceUnavailableException,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { hash as bhash } from 'bcrypt'
@@ -122,13 +123,20 @@ export class UserService {
     await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 
-  async updateUserPaymentPlan(_id: string, paymentPlan: PaymentOptions) {
+  async updateUserPaymentPlan(
+    stripeCustomerId: string,
+    paymentPlan: PaymentOptions,
+  ) {
     try {
-      await this.userModel.findByIdAndUpdate({ _id }, { paymentPlan })
+      await this.userModel.findOneAndUpdate(
+        { stripeCustomerId },
+        { paymentPlan },
+      )
     } catch (error) {
-      this.logger.log(error)
-      // No Exception because we don't return anything anyway
-      // This should also never happen, because this means the data from Stripe is falsy which we sent to Stripe
+      this.logger.error(error)
+      throw new UnprocessableEntityException(
+        'Could not update payment plan of the provided customer from Stripe',
+      )
     }
   }
 
@@ -136,8 +144,9 @@ export class UserService {
     stripeCustomerId: string,
     checkoutInformation: CheckoutInformation,
   ) {
+    let user: User
     try {
-      await this.userModel.findOneAndUpdate(
+      user = await this.userModel.findOneAndUpdate(
         {
           stripeCustomerId,
           'checkoutInformation.lastInformationTime': {
@@ -145,10 +154,16 @@ export class UserService {
           },
         },
         { checkoutInformation },
+        { new: true },
       )
     } catch (error) {
-      this.logger.warn(error)
+      this.logger.error(error)
+      throw new ServiceUnavailableException(error)
     }
+    if (!user)
+      throw new UnprocessableEntityException(
+        'Could not update checkout information of the provided customer from Stripe',
+      )
   }
 
   async updateUserStripeCustomerId(_id: string, stripeCustomerId: string) {
