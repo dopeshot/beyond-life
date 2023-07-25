@@ -14,6 +14,8 @@ export class MockConfigService {
     DB_DB: 'siebtesleben',
     DB_HOST: 'localhost',
     DB_PORT: '27017',
+    JWT_PASSWORD_RESET_SECRET: 'evensecretersecret',
+    JWT_PASSWORD_RESET_EXPIRE_TIME: '4h',
   }
 
   /**
