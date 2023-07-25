@@ -13,7 +13,7 @@ export class MockConfigService {
     DB_USER_PW: 'admin',
     DB_DB: 'siebtesleben',
     DB_HOST: 'localhost',
-    DB_PORT: '27017',
+    DB_PORT: '27018',
     JWT_PASSWORD_RESET_SECRET: 'evensecretersecret',
     JWT_PASSWORD_RESET_EXPIRE_TIME: '4h',
     // Actually it would be the Stripe id smth like price_... but for testing we skip Stripe
