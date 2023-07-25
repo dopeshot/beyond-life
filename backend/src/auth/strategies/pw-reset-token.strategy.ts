@@ -13,10 +13,7 @@ export class PasswordResetTokenStrategy extends PassportStrategy(
   Strategy,
   'password-reset-jwt',
 ) {
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly userService: UserService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromUrlQueryParameter('token'),
       secretOrKey: configService.get<string>('JWT_PASSWORD_RESET_SECRET'),
