@@ -1,4 +1,4 @@
-name: Build and commit codecov badge
+name: Generate and commit codecov badge
 
 on:
   workflow_call:
@@ -50,3 +50,8 @@ jobs:
 
       - name: Push
         run: git push
+
+      - name: Display info on PR
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          coverage-file: merged/coverage.json
