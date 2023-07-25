@@ -102,4 +102,8 @@ export class UserService {
         throw new ConflictException('Email is already taken.')
     }
   }
+
+  async deleteUserById(id: ObjectId) {
+    await this.userModel.deleteOne(id)
+  }
 }
