@@ -34,11 +34,12 @@ export class PaymentsService {
       throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
     }
 
-    let price: string
+    let price_id: string
 
-    if (plan === 'single') price = this.configService.get('STRIPE_ITEM_SINGLE')
+    if (plan === 'single')
+      price_id = this.configService.get('STRIPE_ITEM_SINGLE')
     if (plan === 'family')
-      price =
+      price_id =
         user.paymentPlan === 'single'
           ? this.configService.get('STRIPE_ITEM_SINGLE_TO_FAMILY')
           : this.configService.get('STRIPE_ITEM_FAMILY')
@@ -54,11 +55,11 @@ export class PaymentsService {
 
     const session = await this.stripeService.checkout_session_create(
       plan,
-      price,
-      user._id.toString(),
+      price_id,
       customer,
     )
 
+    this.logger.debug('customer:', customer)
     await this.userService.updateUserCheckoutInformation(customer, {
       status: 'pending',
       lastInformationTime: session.created,
@@ -107,7 +108,7 @@ export class PaymentsService {
 
     // This is idempotent, there is no problem that if the request comes again, that the user is already on the plan
     await this.userService.updateUserPaymentPlan(
-      checkoutSession.metadata.userId,
+      checkoutSession.customer as string,
       checkoutSession.metadata.plan as PaymentOptions,
     )
 
