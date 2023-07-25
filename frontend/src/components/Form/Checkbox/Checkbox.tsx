@@ -1,11 +1,11 @@
 import { Field } from 'formik'
 import { useState } from 'react'
-import { ComponentOptions } from '../../../types/form'
+import { CheckboxOptions } from '../../../types/form'
 import { FormError } from '../../Errors/FormError/FormError'
 import { Icon } from '../../Icon/Icon'
 import { IconButton } from '../../IconButton/IconButton'
-import { Label } from '../Label/Label'
 import { Modal } from '../../Modal/ModalBase/Modal'
+import { Label } from '../Label/Label'
 
 export type CheckboxProps = {
 	/** Provide an name to uniquely identify the Checkbox input. */
@@ -13,7 +13,7 @@ export type CheckboxProps = {
 	/** Provide a label to provide a description of the Checkbox input that you are exposing to the user. */
 	labelText?: string
 	/** A list of options to choose from. */
-	options: ComponentOptions[]
+	options: CheckboxOptions[]
 	/** Provides assistance on how to fill out a field. */
 	helperText?: string
 	/** When set to true, a '*' symbol will be displayed next to the label, indicating that the field is required. */
@@ -23,8 +23,6 @@ export type CheckboxProps = {
 /**
  * Checkbox, can only be used with Formik
  */
-
-// MC: The <fieldset> element may not be the best choice in this context, due to its default styling.
 export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText, options, inputRequired = false }) => {
 	const [isCheckboxModalOpen, setIsCheckboxModalOpen] = useState(false)
 	const [modalContent, setModalContent] = useState<string | null>(null)
@@ -38,7 +36,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 
 	return (
 		<>
-			<Modal open={isCheckboxModalOpen} onClose={() => setIsCheckboxModalOpen(false)} headline={modalHeadline ?? "Information:"}>
+			<Modal
+				open={isCheckboxModalOpen}
+				onClose={() => setIsCheckboxModalOpen(false)}
+				headline={modalHeadline ?? 'Information:'}
+			>
 				{modalContent}
 			</Modal>
 			{labelText && (
@@ -61,11 +63,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					<span>{option.label}</span>
 					{option.helperText && (
 						<div className="flex">
-							<IconButton 
-								icon="info" 
-								iconClassName="text-base" 
-								className="h-5 w-5 text-gray-500 hover:bg-opacity-10" 
-								onClick={() => handleIconClick(option.helperText ?? "Keine Hilfetext vorhanden", option.label)} 
+							<IconButton
+								icon="info"
+								iconClassName="text-base"
+								className="h-5 w-5 text-gray-500 hover:bg-opacity-10"
+								onClick={() => handleIconClick(option.helperText ?? 'Keine Hilfetext vorhanden', option.label)}
 							/>
 						</div>
 					)}

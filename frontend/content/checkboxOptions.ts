@@ -1,6 +1,6 @@
-import { ComponentOptions } from '../src/types/form'
+import { CheckboxOptions } from '../src/types/form'
 
-export const testatorMoreInfosOptions: ComponentOptions[] = [
+export const testatorMoreInfosOptions: CheckboxOptions[] = [
 	{
 		value: 'testatorHandicapped',
 		label: 'Haben Sie eine Behinderung?',
@@ -11,7 +11,7 @@ export const testatorMoreInfosOptions: ComponentOptions[] = [
 	},
 ]
 
-export const partnerMoreInfosOptions: ComponentOptions[] = [
+export const partnerMoreInfosOptions: CheckboxOptions[] = [
 	{
 		value: 'partnerHandicapped',
 		label: 'Hat ihr Partner eine Behinderung?',
@@ -20,7 +20,7 @@ export const partnerMoreInfosOptions: ComponentOptions[] = [
 	{
 		value: 'partnerInsolvent',
 		label: 'Ist ihr Partner insolvent?',
-		helperText:'Wenn ein Erbe sich in einem laufendem Insolvenzverfahren befindet fällt die gesamte Erbschaft in die Insolvenzmasse, so dass der Insolvenzverwalter über sie verfügt. Tritt der Erbfall während der Wohlverhaltensphase ein, muss der Erbe 50 Prozent der Erbschaft an den Treuhänder abtreten. Die andere Hälfte darf der Erbe behalten.'
+		helperText: 'Wenn ein Erbe sich in einem laufendem Insolvenzverfahren befindet fällt die gesamte Erbschaft in die Insolvenzmasse, so dass der Insolvenzverwalter über sie verfügt. Tritt der Erbfall während der Wohlverhaltensphase ein, muss der Erbe 50 Prozent der Erbschaft an den Treuhänder abtreten. Die andere Hälfte darf der Erbe behalten.'
 	},
 	{
 		value: 'partnerBerlinWill',
@@ -29,7 +29,7 @@ export const partnerMoreInfosOptions: ComponentOptions[] = [
 	},
 ]
 
-export const personMoreInfosOptions: ComponentOptions[] = [
+export const personMoreInfosOptions: CheckboxOptions[] = [
 	{
 		value: 'personHandicapped',
 		label: 'Hat die Person eine Behinderung?',
