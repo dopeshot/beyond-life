@@ -207,7 +207,6 @@ export class AuthService {
   /**
    * @description Send password reset email
    */
-
   async startForgottenPasswordFlow(email: string) {
     const user = await this.userService.findOneByEmail(email)
 
