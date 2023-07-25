@@ -19,7 +19,7 @@ import { ProfileModule } from '../src/profile/profile.module'
 import { SharedModule } from '../src/shared/shared.module'
 import { MockConfigService } from './helpers/config-service.helper'
 import { comparePassword } from './helpers/general.helper'
-import { getVerifyTokenFromMail } from './helpers/mail.helper'
+import { getTokenFromMail } from './helpers/mail.helper'
 import {
   closeInMongodConnection,
   rootTypegooseTestModule,
@@ -177,13 +177,13 @@ describe('AuthController (e2e)', () => {
     })
 
     describe('Positive Tests', () => {
-    const newMail = 'newmail@mail.mail'
+      const newMail = 'newmail@mail.mail'
       it('should set new email', async () => {
         // ACT
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: newMail ,
+            email: newMail,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -194,9 +194,9 @@ describe('AuthController (e2e)', () => {
           email: SAMPLE_USER.email,
         })
         expect(oldUser).toBeNull()
-        
+
         const updatedUser = await userModel.findOne({
-          email: newMail ,
+          email: newMail,
         })
         expect(updatedUser).toBeDefined()
       })
@@ -211,7 +211,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-             email: newMail ,
+            email: newMail,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -219,7 +219,7 @@ describe('AuthController (e2e)', () => {
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
         const updatedUser = await userModel.findOne({
-           email: newMail ,
+          email: newMail,
         })
         expect(updatedUser.hasVerifiedEmail).toEqual(false)
       })
@@ -229,7 +229,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: newMail ,
+            email: newMail,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -259,7 +259,7 @@ describe('AuthController (e2e)', () => {
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
           .send({
-            email: newMail ,
+            email: newMail,
           })
           .set({
             Authorization: `Bearer ${token}`,
@@ -268,7 +268,7 @@ describe('AuthController (e2e)', () => {
         expect(res.statusCode).toEqual(HttpStatus.OK)
 
         const sendMail = mock.getSentMail()[0]
-        const verifyToken = getVerifyTokenFromMail(sendMail.html as string)
+        const verifyToken = getTokenFromMail(sendMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
         })
