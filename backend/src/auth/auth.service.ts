@@ -231,9 +231,7 @@ export class AuthService {
         'BACKEND_DOMAIN',
       )}/auth/verify-email?token=${resetToken}`
 
-      mailContent = {
-        resetUrl,
-      } as PasswordResetMailData
+      mailContent = { resetUrl } as PasswordResetMailData
       mailTemplate = MailTemplates.PASSWORD_RESET
     }
 
@@ -248,16 +246,7 @@ export class AuthService {
       },
     }
 
-    try {
-      await this.mailService.scheduleMailNow(mailData)
-    } catch (error) {
-      this.logger.warn(
-        `Could not send password reset email due to an error ${error}`,
-      )
-      throw new ServiceUnavailableException(
-        'We cannot send emails right now, please try again later',
-      )
-    }
+    await this.mailService.scheduleMailNow(mailData)
   }
 
   /**

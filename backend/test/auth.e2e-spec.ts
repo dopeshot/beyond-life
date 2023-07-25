@@ -141,8 +141,8 @@ describe('AuthController (e2e)', () => {
           .send(SAMPLE_USER)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        const sendMail = mock.getSentMail()[0]
-        const verifyToken = getTokenFromMail(sendMail.html as string)
+        const sentMail = mock.getSentMail()[0]
+        const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
         })
@@ -443,8 +443,8 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        const sendMail = mock.getSentMail()[0]
-        const verifyToken = getTokenFromMail(sendMail.html as string)
+        const sentMail = mock.getSentMail()[0]
+        const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
         })
@@ -515,7 +515,7 @@ describe('AuthController (e2e)', () => {
         expect(template).toEqual(MailTemplates.PASSWORD_RESET)
       })
 
-      it('should valid token in reset mail ', async () => {
+      it('should send valid token in reset mail ', async () => {
         // ARRANGE
         await userModel.updateOne(
           { email: SAMPLE_USER.email },
@@ -573,7 +573,7 @@ describe('AuthController (e2e)', () => {
         expect(mock.getSentMail().length).toEqual(0)
       })
 
-      it('should fail if mail could not be send', async () => {
+      it('should fail if mail could not be sent', async () => {
         // ARRANGE
         mock.setShouldFail(true)
         // ACT
@@ -642,7 +642,7 @@ describe('AuthController (e2e)', () => {
         expect(res.statusCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR)
       })
 
-      it('should with invalid token', async () => {
+      it('should fail with invalid token', async () => {
         // ARRANGE
         await userModel.deleteOne({ email: SAMPLE_USER.email })
         // ACT

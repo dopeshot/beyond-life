@@ -12,7 +12,7 @@ export interface PasswordResetMailData {
   resetUrl: string
 }
 
-// disable for eslint to allow for empty content. This ensures the MailTemplateContent type is complete
+// Disable for eslint to allow for empty content. This ensures the MailTemplateContent type is complete
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PasswordResetContactSupportMailData {}
 
