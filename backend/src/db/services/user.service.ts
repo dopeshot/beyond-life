@@ -144,9 +144,14 @@ export class UserService {
     stripeCustomerId: string,
     checkoutInformation: CheckoutInformation,
   ) {
-    let user: User
+    // We do 2 calls here since we want to know if the customerId exists
+    const user = await this.userModel.findOne({ stripeCustomerId })
+    if (!user)
+      throw new UnprocessableEntityException(
+        'Could not match Stripe event to any user',
+      )
     try {
-      user = await this.userModel.findOneAndUpdate(
+      await this.userModel.findOneAndUpdate(
         {
           stripeCustomerId,
           'checkoutInformation.lastInformationTime': {
@@ -160,10 +165,6 @@ export class UserService {
       this.logger.error(error)
       throw new ServiceUnavailableException(error)
     }
-    if (!user)
-      throw new UnprocessableEntityException(
-        'Could not update checkout information of the provided customer from Stripe',
-      )
   }
 
   async updateUserStripeCustomerId(_id: string, stripeCustomerId: string) {

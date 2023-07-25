@@ -79,18 +79,13 @@ export class PaymentsService {
 
     // We only really care for the completion of the checkout, everything else is relevant on the frontend site
     // We can disable/enable the webhook allowed types in the Stripe dashboard but save is save
-    this.logger.debug(event.type, event.created, event)
-
+    this.logger.debug(event)
     if (
-      event.type === 'charge.failed' ||
-      event.type === 'payment_intent.failed' ||
-      event.type === 'checkout.session.expired' ||
-      event.type === 'checkout.session.canceled'
+      event.type.includes('failed') ||
+      event.type.includes('canceled') ||
+      event.type.includes('expired')
     ) {
-      const object = event.data.object as
-        | Stripe.Charge
-        | Stripe.PaymentIntent
-        | Stripe.Checkout.Session
+      const object = event.data.object as Stripe.Checkout.Session
       await this.userService.updateUserCheckoutInformation(
         object.customer as string,
         {
@@ -101,9 +96,11 @@ export class PaymentsService {
       return
     }
 
+    // Just making sure we ignore unimportant events
     if (!(event.type === 'checkout.session.completed')) return
 
     const checkoutSession = event.data.object as Stripe.Checkout.Session
+    // TODO: Check: We don't know if payment methods may return something like will be paid in case of SEPA or others
     if (checkoutSession.payment_status !== 'paid') return
 
     // This is idempotent, there is no problem that if the request comes again, that the user is already on the plan
