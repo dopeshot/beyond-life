@@ -55,7 +55,7 @@ const MyLastWills = () => {
 	]
 
 	return (
-		<>
+		<div>
 			<Headline level={3}>
 				Meine Testamente <span className="ml-2 text-base text-gray-600">(2)</span>
 			</Headline>
@@ -107,7 +107,7 @@ const MyLastWills = () => {
 					</div>
 				</div>
 			))}
-		</>
+		</div>
 	)
 }
 

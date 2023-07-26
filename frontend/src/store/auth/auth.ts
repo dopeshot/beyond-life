@@ -7,7 +7,7 @@ import {
 	saveSession,
 	setAxiosAuthHeader,
 } from '../../services/auth/session'
-import { SessionData, Tokens } from '../../types/auth'
+import { SessionData, TokensResponse } from '../../types/auth'
 
 export type AuthState = {
 	/** Check if user has session. */
@@ -34,7 +34,7 @@ export const registerApi = createAsyncThunk(
 	async ({ email, password }: { email: string; password: string }) => {
 		try {
 			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, { email, password })
-			const tokens: Tokens = await response.data
+			const tokens: TokensResponse = await response.data
 
 			setAxiosAuthHeader(tokens.access_token)
 
@@ -55,7 +55,7 @@ export const loginApi = createAsyncThunk(
 	async ({ email, password }: { email: string; password: string }) => {
 		try {
 			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, { email, password })
-			const tokens: Tokens = await response.data
+			const tokens: TokensResponse = await response.data
 
 			setAxiosAuthHeader(tokens.access_token)
 
@@ -110,6 +110,7 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		login: (state, action: PayloadAction<SessionData>) => {
+			state.isLoading = false
 			state.isAuthenticated = true
 			state.sessionData = action.payload
 

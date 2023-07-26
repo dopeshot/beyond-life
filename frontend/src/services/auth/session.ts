@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { parseJwt } from '../../../utils/jwt'
-import { SessionData, Tokens } from '../../types/auth'
+import { SessionData, TokensResponse } from '../../types/auth'
 
 export const LOCAL_STORAGE_KEY = 'session'
 
@@ -9,7 +9,7 @@ export const LOCAL_STORAGE_KEY = 'session'
  * @param tokens access and refresh tokens
  * @returns session object
  */
-export const createSession = (tokens: Tokens) => {
+export const createSession = (tokens: TokensResponse) => {
 	const { access_token, refresh_token } = tokens
 
 	// Decode access token
@@ -53,7 +53,7 @@ export const setAxiosAuthHeader = (accessToken: string): void => {
  * @param refreshToken refresh token
  * @returns new access and refresh tokens
  */
-export const refreshTokenApi = async (refreshToken: string): Promise<Tokens | null> => {
+export const refreshTokenApi = async (refreshToken: string): Promise<TokensResponse | null> => {
 	try {
 		const response = await axios.post(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh-token`,
@@ -66,7 +66,7 @@ export const refreshTokenApi = async (refreshToken: string): Promise<Tokens | nu
 				},
 			}
 		)
-		const tokens: Tokens = await response.data
+		const tokens: TokensResponse = await response.data
 
 		return tokens
 	} catch (error) {
