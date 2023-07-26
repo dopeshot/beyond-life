@@ -1,20 +1,22 @@
 export const routes = {
 	index: '/',
 	account: {
-		register: (options?: { callbackUrl: string }) => {
+		register: (options?: { callbackUrl?: string; funnel?: boolean }) => {
 			if (!options) return '/account/register'
 
 			const queryString = new URLSearchParams({
 				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+				...(options.funnel != null && { funnel: String(options.funnel) }),
 			}).toString()
 
 			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		login: (options?: { callbackUrl: string }) => {
+		login: (options?: { callbackUrl?: string; funnel?: boolean }) => {
 			if (!options) return '/account/login'
 
 			const queryString = new URLSearchParams({
 				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+				...(options.funnel != null && { funnel: String(options.funnel) }),
 			}).toString()
 
 			return `/account/login${queryString !== '' ? `?${queryString}` : ''}`
@@ -26,7 +28,6 @@ export const routes = {
 		settings: '/profile/settings',
 	},
 	lastWill: {
-		index: '/last-will',
 		start: '/last-will/start',
 		auth: (options?: { id: string }) => {
 			if (!options) return '/last-will/auth'
