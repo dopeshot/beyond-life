@@ -29,10 +29,6 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 			href: routes.index,
 			text: 'Startseite',
 		},
-		{
-			href: routes.lastWill.index,
-			text: 'Testament',
-		},
 	]
 
 	return (
