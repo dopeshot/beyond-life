@@ -45,7 +45,7 @@ export const heirsTypes = {
 	mother: 'Mutter',
 	father: 'Vater',
 	child: 'Kind',
-	siblings: 'Geschwister',
+	siblings: 'Geschwisterteil',
 	other: 'Andere Person',
 	organisation: 'Organisation',
 } as const
