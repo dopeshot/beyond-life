@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { validateMail } from '../../../../utils/validateMail'
 import { routes } from '../../../services/routes/routes'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
@@ -31,9 +32,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	}
 
 	const accountValidationSchema: ObjectSchema<AccountDto> = object({
-		email: string()
-			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
-			.required('E-Mail Adresse ist erforderlich.'),
+		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
 		password: string().required('Password ist erforderlich.'),
 	})
 

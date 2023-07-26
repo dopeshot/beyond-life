@@ -2,6 +2,7 @@
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { validateMail } from '../../../../../../utils/validateMail'
 import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -27,9 +28,7 @@ const ResetPassword = () => {
 	}
 
 	const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
-		email: string()
-			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
-			.required('E-Mail Adresse ist erforderlich.'),
+		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
 	})
 
 	const onSubmit = async (values: ResetPasswordFormValues) => {
