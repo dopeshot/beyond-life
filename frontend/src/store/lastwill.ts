@@ -76,7 +76,7 @@ export const fetchLastWillState = createAsyncThunk(
 								description: '',
 							},
 						],
-					} satisfies LastWillState['data']),
+					} as LastWillState['data']),
 				10
 			)
 		)
