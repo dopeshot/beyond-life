@@ -1,4 +1,5 @@
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit'
+import { MaterialSymbol } from 'material-symbols'
 import { Dispatch } from 'react'
 import { routes } from '../src/services/routes/routes'
 import { AuthState, logout } from '../src/store/auth/auth'
@@ -14,7 +15,17 @@ export const profileLinks = (
 		AnyAction
 	> &
 		Dispatch<AnyAction>
-) => {
+): ({
+	name: string
+	icon: MaterialSymbol
+} & (
+	| {
+			href: string
+	  }
+	| {
+			onClick: () => void
+	  }
+))[] => {
 	return [
 		{
 			name: 'Meine Testamente',
@@ -31,13 +42,5 @@ export const profileLinks = (
 			icon: 'logout',
 			onClick: () => dispatch(logout()),
 		},
-		// satisfies would be a better way of solving this...
-		// However as of now using satisfies with a proper type is not possible here because of babel during testing
-		// Also see https://github.com/vercel/next.js/pull/51962 ("We have moved on to SWC so why should we care")
-	] as {
-		name: string
-		icon: 'history' | 'settings' | 'history_edu'
-		href?: string
-		onClick?: () => void
-	}[]
+	]
 }
