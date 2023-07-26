@@ -11,6 +11,7 @@ services:
       - DB_USER_PW=${BACKEND_DB_USER_PW:-admin}
       - DB_HOST=${BACKEND_DB_HOST:-db}
       - DB_PORT=${BACKEND_DB_PORT:-27018}
+      - DB_DB=${BACKEND_DB_DB:-siebtesleben}
       # JWT
       - JWT_SECRET=${BACKEND_JWT_SECRET:-secret}
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
