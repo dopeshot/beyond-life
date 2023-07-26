@@ -62,6 +62,8 @@ jobs:
           echo "</details>" >> comment.txt
 
       - name: Comment coverage on PR
+        # Easy way to prevent pipeline failure when run is not triggered by PR
+        continue-on-error: true
         uses: thollander/actions-comment-pull-request@v2
         with:
           filepath: comment.txt
