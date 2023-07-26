@@ -50,6 +50,18 @@ export const heirsTypes = {
 	organisation: 'Organisation',
 } as const
 
+const determineHeirRelationship = (heir: Person | Organisation) => {
+	const isPerson = heir.type !== 'organisation'
+
+	if (isPerson && heir.gender === 'male' && heir.type === 'siblings') return 'Bruder'
+	if (isPerson && heir.gender === 'female' && heir.type === 'siblings') return 'Schwester'
+
+	return {
+		...heirsTypes,
+		partner: 'Partner*in',
+	}[heir.type]
+}
+
 export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
 	Object.entries(heirsTypes).map(([type, label]) => ({
 		onClick: () => setDropdownOption(type as HeirsTypes),
@@ -135,14 +147,7 @@ const Heirs = () => {
 								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
 									<td className="pr-4">
 										<p className="font-bold">{heir.name}</p>
-										<p>
-											{(() => {
-												if (isPerson && heir.gender === 'male' && heir.type === 'siblings') return 'Bruder'
-												if (isPerson && heir.gender === 'female' && heir.type === 'siblings') return 'Schwester'
-												if (heir.type === 'siblings') return 'Geschwisterteil'
-												return heir.type
-											})()}
-										</p>
+										<p>{determineHeirRelationship(heir)}</p>
 									</td>
 									<td className="p-4">
 										<div className="flex">
