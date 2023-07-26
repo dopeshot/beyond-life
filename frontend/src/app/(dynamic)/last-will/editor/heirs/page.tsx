@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getPersonAddHeirsOptions } from '../../../../../../content/dropdownOptions'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -12,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
 import { ChildRelationShip, HeirsTypes, PersonMoreInfos } from '../../../../../store/last-will/heirs/state'
 import { setProgressKeys } from '../../../../../store/lastwill'
+import { DropdownButtonOptions } from '../../../../../types/form'
 import { Gender } from '../../../../../types/gender'
 import { Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
@@ -41,12 +41,29 @@ export type OrganisationFormPayload = {
 	city?: string
 }
 
+export const heirsTypes = {
+	mother: 'Mutter',
+	father: 'Vater',
+	child: 'Kind',
+	siblings: 'Geschwister',
+	other: 'Andere Person',
+	organisation: 'Organisation',
+} as const
+
+export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
+	Object.entries(heirsTypes).map(([type, label]) => ({
+		onClick: () => setDropdownOption(type as HeirsTypes),
+		label: `${label} hinzufügen`,
+	}))
+
+export type SetDropdownOptionFunction = (type: HeirsTypes) => void
+
 /**
  * Heirs Page
  */
 const Heirs = () => {
 	// Global State
-	const { lastWill, services } = useLastWillContext()
+	const { lastWill } = useLastWillContext()
 	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
