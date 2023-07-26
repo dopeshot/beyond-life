@@ -1,3 +1,4 @@
+import { HttpStatusCode } from 'axios'
 import { mount } from 'cypress/react'
 
 declare global {
@@ -20,7 +21,7 @@ declare global {
 			/**
 			 * Mocks register request.
 			 */
-			mockRegister(): Chainable<void>
+			mockRegister(options?: { statusCode: HttpStatusCode; errorMessage?: string }): Chainable<void>
 			/**
 			 * Login to the app (Sets sessiondata to localstorage).
 			 * @param route the route we want to go after login

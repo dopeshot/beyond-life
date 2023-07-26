@@ -1,3 +1,5 @@
+import { HttpStatusCode } from 'axios'
+
 export type TokensResponse = {
 	access_token: string
 	refresh_token: string
@@ -12,4 +14,10 @@ export type SessionData = {
 		exp: number
 	}
 	refreshToken: string
+}
+
+export type AuthErrorResponse = {
+	error: string
+	message: string
+	statusCode: HttpStatusCode
 }

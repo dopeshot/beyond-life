@@ -25,7 +25,7 @@ export const Alert: React.FC<AlertProps> = ({
 	color = 'red',
 	icon = 'notifications',
 	headline,
-	className,
+	className = '',
 	description,
 	datacy,
 }) => {

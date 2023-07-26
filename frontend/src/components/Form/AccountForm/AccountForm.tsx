@@ -1,11 +1,11 @@
 'use client'
 import { Form, Formik } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { routes } from '../../../services/routes/routes'
 import { loginApi, registerApi } from '../../../store/auth/auth'
-import { useAppDispatch } from '../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Alert } from '../../Alert/Alert'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { PasswordInput } from '../PasswordInput/PasswordInput'
@@ -26,9 +26,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 	// Redux
 	const dispatch = useAppDispatch()
-
-	// Local state
-	const [isLoading, setIsLoading] = useState(false)
+	const registerError = useAppSelector((state) => state.auth.registerError)
 
 	// Formik
 	const initialFormValues: AccountDto = {
@@ -44,10 +42,8 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	})
 
 	const onLoginFormSubmit = async (values: AccountDto) => {
-		// Login
-		setIsLoading(true)
-		await dispatch(loginApi({ email: values.email, password: values.password }))
-		setIsLoading(false)
+		const response = await dispatch(loginApi({ email: values.email, password: values.password }))
+		if (response.meta.requestStatus === 'rejected') return
 
 		// Redirect to callback url or home
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
@@ -55,10 +51,8 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	}
 
 	const onRegisterFormSubmit = async (values: AccountDto) => {
-		// Register
-		setIsLoading(true)
-		await dispatch(registerApi({ email: values.email, password: values.password }))
-		setIsLoading(false)
+		const response = await dispatch(registerApi({ email: values.email, password: values.password }))
+		if (response.meta.requestStatus === 'rejected') return
 
 		// Redirect to callback url or home
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
@@ -81,12 +75,17 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 						</Route>
 					)}
 
+					{registerError && type == 'register' && (
+						<div className="mt-5">
+							<Alert datacy="alert-error" headline="Fehler" description={registerError} />
+						</div>
+					)}
+
 					<Button
 						className="mt-8 md:justify-center"
 						width="w-full"
 						datacy="submit-button"
 						icon="login"
-						loading={isLoading}
 						disabled={!(dirty && isValid)}
 						type="submit"
 					>

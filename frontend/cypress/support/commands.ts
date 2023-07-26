@@ -21,9 +21,27 @@ Cypress.Commands.add('mockLogin', () => {
 	}).as('mockRefreshToken')
 })
 
-Cypress.Commands.add('mockRegister', () => {
+Cypress.Commands.add('mockRegister', (options) => {
+	let body
+	let statusCode
+
+	if (options?.statusCode) {
+		statusCode = options.statusCode
+		body = {
+			error: 'Conflict',
+			message: options.errorMessage || 'Email is already taken.',
+			statusCode: options.statusCode,
+		}
+	} else {
+		statusCode = 200
+		body = {
+			fixture: 'auth/tokens.json',
+		}
+	}
+
 	cy.intercept('POST', `${apiUrl}/auth/register`, {
-		fixture: 'auth/tokens.json',
+		statusCode,
+		body,
 	}).as('mockRegister')
 })
 

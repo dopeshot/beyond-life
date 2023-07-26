@@ -39,6 +39,21 @@ describe('Auth', () => {
 				cy.url().should('include', '/profile/last-will')
 			})
 		})
+
+		describe('Error handling', () => {
+			it.only('should show error alert when email is already taken', () => {
+				cy.mockRegister({ statusCode: 409, errorMessage: 'Email is already taken.' })
+
+				cy.datacy('textinput-email-input').type('test@test.de')
+				cy.datacy('textinput-password-input').type('test123')
+
+				cy.datacy('submit-button').click()
+
+				cy.wait('@mockRegister')
+
+				cy.datacy('alert-error').should('be.visible')
+			})
+		})
 	})
 
 	describe('Logout', () => {

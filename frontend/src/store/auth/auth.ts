@@ -7,7 +7,7 @@ import {
 	saveSession,
 	setAxiosAuthHeader,
 } from '../../services/auth/session'
-import { SessionData, TokensResponse } from '../../types/auth'
+import { AuthErrorResponse, SessionData, TokensResponse } from '../../types/auth'
 
 export type AuthState = {
 	/** Check if user has session. */
@@ -16,12 +16,15 @@ export type AuthState = {
 	isLoading: boolean
 	/** Session data. */
 	sessionData: SessionData | null
+	/** Error message. */
+	registerError: string | null
 }
 
 const initialState: AuthState = {
 	isAuthenticated: false,
 	isLoading: true,
 	sessionData: null,
+	registerError: null,
 }
 
 /**
@@ -29,30 +32,36 @@ const initialState: AuthState = {
  * @param credentials credentials from user
  * @returns the tokens.
  */
-export const registerApi = createAsyncThunk(
-	'auth/register',
-	async ({ email, password }: { email: string; password: string }) => {
-		try {
-			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, { email, password })
-			const tokens: TokensResponse = await response.data
+export const registerApi = createAsyncThunk<
+	TokensResponse,
+	{ email: string; password: string },
+	{ rejectValue: AuthErrorResponse }
+>('auth/register', async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+	try {
+		const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, { email, password })
 
-			setAxiosAuthHeader(tokens.access_token)
+		const tokens: TokensResponse = await response.data
 
-			return tokens
-		} catch (error) {
+		setAxiosAuthHeader(tokens.access_token)
+
+		return tokens
+	} catch (error) {
+		if (axios.isAxiosError(error) && error.response) {
+			return rejectWithValue(error.response.data)
+		} else {
 			throw new Error('Register failed.')
 		}
 	}
-)
+})
 
 /**
  * Login a user and return the tokens.
  * @param credentials credentials from user
  * @returns the tokens.
  */
-export const loginApi = createAsyncThunk(
+export const loginApi = createAsyncThunk<TokensResponse, { email: string; password: string }>(
 	'auth/login',
-	async ({ email, password }: { email: string; password: string }) => {
+	async ({ email, password }) => {
 		try {
 			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, { email, password })
 			const tokens: TokensResponse = await response.data
@@ -61,7 +70,11 @@ export const loginApi = createAsyncThunk(
 
 			return tokens
 		} catch (error) {
-			throw new Error('Login failed.')
+			if (axios.isAxiosError(error) && error.response) {
+				throw new Error(error.response.data.message)
+			} else {
+				throw new Error('Login failed.')
+			}
 		}
 	}
 )
@@ -132,6 +145,7 @@ const authSlice = createSlice({
 			})
 			.addCase(refreshToken.fulfilled, (state, action) => {
 				state.isLoading = false
+				state.registerError = null
 				state.isAuthenticated = action.payload !== null
 				state.sessionData = action.payload
 			})
@@ -143,19 +157,32 @@ const authSlice = createSlice({
 				state.isLoading = true
 			})
 			.addCase(loginApi.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.registerError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
 				saveSession(state.sessionData)
+			})
+			.addCase(loginApi.rejected, (state) => {
 				state.isLoading = false
+				state.isAuthenticated = false
 			})
 			.addCase(registerApi.pending, (state) => {
 				state.isLoading = true
 			})
 			.addCase(registerApi.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.registerError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
 				saveSession(state.sessionData)
+			})
+			.addCase(registerApi.rejected, (state, action) => {
+				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
+					state.registerError = 'Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.'
+				}
 				state.isLoading = false
+				state.isAuthenticated = false
 			})
 	},
 })
