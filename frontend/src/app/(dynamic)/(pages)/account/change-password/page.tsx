@@ -1,6 +1,5 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { Alert } from '../../../../../components/Alert/Alert'
@@ -19,8 +18,6 @@ type ChangePasswordFormValues = {
  * Change Password Page.
  */
 const ChangePassword = () => {
-	const router = useRouter()
-
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
 	const [alert, setAlert] = useState<AlertResponse | null>(null)
