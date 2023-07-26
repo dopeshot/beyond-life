@@ -1,7 +1,6 @@
 export const routes = {
 	index: '/',
 	account: {
-		// register: '/account/register',
 		register: (options?: { funnel: boolean }) => {
 			if (!options) return '/account/register'
 
@@ -24,7 +23,6 @@ export const routes = {
 		settings: '/profile/settings',
 	},
 	lastWill: {
-		index: '/',
 		start: '/last-will/start',
 		auth: (options?: { id: string }) => {
 			if (!options) return '/last-will/auth'
