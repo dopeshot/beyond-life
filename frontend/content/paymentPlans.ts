@@ -19,9 +19,6 @@ export const PaymentPlans: PaymentPlanProps[] = [
 			{ text: 'Immer anpassbar', icon: 'check' },
 			{ text: 'Sicher verschlüsselt', icon: 'check' },
 		],
-		handleSubmit: () => {
-			'sigle'
-		},
 	},
 	{
 		title: 'Premium',
@@ -31,8 +28,5 @@ export const PaymentPlans: PaymentPlanProps[] = [
 			{ text: 'Immer anpassbar', icon: 'check' },
 			{ text: 'Sicher verschlüsselt', icon: 'check' },
 		],
-		handleSubmit: () => {
-			'family'
-		},
 	},
 ]
