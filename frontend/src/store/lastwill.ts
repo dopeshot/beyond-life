@@ -266,6 +266,11 @@ const lastWillSlice = createSlice({
 			state.data.common.matrimonialProperty = action.payload.matrimonialProperty
 			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
+		removeHeir: (state, action: PayloadAction<string>) => {
+			// use slice to remove heir
+			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
+			state.data.heirs.splice(heirIndex, 1)
+		},
 		resetLastWill: (state) => {
 			state.isLoading = false
 			state.isInitialized = false
@@ -295,4 +300,5 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage } = lastWillSlice.actions
+export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage, removeHeir } =
+	lastWillSlice.actions

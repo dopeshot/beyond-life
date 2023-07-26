@@ -10,7 +10,7 @@ import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
 import { ChildRelationShip, HeirsTypes, PersonMoreInfos } from '../../../../../store/last-will/heirs/state'
-import { setProgressKeys } from '../../../../../store/lastwill'
+import { removeHeir, setProgressKeys } from '../../../../../store/lastwill'
 import { DropdownButtonOptions } from '../../../../../types/form'
 import { Gender } from '../../../../../types/gender'
 import { Organisation, Person } from '../../../../../types/lastWill'
@@ -109,11 +109,14 @@ const Heirs = () => {
 	const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
 	const deleteHeirs = async () => {
-		if (selectedPerson !== null) {
-			// await services.deletePerson(selectedPerson)
-		} else if (selectedOrganisation !== null) {
-			// await services.deleteOrganisation(selectedOrganisation)
-		}
+		const isPerson = selectedPerson !== null
+		const isOrganisation = selectedOrganisation !== null
+
+		const id = isPerson ? selectedPerson.id : isOrganisation ? selectedOrganisation.id : null
+
+		if (id === null) return
+
+		dispatch(removeHeir(id))
 
 		setIsDeleteModalOpen(false)
 	}
