@@ -4,6 +4,7 @@ import headerBackground from '../../../../../assets/images/layout/headerBackgrou
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { PaymentSummaryTable } from '../../../../../components/PaymentSummaryTable/PaymentSummaryTable'
+import { routes } from '../../../../../services/routes/routes'
 
 /**
  * Return page after payment with stripe
@@ -23,12 +24,7 @@ const OrderConfirmation = () => {
 			</div>
 			<div className="flex w-full flex-col items-center px-8">
 				<PaymentSummaryTable tableData={tableData} />
-				<Route
-					href={'http://localhost:3000/last-will/editor/final?id=1'}
-					icon="arrow_forward"
-					kind="primary"
-					className="mb-8"
-				>
+				<Route href={routes.lastWill.final('1')} icon="arrow_forward" kind="primary" className="mb-8">
 					Weiter zum Testament
 				</Route>
 			</div>
