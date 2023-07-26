@@ -10,15 +10,14 @@ on:
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-ci.yml"
-      - ".github/workflows/docker-build-and-push.template.yml"
-      - ".github/workflows/setup.template.yaml"
+      - ".github/workflows/*.template.yml"
 
 jobs:
   setup:
-    uses: ./.github/workflows/setup.template.yaml
+    uses: ./.github/workflows/setup.template.yml
     with:
       context: frontend
-          
+
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
@@ -28,20 +27,18 @@ jobs:
         shell: bash
         working-directory: frontend
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: audit
-      run: npm audit --omit=dev
-
+      - name: audit
+        run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
     needs: setup
     strategy:
       matrix:
-        command: 
+        command:
           - te:cli
           - tc:cli
     defaults:
@@ -62,6 +59,9 @@ jobs:
       - name: node modules
         run: npm ci --audit:false --cache ~/.npm --prefer-offline
 
+      - name: fallback to babel
+        run: cp .ci.babelrc .babelrc
+
       - name: Cypress run
         uses: cypress-io/github-action@v5
         timeout-minutes: 15
@@ -70,7 +70,7 @@ jobs:
           build: npm run build
           start: npm run serve
           command: npm run ${{ matrix.command }}
-          
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -80,7 +80,26 @@ jobs:
             frontend/cypress/reports/*
             frontend/cypress/screenshots/*
             frontend/cypress/videos/*
-            frontend/coverage
+
+      - name: rename report
+        run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+
+  generate-codecov-badge:
+    needs: tests
+    uses: ./.github/workflows/codecov.template.yml
+    # Dont run this when merging into stable => Bot cannot commit to main
+    if: github.ref != 'stable' || github.base_ref != 'stable'
+    with:
+      context: frontend
+    secrets:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+      BOT_MAIL: ${{ secrets.BOT_MAIL }}
+      BOT_PAT: ${{ secrets.BOT_PAT }}
 
   docker-build-and-push:
     needs: tests

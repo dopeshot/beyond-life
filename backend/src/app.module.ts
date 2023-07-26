@@ -1,13 +1,20 @@
+import { applyRawBodyOnlyTo } from '@golevelup/nestjs-webhooks'
 import { TypegooseModule } from '@m8a/nestjs-typegoose'
-import { Module } from '@nestjs/common'
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ScheduleModule } from '@nestjs/schedule'
 import { AppController } from './app.controller'
 import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
 import { MailModule } from './mail/mail.module'
-import { SharedModule } from './shared/shared.module'
+import { PaymentsModule } from './payments/payments.module'
 import { ProfileModule } from './profile/profile.module'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
   imports: [
@@ -51,8 +58,16 @@ import { ProfileModule } from './profile/profile.module'
     DbModule,
     AuthModule,
     ProfileModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    applyRawBodyOnlyTo(consumer, {
+      method: RequestMethod.ALL,
+      path: 'payments/webhook',
+    })
+  }
+}
