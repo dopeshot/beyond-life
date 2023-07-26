@@ -1,5 +1,7 @@
 # beyond-life
 
+![frontend codecov](.github/badges/frontend-coverage.svg)
+
 ## Quick start
 
 To run the application locally simply run:
@@ -7,6 +9,12 @@ To run the application locally simply run:
 ```sh
 docker compose up -d
 ```
+
+**Stripe:**
+To perform test payments (not real ones), Stripe data has to be provided in the `.env` file.
+secrets, items and price_ids can be found in the [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard).
+
+The frontend also needs the public secret
 
 **Note:** `docker compose` is merely an alias for `docker-compose` which only exists in newer versions. Omitting the dash may not work for older docker versions.
 

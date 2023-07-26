@@ -8,7 +8,10 @@ import {
 import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { AuthService } from '../auth/auth.service'
+import { MailData } from '../db/entities/mail-event.entity'
 import { UserService } from '../db/services/user.service'
+import { MailTemplates } from '../mail/interfaces/mail.interface'
+import { MailScheduleService } from '../mail/services/scheduler.service'
 
 @Injectable()
 export class ProfileService {
@@ -16,6 +19,7 @@ export class ProfileService {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
+    private readonly mailService: MailScheduleService,
   ) {}
 
   async updatePassword(id: ObjectId, oldPassword: string, newPassword: string) {
@@ -61,6 +65,36 @@ export class ProfileService {
     } catch (error) {
       this.logger.warn(
         `Updated email for user did not receive verify email due to an error. The user update continues anyways. ${error}`,
+      )
+    }
+  }
+
+  async deleteProfile(id: ObjectId, password: string) {
+    const user = await this.userService.findOneById(id)
+
+    if (!user || !(await compare(password, user.password))) {
+      throw new UnauthorizedException()
+    }
+
+    await this.userService.deleteUserById(id)
+
+    if (!user.hasVerifiedEmail) return
+
+    const mailData: MailData = {
+      content: {
+        subject: 'Account gelöscht',
+        contentTemplate: MailTemplates.ACCOUNT_DELETED,
+      },
+      recipient: {
+        recipient: user.email,
+      },
+    }
+
+    try {
+      await this.mailService.scheduleMailNow(mailData)
+    } catch (error) {
+      this.logger.error(
+        `Could not send email regarding account deletion. Deletion will continue anyway.`,
       )
     }
   }

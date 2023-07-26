@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Arbutus+Slab&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+	--font-arbutus-slab: 'Arbutus Slab';
+	--font-plus-jakarta-sans: 'Plus Jakarta Sans';
+}
 
 /*
 Try to always use tailwinds utility classes instead of writing your own css.

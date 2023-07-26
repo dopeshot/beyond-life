@@ -47,3 +47,10 @@ cypress/downloads/*
 storybook-static/
 
 ### End of StorybookJs ###
+
+# nyc test coverage
+.nyc_output
+instrumented
+
+# babel
+.babelrc
