@@ -1,12 +1,13 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { routes } from '../../../../../services/routes/routes'
+import { forgotPassword } from '../../../../../services/api/resetPassword'
+import { AlertResponse } from '../../../../../types/api'
 
 type ResetPasswordFormValues = {
 	email: string
@@ -16,10 +17,9 @@ type ResetPasswordFormValues = {
  * Reset Password Page with enter email Form.
  */
 const ResetPassword = () => {
-	const router = useRouter()
-
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
+	const [alert, setAlert] = useState<AlertResponse | null>(null)
 
 	// Formik
 	const initalFormValues: ResetPasswordFormValues = {
@@ -37,10 +37,9 @@ const ResetPassword = () => {
 
 		// Simulate request
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const response = await forgotPassword(values.email)
+		setAlert(response)
 		setIsLoading(false)
-
-		router.push(routes.account.login())
 	}
 
 	return (
@@ -59,7 +58,7 @@ const ResetPassword = () => {
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
 				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
-						<Form>
+						<Form className="mb-4">
 							<TextInput name="email" labelText="E-Mail" placeholder="Geben Sie Ihre E-Mail Adresse ein." />
 							<Button
 								datacy="submit-button"
@@ -74,6 +73,15 @@ const ResetPassword = () => {
 						</Form>
 					)}
 				</Formik>
+
+				{alert && (
+					<Alert
+						headline={alert.headline}
+						icon={alert.status === 201 ? 'check_circle' : 'warning'}
+						color={alert.status === 201 ? 'green' : 'red'}
+						description={alert.message}
+					/>
+				)}
 			</main>
 		</div>
 	)

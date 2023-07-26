@@ -3,10 +3,12 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
+import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { routes } from '../../../../../services/routes/routes'
+import { changePassword } from '../../../../../services/api/resetPassword'
+import { AlertResponse } from '../../../../../types/api'
 
 type ChangePasswordFormValues = {
 	newPassword: string
@@ -21,6 +23,7 @@ const ChangePassword = () => {
 
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
+	const [alert, setAlert] = useState<AlertResponse | null>(null)
 
 	// Formik
 	const initalFormValues: ChangePasswordFormValues = {
@@ -29,9 +32,9 @@ const ChangePassword = () => {
 	}
 
 	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-		newPassword: string().required('Bitte geben Sie ein neues Password ein.'),
+		newPassword: string().required('Bitte geben Sie ein neues Passwort ein.'),
 		newPasswordConfirm: string()
-			.required('Bitte geben Sie ihr neues Password erneut ein.')
+			.required('Bitte geben Sie ihr neues Passwort erneut ein.')
 			.oneOf([ref('newPassword')], 'Passwörter müssen übereinstimmen.'),
 	})
 
@@ -40,10 +43,9 @@ const ChangePassword = () => {
 
 		// Simulate request
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const response = await changePassword(values.newPassword)
+		setAlert(response)
 		setIsLoading(false)
-
-		router.push(routes.account.login())
 	}
 
 	return (
@@ -56,7 +58,7 @@ const ChangePassword = () => {
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
 				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
-						<Form>
+						<Form className="mb-4">
 							<PasswordInput
 								name="newPassword"
 								labelText="Neues Passwort"
@@ -80,6 +82,15 @@ const ChangePassword = () => {
 						</Form>
 					)}
 				</Formik>
+
+				{alert && (
+					<Alert
+						headline={alert.headline}
+						icon={alert.status === 201 ? 'check_circle' : 'warning'}
+						color={alert.status === 201 ? 'green' : 'red'}
+						description={alert.message}
+					/>
+				)}
 			</main>
 		</div>
 	)
