@@ -89,7 +89,7 @@ jobs:
           echo >> comment.txt
           npx nyc report -t merged --reporter text |  sed -n 2,4p  >> comment.txt
           echo >> comment.txt
-          echo "[HTML Report]()" >> comment.txt
+          echo "[HTML Report](https://codecov.siebtesleben.de/${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }})" >> comment.txt
           echo >> comment.txt
           echo "<details open><summary> Full coverage report </summary>" >> comment.txt
           echo >> comment.txt
@@ -127,15 +127,18 @@ jobs:
           name: merged-coverage-report
           path: merged
 
+      - name: create dir
+        run: mkdir -p ./${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }}
+
       - name: generate html
         run: |
-          npx nyc report -t merged --reporter html --report-dir ./${{ steps.extract_branch.outputs.branch }}
+          npx nyc report -t merged --reporter html --report-dir ./${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }}
 
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
-          git add ./${{ steps.extract_branch.outputs.branch }}
+          git add ./${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }} 
           git commit -m "${{ inputs.context }} coverage for branch ${{ steps.extract_branch.outputs.branch}}" || echo "No changes to commit"
 
       - name: Push
