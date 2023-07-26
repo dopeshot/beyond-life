@@ -14,6 +14,8 @@ describe('Auth', () => {
 				cy.datacy('submit-button').click()
 
 				cy.wait('@mockLogin')
+
+				cy.url().should('include', '/profile/last-will')
 			})
 		})
 	})
@@ -33,12 +35,14 @@ describe('Auth', () => {
 				cy.datacy('submit-button').click()
 
 				cy.wait('@mockRegister')
+
+				cy.url().should('include', '/profile/last-will')
 			})
 		})
 	})
 
 	describe('Logout', () => {
-		it.only('should logout successfully', () => {
+		it('should logout successfully', () => {
 			cy.login({ route: '/profile/last-will' })
 
 			cy.datacy('profile-link-2').click()
