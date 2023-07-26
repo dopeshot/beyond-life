@@ -15,14 +15,11 @@ on:
         required: true
 
 jobs:
-  merge-coverage-and-create-badge:
+  merge-coverage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.BOT_PAT }}
-          ref: ${{ github.head_ref }}
 
       - uses: actions/download-artifact@v3
         with:
@@ -34,6 +31,26 @@ jobs:
 
       - name: output coverage report
         run: npx nyc report -t merged --reporter text
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: merged-coverage-report
+          path: merged/coverage.json
+
+  generate-and-commit-badge:
+    runs-on: ubuntu-latest
+    needs: merge-coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BOT_PAT }}
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: merged-coverage-report
+          path: merged
 
       - name: generate badge
         run: |
@@ -51,12 +68,29 @@ jobs:
       - name: Push
         run: git push
 
+  post-pr-comment:
+    runs-on: ubuntu-latest
+    needs: merge-coverage
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: merged-coverage-report
+          path: merged
+
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
+        id: extract_branch
+
       - name: Prepare comment
         # Overview with details as markdown
         run: |
           echo "# ${{ inputs.context }} Coverage" > comment.txt
           echo >> comment.txt
           npx nyc report -t merged --reporter text |  sed -n 2,4p  >> comment.txt
+          echo >> comment.txt
+          echo "[HTML Report]()" >> comment.txt
+          echo >> comment.txt
           echo "<details open><summary> Full coverage report </summary>" >> comment.txt
           echo >> comment.txt
           npx nyc report -t merged --reporter text |  tail -n +2 | head -n -1 >> comment.txt
@@ -71,3 +105,38 @@ jobs:
           filepath: comment.txt
           reactions: rocket
           comment_tag: ${{inputs.context}}codecov
+
+  generate-html-report-and-start-deploy:
+    runs-on: ubuntu-latest
+    needs: merge-coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: dopeshot/beyond-life-codecov
+          token: ${{ secrets.BOT_PAT }}
+          ref: main
+          #ref: ${{ github.head_ref }}
+
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
+        id: extract_branch
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: merged-coverage-report
+          path: merged
+
+      - name: generate html
+        run: |
+          npx nyc report -t merged --reporter html --report-dir ./${{ steps.extract_branch.outputs.branch }}
+
+      - name: Commit
+        run: |
+          git config user.name ${{ secrets.BOT_NAME }}
+          git config user.email ${{ secrets.BOT_MAIL }}
+          git add ./${{ steps.extract_branch.outputs.branch }}
+          git commit -m "${{ inputs.context }} coverage for branch ${{ steps.extract_branch.outputs.branch}}" || echo "No changes to commit"
+
+      - name: Push
+        run: git push
