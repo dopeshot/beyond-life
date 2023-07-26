@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Arbutus+Slab&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,38 +11,3 @@
 /*
 Try to always use tailwinds utility classes instead of writing your own css.
 */
-
-@font-face {
-	font-family: 'Arbutus Slab';
-	font-style: normal;
-	font-weight: 400;
-	src: url('/fonts/arbutus/ArbutusSlab-Regular.ttf') format('truetype');
-}
-
-@font-face {
-	font-family: 'Plus Jakarta Sans';
-	font-style: normal;
-	font-weight: 400;
-	src: url('/fonts/plusjakartasans/PlusJakartaSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
-	font-family: 'Plus Jakarta Sans';
-	font-style: normal;
-	font-weight: 500;
-	src: url('/fonts/plusjakartasans/PlusJakartaSans-Medium.ttf') format('truetype');
-}
-
-@font-face {
-	font-family: 'Plus Jakarta Sans';
-	font-style: normal;
-	font-weight: 600;
-	src: url('/fonts/plusjakartasans/PlusJakartaSans-SemiBold.ttf') format('truetype');
-}
-
-@font-face {
-	font-family: 'Plus Jakarta Sans';
-	font-style: normal;
-	font-weight: 700;
-	src: url('/fonts/plusjakartasans/PlusJakartaSans-Bold.ttf') format('truetype');
-}
