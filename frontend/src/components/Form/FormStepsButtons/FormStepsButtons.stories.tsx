@@ -13,5 +13,7 @@ type Story = StoryObj<FormStepsButtonsProps>
 export const Default: Story = {
 	args: {
 		previousOnClick: async () => action(`previous button clicked`)(''),
+		previousHref: '/previous',
+		nextHref: '/next',
 	},
 }

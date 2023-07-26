@@ -128,7 +128,7 @@ const Heirs = () => {
 					Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
 				</p>
 			) : (
-				<table className="mb-4 mt-2 w-full border-collapse md:mt-8">
+				<table className="mb-4 mt-2 w-full table-fixed border-collapse md:mt-8">
 					<thead>
 						{/* Table Header */}
 						<tr>

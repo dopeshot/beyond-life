@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { Form, Formik } from 'formik'
-import searchIcon from '../../../assets/icons/search/search.svg'
 import { TextInput, TextInputProps } from './TextInput'
 
 const meta: Meta<typeof TextInput> = {
@@ -40,9 +39,7 @@ export const WithIcon: Story = {
 		name: 'name',
 		labelText: 'Label',
 		helperText: 'Helper Text',
-		placeholder: 'Placeholder',
-		width: 'w-80',
-		icon: searchIcon,
+		icon: 'search',
 		iconOnClick: () => console.log('Icon Clicked'),
 	},
 }

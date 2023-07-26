@@ -194,7 +194,7 @@ export const fetchLastWillState = createAsyncThunk(
 								street: 'GL_STORE_ORGANISATION_STREET',
 							},
 						],
-					} satisfies LastWillState['data']),
+					} as LastWillState['data']),
 				10
 			)
 		)
