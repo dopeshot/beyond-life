@@ -2,7 +2,6 @@
 import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
-import { heirsTypes } from '../../../../../../content/dropdownOptions'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -13,6 +12,7 @@ import { useLastWillContext } from '../../../../../store/last-will/LastWillConte
 import { SuccessionFormPayload } from '../../../../../store/last-will/succession/actions'
 import { DropdownButtonOptions } from '../../../../../types/form'
 import { SidebarPages } from '../../../../../types/sidebar'
+import { heirsTypes } from '../heirs/page'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
 const NEXT_LINK = routes.lastWill.final('1')
@@ -144,7 +144,7 @@ const Succession = () => {
 												<Headline level={2} hasMargin={false} size="text-xl">
 													{currentPerson?.firstName} {currentPerson?.lastName}
 												</Headline>
-												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
+												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other']}</p>
 												<div className="w-full">
 													<TextInput name={`persons.${index}.percentage`} labelText="Prozentualer Anteil des Erbes" />
 												</div>
@@ -222,7 +222,7 @@ const Succession = () => {
 												<Headline level={2} hasMargin={false} size="text-xl">
 													{currentOrganisation?.name}
 												</Headline>
-												<p className="text-gray-500">{heirsTypes['organisation'].displayType}</p>
+												<p className="text-gray-500">{heirsTypes['organisation']}</p>
 												<div className="w-full">
 													<TextInput
 														name={`organisations.${index}.percentage`}
