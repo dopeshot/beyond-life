@@ -63,12 +63,12 @@ jobs:
         run: npm run ${{ matrix.command }}
 
       - name: rename report
-        run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+        run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('backend/coverage/coverage-final.json') }}.json
 
       - uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
+          path: backend/coverage/coverage-final-${{ hashFiles('backend/coverage/coverage-final.json') }}.json
 
   generate-codecov-badge:
     needs: tests
