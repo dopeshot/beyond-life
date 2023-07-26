@@ -1,8 +1,8 @@
 import 'material-symbols'
 import '../../app/globals.css'
-import { PaymentSummaryTable, tableSection } from './PaymentSummaryTable'
+import { PaymentSummaryTable, TableSection } from './PaymentSummaryTable'
 
-const tableData: tableSection[] = [
+const tableData: TableSection[] = [
 	{
 		title: 'TestSection',
 		tableRows: [

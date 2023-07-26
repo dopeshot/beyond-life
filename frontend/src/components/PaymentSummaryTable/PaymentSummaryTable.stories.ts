@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { PaymentSummaryTable, tableSection } from './PaymentSummaryTable'
+import { PaymentSummaryTable, TableSection } from './PaymentSummaryTable'
 
-const tableData: tableSection[] = [
+const tableData: TableSection[] = [
 	{
 		title: 'Zusammenfassung',
 		tableRows: [

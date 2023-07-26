@@ -1,6 +1,6 @@
-import { tableSection } from '../src/components/PaymentSummaryTable/PaymentSummaryTable'
+import { TableSection } from '../src/components/PaymentSummaryTable/PaymentSummaryTable'
 
-export const tableData: tableSection[] = [
+export const tableData: TableSection[] = [
 	{
 		title: 'Zusammenfassung',
 		tableRows: [
