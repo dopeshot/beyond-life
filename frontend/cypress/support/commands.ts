@@ -1,5 +1,8 @@
 /// <reference types="cypress" />
 
+import { LOCAL_STORAGE_KEY } from '../../src/services/auth/session'
+import sessiondata from '../fixtures/auth/sessionData.json'
+
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
 
 /**** Command Helper ****/
@@ -28,21 +31,10 @@ Cypress.Commands.add('mockRegister', () => {
 Cypress.Commands.add('login', ({ route, visitOptions }) => {
 	cy.mockLogin()
 
-	cy.visit('/account/login', visitOptions)
-
-	cy.datacy('textinput-email-input').type('test@gmail.com')
-	cy.datacy('textinput-password-input').type('test123')
-
-	cy.datacy('submit-button').click()
-
-	cy.wait('@mockLogin')
-
-	cy.visit(route, visitOptions)
-
-	// cy.visit(route, {
-	// 	...visitOptions,
-	// 	onBeforeLoad: (window) => {
-	// 		window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessiondata))
-	// 	},
-	// })
+	cy.visit(route, {
+		...visitOptions,
+		onBeforeLoad: (window) => {
+			window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessiondata))
+		},
+	})
 })
