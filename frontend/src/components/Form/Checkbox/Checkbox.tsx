@@ -41,7 +41,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 				onClose={() => setIsCheckboxModalOpen(false)}
 				headline={modalHeadline ?? 'Information:'}
 			>
-				{modalContent}
+				<div className="max-w-lg">{modalContent}</div>
 			</Modal>
 			{labelText && (
 				<Label
