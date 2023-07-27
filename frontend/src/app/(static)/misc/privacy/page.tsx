@@ -141,19 +141,6 @@ const Privacy = () => {
 									Seite regelmäßig zu besuchen, um über eventuelle Änderungen informiert zu sein.
 								</p>
 							</div>
-
-							{/* Contact */}
-							<div className="mb-10 mt-20">
-								<Headline level={2} size="text-2xl">
-									Haben Sie noch Fragen?
-								</Headline>
-								<p className="mb-2 text-gray-700 md:mb-4">
-									Haben Sie immer noch unbeantwortete Fragen und möchten Sie Kontakt aufnehmen?
-								</p>
-								<Route href={routes.misc.imprint} kind="secondary">
-									Kontakt aufnehmen
-								</Route>
-							</div>
 						</div>
 					</div>
 				</div>
