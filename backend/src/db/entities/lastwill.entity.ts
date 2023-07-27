@@ -12,29 +12,35 @@ type PersonType =
   | 'organisation'
 type Gender = 'male' | 'female' | 'divers'
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
+type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
+const MatrimonialPropertyValues = ['communityOfGain', 'separationOfProperty']
 
-class Common {
-  // @prop({ required: true })
-  // @Expose()
-  // @ApiProperty({ description: 'Id of the testament', example: 1 })
-  // testamentId: number
-
-  // isLoading: boolean // Thats only in frontend type
+export class Common {
   @prop({ required: false })
   @Expose()
   @ApiProperty({
-    description: 'Is is a Berlin Will',
+    description: 'Is it a Berlin Will',
     example: false,
   })
-  berlinWill?: boolean
+  isBerlinWill?: boolean
 
+  @Expose()
   @prop({ required: false })
+  @ApiProperty({
+    description: 'Does the partner have a german citizenship',
+    example: false,
+  })
+  isPartnerGermanCitizenship?: boolean
+
+  @prop({ required: false, enum: MatrimonialPropertyValues })
   @Expose()
   @ApiProperty({
     description: 'How to handle the property',
     example: 'communityOfGain',
+    enum: MatrimonialPropertyValues,
+    type: MatrimonialPropertyValues,
   })
-  matrimonialProperty?: 'communityOfGain' | 'separationOfProperty'
+  matrimonialProperty?: MatrimonialProperty
 
   @prop({ required: true, default: [] })
   @Expose()
@@ -108,6 +114,7 @@ class FinancialAsset {
 }
 
 export class LastWill {
+  @Expose()
   _id: ObjectId
 
   @prop({ required: true, type: Common })
