@@ -13,11 +13,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiBearerAuth } from '@nestjs/swagger'
+import { LastWillsService } from '../db/services/lastwills.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
-import { LastWillsService } from './lastwills.service'
 
 @UseGuards(JwtGuard)
 @Controller('lastwill')

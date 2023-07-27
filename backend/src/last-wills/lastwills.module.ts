@@ -4,11 +4,10 @@ import { DbModule } from '../db/db.module'
 import { ProfileModule } from '../profile/profile.module'
 import { SharedModule } from '../shared/shared.module'
 import { LastWillsController } from './lastwills.controller'
-import { LastWillsService } from './lastwills.service'
 
 @Module({
   imports: [ProfileModule, SharedModule, AuthModule, DbModule],
   controllers: [LastWillsController],
-  providers: [LastWillsService],
+  providers: [],
 })
 export class LastWillsModule {}
