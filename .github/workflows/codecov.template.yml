@@ -118,14 +118,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: coverage-report
-          path: ${{ inputs.context }}/coverage
-
-      - name: goto context
-        run: cd ${{ inputs.context }}
+          path: ${{ inputs.context }}/merged
 
       - name: generate html
         run: |
-          npx nyc report -t merged --reporter html --report-dir ./coverage-html
+          npx nyc report -t ${{ inputs.context }}/merged --reporter html --report-dir ${{ inputs.context }}/coverage-html
 
       - uses: actions/upload-artifact@v3
         with:
