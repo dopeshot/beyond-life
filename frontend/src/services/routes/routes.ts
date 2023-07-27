@@ -55,6 +55,6 @@ export const routes = {
 			single: (slug: string) => `/misc/faq/${slug}`,
 		},
 		imprint: '/misc/imprint',
-		privacy: '/misc/privacy-policy',
+		privacy: '/misc/privacy',
 	},
 }
