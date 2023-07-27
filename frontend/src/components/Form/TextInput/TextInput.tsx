@@ -20,6 +20,8 @@ export type TextInputProps = {
 	iconOnClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 	/** Custom datacy for testing. */
 	datacy?: string
+	/** If true adds bottom margin. */
+	hasBottomMargin?: boolean
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 /**
@@ -35,10 +37,11 @@ export const TextInput: React.FC<TextInputProps> = ({
 	datacy,
 	icon,
 	iconOnClick,
+	hasBottomMargin: hasMargin = false,
 	...props
 }) => {
 	return (
-		<div className={`${width} mb-2 md:mb-4`}>
+		<div className={`${width} ${hasMargin ?? 'mb-2 md:mb-4'}`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
 					<div className="relative flex flex-col justify-center gap-1">

@@ -37,7 +37,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 				</Headline>
 				<TextInput
 					width="w-20"
-					hasMargin={false}
+					hasBottomMargin={false}
 					onClick={(e) => e.preventDefault()}
 					name={`share-${name}`}
 					value={`${share}%`}
