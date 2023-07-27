@@ -9,7 +9,7 @@ export type TextInputProps = {
 	/** Unique name for the input. */
 	name: string
 	/** Label text above the input field to inform users what the field is about. */
-	labelText: string
+	labelText?: string
 	/** Shows * char on label when true. */
 	inputRequired?: boolean
 	/** Provides help on how to fill in the field. */
