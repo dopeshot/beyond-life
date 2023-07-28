@@ -62,29 +62,30 @@ export const registerApi = createAsyncThunk<
  * @param credentials credentials from user
  * @returns the tokens.
  */
-export const loginApi = createAsyncThunk<TokensResponse, { email: string; password: string }>(
-	'auth/login',
-	async ({ email, password }) => {
-		try {
-			const response = await axios.post<TokensResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
-				email,
-				password,
-			})
+export const loginApi = createAsyncThunk<
+	TokensResponse,
+	{ email: string; password: string },
+	{ rejectValue: AuthErrorResponse }
+>('auth/login', async ({ email, password }, { rejectWithValue }) => {
+	try {
+		const response = await axios.post<TokensResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+			email,
+			password,
+		})
 
-			const tokens = response.data
+		const tokens = response.data
 
-			setAxiosAuthHeader(tokens.access_token)
+		setAxiosAuthHeader(tokens.access_token)
 
-			return tokens
-		} catch (error) {
-			if (axios.isAxiosError(error) && error.response) {
-				throw new Error(error.response.data.message)
-			} else {
-				throw new Error('Login failed.')
-			}
+		return tokens
+	} catch (error) {
+		if (axios.isAxiosError(error) && error.response) {
+			return rejectWithValue(error.response.data)
+		} else {
+			throw new Error('Login failed.')
 		}
 	}
-)
+})
 
 /**
  * Get session data from local storage and update the access token if it has expired.
@@ -173,6 +174,7 @@ const authSlice = createSlice({
 			.addCase(loginApi.rejected, (state) => {
 				state.isLoading = false
 				state.isAuthenticated = false
+				// TODO: Add error message to frontend
 			})
 			.addCase(registerApi.pending, (state) => {
 				state.isLoading = true
