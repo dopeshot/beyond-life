@@ -15,16 +15,6 @@ import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 import { determineHeirRelationship, getPersonAddHeirsOptions } from './heirs'
 
-export const heirsTypes = {
-	mother: 'Mutter',
-	father: 'Vater',
-	child: 'Kind',
-	siblings: 'Geschwisterteil',
-	other: 'Andere Person',
-	organisation: 'Organisation',
-	partner: 'Partner',
-} as const
-
 /**
  * Heirs Page
  */
@@ -89,8 +79,8 @@ const Heirs = () => {
 					<thead>
 						{/* Table Header */}
 						<tr>
-							<th className="w-11/12"></th>
-							<th className="w-1/12"></th>
+							<th className="w-10/12"></th>
+							<th className="w-2/12"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -102,12 +92,12 @@ const Heirs = () => {
 
 							return (
 								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
-									<td className="pr-4">
-										<p className="font-bold">{heir.name}</p>
+									<td className="pr-4" title={heir.name}>
+										<p className="truncate font-bold">{heir.name}</p>
 										<p>{determineHeirRelationship(heir)}</p>
 									</td>
 									<td className="p-4">
-										<div className="flex">
+										<div className="flex justify-end">
 											<IconButton
 												datacy={`${colType}-editbutton-${heir.name}`}
 												onClick={() => {
