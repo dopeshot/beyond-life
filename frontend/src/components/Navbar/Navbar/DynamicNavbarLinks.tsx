@@ -13,9 +13,9 @@ export const DynamicNavbarLinks: React.FC = () => {
 
 	const dispatch = useAppDispatch()
 	const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
-	const isLoading = useAppSelector((state) => state.auth.isLoading)
+	const isInitialized = useAppSelector((state) => state.auth.isInitialized)
 
-	if (isLoading)
+	if (!isInitialized)
 		return (
 			<>
 				<li className="order-1 py-[10px] md:order-none md:ml-auto">

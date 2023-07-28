@@ -13,8 +13,8 @@ import { AuthErrorResponse, SessionData, TokensResponse } from '../../types/auth
 export type AuthState = {
 	/** Check if user has session. */
 	isAuthenticated: boolean
-	/** Check if auth context is loading. */
-	isLoading: boolean
+	/** Check if auth context is initialized. */
+	isInitialized: boolean
 	/** Session data. */
 	sessionData: SessionData | null
 	/** Error message. */
@@ -23,7 +23,7 @@ export type AuthState = {
 
 const initialState: AuthState = {
 	isAuthenticated: false,
-	isLoading: true,
+	isInitialized: false,
 	sessionData: null,
 	error: null,
 }
@@ -128,7 +128,7 @@ const authSlice = createSlice({
 			state.error = null
 		},
 		login: (state, action: PayloadAction<SessionData>) => {
-			state.isLoading = false
+			state.isInitialized = true
 			state.isAuthenticated = true
 			state.sessionData = action.payload
 
@@ -142,29 +142,29 @@ const authSlice = createSlice({
 			state.isAuthenticated = false
 			state.sessionData = null
 			state.error = null
-			state.isLoading = false
+			state.isInitialized = true
 		},
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(refreshToken.pending, (state) => {
-				state.isLoading = true
+				state.isInitialized = false
 			})
 			.addCase(refreshToken.fulfilled, (state, action) => {
-				state.isLoading = false
+				state.isInitialized = true
 				state.error = null
 				state.isAuthenticated = action.payload !== null
 				state.sessionData = action.payload
 			})
 			.addCase(refreshToken.rejected, (state) => {
-				state.isLoading = false
+				state.isInitialized = true
 				state.isAuthenticated = false
 			})
 			.addCase(loginApi.pending, (state) => {
-				state.isLoading = true
+				state.isInitialized = false
 			})
 			.addCase(loginApi.fulfilled, (state, action) => {
-				state.isLoading = false
+				state.isInitialized = true
 				state.error = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
@@ -174,14 +174,14 @@ const authSlice = createSlice({
 				if (action.payload?.message === 'Unauthorized' && action.payload?.statusCode === 401) {
 					state.error = 'Hoppla! Die von Ihnen eingegebene E-Mail oder das Passwort ist falsch.'
 				}
-				state.isLoading = false
+				state.isInitialized = true
 				state.isAuthenticated = false
 			})
 			.addCase(registerApi.pending, (state) => {
-				state.isLoading = true
+				state.isInitialized = false
 			})
 			.addCase(registerApi.fulfilled, (state, action) => {
-				state.isLoading = false
+				state.isInitialized = true
 				state.error = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
@@ -191,7 +191,7 @@ const authSlice = createSlice({
 				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
 					state.error = 'Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.'
 				}
-				state.isLoading = false
+				state.isInitialized = true
 				state.isAuthenticated = false
 			})
 	},

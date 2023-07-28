@@ -15,16 +15,16 @@ import { useAppSelector } from '../../store/hooks'
 const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 'guest') => {
 	// eslint-disable-next-line
 	return function NewComponent(props: any) {
-		const isLoading = useAppSelector((state) => state.auth.isLoading)
+		const isInitialized = useAppSelector((state) => state.auth.isInitialized)
 		const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 
-		if (isLoading) return <div className="container mt-5">Loading...</div>
+		if (!isInitialized) return <div className="container mt-5">Loading...</div>
 
-		if (routeType === 'protected' && !isAuthenticated && !isLoading) {
+		if (routeType === 'protected' && !isAuthenticated && isInitialized) {
 			redirect(routes.account.login(), RedirectType.replace)
 		}
 
-		if (routeType === 'guest' && isAuthenticated && !isLoading) {
+		if (routeType === 'guest' && isAuthenticated && isInitialized) {
 			redirect(routes.index, RedirectType.replace)
 		}
 
