@@ -12,8 +12,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
-import { LastWill } from '../db/entities/lastwill.entity'
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { LastWill, LastWillMetadata } from '../db/entities/lastwill.entity'
 import { LastWillsService } from '../db/services/lastwills.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
@@ -31,8 +37,12 @@ export class LastWillsController {
 
   @Post()
   @ApiCreatedResponse({
-    description: 'The last will has been successfully created.',
+    description: 'The last will has been successfully created',
     type: LastWill,
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Unauthorized: Either not logged in or already too many last wills',
   })
   async createOne(
     @Body() createLastWillDto: CreateLastWillDto,
@@ -46,10 +56,19 @@ export class LastWillsController {
   }
 
   @Get()
+  @ApiOkResponse({
+    description: 'Lastwills metadata array',
+    type: LastWillMetadata,
+    isArray: true,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized to get last wills metadata',
+  })
   async findAllMetadataByUser(@Req() { user }: RequestWithJWTPayload) {
-    // TODO: use Serializer to only send relevant metadata
-    const metadataArray = await this.lastWillsService.findAllMetadataByUser(
-      user.id,
+    const metadataArray = await this.lastWillsService.findAllByUser(user.id)
+    return metadataArray.map(
+      (metadata) =>
+        new LastWillMetadata({ ...metadata, testator: metadata.testator.name }),
     )
   }
 
