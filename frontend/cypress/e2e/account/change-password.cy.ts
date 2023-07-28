@@ -23,3 +23,5 @@ describe('Password Change Page', () => {
 		})
 	})
 })
+
+export { }
