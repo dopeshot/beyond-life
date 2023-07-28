@@ -36,11 +36,14 @@ export const registerApi = createAsyncThunk<
 	TokensResponse,
 	{ email: string; password: string },
 	{ rejectValue: AuthErrorResponse }
->('auth/register', async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+>('auth/register', async ({ email, password }, { rejectWithValue }) => {
 	try {
-		const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, { email, password })
+		const response = await axios.post<TokensResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
+			email,
+			password,
+		})
 
-		const tokens: TokensResponse = await response.data
+		const tokens = response.data
 
 		setAxiosAuthHeader(tokens.access_token)
 
@@ -63,8 +66,12 @@ export const loginApi = createAsyncThunk<TokensResponse, { email: string; passwo
 	'auth/login',
 	async ({ email, password }) => {
 		try {
-			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, { email, password })
-			const tokens: TokensResponse = await response.data
+			const response = await axios.post<TokensResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+				email,
+				password,
+			})
+
+			const tokens = response.data
 
 			setAxiosAuthHeader(tokens.access_token)
 

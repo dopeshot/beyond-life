@@ -55,7 +55,7 @@ export const setAxiosAuthHeader = (accessToken: string): void => {
  */
 export const refreshTokenApi = async (refreshToken: string): Promise<TokensResponse | null> => {
 	try {
-		const response = await axios.post(
+		const response = await axios.post<TokensResponse>(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refresh-token`,
 			{
 				refresh_token: refreshToken,
@@ -66,7 +66,7 @@ export const refreshTokenApi = async (refreshToken: string): Promise<TokensRespo
 				},
 			}
 		)
-		const tokens: TokensResponse = await response.data
+		const tokens = response.data
 
 		return tokens
 	} catch (error) {
