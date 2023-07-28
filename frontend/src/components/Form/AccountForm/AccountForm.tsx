@@ -41,11 +41,11 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		password: string().required('Password ist erforderlich.'),
 	})
 
+	// TODO: move these blocks together
 	const onLoginFormSubmit = async (values: AccountDto) => {
 		const response = await dispatch(loginApi({ email: values.email, password: values.password }))
 		if (response.meta.requestStatus === 'rejected') return
 
-		// Redirect to callback url or home
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
 		router.push(callbackUrl)
 	}
@@ -54,7 +54,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		const response = await dispatch(registerApi({ email: values.email, password: values.password }))
 		if (response.meta.requestStatus === 'rejected') return
 
-		// Redirect to callback url or home
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
 		router.push(callbackUrl)
 	}
