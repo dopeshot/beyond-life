@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { getPersonAddHeirsOptions } from '../../../../../../content/checkboxOptions'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -12,7 +13,6 @@ import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
 import { HeirsTypes } from '../../../../../store/last-will/heirs/state'
 import { removeHeir, setProgressKeys } from '../../../../../store/lastwill'
-import { DropdownButtonOptions } from '../../../../../types/form'
 import { Gender } from '../../../../../types/gender'
 import { Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
@@ -64,14 +64,6 @@ const determineHeirRelationship = (heir: Person | Organisation) => {
 		partner: 'Partner*in',
 	}[heir.type]
 }
-
-export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
-	Object.entries(heirsTypes).map(([type, label]) => ({
-		onClick: () => setDropdownOption(type as HeirsTypes),
-		label: `${label} hinzufügen`,
-	}))
-
-export type SetDropdownOptionFunction = (type: HeirsTypes) => void
 
 /**
  * Heirs Page
