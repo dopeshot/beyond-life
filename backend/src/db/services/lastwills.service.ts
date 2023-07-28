@@ -20,9 +20,10 @@ export class LastWillsService {
       accountId: userId,
     })
     const plan = 'single' // TODO: add plan to auth user or make userService request here
-    if (lastWillCount >= paymentPlans[plan])
+    const allowedWills = Math.abs(paymentPlans[plan])
+    if (lastWillCount >= allowedWills)
       throw new UnauthorizedException(
-        `Exceeding allowed last wills: ${paymentPlans[plan]}`,
+        `Exceeding allowed last wills: ${allowedWills}`,
       )
 
     return await this.lastWillModel.create({
