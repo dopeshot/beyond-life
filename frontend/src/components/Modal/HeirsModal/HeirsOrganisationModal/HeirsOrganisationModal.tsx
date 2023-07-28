@@ -1,7 +1,6 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
 import { ObjectSchema, object, string } from 'yup'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Organisation } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
@@ -31,8 +30,6 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	onClose,
 	editOrganisation,
 }) => {
-	const { lastWill, services } = useLastWillContext()
-
 	const initialFormValues: OrganisationFormPayload = {
 		id: editOrganisation?.id ?? nanoid(),
 		name: editOrganisation?.name ?? '',
@@ -116,7 +113,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 						<Button
 							datacy="button-submit"
 							type="submit"
-							loading={lastWill.common.isLoading}
+							loading={false} /** TODO */
 							className="mb-4 md:mb-0"
 							icon="check"
 						>
