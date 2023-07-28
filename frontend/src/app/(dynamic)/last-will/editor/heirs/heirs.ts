@@ -1,6 +1,15 @@
 import { DropdownButtonOptions } from '../../../../../types/form'
 import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
-import { heirsTypes } from './page'
+
+export const heirsTypes = {
+	mother: 'Mutter',
+	father: 'Vater',
+	child: 'Kind',
+	siblings: 'Geschwisterteil',
+	other: 'Andere Person',
+	organisation: 'Organisation',
+	partner: 'Partner',
+} as const
 
 export const determineHeirRelationship = (heir: Person | Organisation) => {
 	const isPerson = heir.type !== 'organisation'

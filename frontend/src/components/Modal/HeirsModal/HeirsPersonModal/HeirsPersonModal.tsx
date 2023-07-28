@@ -3,8 +3,7 @@ import { Form, Formik } from 'formik'
 import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
-import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
-import { PersonMoreInfos } from '../../../../store/last-will/heirs/state'
+import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/heirs'
 import { Gender } from '../../../../types/gender'
 import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -84,7 +83,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 		childRelationShip: string<ChildRelationShip>(),
 		ownChild: array(),
-		moreInfos: mixed<PersonMoreInfos[]>(),
+		moreInfos: mixed<('isHandicapped' | 'isInsolvent')[]>(),
 		type: string<PersonType>().required(),
 	})
 
