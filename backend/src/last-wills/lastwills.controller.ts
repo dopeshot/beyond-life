@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -15,6 +17,7 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -73,13 +76,8 @@ export class LastWillsController {
   }
 
   @Get(':id')
-  @ApiOkResponse({
-    description: 'Full last will',
-    type: LastWill,
-  })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized to get last will',
-  })
+  @ApiOkResponse({ description: 'Full last will', type: LastWill })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized to get last will' })
   async findFullById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
@@ -88,6 +86,7 @@ export class LastWillsController {
     return new LastWill(fullLastWill)
   }
 
+  // TODO: implement in other issue
   @Get(':id/fulltext')
   async getFullTextLastWill(
     @Param('id') id: string,
@@ -97,17 +96,11 @@ export class LastWillsController {
       id,
       user.id,
     )
-    // TODO: implement in other issue
   }
 
   @Put(':id')
-  @ApiOkResponse({
-    description: 'Updated last will',
-    type: LastWill,
-  })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized to update last will',
-  })
+  @ApiOkResponse({ description: 'Updated last will', type: LastWill })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized to update last will' })
   async updateOneById(
     @Param('id') id: string,
     @Body() updateLastWillDto: UpdateLastWillDto,
@@ -122,6 +115,9 @@ export class LastWillsController {
   }
 
   @Delete(':id')
+  @ApiNoContentResponse({ description: 'Last will deleted' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized to delete last will' })
+  @HttpCode(HttpStatus.NO_CONTENT)
   async deleteOneById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
