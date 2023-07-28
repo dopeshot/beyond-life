@@ -71,7 +71,13 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 
 						<div className="flex gap-x-3">
 							<div className="w-2/3">
-								<TextInput name="street" inputRequired labelText="Straße" placeholder="Straße" />
+								<TextInput
+									name="street"
+									inputRequired
+									labelText="Straße"
+									placeholder="Straße"
+									autoComplete="street-address"
+								/>
 							</div>
 							<div className="w-1/3">
 								<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
@@ -80,7 +86,13 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 
 						<div className="flex gap-x-3">
 							<div className="w-1/3">
-								<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+								<TextInput
+									name="zipCode"
+									inputRequired
+									labelText="Postleitzahl"
+									placeholder="Postleitzahl"
+									autoComplete="postal-code"
+								/>
 							</div>
 							<div className="w-2/3">
 								<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />

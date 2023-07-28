@@ -20,8 +20,8 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const data = {
 	name: 'birthday',
-    labelText: 'Geburtsdatum',
-    required: true,
+	labelText: 'Geburtsdatum',
+	required: true,
 }
 
 describe('Datepicker', () => {
@@ -33,23 +33,23 @@ describe('Datepicker', () => {
 		)
 	})
 
-    it('should initial set placeholder', () => {
+	it('should initial set placeholder', () => {
 		cy.datacy(`${data.name}-datepicker-div`).should('contain', data.labelText)
 	})
 
 	it('should set inital value', () => {
-		cy.datacy(`${data.name}-datepicker-input`).should('have.value', initialValues.birthday)
+		cy.datacy(`datepicker-${data.name}-input`).should('have.value', initialValues.birthday)
 	})
 
 	it('should set correct date when choose it', () => {
 		const dateToSet = '2023-07-22'
 
-		cy.datacy(`${data.name}-datepicker-input`).type(dateToSet).should('have.value', dateToSet)
+		cy.datacy(`datepicker-${data.name}-input`).type(dateToSet).should('have.value', dateToSet)
 	})
 
 	it('should clear date when clearing input', () => {
 		const dateToSet = '2023-07-22'
 
-		cy.datacy(`${data.name}-datepicker-input`).type(dateToSet).clear().should('have.value', '')
+		cy.datacy(`datepicker-${data.name}-input`).type(dateToSet).clear().should('have.value', '')
 	})
 })

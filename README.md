@@ -1,6 +1,6 @@
 # beyond-life
 
-![frontend codecov](.github/badges/frontend-coverage.svg)
+![frontend codecov](.github/badges/frontend-coverage.svg) ![backend codecov](.github/badges/backend-coverage.svg)
 
 ## Quick start
 
