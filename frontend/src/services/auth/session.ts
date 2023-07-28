@@ -55,6 +55,14 @@ export const getSession = (): SessionData | null => {
 }
 
 /**
+ * Check if the user has a session.
+ * @returns true if the user has a session, false otherwise
+ */
+export const hasSession = (): boolean => {
+	return getSession() !== null
+}
+
+/**
  * Set the authorization header for axios.
  * @param accessToken access token
  */
