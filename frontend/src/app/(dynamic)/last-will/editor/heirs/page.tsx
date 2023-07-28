@@ -5,11 +5,12 @@ import { DropdownButton } from '../../../../../components/ButtonsAndLinks/Dropdo
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
+import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { ChildRelationShip, HeirsTypes, PersonMoreInfos } from '../../../../../store/last-will/heirs/state'
+import { HeirsTypes } from '../../../../../store/last-will/heirs/state'
 import { removeHeir, setProgressKeys } from '../../../../../store/lastwill'
 import { DropdownButtonOptions } from '../../../../../types/form'
 import { Gender } from '../../../../../types/gender'
@@ -17,19 +18,21 @@ import { Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 export type PersonFormPayload = {
-	id: number | null
+	id: string
 	name?: string
 	gender?: Gender
-	dateOfBirth?: string
-	placeOfBirth?: string
+	birthDate?: string
+	birthPlace?: string
+
 	street?: string
 	houseNumber?: string
-	zipCode?: number | string // TODO(Zoe-Bot): fix zip code only to be a number, doesn't work with inital value when only number.
+	zipCode?: string
 	city?: string
-	moreInfos?: PersonMoreInfos[]
-	childRelationShip?: ChildRelationShip
-	ownChild?: string[]
-	heirsType: HeirsTypes
+
+	// moreInfos?: PersonMoreInfos[]
+	// childRelationShip?: ChildRelationShip
+	// ownChild?: string[]
+	// heirsType: HeirsTypes
 }
 
 export type OrganisationFormPayload = {
@@ -189,7 +192,7 @@ const Heirs = () => {
 			)}
 
 			{/* Modals */}
-			{/* {isPersonModalOpen && (
+			{isPersonModalOpen && (
 				<HeirsPersonModal
 					isOpenModal={isPersonModalOpen}
 					onClose={() => {
@@ -200,7 +203,7 @@ const Heirs = () => {
 					heirsType={heirsType}
 				/>
 			)}
-			{isOrganisationModalOpen && (
+			{/* {isOrganisationModalOpen && (
 				<HeirsOrganisationModal
 					isOpenModal={isOrganisationModalOpen}
 					onClose={() => {

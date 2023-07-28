@@ -1,11 +1,13 @@
+import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, array, mixed, number, object, string } from 'yup'
+import { ObjectSchema, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
-import { childRelationshipOptions, genderOptions, heirsTypes } from '../../../../../content/dropdownOptions'
-import { PersonFormPayload } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
+import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
+import { PersonFormPayload, heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from '../../../../store/last-will/heirs/state'
+import { HeirsTypes } from '../../../../store/last-will/heirs/state'
 import { Gender } from '../../../../types/gender'
+import { Person } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
@@ -30,51 +32,57 @@ type HeirsPersonModalProps = {
 export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, heirsType }) => {
 	const { lastWill, services } = useLastWillContext()
 
+	console.log('editperson', editPerson)
 	const initialFormValues: PersonFormPayload = {
-		id: editPerson?.id ?? null,
-		name: editPerson?.firstName ?? '',
+		id: editPerson?.id ?? nanoid(),
+		name: editPerson?.name ?? '',
 		gender: editPerson?.gender ?? undefined,
-		dateOfBirth: editPerson?.dateOfBirth ?? '',
-		placeOfBirth: editPerson?.placeOfBirth ?? '',
+		birthDate: editPerson?.birthDate ?? '',
+		birthPlace: editPerson?.birthPlace ?? '',
+
 		street: editPerson?.street ?? '',
 		houseNumber: editPerson?.houseNumber ?? '',
 		zipCode: editPerson?.zipCode ?? '',
 		city: editPerson?.city ?? '',
-		childRelationShip: editPerson?.childRelationShip ?? undefined,
-		ownChild: editPerson?.ownChild ?? [],
-		moreInfos: editPerson?.moreInfos ?? [],
-		heirsType: editPerson?.heirsType ?? heirsType,
+
+		// childRelationShip: editPerson?.childRelationShip ?? undefined,
+		// ownChild: editPerson?.ownChild ?? [],
+		// moreInfos: editPerson?.moreInfos ?? [],
+		// heirsType: editPerson?.heirsType ?? heirsType,
 	}
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
-		id: number().required().nullable(),
+		id: string().required(),
 		name: string(),
 		gender: string<Gender>(),
-		dateOfBirth: string(),
-		placeOfBirth: string(),
+		birthDate: string(),
+		birthPlace: string(),
+
 		street: string(),
 		houseNumber: string(),
 		zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
 		city: string(),
-		childRelationShip: string<ChildRelationShip>(),
-		ownChild: array(),
-		moreInfos: mixed<PersonMoreInfos[]>(),
-		heirsType: string<HeirsTypes>().required(),
+
+		// childRelationShip: string<ChildRelationShip>(),
+		// ownChild: array(),
+		// moreInfos: mixed<PersonMoreInfos[]>(),
+		// heirsType: string<HeirsTypes>().required(),
 	})
 
-	const onSubmit = async (values: Person) => {
-		if (editPerson) {
-			await services.updatePerson(values)
-		} else {
-			await services.addPerson(values)
-		}
+	const onSubmit = async (values: PersonFormPayload) => {
+		console.log(values)
+		// if (editPerson) {
+		// 	await services.updatePerson(values)
+		// } else {
+		// 	await services.addPerson(values)
+		// }
 
 		// Close and reset Modal
 		onClose()
 	}
 
 	return (
-		<Modal open={isOpenModal} headline={`${heirsTypes[heirsType].label}`} onClose={onClose}>
+		<Modal open={isOpenModal} headline={`${heirsTypes[heirsType]}`} onClose={onClose}>
 			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				<Form className="mt-2 md:mt-3">
 					{/* Persönliche Daten */}
@@ -98,8 +106,8 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								options={genderOptions}
 							/>
 							{/* // TODO(Zoe-Bot): Replace with datepicker */}
-							<TextInput name="dateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
-							<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+							<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
+							<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 						</div>
 
 						{/* Adress */}
