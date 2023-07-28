@@ -15,8 +15,9 @@ describe('authSlice', () => {
 
 	const initialState: AuthState = {
 		isAuthenticated: false,
-		isLoading: true,
+		isInitialized: false,
 		sessionData: null,
+		loginError: null,
 		registerError: null,
 	}
 
@@ -27,7 +28,7 @@ describe('authSlice', () => {
 
 			expect(newState.isAuthenticated).to.be.true
 			expect(newState.sessionData).to.equal(initialSessionData)
-			expect(newState.isLoading).to.be.false
+			expect(newState.isInitialized).to.be.true
 		})
 	})
 
@@ -38,7 +39,7 @@ describe('authSlice', () => {
 
 			expect(newState.isAuthenticated).to.be.true
 			expect(newState.sessionData).to.equal(initialSessionData)
-			expect(newState.isLoading).to.be.false
+			expect(newState.isInitialized).to.be.true
 
 			const logoutAction = logout()
 			newState = authReducer(newState, logoutAction)
