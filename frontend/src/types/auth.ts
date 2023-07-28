@@ -8,11 +8,12 @@ export type TokensResponse = {
 export type SessionData = {
 	accessToken: string
 	decodedAccessToken: {
-		id: number
+		id: string
 		email: string
 		iat: number
 		exp: number
-		// TODO: Adds plans and user details
+		hasVerifiedEmail: boolean
+		// TODO: Adds plans
 	}
 	refreshToken: string
 }
