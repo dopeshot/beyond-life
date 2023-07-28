@@ -66,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 					))}
 
 					{/* Navlinks End */}
-					{isStaticPage && (
+					{isStaticPage ? (
 						<>
 							<li className="order-1 md:order-none md:ml-auto">
 								<Route kind="secondary" href={routes.account.login()}>
@@ -79,8 +79,9 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 								</NavbarLink>
 							</li>
 						</>
+					) : (
+						<RightNavbarLinks />
 					)}
-					{!isStaticPage && <RightNavbarLinks />}
 				</ul>
 			</nav>
 		</div>
