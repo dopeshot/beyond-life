@@ -12,7 +12,8 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import { ApiBearerAuth } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger'
+import { LastWill } from '../db/entities/lastwill.entity'
 import { LastWillsService } from '../db/services/lastwills.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
@@ -20,6 +21,7 @@ import { CreateLastWillDto } from './dto/create-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 
 @UseGuards(JwtGuard)
+@ApiTags('lastwill')
 @Controller('lastwill')
 @UseInterceptors(ClassSerializerInterceptor)
 @SerializeOptions({ strategy: 'excludeAll' })
@@ -28,6 +30,10 @@ export class LastWillsController {
   constructor(private readonly lastWillsService: LastWillsService) {}
 
   @Post()
+  @ApiCreatedResponse({
+    description: 'The last will has been successfully created.',
+    type: LastWill,
+  })
   async createOne(
     @Body() createLastWillDto: CreateLastWillDto,
     @Req() { user }: RequestWithJWTPayload,
@@ -36,6 +42,7 @@ export class LastWillsController {
       createLastWillDto,
       user.id,
     )
+    return new LastWill(createdLastWill)
   }
 
   @Get()

@@ -16,7 +16,7 @@ export class LastWillsService {
 
   async createOne(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
     // TODO: not possible if exceeds allowed by plan
-    return 'This action adds a new lastWill'
+    return await this.lastWillModel.create(createLastWillDto)
   }
 
   async findAllMetadataByUser(userId: ObjectId) {
