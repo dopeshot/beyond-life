@@ -1,10 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { refreshTokenApi } from '../../services/api/auth/refreshToken'
 import {
 	LOCAL_STORAGE_KEY,
 	createSession,
 	getSession,
-	refreshTokenApi,
 	saveSession,
 	setAxiosAuthHeader,
 } from '../../services/auth/session'
