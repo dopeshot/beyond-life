@@ -32,7 +32,7 @@ describe('Last Will Marriage Page', () => {
 			cy.datacy('partnerGender-dropdown-button').click()
 			cy.datacy('partnerGender-dropdown-option-female').click()
 
-			cy.datacy('textinput-partnerDateOfBirth-input').type('01.01.1990')
+			cy.datacy('datepicker-partnerDateOfBirth-input').type('1990-01-01')
 			cy.datacy('textinput-partnerPlaceOfBirth-input').type('Here')
 
 			// Adress

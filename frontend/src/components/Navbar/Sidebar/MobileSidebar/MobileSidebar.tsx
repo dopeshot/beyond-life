@@ -37,13 +37,15 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-800" />
 				</Link>
 
-				<div className="relative flex w-full cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
-					// TODO: @Zoe-Bot readd font because me dont know how
-					<div className={`mt-1 flex flex-col text-xl md:text-2xl`}>{sidebarElements[currentElementIndex].title}</div>
-					<div className="mb-1 ml-2 flex justify-center text-xs">
+				<div
+					className="relative flex w-full cursor-pointer flex-col items-center py-1"
+					onClick={() => setIsOpen(!isOpen)}
+				>
+					<h2 className={`font-serif text-xl md:text-2xl`}>{sidebarElements[currentElementIndex].title}</h2>
+					<p className="flex items-center text-xs">
 						Menü
 						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-800" />
-					</div>
+					</p>
 				</div>
 				<Link
 					className={`flex items-center justify-center pr-2 pl-8${
