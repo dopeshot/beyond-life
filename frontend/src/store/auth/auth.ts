@@ -18,14 +18,14 @@ export type AuthState = {
 	/** Session data. */
 	sessionData: SessionData | null
 	/** Error message. */
-	registerError: string | null
+	error: string | null
 }
 
 const initialState: AuthState = {
 	isAuthenticated: false,
-	isLoading: true, // TODO: add another state here to fix the flickering (e.g.: isInitialized)
+	isLoading: true,
 	sessionData: null,
-	registerError: null,
+	error: null,
 }
 
 /**
@@ -124,6 +124,9 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
+		resetError: (state) => {
+			state.error = null
+		},
 		login: (state, action: PayloadAction<SessionData>) => {
 			state.isLoading = false
 			state.isAuthenticated = true
@@ -137,9 +140,9 @@ const authSlice = createSlice({
 
 			// Clear state
 			state.isAuthenticated = false
-			state.isLoading = false
 			state.sessionData = null
-			state.registerError = null
+			state.error = null
+			state.isLoading = false
 		},
 	},
 	extraReducers: (builder) => {
@@ -149,7 +152,7 @@ const authSlice = createSlice({
 			})
 			.addCase(refreshToken.fulfilled, (state, action) => {
 				state.isLoading = false
-				state.registerError = null
+				state.error = null
 				state.isAuthenticated = action.payload !== null
 				state.sessionData = action.payload
 			})
@@ -162,29 +165,31 @@ const authSlice = createSlice({
 			})
 			.addCase(loginApi.fulfilled, (state, action) => {
 				state.isLoading = false
-				state.registerError = null
+				state.error = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
 				saveSession(state.sessionData)
 			})
-			.addCase(loginApi.rejected, (state) => {
+			.addCase(loginApi.rejected, (state, action) => {
+				if (action.payload?.message === 'Unauthorized' && action.payload?.statusCode === 401) {
+					state.error = 'Hoppla! Die von Ihnen eingegebene E-Mail oder das Passwort ist falsch.'
+				}
 				state.isLoading = false
 				state.isAuthenticated = false
-				// TODO: Add error message to frontend
 			})
 			.addCase(registerApi.pending, (state) => {
 				state.isLoading = true
 			})
 			.addCase(registerApi.fulfilled, (state, action) => {
 				state.isLoading = false
-				state.registerError = null
+				state.error = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
 				saveSession(state.sessionData)
 			})
 			.addCase(registerApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
-					state.registerError = 'Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.'
+					state.error = 'Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.'
 				}
 				state.isLoading = false
 				state.isAuthenticated = false
