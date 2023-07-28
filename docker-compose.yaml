@@ -38,7 +38,7 @@ services:
       - STRIPE_SUCCESS_URL=${BACKEND_STRIPE_SUCCESS_URL}
       - STRIPE_CANCEL_URL=${BACKEND_STRIPE_CANCEL_URL}
       # Other
-      - BACKEND_DOMAIN=${BACKEND_BACKEND_DOMAIN:-http://localhost:3001}
+      - FRONTEND_DOMAIN=${BACKEND_FRONTEND_DOMAIN:-http://localhost:3000}
       - NODE_ENV=${BACKEND_NODE_ENV:-development}
     links:
       - db:db
