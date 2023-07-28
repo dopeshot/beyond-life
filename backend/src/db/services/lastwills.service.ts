@@ -57,8 +57,6 @@ export class LastWillsService {
   }
 
   async deleteOneById(id: string, userId: ObjectId) {
-    // TODO: delete only if user is matching aswell
-
-    return `This action removes a #${id} lastWill`
+    await this.lastWillModel.deleteOne({ _id: id, accountId: userId })
   }
 }
