@@ -1,11 +1,17 @@
+import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger'
+import { Severity, prop } from '@typegoose/typegoose'
+import { Expose, Type } from 'class-transformer'
 import {
-  ApiProperty,
-  ApiPropertyOptional,
-  OmitType,
-  PickType,
-} from '@nestjs/swagger'
-import { prop } from '@typegoose/typegoose'
-import { Expose } from 'class-transformer'
+  Equals,
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator'
 import { ObjectId } from 'mongoose'
 import { User } from './users.entity'
 
@@ -82,6 +88,7 @@ const sampleHumanHeir: Person = {
 
 const sampleOrganisationHeir: Organisation = {
   id: 'jeffsId',
+  type: PersonType.ORGANISATION,
   name: 'Strongpong e.V.',
   address: {
     street: 'Sample Street',
@@ -120,6 +127,11 @@ const sampleObject: LastWill = {
   progressKeys: [SidebarPages.TESTATOR, SidebarPages.HEIRS, SidebarPages.FINAL],
 }
 
+// This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
+class Discriminator {
+  type: PersonType
+}
+
 @Expose()
 class ChildInfo {
   @prop({ required: false, enum: ChildType, type: String })
@@ -129,6 +141,8 @@ class ChildInfo {
     enum: ChildType,
     type: String,
   })
+  @IsOptional()
+  @IsEnum(ChildType)
   type?: ChildType
 
   @prop({ required: false, enum: ChildRelationShip, type: String })
@@ -138,6 +152,8 @@ class ChildInfo {
     enum: ChildRelationShip,
     type: String,
   })
+  @IsOptional()
+  @IsEnum(ChildRelationShip)
   relationship?: ChildRelationShip
 }
 
@@ -149,6 +165,8 @@ export class Common {
     example: sampleObject.common.isBerlinWill,
     type: Boolean,
   })
+  @IsOptional()
+  @IsBoolean()
   isBerlinWill?: boolean
 
   @prop({ required: false, type: Boolean })
@@ -157,6 +175,8 @@ export class Common {
     example: sampleObject.common.isPartnerGermanCitizenship,
     type: Boolean,
   })
+  @IsOptional()
+  @IsBoolean()
   isPartnerGermanCitizenship?: boolean
 
   @prop({ required: false, enum: MatrimonialProperty, type: String })
@@ -166,6 +186,8 @@ export class Common {
     enum: MatrimonialProperty,
     type: String,
   })
+  @IsOptional()
+  @IsEnum(MatrimonialProperty)
   matrimonialProperty?: MatrimonialProperty
 }
 
@@ -177,6 +199,8 @@ class Address {
     example: sampleHumanHeir.address.street,
     type: String,
   })
+  @IsOptional()
+  @IsString()
   street?: string
 
   @prop({ required: false, type: String })
@@ -185,6 +209,8 @@ class Address {
     example: sampleHumanHeir.address.houseNumber,
     type: String,
   })
+  @IsOptional()
+  @IsString()
   houseNumber?: string
 
   @prop({ required: false, type: String })
@@ -193,34 +219,26 @@ class Address {
     example: sampleHumanHeir.address.zipCode,
     type: String,
   })
+  @IsOptional()
+  @IsString()
   zipCode?: string
 
   @prop({ required: false, type: String })
   @ApiPropertyOptional({ description: 'City', example: 'Berlin', type: String })
+  @IsOptional()
+  @IsString()
   city?: string
 }
 
 @Expose()
-class Person {
-  @prop({ required: true, type: String })
-  @ApiProperty({ description: 'Id', example: sampleHumanHeir.id, type: String })
-  id: string
-
-  @prop({ required: true, enum: PersonType, type: String })
-  @ApiProperty({
-    description: 'Persontype',
-    example: sampleHumanHeir.type,
-    enum: PersonType,
-    type: String,
-  })
-  type: PersonType
-
+class PersonBase {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Name',
     example: sampleHumanHeir.name,
     type: String,
   })
+  @IsString()
   name: string
 
   @prop({ required: false, enum: Gender, type: String })
@@ -230,6 +248,8 @@ class Person {
     example: sampleHumanHeir.gender,
     type: String,
   })
+  @IsOptional()
+  @IsEnum(Gender)
   gender?: Gender
 
   @prop({ required: false, type: String })
@@ -238,6 +258,8 @@ class Person {
     example: sampleHumanHeir.birthDate,
     type: String,
   })
+  @IsOptional()
+  @IsString()
   birthDate?: string
 
   @prop({ required: false, type: String })
@@ -246,6 +268,8 @@ class Person {
     example: sampleHumanHeir.birthPlace,
     type: String,
   })
+  @IsOptional()
+  @IsString()
   birthPlace?: string
 
   @prop({ required: false, type: Boolean })
@@ -254,6 +278,8 @@ class Person {
     example: sampleHumanHeir.isHandicapped,
     type: Boolean,
   })
+  @IsOptional()
+  @IsBoolean()
   isHandicapped?: boolean
 
   @prop({ required: false, type: Boolean })
@@ -262,7 +288,37 @@ class Person {
     example: sampleHumanHeir.isInsolvent,
     type: Boolean,
   })
+  @IsOptional()
+  @IsBoolean()
   isInsolvent?: boolean
+
+  @prop({ required: false, type: Address, _id: false })
+  @ApiPropertyOptional({
+    description: 'Address',
+    type: Address,
+    example: sampleHumanHeir.address,
+  })
+  @IsOptional()
+  @ValidateNested()
+  address?: Address
+}
+
+@Expose()
+class Person extends PersonBase {
+  @prop({ required: true, type: String })
+  @ApiProperty({ description: 'Id', example: sampleHumanHeir.id, type: String })
+  @IsString()
+  id: string
+
+  @prop({ required: true, enum: PersonType, type: String })
+  @ApiProperty({
+    description: 'Persontype',
+    example: sampleHumanHeir.type,
+    enum: PersonType,
+    type: String,
+  })
+  @IsEnum(PersonType)
+  type: PersonType
 
   // Succession
   @prop({ required: false, type: Number })
@@ -271,6 +327,8 @@ class Person {
     example: sampleHumanHeir.percentage,
     type: Number,
   })
+  @IsNumber()
+  @IsOptional()
   percentage?: number
 
   @prop({ required: false, type: [Number], default: [] })
@@ -280,35 +338,24 @@ class Person {
     type: [Number],
     isArray: true,
   })
+  @IsNumber({}, { each: true })
+  @IsOptional()
   itemIds?: number[]
 
   // Heirs
-  @prop({ required: false, type: ChildInfo })
+  @prop({ required: false, type: ChildInfo, _id: false })
   @ApiPropertyOptional({
     description: 'Child Info',
     type: ChildInfo,
     example: sampleHumanHeir.child,
   })
+  @IsOptional()
+  @ValidateNested()
   child?: ChildInfo
-
-  @prop({ required: false, type: Address })
-  @ApiPropertyOptional({
-    description: 'Address',
-    type: Address,
-    example: sampleHumanHeir.address,
-  })
-  address?: Address
 }
 
 @Expose()
-// TODO: check if OmitType is working
-class Testator extends OmitType(Person, [
-  'type',
-  'percentage',
-  'itemIds',
-  'id',
-  'child',
-]) {
+class Testator extends PersonBase {
   @prop({ required: false, enum: RelationshipStatus, type: String })
   @ApiPropertyOptional({
     description: 'Relationship status',
@@ -316,6 +363,8 @@ class Testator extends OmitType(Person, [
     enum: RelationshipStatus,
     type: String,
   })
+  @IsOptional()
+  @IsEnum(RelationshipStatus)
   relationshipStatus?: RelationshipStatus
 }
 
@@ -327,7 +376,18 @@ class Organisation {
     example: sampleOrganisationHeir.id,
     type: String,
   })
+  @IsString()
   id: string
+
+  @prop({ required: true, enum: PersonType, type: String })
+  @ApiProperty({
+    description: 'Persontype',
+    example: sampleHumanHeir.type,
+    enum: PersonType,
+    type: String,
+  })
+  @Equals(PersonType.ORGANISATION)
+  type: PersonType.ORGANISATION
 
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
@@ -335,6 +395,8 @@ class Organisation {
     example: sampleOrganisationHeir.name,
     type: String,
   })
+  @IsString()
+  @IsOptional()
   name?: string
 
   @prop({ required: false, type: Address })
@@ -343,6 +405,8 @@ class Organisation {
     type: Address,
     example: sampleOrganisationHeir.address,
   })
+  @IsOptional()
+  @ValidateNested({ each: true })
   address?: Address
 }
 
@@ -354,6 +418,7 @@ class Item {
     example: sampleObject.items[0].id,
     type: String,
   })
+  @IsString()
   id: string
 
   @prop({ required: false, type: String })
@@ -362,6 +427,8 @@ class Item {
     example: sampleObject.items[0].name,
     type: String,
   })
+  @IsString()
+  @IsOptional()
   name?: string
 
   @prop({ required: false, type: String })
@@ -370,6 +437,8 @@ class Item {
     example: sampleObject.items[0].description,
     type: String,
   })
+  @IsString()
+  @IsOptional()
   description?: string
 }
 
@@ -381,6 +450,7 @@ class FinancialAsset {
     example: sampleObject.financialAssets[0].id,
     type: String,
   })
+  @IsString()
   id: string
 
   @prop({ required: false, type: String })
@@ -389,6 +459,8 @@ class FinancialAsset {
     example: sampleObject.financialAssets[0].where,
     type: String,
   })
+  @IsString()
+  @IsOptional()
   where?: string
 
   @prop({ required: false, type: Number })
@@ -397,6 +469,8 @@ class FinancialAsset {
     example: sampleObject.financialAssets[0].amount,
     type: Number,
   })
+  @IsNumber()
+  @IsOptional()
   amount?: number
 
   @prop({ required: false, type: String })
@@ -405,6 +479,8 @@ class FinancialAsset {
     example: sampleObject.financialAssets[0].currency,
     type: String,
   })
+  @IsString()
+  @IsOptional()
   currency?: string
 }
 
@@ -416,54 +492,86 @@ export class LastWill {
   })
   _id: ObjectId | string
 
-  @prop({ required: true, type: String, ref: () => User })
+  @prop({
+    required: true,
+    type: String,
+    ref: () => User,
+    index: true,
+    unique: false,
+  })
   @ApiProperty({
     description: 'Account id',
     example: sampleObject.accountId,
     type: String,
   })
+  @IsString()
   accountId: string
 
-  @prop({ required: true, type: Common })
+  @prop({ required: true, type: Common, _id: false })
   @ApiProperty({
     type: Common,
     description: 'Common data for the will',
     example: sampleObject.common,
   })
+  @IsObject()
+  @ValidateNested()
   common: Common
 
-  @prop({ required: true, type: Testator })
+  @prop({ required: true, type: Testator, _id: false })
   @ApiProperty({
     type: Testator,
     description: 'Testator data',
     example: sampleObject.testator,
   })
+  @IsObject()
+  @ValidateNested()
   testator: Testator
 
-  // TODO: figure out union array
-  @prop({ required: true, /*type: [any],*/ default: [] })
+  @prop({
+    required: true,
+    default: [],
+    allowMixed: Severity.ALLOW,
+    _id: false,
+  })
   @ApiProperty({
-    //type: [Person | Organisation],
     description: 'Heirs',
     isArray: true,
-    //anyOf: [Person, Organisation],
     example: sampleObject.heirs,
+  })
+  @ValidateNested({ each: true })
+  @Type(() => Discriminator, {
+    discriminator: {
+      property: 'type',
+      subTypes: [
+        // TODO: check if name is the value which is discriminated on, do I have to have all options here?
+        { value: Person, name: PersonType.OTHER },
+        { value: Person, name: PersonType.CHILD },
+        { value: Person, name: PersonType.FATHER },
+        { value: Person, name: PersonType.MOTHER },
+        { value: Person, name: PersonType.SIBLING },
+        { value: Organisation, name: PersonType.ORGANISATION },
+      ],
+    },
+    keepDiscriminatorProperty: true,
   })
   heirs: (Person | Organisation)[]
 
-  @prop({ required: true, type: [Item], default: [] })
+  @prop({ required: true, type: [Item], default: [], _id: false })
   @ApiProperty({
     type: [Item],
     description: 'Items',
     isArray: true,
     example: sampleObject.items,
   })
+  @IsArray()
+  @ValidateNested({ each: true })
   items: Item[]
 
   @prop({
     required: true,
     type: [FinancialAsset],
     default: [],
+    _id: false,
   })
   @ApiProperty({
     type: FinancialAsset,
@@ -471,9 +579,11 @@ export class LastWill {
     isArray: true,
     example: sampleObject.financialAssets,
   })
+  @IsArray()
+  @ValidateNested({ each: true })
   financialAssets: FinancialAsset[]
 
-  @prop({ required: true, default: [] })
+  @prop({ required: true, default: [], allowMixed: Severity.ALLOW })
   @ApiProperty({
     description: 'Progress keys',
     example: sampleObject.progressKeys,
@@ -481,6 +591,8 @@ export class LastWill {
     type: String,
     isArray: true,
   })
+  @IsArray()
+  @IsEnum(SidebarPages, { each: true })
   progressKeys: SidebarPages[]
 
   constructor(partial: Partial<LastWill>) {
