@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getPersonAddHeirsOptions } from '../../../../../../content/checkboxOptions'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -11,39 +10,10 @@ import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/Hei
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { HeirsTypes } from '../../../../../store/last-will/heirs/state'
 import { removeHeir, setProgressKeys } from '../../../../../store/lastwill'
-import { Gender } from '../../../../../types/gender'
-import { Organisation, Person } from '../../../../../types/lastWill'
+import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-
-export type PersonFormPayload = {
-	id: string
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
-	// moreInfos?: PersonMoreInfos[]
-	// childRelationShip?: ChildRelationShip
-	// ownChild?: string[]
-	// heirsType: HeirsTypes
-}
-
-export type OrganisationFormPayload = {
-	id: string
-	name?: string
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-}
+import { determineHeirRelationship, getPersonAddHeirsOptions } from './heirs'
 
 export const heirsTypes = {
 	mother: 'Mutter',
@@ -52,26 +22,14 @@ export const heirsTypes = {
 	siblings: 'Geschwisterteil',
 	other: 'Andere Person',
 	organisation: 'Organisation',
+	partner: 'Partner',
 } as const
-
-const determineHeirRelationship = (heir: Person | Organisation) => {
-	const isPerson = heir.type !== 'organisation'
-
-	if (heir.type === 'siblings' && isPerson && heir.gender === 'male') return 'Bruder'
-	if (heir.type === 'siblings' && isPerson && heir.gender === 'female') return 'Schwester'
-
-	return {
-		...heirsTypes,
-		partner: 'Partner*in',
-	}[heir.type]
-}
 
 /**
  * Heirs Page
  */
 const Heirs = () => {
 	// Global State
-	const { lastWill } = useLastWillContext()
 	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
@@ -122,7 +80,7 @@ const Heirs = () => {
 			<Headline className="hidden lg:block">Erben</Headline>
 
 			{/* Overview all heirs */}
-			{lastWill.heirs.persons.length === 0 && lastWill.heirs.organisations.length === 0 ? (
+			{heirs.length === 0 ? (
 				<p className="mb-2 text-gray-600 md:mb-4">
 					Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
 				</p>
@@ -193,7 +151,7 @@ const Heirs = () => {
 						setIsPersonModalOpen(false)
 					}}
 					editPerson={selectedPerson}
-					heirsType={heirsType}
+					type={heirsType}
 				/>
 			)}
 			{isOrganisationModalOpen && (
@@ -237,13 +195,7 @@ const Heirs = () => {
 					</Button>
 
 					{/* Submit Button */}
-					<Button
-						datacy="button-delete"
-						onClick={deleteHeirs}
-						loading={lastWill.common.isLoading}
-						className="mb-4 md:mb-0"
-						icon="delete"
-					>
+					<Button datacy="button-delete" onClick={deleteHeirs} loading={false} className="mb-4 md:mb-0" icon="delete">
 						Löschen
 					</Button>
 				</div>

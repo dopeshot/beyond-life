@@ -1,6 +1,4 @@
-import { heirsTypes } from '../src/app/(dynamic)/last-will/editor/heirs/page'
-import { HeirsTypes } from '../src/store/last-will/heirs/state'
-import { ComponentOptions, DropdownButtonOptions } from '../src/types/form'
+import { ComponentOptions } from '../src/types/form'
 
 export const testatorMoreInfosOptions: ComponentOptions[] = [
 	{
@@ -38,11 +36,3 @@ export const personMoreInfosOptions: ComponentOptions[] = [
 		label: 'Ist die Person insolvent?',
 	},
 ]
-
-export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
-	Object.entries(heirsTypes).map(([type, label]) => ({
-		onClick: () => setDropdownOption(type as HeirsTypes),
-		label: `${label} hinzufügen`,
-	}))
-
-export type SetDropdownOptionFunction = (type: HeirsTypes) => void

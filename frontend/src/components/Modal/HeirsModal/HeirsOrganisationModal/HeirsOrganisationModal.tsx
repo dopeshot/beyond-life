@@ -1,13 +1,21 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
 import { ObjectSchema, object, string } from 'yup'
-import { OrganisationFormPayload } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
 import { Organisation } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
+
+export type OrganisationFormPayload = {
+	id: string
+	name?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+}
 
 type HeirsOrganisationModalProps = {
 	/** Modal Open/Close State. */

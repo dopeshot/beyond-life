@@ -1,19 +1,38 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, object, string } from 'yup'
+import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
-import { PersonFormPayload, heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { HeirsTypes } from '../../../../store/last-will/heirs/state'
+import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
+import { PersonMoreInfos } from '../../../../store/last-will/heirs/state'
 import { Gender } from '../../../../types/gender'
-import { Person } from '../../../../types/lastWill'
+import { HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
+
+export type PersonFormPayload = {
+	id: string
+	type: HeirsTypes
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	moreInfos?: string[]
+	childRelationShip?: ChildRelationShip
+	ownChild?: string[]
+}
+
+export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */
@@ -23,15 +42,13 @@ type HeirsPersonModalProps = {
 	/** When defined we are in edit mode. */
 	editPerson: Person | null
 	/** The type of person. */
-	heirsType: HeirsTypes
+	type: HeirsTypes
 }
 
 /**
  * Modal to add/edit a heirs person.
  */
-export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, heirsType }) => {
-	const { lastWill, services } = useLastWillContext()
-
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
 	console.log('editperson', editPerson)
 	const initialFormValues: PersonFormPayload = {
 		id: editPerson?.id ?? nanoid(),
@@ -45,10 +62,14 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		zipCode: editPerson?.zipCode ?? '',
 		city: editPerson?.city ?? '',
 
-		// childRelationShip: editPerson?.childRelationShip ?? undefined,
-		// ownChild: editPerson?.ownChild ?? [],
-		// moreInfos: editPerson?.moreInfos ?? [],
-		// heirsType: editPerson?.heirsType ?? heirsType,
+		moreInfos: [
+			...(editPerson?.isHandicapped ? ['isHandicapped'] : []),
+			...(editPerson?.isInsolvent ? ['isInsolvent'] : []),
+		],
+		type: editPerson?.type ?? type,
+
+		childRelationShip: 'childFromOther',
+		ownChild: [],
 	}
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
@@ -63,10 +84,10 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
 		city: string(),
 
-		// childRelationShip: string<ChildRelationShip>(),
-		// ownChild: array(),
-		// moreInfos: mixed<PersonMoreInfos[]>(),
-		// heirsType: string<HeirsTypes>().required(),
+		childRelationShip: string<ChildRelationShip>(),
+		ownChild: array(),
+		moreInfos: mixed<PersonMoreInfos[]>(),
+		type: string<PersonType>().required(),
 	})
 
 	const onSubmit = async (values: PersonFormPayload) => {
@@ -82,7 +103,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 	}
 
 	return (
-		<Modal open={isOpenModal} headline={`${heirsTypes[heirsType]}`} onClose={onClose}>
+		<Modal open={isOpenModal} headline={`${heirsTypes[editPerson?.type ?? type]}`} onClose={onClose}>
 			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				<Form className="mt-2 md:mt-3">
 					{/* Persönliche Daten */}
@@ -177,7 +198,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						<Button
 							datacy="button-submit"
 							type="submit"
-							loading={lastWill.common.isLoading}
+							loading={false} /** TODO */
 							className="mb-4 md:mb-0"
 							icon="check"
 						>
