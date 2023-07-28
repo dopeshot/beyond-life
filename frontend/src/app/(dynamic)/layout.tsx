@@ -23,6 +23,7 @@ const Auth: React.FC<AuthProps> = ({ children }) => {
 
 	useEffect(() => {
 		const checkAuthenticated = async () => {
+			// TODO: Check when this is called, and ensure it's only called once
 			await dispatch(refreshToken())
 			const sessionDataLocalStorage = localStorage.getItem(LOCAL_STORAGE_KEY)
 
