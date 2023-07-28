@@ -137,7 +137,9 @@ const authSlice = createSlice({
 
 			// Clear state
 			state.isAuthenticated = false
+			state.isLoading = false
 			state.sessionData = null
+			state.registerError = null
 		},
 	},
 	extraReducers: (builder) => {
