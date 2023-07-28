@@ -26,9 +26,9 @@ type Plans = {
 
 // Level of cost, used to determine if a user wants to falsly downgrade (yes could be an Enum but we don't want those due to TS shenanigans)
 export const paymentPlans: Plans = {
-  free: 0,
+  free: -1,
   single: 1,
-  family: 2,
+  family: 5,
 }
 
 export class PaymentResponse {
