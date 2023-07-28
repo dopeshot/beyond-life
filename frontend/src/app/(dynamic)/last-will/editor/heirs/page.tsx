@@ -57,8 +57,8 @@ export const heirsTypes = {
 const determineHeirRelationship = (heir: Person | Organisation) => {
 	const isPerson = heir.type !== 'organisation'
 
-	if (isPerson && heir.gender === 'male' && heir.type === 'siblings') return 'Bruder'
-	if (isPerson && heir.gender === 'female' && heir.type === 'siblings') return 'Schwester'
+	if (heir.type === 'siblings' && isPerson && heir.gender === 'male') return 'Bruder'
+	if (heir.type === 'siblings' && isPerson && heir.gender === 'female') return 'Schwester'
 
 	return {
 		...heirsTypes,
