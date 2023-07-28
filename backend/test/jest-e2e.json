@@ -12,6 +12,6 @@
   },
   "collectCoverageFrom": [
     "<rootDir>/src/**/{!(*.spec),}.ts",
-    "!<rootDir>/src/main.ts"
+    "!<rootDir>/src/{main, app.module}.ts"
   ]
 }
