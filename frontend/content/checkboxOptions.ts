@@ -28,11 +28,11 @@ export const partnerMoreInfosOptions: ComponentOptions[] = [
 
 export const personMoreInfosOptions: ComponentOptions[] = [
 	{
-		value: 'personHandicapped',
+		value: 'isHandicapped',
 		label: 'Hat die Person eine Behinderung?',
 	},
 	{
-		value: 'personInsolvent',
+		value: 'isInsolvent',
 		label: 'Ist die Person insolvent?',
 	},
 ]
