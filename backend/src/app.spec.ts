@@ -1,14 +1,13 @@
 import { INestApplication } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
-import { AppModule } from '../src/app.module'
-import { MockConfigService } from './helpers/config-service.helper'
+import { MockConfigService } from '../test/helpers/config-service.helper'
+import { AppModule } from './app.module'
 
 describe('AppModule (Build Test)', () => {
   let app: INestApplication<any>
   afterEach(async () => {
     await app.close()
-    app = null
   })
   it('Should build application', async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,7 +17,7 @@ describe('AppModule (Build Test)', () => {
       .useClass(MockConfigService)
       .compile()
 
-    app = moduleFixture.createNestApplication()
+    app = await moduleFixture.createNestApplication()
     expect(app).toBeTruthy()
   })
 })
