@@ -37,7 +37,7 @@ export class LastWillsService {
   }
 
   async findFullById(id: string, userId: ObjectId) {
-    return `This action returns a #${id} lastWill`
+    return await this.lastWillModel.findOne({ _id: id, accountId: userId })
   }
 
   async getFullTextLastWill(id: string, userId: ObjectId) {

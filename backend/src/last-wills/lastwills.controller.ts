@@ -73,11 +73,19 @@ export class LastWillsController {
   }
 
   @Get(':id')
+  @ApiOkResponse({
+    description: 'Full last will',
+    type: LastWill,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized to get last will',
+  })
   async findFullById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
   ) {
     const fullLastWill = await this.lastWillsService.findFullById(id, user.id)
+    return new LastWill(fullLastWill)
   }
 
   @Get(':id/fulltext')
@@ -89,6 +97,7 @@ export class LastWillsController {
       id,
       user.id,
     )
+    // TODO: implement in other issue
   }
 
   @Put(':id')
