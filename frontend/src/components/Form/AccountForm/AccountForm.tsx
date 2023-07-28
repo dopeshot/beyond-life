@@ -26,7 +26,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 	// Redux
 	const dispatch = useAppDispatch()
-	const registerError = useAppSelector((state) => state.auth.registerError)
+	const error = useAppSelector((state) => state.auth.error)
 
 	// Formik
 	const initialFormValues: AccountDto = {
@@ -38,32 +38,24 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		email: string()
 			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
 			.required('E-Mail Adresse ist erforderlich.'),
-		password: string().required('Password ist erforderlich.'),
+		password: string().min(8, 'Passwort muss mindestens 8 Zeichen lang sein.').required('Password ist erforderlich.'),
 	})
 
-	// TODO: move these blocks together
-	const onLoginFormSubmit = async (values: AccountDto) => {
-		const response = await dispatch(loginApi({ email: values.email, password: values.password }))
+	const onSubmitAccountForm = async (values: AccountDto) => {
+		let response
+		if (type === 'login') {
+			response = await dispatch(loginApi({ email: values.email, password: values.password }))
+		} else {
+			response = await dispatch(registerApi({ email: values.email, password: values.password }))
+		}
+
 		if (response.meta.requestStatus === 'rejected') return
-
-		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
-		router.push(callbackUrl)
-	}
-
-	const onRegisterFormSubmit = async (values: AccountDto) => {
-		const response = await dispatch(registerApi({ email: values.email, password: values.password }))
-		if (response.meta.requestStatus === 'rejected') return
-
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
 		router.push(callbackUrl)
 	}
 
 	return (
-		<Formik
-			initialValues={initialFormValues}
-			validationSchema={accountValidationSchema}
-			onSubmit={type === 'login' ? onLoginFormSubmit : onRegisterFormSubmit}
-		>
+		<Formik initialValues={initialFormValues} validationSchema={accountValidationSchema} onSubmit={onSubmitAccountForm}>
 			{({ dirty, isValid }) => (
 				<Form className="mb-3">
 					<TextInput autoComplete="email" type="email" name="email" labelText="E-Mail" placeholder="E-Mail" />
@@ -74,9 +66,9 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 						</Route>
 					)}
 
-					{registerError && type == 'register' && (
+					{error && (
 						<div className="mt-5">
-							<Alert datacy="alert-error" headline="Fehler" description={registerError} />
+							<Alert datacy="alert-error" headline="Fehler" description={error} />
 						</div>
 					)}
 
