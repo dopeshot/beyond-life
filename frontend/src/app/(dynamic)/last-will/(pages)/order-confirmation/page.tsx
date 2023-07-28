@@ -24,7 +24,13 @@ const OrderConfirmation = () => {
 			</div>
 			<div className="flex w-full flex-col items-center px-8">
 				<PaymentSummaryTable tableData={tableData} />
-				<Route href={routes.lastWill.final('1')} icon="arrow_forward" kind="primary" className="mb-8">
+				<Route
+					datacy="button-submit"
+					href={routes.lastWill.final('1')}
+					icon="arrow_forward"
+					kind="primary"
+					className="mb-8"
+				>
 					Weiter zum Testament
 				</Route>
 			</div>
