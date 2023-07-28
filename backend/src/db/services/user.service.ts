@@ -58,7 +58,7 @@ export class UserService {
       userData.password = await this.hashPassword(userData.password)
       const user: User = await this.userModel.create({
         ...userData,
-        createdAt: new Date(),
+        createdAt: new Date(), // TODO: this could go into the model as default value
       })
 
       return user
@@ -79,9 +79,7 @@ export class UserService {
     }
     await this.userModel.updateOne(
       { email },
-      {
-        hasVerifiedEmail: newVerifyValue,
-      },
+      { hasVerifiedEmail: newVerifyValue },
     )
   }
 
