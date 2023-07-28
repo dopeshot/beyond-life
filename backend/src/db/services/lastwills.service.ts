@@ -1,9 +1,10 @@
 import { InjectModel } from '@m8a/nestjs-typegoose'
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { ObjectId } from 'mongoose'
 import { CreateLastWillDto } from '../../last-wills/dto/create-lastwill.dto'
 import { UpdateLastWillDto } from '../../last-wills/dto/update-lastwill.dto'
+import { paymentPlans } from '../../payments/interfaces/payments'
 import { LastWill } from '../entities/lastwill.entity'
 
 @Injectable()
@@ -15,8 +16,19 @@ export class LastWillsService {
   ) {}
 
   async createOne(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
-    // TODO: not possible if exceeds allowed by plan
-    return await this.lastWillModel.create(createLastWillDto)
+    const lastWillCount = await this.lastWillModel.countDocuments({
+      accountId: userId,
+    })
+    const plan = 'single' // TODO: add plan to auth user or make userService request here
+    if (lastWillCount >= paymentPlans[plan])
+      throw new UnauthorizedException(
+        `Exceeding allowed last wills: ${paymentPlans[plan]}`,
+      )
+
+    return await this.lastWillModel.create({
+      ...createLastWillDto,
+      accountId: userId,
+    })
   }
 
   async findAllMetadataByUser(userId: ObjectId) {
