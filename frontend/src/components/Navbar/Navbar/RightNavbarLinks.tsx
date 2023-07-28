@@ -8,6 +8,8 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 /**
  * Login and Register or Profile and Logout Links depending on if the user is authenticated.
  */
+
+// TODO: Rename this to DynamicNavbarLinks
 export const RightNavbarLinks: React.FC = () => {
 	const pathname = usePathname()
 

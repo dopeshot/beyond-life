@@ -67,6 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 
 					{/* Navlinks End */}
 					{isStaticPage ? (
+						// TODO: Move this into StaticNavbarLinks
 						<>
 							<li className="order-1 md:order-none md:ml-auto">
 								<Route kind="secondary" href={routes.account.login()}>
