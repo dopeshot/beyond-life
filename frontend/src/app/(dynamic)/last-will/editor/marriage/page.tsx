@@ -15,15 +15,14 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import {
-	MatrimonialProperty,
-	PartnerMoreInfos,
-	RelationshipStatus,
-} from '../../../../../store/last-will/marriage/state'
 import { sendLastWillState, setMarriage, setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
 import { Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
+
+export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
+export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
+export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 
 export type MarriageFormPayload = {
 	// Person

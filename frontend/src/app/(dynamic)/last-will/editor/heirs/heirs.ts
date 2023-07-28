@@ -1,6 +1,5 @@
-import { HeirsTypes } from '../../../../../store/last-will/heirs/state'
 import { DropdownButtonOptions } from '../../../../../types/form'
-import { Organisation, Person } from '../../../../../types/lastWill'
+import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { heirsTypes } from './page'
 
 export const determineHeirRelationship = (heir: Person | Organisation) => {
