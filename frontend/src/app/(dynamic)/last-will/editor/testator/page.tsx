@@ -50,11 +50,12 @@ const Testator = () => {
 	const NEXT_LINK = routes.lastWill.marriage(_id)
 
 	// Convert global state to form state
-	const { isHandicapped, isInsolvent, ...formTestator } = testator
+	const { isHandicapped, isInsolvent, address, ...formTestator } = testator
 
 	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
 		...formTestator,
+		...address,
 		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
 	}
 

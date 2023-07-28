@@ -78,8 +78,8 @@ export const fetchLastWillState = createAsyncThunk(
 					testator: {
 						name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
 						gender: 'male',
-						birthDate: '00.00.0000',
-						birthPlace: '00.00.0000',
+						birthDate: '1999-01-01',
+						birthPlace: 'STUTTGART',
 						isHandicapped: false,
 						isInsolvent: true,
 						address: {
@@ -122,8 +122,8 @@ export const fetchLastWillState = createAsyncThunk(
 							id: nanoid(),
 							name: 'GL_STORE_PARTNER_EXAMPLE_NAME',
 							gender: 'male',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
+							birthDate: '1999-01-01',
+							birthPlace: 'STUTTGART',
 							isHandicapped: true,
 							isInsolvent: true,
 							address: {
@@ -138,8 +138,8 @@ export const fetchLastWillState = createAsyncThunk(
 							id: nanoid(),
 							name: 'GL_STORE_MOTHER_EXAMPLE_NAME',
 							gender: 'female',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
+							birthDate: '1999-01-01',
+							birthPlace: 'STUTTGART',
 							isHandicapped: false,
 							isInsolvent: false,
 							address: {
@@ -154,8 +154,8 @@ export const fetchLastWillState = createAsyncThunk(
 							id: nanoid(),
 							name: 'GL_STORE_FATHER_EXAMPLE_NAME',
 							gender: 'male',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
+							birthDate: '1999-01-01',
+							birthPlace: 'STUTTGART',
 							isHandicapped: false,
 							isInsolvent: false,
 							address: {
@@ -170,8 +170,8 @@ export const fetchLastWillState = createAsyncThunk(
 							id: nanoid(),
 							name: 'GL_STORE_CHILD_EXAMPLE_NAME',
 							gender: 'male',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
+							birthDate: '1999-01-01',
+							birthPlace: 'STUTTGART',
 							isHandicapped: false,
 							isInsolvent: false,
 							address: {
@@ -186,8 +186,8 @@ export const fetchLastWillState = createAsyncThunk(
 							id: nanoid(),
 							name: 'GL_STORE_SIBLINGS_EXAMPLE_NAME',
 							gender: 'male',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
+							birthDate: '1999-01-01',
+							birthPlace: 'STUTTGART',
 							isHandicapped: false,
 							isInsolvent: false,
 							address: {
