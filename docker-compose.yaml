@@ -56,8 +56,8 @@ services:
     image: rnwood/smtp4dev:v3
     restart: "always"
     ports:
-      - "25:25"
-      - 5000:80
+      - 25:25
+      - 5001:80
       - 143:143
     environment:
       - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNAME:-mail}
