@@ -1,6 +1,7 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import { profileLinks } from '../../../../../content/profilelinks'
+import { Alert } from '../../../../components/Alert/Alert'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
 
@@ -33,6 +34,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						))}
 					</div>
 				</div>
+				{/* TODO: add auth check only show when not verified */}
+				<Alert
+					color="red"
+					headline="E-Mail verifizieren"
+					description="Bitte bestätige deine E-Mail-Adresse, um alle Funktionen nutzen zu können. Schaue in deinem Postfach nach einer E-Mail von uns."
+				/>
 			</nav>
 
 			{/* Content */}
