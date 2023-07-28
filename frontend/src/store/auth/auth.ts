@@ -23,7 +23,7 @@ export type AuthState = {
 
 const initialState: AuthState = {
 	isAuthenticated: false,
-	isLoading: true,
+	isLoading: true, // TODO: add another state here to fix the flickering (e.g.: isInitialized)
 	sessionData: null,
 	registerError: null,
 }
