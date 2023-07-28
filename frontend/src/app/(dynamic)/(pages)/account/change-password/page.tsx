@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik } from 'formik'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { Alert } from '../../../../../components/Alert/Alert'
@@ -18,6 +19,8 @@ type ChangePasswordFormValues = {
  * Change Password Page.
  */
 const ChangePassword = () => {
+	const searchParams = useSearchParams()
+
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
 	const [alert, setAlert] = useState<AlertResponse | null>(null)
@@ -36,12 +39,21 @@ const ChangePassword = () => {
 	})
 
 	const onSubmit = async (values: ChangePasswordFormValues) => {
-		console.log(values)
+		const token = searchParams.get('token')
+		if (!token) {
+			setAlert({
+				status: 400,
+				headline: 'Fehler',
+				message: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es erneut.',
+			})
+			return
+		}
 
-		// Simulate request
 		setIsLoading(true)
-		const response = await changePassword(values.newPassword)
+
+		const response = await changePassword(values.newPassword, token)
 		setAlert(response)
+
 		setIsLoading(false)
 	}
 

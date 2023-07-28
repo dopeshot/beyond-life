@@ -1,5 +1,7 @@
 import axios, { isAxiosError } from 'axios'
+import Link from 'next/link'
 import { AlertResponse } from '../../types/api'
+import { routes } from '../routes/routes'
 
 /**
  * Request for sending a reset password email.
@@ -32,15 +34,33 @@ export const forgotPassword = async (email: string): Promise<AlertResponse> => {
  * @param password the new password.
  * @returns an object containing the status code, headline and message use to display an alert.
  */
-export const changePassword = async (password: string): Promise<AlertResponse> => {
+export const changePassword = async (password: string, token: string): Promise<AlertResponse> => {
 	try {
-		const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/forgot-password-submit`, {
-			password,
-		})
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/forgot-password-submit`,
+			{
+				password,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
 		return {
 			status: response.status,
 			headline: 'Erfolgreich!',
-			message: 'Passwort wurde erfolgreich geändert.',
+			message: (
+				<>
+					<p>
+						Passwort wurde erfolgreich geändert. Klicken Sie{' '}
+						<Link className="inline font-semibold text-red-600 hover:text-red-700" href={routes.account.login()}>
+							hier{' '}
+						</Link>
+						um sich einzuloggen.
+					</p>
+				</>
+			),
 		}
 	} catch (error) {
 		if (isAxiosError(error) && error.response) {
