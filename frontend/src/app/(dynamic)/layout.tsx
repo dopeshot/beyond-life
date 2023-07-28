@@ -24,8 +24,6 @@ const Auth: React.FC<AuthProps> = ({ children }) => {
 
 	useEffect(() => {
 		const checkAuthenticated = async () => {
-			// TODO: Check when this is called, and ensure it's only called once
-
 			if (!hasSession()) {
 				dispatch(logout())
 				return null
@@ -35,7 +33,7 @@ const Auth: React.FC<AuthProps> = ({ children }) => {
 			dispatch(login(sessionPayload.payload as SessionData))
 		}
 		checkAuthenticated()
-	}, [dispatch])
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return <>{children}</>
 }

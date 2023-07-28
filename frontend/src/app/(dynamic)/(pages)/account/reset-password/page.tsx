@@ -3,7 +3,6 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
-import isAuth from '../../../../../components/Auth/isAuth'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -80,4 +79,4 @@ const ResetPassword = () => {
 	)
 }
 
-export default isAuth(ResetPassword, 'protected')
+export default ResetPassword

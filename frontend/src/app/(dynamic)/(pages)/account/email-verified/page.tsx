@@ -1,5 +1,4 @@
 'use client'
-import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
@@ -36,4 +35,4 @@ const EmailVerified = () => {
 	)
 }
 
-export default isAuth(EmailVerified, 'protected')
+export default EmailVerified
