@@ -101,6 +101,13 @@ export class LastWillsController {
   }
 
   @Put(':id')
+  @ApiOkResponse({
+    description: 'Updated last will',
+    type: LastWill,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized to update last will',
+  })
   async updateOneById(
     @Param('id') id: string,
     @Body() updateLastWillDto: UpdateLastWillDto,
@@ -111,6 +118,7 @@ export class LastWillsController {
       user.id,
       updateLastWillDto,
     )
+    return new LastWill(updatedLastWill)
   }
 
   @Delete(':id')

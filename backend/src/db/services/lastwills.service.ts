@@ -49,7 +49,11 @@ export class LastWillsService {
     userId: ObjectId,
     updateLastWillDto: UpdateLastWillDto,
   ) {
-    return `This action updates a #${id} lastWill`
+    return await this.lastWillModel.findOneAndUpdate(
+      { _id: id, accountId: userId },
+      updateLastWillDto,
+      { new: true },
+    )
   }
 
   async deleteOneById(id: string, userId: ObjectId) {
