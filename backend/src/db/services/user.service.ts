@@ -111,18 +111,6 @@ export class UserService {
     await this.userModel.deleteOne({ _id })
   }
 
-  // TODO: Implement
-  async updateUserPaymentInformations(
-    id: ObjectId,
-    userData: Partial<User>,
-  ) /*: Promise<User>*/ {
-    return null
-  }
-
-  async updateUserStripeCustomer(_id: ObjectId, stripeCustomerId: string) {
-    await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
-  }
-
   async updateUserPaymentPlan(
     stripeCustomerId: string,
     paymentPlan: PaymentOptions,
