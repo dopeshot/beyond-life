@@ -57,10 +57,10 @@ const MyLastWills = () => {
 
 	return (
 		<>
-			{lastWills.length === 0 ? (
+			{true ? (
 				<div className="mb-10 mt-10 flex flex-col items-center justify-center md:mb-0 md:mt-20">
-					<Headline level={3}>Meine Testamente</Headline>
-					<p className="mb-2 text-gray-500 md:mb-4">Sie haben noch keine Testamente erstellt.</p>
+					<Headline level={3}>Erstellen Sie ein neues Testament</Headline>
+					<p className="mb-2 text-gray-500 md:mb-4">Später können Sie hier ihr erstelltes Testament bearbeiten.</p>
 					<Button>Neues Testament erstellen</Button>
 				</div>
 			) : (
