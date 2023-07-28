@@ -7,6 +7,7 @@ export const routes = {
 			const queryString = new URLSearchParams({
 				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
 				...(options.funnel != null && { funnel: String(options.funnel) }),
+				//TODO: remove funnel and use callbackUrl
 			}).toString()
 
 			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
