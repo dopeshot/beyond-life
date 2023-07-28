@@ -3,10 +3,10 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { routes } from '../../../services/routes/routes'
 import { NavLink } from '../../../types/routes'
-import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { IconButton } from '../../IconButton/IconButton'
 import { NavbarLink } from '../NavbarLink/NavbarLink'
-import { RightNavbarLinks } from './RightNavbarLinks'
+import { DynamicNavbarLinks } from './DynamicNavbarLinks'
+import { StaticNavbarLinks } from './StaticNavbarLinks'
 
 // TODO: The api for this component is to complicated and confusing
 type NavbarProps = {
@@ -66,23 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 					))}
 
 					{/* Navlinks End */}
-					{isStaticPage ? (
-						// TODO: Move this into StaticNavbarLinks
-						<>
-							<li className="order-1 md:order-none md:ml-auto">
-								<Route kind="secondary" href={routes.account.login()}>
-									Einloggen
-								</Route>
-							</li>
-							<li>
-								<NavbarLink href={routes.account.register()} isActive={routes.account.register() === pathname}>
-									Registrieren
-								</NavbarLink>
-							</li>
-						</>
-					) : (
-						<RightNavbarLinks />
-					)}
+					{isStaticPage ? <StaticNavbarLinks /> : <DynamicNavbarLinks />}
 				</ul>
 			</nav>
 		</div>
