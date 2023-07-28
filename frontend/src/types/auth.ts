@@ -12,6 +12,7 @@ export type SessionData = {
 		email: string
 		iat: number
 		exp: number
+		// TODO: Adds plans and user details
 	}
 	refreshToken: string
 }
