@@ -1,8 +1,9 @@
+import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, number, object, string } from 'yup'
+import { ObjectSchema, object, string } from 'yup'
+import { OrganisationFormPayload } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
 import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { OrganisationFormPayload } from '../../../../store/last-will/heirs/actions'
-import { Organisation } from '../../../../store/last-will/heirs/state'
+import { Organisation } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
@@ -25,7 +26,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	const { lastWill, services } = useLastWillContext()
 
 	const initialFormValues: OrganisationFormPayload = {
-		id: editOrganisation?.id ?? null,
+		id: editOrganisation?.id ?? nanoid(),
 		name: editOrganisation?.name ?? '',
 		street: editOrganisation?.street ?? '',
 		houseNumber: editOrganisation?.houseNumber ?? '',
@@ -34,20 +35,22 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	}
 
 	const validationSchema: ObjectSchema<OrganisationFormPayload> = object({
-		id: number().required().nullable(),
+		id: string().required(),
 		name: string(),
+
 		street: string(),
 		houseNumber: string(),
 		zipCode: string(),
 		city: string(),
 	})
 
-	const onSubmit = async (values: Organisation) => {
-		if (editOrganisation) {
-			await services.updateOrganisation(values)
-		} else {
-			await services.addOrganisation(values)
-		}
+	const onSubmit = async (values: OrganisationFormPayload) => {
+		console.log(values)
+		// if (editOrganisation) {
+		// 	await services.updateOrganisation(values)
+		// } else {
+		// 	await services.addOrganisation(values)
+		// }
 
 		// Close and reset Modal
 		onClose()

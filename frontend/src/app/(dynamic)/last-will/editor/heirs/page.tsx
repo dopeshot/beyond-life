@@ -6,6 +6,7 @@ import { DropdownButton } from '../../../../../components/ButtonsAndLinks/Dropdo
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
+import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
@@ -36,11 +37,11 @@ export type PersonFormPayload = {
 }
 
 export type OrganisationFormPayload = {
-	id: number | null
+	id: string
 	name?: string
 	street?: string
 	houseNumber?: string
-	zipCode?: number | string
+	zipCode?: string
 	city?: string
 }
 
@@ -195,7 +196,7 @@ const Heirs = () => {
 					heirsType={heirsType}
 				/>
 			)}
-			{/* {isOrganisationModalOpen && (
+			{isOrganisationModalOpen && (
 				<HeirsOrganisationModal
 					isOpenModal={isOrganisationModalOpen}
 					onClose={() => {
@@ -204,7 +205,7 @@ const Heirs = () => {
 					}}
 					editOrganisation={selectedOrganisation}
 				/>
-			)} */}
+			)}
 			<Modal
 				open={isDeleteModalOpen}
 				headline={`${
