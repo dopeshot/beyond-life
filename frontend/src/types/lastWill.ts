@@ -22,7 +22,7 @@ export type Person = {
 
 export type Organisation = {
 	name?: string
-	type: 'organisation'
+	type: OrganisationType
 } & Address &
 	Id
 
@@ -46,7 +46,11 @@ type Address = {
 	zipCode?: string
 	city?: string
 }
+
+export type HeirsTypes = PersonType | OrganisationType
 export type PersonType = 'partner' | 'mother' | 'father' | 'child' | 'siblings' | 'other'
+export type OrganisationType = 'organisation'
+
 type Gender = 'male' | 'female' | 'divers'
 type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
