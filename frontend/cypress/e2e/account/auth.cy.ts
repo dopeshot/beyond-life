@@ -9,7 +9,7 @@ describe('Auth', () => {
 				cy.mockLogin()
 
 				cy.datacy('textinput-email-input').type('test@test.de')
-				cy.datacy('textinput-password-input').type('test123')
+				cy.datacy('textinput-password-input').type('test12345678')
 
 				cy.datacy('submit-button').click()
 
@@ -30,7 +30,7 @@ describe('Auth', () => {
 				cy.mockRegister()
 
 				cy.datacy('textinput-email-input').type('test@test.de')
-				cy.datacy('textinput-password-input').type('test123')
+				cy.datacy('textinput-password-input').type('test12345678')
 
 				cy.datacy('submit-button').click()
 
@@ -45,7 +45,7 @@ describe('Auth', () => {
 				cy.mockRegister({ statusCode: 409, errorMessage: 'Email is already taken.' })
 
 				cy.datacy('textinput-email-input').type('test@test.de')
-				cy.datacy('textinput-password-input').type('test123')
+				cy.datacy('textinput-password-input').type('test12345678')
 
 				cy.datacy('submit-button').click()
 
