@@ -6,7 +6,7 @@ import { childRelationshipOptions, genderOptions } from '../../../../../content/
 import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/page'
 import { PersonMoreInfos } from '../../../../store/last-will/heirs/state'
 import { Gender } from '../../../../types/gender'
-import { HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
+import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
@@ -31,8 +31,6 @@ export type PersonFormPayload = {
 	childRelationShip?: ChildRelationShip
 	ownChild?: string[]
 }
-
-export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */
@@ -68,8 +66,8 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		],
 		type: editPerson?.type ?? type,
 
-		childRelationShip: 'childFromOther',
-		ownChild: [],
+		childRelationShip: editPerson?.child?.relationship ?? undefined,
+		ownChild: editPerson?.child?.type === 'natural' ? ['ownChild'] : undefined,
 	}
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({

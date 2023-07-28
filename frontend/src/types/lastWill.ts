@@ -1,6 +1,6 @@
 export type Testator = {
 	relationshipStatus?: RelationshipStatus
-} & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'childType'>
+} & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'child'>
 
 export type Person = {
 	type: PersonType
@@ -14,11 +14,17 @@ export type Person = {
 	// Succession
 	percentage?: number
 	itemIds?: number[]
-
-	// Heirs
-	childType?: 'natural' | 'adopted' | 'step'
 } & Address &
+	ChildInfo &
 	Id
+
+type ChildInfo = {
+	child?: {
+		type?: 'natural' | 'adopted' | 'step' // TODO MC: Where is this used?
+		relationship?: ChildRelationShip
+	}
+}
+export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 
 export type Organisation = {
 	name?: string
