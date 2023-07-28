@@ -47,4 +47,6 @@ describe('authSlice', () => {
 			expect(newState.sessionData).to.be.null
 		})
 	})
+
+	// TODO: add extra reducers as well
 })
