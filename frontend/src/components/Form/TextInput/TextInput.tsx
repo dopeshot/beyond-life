@@ -33,6 +33,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	inputRequired = false,
 	helperText,
 	datacy,
+	autoComplete = "on",
 	icon,
 	iconOnClick,
 	...props
@@ -50,6 +51,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 								id={name}
 								datacy={datacy ?? `textinput-${name}-input`}
 								type={type}
+								autoComplete={autoComplete}
 								{...fieldProps.field}
 								{...props}
 								/** TODO: Here is an bug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Bug bounty lars found it!  */

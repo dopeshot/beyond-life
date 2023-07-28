@@ -88,6 +88,7 @@ const AccountSettings = () => {
 									name="newEmail"
 									labelText="Neue E-Mail Adresse"
 									placeholder="Gebe eine neue E-Mail Adresse ein"
+									autoComplete="email"
 								/>
 							</div>
 							<div className="flex justify-end">

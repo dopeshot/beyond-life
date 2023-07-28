@@ -7,6 +7,7 @@ import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
+import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -125,6 +126,7 @@ const Testator = () => {
 												inputRequired
 												labelText="Vor- und Nachname"
 												placeholder="Vor- und Nachname"
+												autoComplete="name"
 											/>
 										</div>
 
@@ -137,21 +139,32 @@ const Testator = () => {
 												hasMargin
 												options={genderOptions}
 											/>
-											{/* // TODO: Replace with datepicker */}
-											<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
+											<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
 										</div>
 										<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
 										<div className="md:col-start-1 md:col-end-3">
-											<TextInput name="street" inputRequired labelText="Straße" placeholder="Straße" />
+											<TextInput
+												name="street"
+												inputRequired
+												labelText="Straße"
+												placeholder="Straße"
+												autoComplete="street-address"
+											/>
 										</div>
 										<div className="md:col-start-3 md:col-end-4">
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="md:col-start-1 md:col-end-2">
-											<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+											<TextInput
+												name="zipCode"
+												inputRequired
+												labelText="Postleitzahl"
+												placeholder="Postleitzahl"
+												autoComplete="postal-code"
+											/>
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
 											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />

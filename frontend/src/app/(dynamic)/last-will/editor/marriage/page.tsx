@@ -8,6 +8,7 @@ import { genderOptions } from '../../../../../../content/dropdownOptions'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
+import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Label } from '../../../../../components/Form/Label/Label'
@@ -200,6 +201,7 @@ const Marriage = () => {
 												inputRequired
 												labelText="Vor- und Nachname"
 												placeholder="Vor- und Nachname"
+												autoComplete="name"
 											/>
 										</div>
 
@@ -212,15 +214,20 @@ const Marriage = () => {
 												hasMargin
 												options={genderOptions}
 											/>
-											{/* // TODO(Zoe-Bot): Replace with datepicker */}
-											<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
+											<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
 											<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 										</div>
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="street" inputRequired labelText="Straße" placeholder="Straße" />
+												<TextInput
+													name="street"
+													inputRequired
+													labelText="Straße"
+													placeholder="Straße"
+													autoComplete="street-address"
+												/>
 											</div>
 											<div className="w-1/3 md:w-1/4">
 												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
@@ -229,7 +236,13 @@ const Marriage = () => {
 
 										<div className="flex gap-x-3">
 											<div className="w-1/3 md:w-1/4">
-												<TextInput name="zipCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+												<TextInput
+													name="zipCode"
+													inputRequired
+													labelText="Postleitzahl"
+													placeholder="Postleitzahl"
+													autoComplete="postal-code"
+												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">
 												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />

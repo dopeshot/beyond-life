@@ -3,11 +3,11 @@ import { routes } from './routes'
 describe('Router', () => {
 	describe('account routes', () => {
 		it('should return account register path', () => {
-			expect(routes.account.register).to.equal('/account/register')
+			expect(routes.account.register()).to.equal('/account/register')
 		})
 
 		it('should return account login path', () => {
-			expect(routes.account.login).to.equal('/account/login')
+			expect(routes.account.login()).to.equal('/account/login')
 		})
 	})
 
