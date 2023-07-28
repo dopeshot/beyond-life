@@ -26,7 +26,8 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 	// Redux
 	const dispatch = useAppDispatch()
-	const error = useAppSelector((state) => state.auth.error)
+	const registerError = useAppSelector((state) => state.auth.registerError)
+	const loginError = useAppSelector((state) => state.auth.loginError)
 
 	// Formik
 	const initialFormValues: AccountDto = {
@@ -66,9 +67,15 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 						</Route>
 					)}
 
-					{error && (
+					{loginError && type === 'login' && (
 						<div className="mt-5">
-							<Alert datacy="alert-error" headline="Fehler" description={error} />
+							<Alert datacy="alert-error" headline="Fehler" description={loginError} />
+						</div>
+					)}
+
+					{registerError && type === 'register' && (
+						<div className="mt-5">
+							<Alert datacy="alert-error" headline="Fehler" description={registerError} />
 						</div>
 					)}
 
