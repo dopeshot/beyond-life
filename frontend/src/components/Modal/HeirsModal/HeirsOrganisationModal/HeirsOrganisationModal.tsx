@@ -36,10 +36,10 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	const initialFormValues: OrganisationFormPayload = {
 		id: editOrganisation?.id ?? nanoid(),
 		name: editOrganisation?.name ?? '',
-		street: editOrganisation?.street ?? '',
-		houseNumber: editOrganisation?.houseNumber ?? '',
-		zipCode: editOrganisation?.zipCode ?? '',
-		city: editOrganisation?.city ?? '',
+		street: editOrganisation?.address?.street ?? '',
+		houseNumber: editOrganisation?.address?.houseNumber ?? '',
+		zipCode: editOrganisation?.address?.zipCode ?? '',
+		city: editOrganisation?.address?.city ?? '',
 	}
 
 	const validationSchema: ObjectSchema<OrganisationFormPayload> = object({

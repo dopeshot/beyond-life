@@ -47,10 +47,12 @@ type Id = {
 	id: string
 }
 type Address = {
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
+	address?: {
+		street?: string
+		houseNumber?: string
+		zipCode?: string
+		city?: string
+	}
 }
 
 export type HeirsTypes = PersonType | OrganisationType

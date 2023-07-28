@@ -44,10 +44,12 @@ export const initialState: LastWillState = {
 			birthPlace: '',
 			isHandicapped: false,
 			isInsolvent: false,
-			city: '',
-			houseNumber: '',
-			zipCode: '',
-			street: '',
+			address: {
+				city: '',
+				houseNumber: '',
+				zipCode: '',
+				street: '',
+			},
 		},
 		heirs: [],
 		progressKeys: [],
@@ -69,134 +71,147 @@ export const fetchLastWillState = createAsyncThunk(
 	'lastWill/fetchLastWillState',
 	async ({ lastWillId }: { lastWillId: string }) => {
 		const data = await new Promise<LastWillState['data']>((resolve) =>
-			setTimeout(
-				() =>
-					resolve({
-						_id: lastWillId,
-						common: {},
-						testator: {
-							name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
-							gender: 'male',
-							birthDate: '00.00.0000',
-							birthPlace: '00.00.0000',
-							isHandicapped: false,
-							isInsolvent: true,
+			setTimeout(() => {
+				const mockedData: LastWillState['data'] = {
+					_id: lastWillId,
+					common: {},
+					testator: {
+						name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
+						gender: 'male',
+						birthDate: '00.00.0000',
+						birthPlace: '00.00.0000',
+						isHandicapped: false,
+						isInsolvent: true,
+						address: {
 							city: 'GL_STORE_TESTATOR_CITY',
 							houseNumber: 'GL_STORE_TESTATOR_HOUSENUMBER',
 							zipCode: 'GL_STORE_TESTATOR_ZIPCODE',
 							street: 'GL_STORE_TESTATOR_STREET',
 						},
-						progressKeys: [],
-						financialAssets: [
-							{
-								id: nanoid(),
-								where: 'Meine Bank',
-								amount: 100,
-								currency: '€',
-							},
-							{
-								id: nanoid(),
-								where: 'Clash of Clans',
-								amount: 500,
-								currency: 'COINS',
-							},
-						],
-						items: [
-							{
-								id: nanoid(),
-								name: 'Mein Fahrrad',
-								description: 'Bitte damit fahren!',
-							},
-							{
-								id: nanoid(),
-								name: 'Mein geerbtes Kunstwerk',
-								description: '',
-							},
-						],
-						heirs: [
-							{
-								type: 'partner',
-								id: nanoid(),
-								name: 'GL_STORE_PARTNER_EXAMPLE_NAME',
-								gender: 'male',
-								birthDate: '00.00.0000',
-								birthPlace: '00.00.0000',
-								isHandicapped: true,
-								isInsolvent: true,
+					},
+					progressKeys: [],
+					financialAssets: [
+						{
+							id: nanoid(),
+							where: 'Meine Bank',
+							amount: 100,
+							currency: '€',
+						},
+						{
+							id: nanoid(),
+							where: 'Clash of Clans',
+							amount: 500,
+							currency: 'COINS',
+						},
+					],
+					items: [
+						{
+							id: nanoid(),
+							name: 'Mein Fahrrad',
+							description: 'Bitte damit fahren!',
+						},
+						{
+							id: nanoid(),
+							name: 'Mein geerbtes Kunstwerk',
+							description: '',
+						},
+					],
+					heirs: [
+						{
+							type: 'partner',
+							id: nanoid(),
+							name: 'GL_STORE_PARTNER_EXAMPLE_NAME',
+							gender: 'male',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: true,
+							isInsolvent: true,
+							address: {
 								city: 'GL_STORE_PARTNER_CITY',
 								houseNumber: 'GL_STORE_PARTNER_HOUSENUMBER',
 								zipCode: 'GL_STORE_PARTNER_ZIPCODE',
 								street: 'GL_STORE_PARTNER_STREET',
 							},
-							{
-								type: 'mother',
-								id: nanoid(),
-								name: 'GL_STORE_MOTHER_EXAMPLE_NAME',
-								gender: 'female',
-								birthDate: '00.00.0000',
-								birthPlace: '00.00.0000',
-								isHandicapped: false,
-								isInsolvent: false,
+						},
+						{
+							type: 'mother',
+							id: nanoid(),
+							name: 'GL_STORE_MOTHER_EXAMPLE_NAME',
+							gender: 'female',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: false,
+							isInsolvent: false,
+							address: {
 								city: 'GL_STORE_MOTHER_CITY',
 								houseNumber: 'GL_STORE_MOTHER_HOUSENUMBER',
 								zipCode: 'GL_STORE_MOTHER_ZIPCODE',
 								street: 'GL_STORE_MOTHER_STREET',
 							},
-							{
-								type: 'father',
-								id: nanoid(),
-								name: 'GL_STORE_FATHER_EXAMPLE_NAME',
-								gender: 'male',
-								birthDate: '00.00.0000',
-								birthPlace: '00.00.0000',
-								isHandicapped: false,
-								isInsolvent: false,
+						},
+						{
+							type: 'father',
+							id: nanoid(),
+							name: 'GL_STORE_FATHER_EXAMPLE_NAME',
+							gender: 'male',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: false,
+							isInsolvent: false,
+							address: {
 								city: 'GL_STORE_FATHER_CITY',
 								houseNumber: 'GL_STORE_FATHER_HOUSENUMBER',
 								zipCode: 'GL_STORE_FATHER_ZIPCODE',
 								street: 'GL_STORE_FATHER_STREET',
 							},
-							{
-								type: 'child',
-								id: nanoid(),
-								name: 'GL_STORE_CHILD_EXAMPLE_NAME',
-								gender: 'male',
-								birthDate: '00.00.0000',
-								birthPlace: '00.00.0000',
-								isHandicapped: false,
-								isInsolvent: false,
+						},
+						{
+							type: 'child',
+							id: nanoid(),
+							name: 'GL_STORE_CHILD_EXAMPLE_NAME',
+							gender: 'male',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: false,
+							isInsolvent: false,
+							address: {
 								city: 'GL_STORE_CHILD_CITY',
 								houseNumber: 'GL_STORE_CHILD_HOUSENUMBER',
 								zipCode: 'GL_STORE_CHILD_ZIPCODE',
 								street: 'GL_STORE_CHILD_STREET',
 							},
-							{
-								type: 'siblings',
-								id: nanoid(),
-								name: 'GL_STORE_SIBLINGS_EXAMPLE_NAME',
-								gender: 'male',
-								birthDate: '00.00.0000',
-								birthPlace: '00.00.0000',
-								isHandicapped: false,
-								isInsolvent: false,
+						},
+						{
+							type: 'siblings',
+							id: nanoid(),
+							name: 'GL_STORE_SIBLINGS_EXAMPLE_NAME',
+							gender: 'male',
+							birthDate: '00.00.0000',
+							birthPlace: '00.00.0000',
+							isHandicapped: false,
+							isInsolvent: false,
+							address: {
 								city: 'GL_STORE_SIBLINGS_CITY',
 								houseNumber: 'GL_STORE_SIBLINGS_HOUSENUMBER',
 								zipCode: 'GL_STORE_SIBLINGS_ZIPCODE',
 								street: 'GL_STORE_SIBLINGS_STREET',
 							},
-							{
-								type: 'organisation',
-								id: nanoid(),
-								name: 'GL_STORE_ORGANISATION_EXAMPLE_NAME',
+						},
+						{
+							type: 'organisation',
+							id: nanoid(),
+							name: 'GL_STORE_ORGANISATION_EXAMPLE_NAME',
+							address: {
 								city: 'GL_STORE_ORGANISATION_CITY',
 								houseNumber: 'GL_STORE_ORGANISATION_HOUSENUMBER',
 								zipCode: 'GL_STORE_ORGANISATION_ZIPCODE',
 								street: 'GL_STORE_ORGANISATION_STREET',
 							},
-						],
-					} as LastWillState['data']),
-				10
-			)
+						},
+					],
+				}
+				return resolve(mockedData)
+			}, 10)
 		)
 		return data
 	}
@@ -244,10 +259,12 @@ const lastWillSlice = createSlice({
 				isHandicapped: action.payload.moreInfos ? action.payload.moreInfos.includes('isHandicapped') : false,
 				isInsolvent: action.payload.moreInfos ? action.payload.moreInfos.includes('isInsolvent') : false,
 
-				street: action.payload.street,
-				houseNumber: action.payload.houseNumber,
-				zipCode: action.payload.zipCode,
-				city: action.payload.city,
+				address: {
+					street: action.payload.street,
+					houseNumber: action.payload.houseNumber,
+					zipCode: action.payload.zipCode,
+					city: action.payload.city,
+				},
 			}
 
 			// Set state

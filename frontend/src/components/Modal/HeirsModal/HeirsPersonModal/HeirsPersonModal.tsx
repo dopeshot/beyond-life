@@ -55,10 +55,10 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		birthDate: editPerson?.birthDate ?? '',
 		birthPlace: editPerson?.birthPlace ?? '',
 
-		street: editPerson?.street ?? '',
-		houseNumber: editPerson?.houseNumber ?? '',
-		zipCode: editPerson?.zipCode ?? '',
-		city: editPerson?.city ?? '',
+		street: editPerson?.address?.street ?? '',
+		houseNumber: editPerson?.address?.houseNumber ?? '',
+		zipCode: editPerson?.address?.zipCode ?? '',
+		city: editPerson?.address?.city ?? '',
 
 		moreInfos: [
 			...(editPerson?.isHandicapped ? ['isHandicapped'] : []),
