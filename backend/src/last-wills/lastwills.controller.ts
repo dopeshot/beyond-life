@@ -15,6 +15,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
@@ -34,7 +35,7 @@ import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 @Controller('lastwill')
 @UseInterceptors(ClassSerializerInterceptor)
 @SerializeOptions({ strategy: 'excludeAll' })
-@ApiBearerAuth('access-token')
+@ApiBearerAuth('access_token')
 export class LastWillsController {
   constructor(private readonly lastWillsService: LastWillsService) {}
 
@@ -46,6 +47,9 @@ export class LastWillsController {
   @ApiUnauthorizedResponse({
     description:
       'Unauthorized: Either not logged in or already too many last wills',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request: Invalid data provided',
   })
   async createOne(
     @Body() createLastWillDto: CreateLastWillDto,
@@ -101,6 +105,9 @@ export class LastWillsController {
   @Put(':id')
   @ApiOkResponse({ description: 'Updated last will', type: LastWill })
   @ApiUnauthorizedResponse({ description: 'Unauthorized to update last will' })
+  @ApiBadRequestResponse({
+    description: 'Bad request: Invalid data provided',
+  })
   async updateOneById(
     @Param('id') id: string,
     @Body() updateLastWillDto: UpdateLastWillDto,

@@ -80,6 +80,7 @@ export class ProfileController {
 
   @Delete()
   @UseGuards(JwtGuard)
+  @ApiBearerAuth('access_token')
   async deleteUser(
     @Req() { user }: RequestWithJWTPayload,
     @Body() { password }: DeleteMeDTO,
