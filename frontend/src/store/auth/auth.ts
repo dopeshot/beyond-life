@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
 	LOCAL_STORAGE_KEY,
 	createSession,
+	getSession,
 	refreshTokenApi,
 	saveSession,
 	setAxiosAuthHeader,
@@ -92,38 +93,31 @@ export const loginApi = createAsyncThunk<
  * @returns session data or null if no session data is found
  */
 export const refreshToken = createAsyncThunk('auth/getSessionData', async () => {
-	// Get session from local storage
-	const sessionData = localStorage.getItem(LOCAL_STORAGE_KEY)
-
-	if (sessionData) {
-		const parsedSessionData: SessionData = JSON.parse(sessionData)
-
-		// Update token if expired
-		if (Date.now() > parsedSessionData.decodedAccessToken.exp * 1000) {
-			const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
-
-			// Refresh token failed
-			if (tokens === null) {
-				console.error('Session expired and refresh token failed')
-				return null
-			}
-
-			// Update axios auth header
-			setAxiosAuthHeader(tokens.access_token)
-
-			// Update session when refresh token succeeded
-			const newSession = createSession(tokens)
-			saveSession(newSession)
-
-			return newSession
-		}
-
-		// Token is still valid
-		return parsedSessionData
-	}
+	const parsedSessionData = getSession()
 
 	// No session data found
-	return null
+	if (!parsedSessionData) return null
+
+	// Return session data if access token is not expired
+	if (Date.now() < parsedSessionData.decodedAccessToken.exp * 1000) return parsedSessionData
+
+	// Update token if expired
+	const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
+
+	// Refresh token failed
+	if (tokens === null) {
+		console.error('Session expired and refresh token failed')
+		return null
+	}
+
+	// Update axios auth header
+	setAxiosAuthHeader(tokens.access_token)
+
+	// Update session when refresh token succeeded
+	const newSession = createSession(tokens)
+	saveSession(newSession)
+
+	return newSession
 })
 
 const authSlice = createSlice({

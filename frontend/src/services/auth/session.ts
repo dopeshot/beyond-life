@@ -41,6 +41,20 @@ export const endSession = (): void => {
 }
 
 /**
+ * Get the session data from local storage.
+ * @returns session data or null if not found or an error occurred
+ */
+export const getSession = (): SessionData | null => {
+	try {
+		const sessionData = localStorage.getItem(LOCAL_STORAGE_KEY)
+		if (!sessionData) return null
+		return JSON.parse(sessionData)
+	} catch (error) {
+		return null
+	}
+}
+
+/**
  * Set the authorization header for axios.
  * @param accessToken access token
  */
