@@ -1,4 +1,9 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+  OmitType,
+  PickType,
+} from '@nestjs/swagger'
 import { prop } from '@typegoose/typegoose'
 import { Expose } from 'class-transformer'
 import { ObjectId } from 'mongoose'
@@ -481,4 +486,14 @@ export class LastWill {
   constructor(partial: Partial<LastWill>) {
     Object.assign(this, partial)
   }
+}
+
+@Expose()
+export class LastWillMetadata extends PickType(LastWill, ['progressKeys']) {
+  @ApiProperty({
+    description: 'Testator',
+    example: 'jeff',
+    type: String,
+  })
+  testator: string
 }

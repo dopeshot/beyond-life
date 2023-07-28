@@ -32,8 +32,8 @@ export class LastWillsService {
     })
   }
 
-  async findAllMetadataByUser(userId: ObjectId) {
-    return `This action returns all lastWills`
+  async findAllByUser(userId: ObjectId) {
+    return await this.lastWillModel.find({ accountId: userId })
   }
 
   async findFullById(id: string, userId: ObjectId) {
