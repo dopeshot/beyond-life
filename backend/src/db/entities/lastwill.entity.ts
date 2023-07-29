@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Severity, prop } from '@typegoose/typegoose'
-import { Expose, Type } from 'class-transformer'
+import { Expose, Transform, Type, plainToClass } from 'class-transformer'
 import {
   Equals,
   IsBoolean,
@@ -548,6 +548,12 @@ export class LastWill {
     example: sampleObject.heirs,
   })
   @ValidateNested({ each: true })
+  /*We know how it works, but not why it works, the Type and Transform are both from the transformer class.
+    The Type is needed for the validation
+    The Transform is needed for the Serialization
+    But the Type also says that it transforms with the subTypes and creates Instanzes, so we are uncertain why this doesn't fix both
+    The Transform is performed after the Type, but in Serialization it seems the Type is not enough transformation
+  */
   @Type(() => Discriminator, {
     discriminator: {
       property: 'type',
@@ -564,6 +570,14 @@ export class LastWill {
     keepDiscriminatorProperty: true,
   })
   @Expose()
+  @Transform(({ value }) =>
+    value?.map((o: Person | Organisation) => {
+      if (o.type === PersonType.ORGANISATION) {
+        return plainToClass(Organisation, o)
+      }
+      return plainToClass(Person, o)
+    }),
+  )
   heirs: (Person | Organisation)[]
 
   @prop({ required: true, type: [Item], default: [], _id: false })
