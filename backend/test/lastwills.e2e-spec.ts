@@ -10,6 +10,7 @@ import { DbModule } from '../src/db/db.module'
 import { LastWill } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
 import { LastWillsModule } from '../src/last-wills/lastwills.module'
+import { paymentPlans } from '../src/payments/interfaces/payments'
 import { SharedModule } from '../src/shared/shared.module'
 import { MockConfigService } from './helpers/config-service.helper'
 import {
@@ -71,6 +72,7 @@ describe('LastWillsController (e2e)', () => {
   let user: User
   beforeEach(async () => {
     await userModel.deleteMany({})
+    await lastWillsModel.deleteMany({})
     user = await userModel.create({
       ...SAMPLE_USER,
       password: await SAMPLE_USER_PW_HASH(),
@@ -86,7 +88,7 @@ describe('LastWillsController (e2e)', () => {
 
   describe('/lastwill (POST)', () => {
     describe('Positives', () => {
-      it.only('should create a new last will for the authenticated user', async () => {
+      it('should create a new last will for the authenticated user', async () => {
         const res = await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -97,7 +99,6 @@ describe('LastWillsController (e2e)', () => {
         expect(res.body).toHaveProperty('_id')
         expect(res.body.accountId).toEqual(user._id.toString())
         expect(res.body).not.toHaveProperty('createdAt')
-        console.log('res.body', JSON.stringify(res.body))
 
         const createdLastWill = await lastWillsModel.findOne({
           _id: res.body._id,
@@ -129,10 +130,10 @@ describe('LastWillsController (e2e)', () => {
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
 
-        const createdLastWill = await lastWillsModel.findOne({
+        const createdLastWill = await lastWillsModel.count({
           accountId: user._id,
         })
-        expect(createdLastWill).toBeUndefined()
+        expect(createdLastWill).toBe(0)
       })
 
       it('should fail missing data', async () => {
@@ -143,15 +144,69 @@ describe('LastWillsController (e2e)', () => {
           .send({ name: undefined })
           .expect(HttpStatus.BAD_REQUEST)
 
-        const createdLastWill = await lastWillsModel.findOne({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBeUndefined()
+        const createdLastWill = await lastWillsModel.count()
+        expect(createdLastWill).toBe(0)
       })
 
-      // TODO: max last wills reached
+      it('should validate the (Person | Organisation)[]', async () => {
+        await request(app.getHttpServer())
+          .post('/lastwill')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            ...sampleObject,
+            heirs: [{ ...sampleObject.heirs[0], type: 'not in Enum' }],
+          })
+          .expect(HttpStatus.BAD_REQUEST)
 
-      // TODO: Check each object once with missing and extra data just to be sure
+        await request(app.getHttpServer())
+          .post('/lastwill')
+          .set('Authorization', `Bearer ${token}`)
+          .send({
+            ...sampleObject,
+            heirs: [
+              { ...sampleObject.heirs[0], child: { type: 'not in Enum' } },
+            ],
+          })
+          .expect(HttpStatus.BAD_REQUEST)
+
+        // Can't test this because everything can be transformed in a string and all fields are IsString + IsOptional
+        // await request(app.getHttpServer())
+        //   .post('/lastwill')
+        //   .set('Authorization', `Bearer ${token}`)
+        //   .send({
+        //     ...sampleObject,
+        //     heirs: [
+        //       {
+        //         ...sampleObject.heirs[1],
+        //         address: { street: { notAnObject: true } },
+        //       },
+        //     ], // Supposed to be string
+        //   })
+        //   .expect(HttpStatus.BAD_REQUEST)
+
+        const createdLastWill = await lastWillsModel.count()
+        expect(createdLastWill).toBe(0)
+      })
+
+      it('should prevent exceeding paymentPlan lastWill limit', async () => {
+        await lastWillsModel.create({
+          ...sampleObject,
+          accountId: user._id,
+        })
+
+        await request(app.getHttpServer())
+          .post('/lastwill')
+          .set('Authorization', `Bearer ${token}`)
+          .send(sampleObject)
+          .expect(HttpStatus.UNAUTHORIZED)
+
+        const createdLastWill = await lastWillsModel.count({
+          accountId: user._id,
+        })
+        expect(createdLastWill).toBeLessThanOrEqual(
+          Math.abs(paymentPlans[user.paymentPlan]),
+        )
+      })
     })
   })
 
