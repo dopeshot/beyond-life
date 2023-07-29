@@ -14,8 +14,8 @@ import { CreateLastWillDto } from './dto/create-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 
 @Injectable()
-export class LastWillsService {
-  private readonly logger = new Logger(LastWillsService.name)
+export class LastWillService {
+  private readonly logger = new Logger(LastWillService.name)
   constructor(
     @InjectModel(LastWill)
     private readonly lastWillModel: ReturnModelType<typeof LastWill>,

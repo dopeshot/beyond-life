@@ -30,7 +30,7 @@ import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
-import { LastWillsService } from './lastwills.service'
+import { LastWillService } from './lastwill.service'
 
 @UseGuards(JwtGuard)
 @ApiTags('lastwill')
@@ -38,8 +38,8 @@ import { LastWillsService } from './lastwills.service'
 @UseInterceptors(ClassSerializerInterceptor)
 @SerializeOptions({ strategy: 'excludeAll' })
 @ApiBearerAuth('access_token')
-export class LastWillsController {
-  constructor(private readonly lastWillsService: LastWillsService) {}
+export class LastWillController {
+  constructor(private readonly lastWillService: LastWillService) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -58,7 +58,7 @@ export class LastWillsController {
     @Body() createLastWillDto: CreateLastWillDto,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    const createdLastWill = await this.lastWillsService.createOne(
+    const createdLastWill = await this.lastWillService.createOne(
       createLastWillDto,
       user.id,
     )
@@ -76,7 +76,7 @@ export class LastWillsController {
   })
   @ApiOperation({ summary: 'Find all last wills metadata for user' })
   async findAllMetadataByUser(@Req() { user }: RequestWithJWTPayload) {
-    const metadataArray = await this.lastWillsService.findAllByUser(user.id)
+    const metadataArray = await this.lastWillService.findAllByUser(user.id)
     return metadataArray.map(
       (metadata) =>
         new LastWillMetadata({
@@ -95,7 +95,7 @@ export class LastWillsController {
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    const fullLastWill = await this.lastWillsService.findFullById(id, user.id)
+    const fullLastWill = await this.lastWillService.findFullById(id, user.id)
     return new LastWill(fullLastWill)
   }
 
@@ -106,7 +106,7 @@ export class LastWillsController {
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    const fulltextLastWill = await this.lastWillsService.getFullTextLastWill(
+    const fulltextLastWill = await this.lastWillService.getFullTextLastWill(
       id,
       user.id,
     )
@@ -124,7 +124,7 @@ export class LastWillsController {
     @Body() updateLastWillDto: UpdateLastWillDto,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    const updatedLastWill = await this.lastWillsService.updateOneById(
+    const updatedLastWill = await this.lastWillService.updateOneById(
       id,
       user.id,
       updateLastWillDto,
@@ -141,6 +141,6 @@ export class LastWillsController {
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
   ) {
-    await this.lastWillsService.deleteOneById(id, user.id)
+    await this.lastWillService.deleteOneById(id, user.id)
   }
 }

@@ -8,7 +8,7 @@ import * as request from 'supertest'
 import { DbModule } from '../src/db/db.module'
 import { LastWill, LastWillMetadata } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
-import { LastWillsModule } from '../src/last-wills/lastwills.module'
+import { LastWillModule } from '../src/last-wills/lastwill.module'
 import { paymentPlans } from '../src/payments/interfaces/payments'
 import { SharedModule } from '../src/shared/shared.module'
 import { MockConfigService } from './helpers/config-service.helper'
@@ -22,12 +22,12 @@ import {
   sampleObject,
 } from './helpers/sample-data.helper'
 
-describe('LastWillsController (e2e)', () => {
+describe('LastWillController (e2e)', () => {
   let app: INestApplication
   let jwtService: JwtService
   let connection: Connection
   let userModel: Model<User>
-  let lastWillsModel: Model<LastWill>
+  let lastWillModel: Model<LastWill>
   let configService: ConfigService
 
   beforeAll(async () => {
@@ -37,7 +37,7 @@ describe('LastWillsController (e2e)', () => {
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),
         rootTypegooseTestModule(),
-        LastWillsModule,
+        LastWillModule,
       ],
     })
       .overrideProvider(ConfigService)
@@ -57,7 +57,7 @@ describe('LastWillsController (e2e)', () => {
     connection = await app.get(getConnectionToken())
     configService = app.get<ConfigService>(ConfigService)
     userModel = connection.model<User>('User')
-    lastWillsModel = connection.model<LastWill>('LastWill')
+    lastWillModel = connection.model<LastWill>('LastWill')
 
     await app.init()
   })
@@ -71,7 +71,7 @@ describe('LastWillsController (e2e)', () => {
   let user: User
   beforeEach(async () => {
     await userModel.deleteMany({})
-    await lastWillsModel.deleteMany({})
+    await lastWillModel.deleteMany({})
     user = await userModel.create({
       ...SAMPLE_USER,
       password: await SAMPLE_USER_PW_HASH(),
@@ -98,7 +98,7 @@ describe('LastWillsController (e2e)', () => {
         expect(res.body.accountId).toEqual(user._id.toString())
         expect(res.body).not.toHaveProperty('createdAt')
 
-        const createdLastWill = await lastWillsModel.count()
+        const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
       })
 
@@ -116,7 +116,7 @@ describe('LastWillsController (e2e)', () => {
           .send(sampleObject)
           .expect(HttpStatus.CREATED)
 
-        const createdLastWill = await lastWillsModel.count()
+        const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(2)
       })
     })
@@ -129,7 +129,7 @@ describe('LastWillsController (e2e)', () => {
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
 
-        const createdLastWill = await lastWillsModel.findOne({
+        const createdLastWill = await lastWillModel.findOne({
           accountId: user._id,
         })
         expect(createdLastWill).toBeNull()
@@ -143,7 +143,7 @@ describe('LastWillsController (e2e)', () => {
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
 
-        const createdLastWill = await lastWillsModel.count({
+        const createdLastWill = await lastWillModel.count({
           accountId: user._id,
         })
         expect(createdLastWill).toBe(0)
@@ -157,7 +157,7 @@ describe('LastWillsController (e2e)', () => {
           .send({ name: undefined })
           .expect(HttpStatus.BAD_REQUEST)
 
-        const createdLastWill = await lastWillsModel.count()
+        const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(0)
       })
 
@@ -171,7 +171,7 @@ describe('LastWillsController (e2e)', () => {
           })
           .expect(HttpStatus.BAD_REQUEST)
 
-        const createdLastWill = await lastWillsModel.count()
+        const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(0)
       })
 
@@ -191,7 +191,7 @@ describe('LastWillsController (e2e)', () => {
       // Can't test missing type in Organisation because it is optional
 
       it('should prevent exceeding paymentPlan lastWill limit', async () => {
-        await lastWillsModel.create({
+        await lastWillModel.create({
           ...sampleObject,
           accountId: user._id,
         })
@@ -202,7 +202,7 @@ describe('LastWillsController (e2e)', () => {
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
 
-        const createdLastWill = await lastWillsModel.count({
+        const createdLastWill = await lastWillModel.count({
           accountId: user._id,
         })
         expect(createdLastWill).toBeLessThanOrEqual(
@@ -215,11 +215,11 @@ describe('LastWillsController (e2e)', () => {
   describe('/lastwill (Get)', () => {
     describe('Positive Tests', () => {
       it('should return all last wills for the authenticated user', async () => {
-        await lastWillsModel.create({
+        await lastWillModel.create({
           ...sampleObject,
           accountId: user._id,
         })
-        await lastWillsModel.create({
+        await lastWillModel.create({
           ...sampleObject,
           _id: 'aaaaaaaaaaaaaaaaaaaaaaa2',
           accountId: user._id,
@@ -263,7 +263,7 @@ describe('LastWillsController (e2e)', () => {
     describe('Positive Tests', () => {
       it('should return one last will for the authenticated user', async () => {
         const lastWill = (
-          await lastWillsModel.create({
+          await lastWillModel.create({
             ...sampleObject,
             accountId: user._id,
           })
@@ -290,7 +290,7 @@ describe('LastWillsController (e2e)', () => {
 
       it('should fail with invalid token', async () => {
         const lastWill = (
-          await lastWillsModel.create({
+          await lastWillModel.create({
             ...sampleObject,
             accountId: user._id,
           })
@@ -309,7 +309,7 @@ describe('LastWillsController (e2e)', () => {
     describe('Positive Tests', () => {
       it('should update one last will for the authenticated user', async () => {
         const lastWill = (
-          await lastWillsModel.create({
+          await lastWillModel.create({
             ...sampleObject,
             progressKeys: [],
             accountId: user._id,
@@ -347,7 +347,7 @@ describe('LastWillsController (e2e)', () => {
 
       it('should fail if last will does not belong to user', async () => {
         const lastWill = (
-          await lastWillsModel.create({
+          await lastWillModel.create({
             ...sampleObject,
             progressKeys: [],
             accountId: 'aaaaaaaaaaaaaaaaaaaaa222',
@@ -367,7 +367,7 @@ describe('LastWillsController (e2e)', () => {
     let lastWill
     beforeEach(async () => {
       lastWill = (
-        await lastWillsModel.create({
+        await lastWillModel.create({
           ...sampleObject,
           accountId: user._id,
         })
@@ -381,7 +381,7 @@ describe('LastWillsController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
           .expect(HttpStatus.NO_CONTENT)
 
-        const createdLastWill = await lastWillsModel.findOne({
+        const createdLastWill = await lastWillModel.findOne({
           accountId: user._id,
         })
         expect(createdLastWill).toBeNull()
@@ -398,7 +398,7 @@ describe('LastWillsController (e2e)', () => {
       })
 
       it('should fail if user does not own last will', async () => {
-        await lastWillsModel.updateOne(
+        await lastWillModel.updateOne(
           {},
           { accountId: 'aaaaaaaaaaaaaaaaaaaaa222' },
         )
@@ -407,7 +407,7 @@ describe('LastWillsController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
           .send(sampleObject)
 
-        const createdLastWill = await lastWillsModel.count()
+        const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
       })
     })
