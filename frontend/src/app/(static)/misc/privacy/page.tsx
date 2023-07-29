@@ -1,5 +1,6 @@
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
+import { routes } from '../../../../services/routes/routes'
 
 export const metadata = {
 	title: 'Privacy | Siebtes Leben',
@@ -152,7 +153,7 @@ const Privacy = () => {
 					<p className="mb-2 text-gray-700 md:mb-4">
 						Haben Sie immer noch unbeantwortete Fragen und möchten Sie Kontakt aufnehmen?
 					</p>
-					<Route href="mailto:info@siebtesleben.de" kind="secondary">
+					<Route href={routes.misc.imprint} kind="secondary">
 						Kontakt aufnehmen
 					</Route>
 				</div>
