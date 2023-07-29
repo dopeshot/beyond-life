@@ -26,10 +26,11 @@ export class LastWillsService {
         `Exceeding allowed last wills: ${allowedWills}`,
       )
 
-    return await this.lastWillModel.create({
+    const createdLastWill = await this.lastWillModel.create({
       ...createLastWillDto,
       accountId: userId,
     })
+    return createdLastWill.toObject() satisfies LastWill
   }
 
   async findAllByUser(userId: ObjectId) {
