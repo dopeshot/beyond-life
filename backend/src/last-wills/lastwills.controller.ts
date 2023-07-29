@@ -21,6 +21,7 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -52,6 +53,7 @@ export class LastWillsController {
   @ApiBadRequestResponse({
     description: 'Bad request: Invalid data provided',
   })
+  @ApiOperation({ summary: 'Create last will' })
   async createOne(
     @Body() createLastWillDto: CreateLastWillDto,
     @Req() { user }: RequestWithJWTPayload,
@@ -72,6 +74,7 @@ export class LastWillsController {
   @ApiUnauthorizedResponse({
     description: 'Unauthorized to get last wills metadata',
   })
+  @ApiOperation({ summary: 'Find all last wills metadata for user' })
   async findAllMetadataByUser(@Req() { user }: RequestWithJWTPayload) {
     const metadataArray = await this.lastWillsService.findAllByUser(user.id)
     return metadataArray.map(
@@ -87,6 +90,7 @@ export class LastWillsController {
   @ApiOkResponse({ description: 'Full last will', type: LastWill })
   @ApiUnauthorizedResponse({ description: 'Unauthorized to get last will' })
   @ApiNotFoundResponse({ description: 'Last will not found' })
+  @ApiOperation({ summary: 'Find last will of user by id' })
   async findFullById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
@@ -97,6 +101,7 @@ export class LastWillsController {
 
   // TODO: implement in other issue
   @Get(':id/fulltext')
+  @ApiOperation({ summary: 'Get Testament as fulltext' })
   async getFullTextLastWill(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
@@ -113,6 +118,7 @@ export class LastWillsController {
   @ApiBadRequestResponse({
     description: 'Bad request: Invalid data provided',
   })
+  @ApiOperation({ summary: 'Create last will' })
   async updateOneById(
     @Param('id') id: string,
     @Body() updateLastWillDto: UpdateLastWillDto,
@@ -130,6 +136,7 @@ export class LastWillsController {
   @ApiNoContentResponse({ description: 'Last will deleted' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized to delete last will' })
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete one last will by id for user' })
   async deleteOneById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,

@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
 import { Connection, Model } from 'mongoose'
 import * as request from 'supertest'
-import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { LastWill, LastWillMetadata } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
@@ -80,14 +79,13 @@ describe('LastWillsController (e2e)', () => {
     token = jwtService.sign(
       {
         id: user._id,
-        email: user.email,
-      } as RefreshJWTPayload,
+      },
       { secret: configService.get('JWT_SECRET') },
     )
   })
 
   describe('/lastwill (POST)', () => {
-    describe('Positives', () => {
+    describe('Positive Tests', () => {
       it('should create a new last will for the authenticated user', async () => {
         const res = await request(app.getHttpServer())
           .post('/lastwill')
@@ -123,7 +121,7 @@ describe('LastWillsController (e2e)', () => {
       })
     })
 
-    describe('Negatives', () => {
+    describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
           .post('/lastwill')
@@ -163,7 +161,7 @@ describe('LastWillsController (e2e)', () => {
         expect(createdLastWill).toBe(0)
       })
 
-      it('should validate the (Person | Organisation)[]', async () => {
+      it('should validate the (Person | Organisation)[] based on not matching discriminator', async () => {
         await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -173,6 +171,11 @@ describe('LastWillsController (e2e)', () => {
           })
           .expect(HttpStatus.BAD_REQUEST)
 
+        const createdLastWill = await lastWillsModel.count()
+        expect(createdLastWill).toBe(0)
+      })
+
+      it('should validate the (Person | Organisation)[] based on missing type in Person ', async () => {
         await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -183,25 +186,9 @@ describe('LastWillsController (e2e)', () => {
             ],
           })
           .expect(HttpStatus.BAD_REQUEST)
-
-        // Can't test this because everything can be transformed in a string and all fields are IsString + IsOptional
-        // await request(app.getHttpServer())
-        //   .post('/lastwill')
-        //   .set('Authorization', `Bearer ${token}`)
-        //   .send({
-        //     ...sampleObject,
-        //     heirs: [
-        //       {
-        //         ...sampleObject.heirs[1],
-        //         address: { street: { notAnObject: true } },
-        //       },
-        //     ], // Supposed to be string
-        //   })
-        //   .expect(HttpStatus.BAD_REQUEST)
-
-        const createdLastWill = await lastWillsModel.count()
-        expect(createdLastWill).toBe(0)
       })
+
+      // Can't test missing type in Organisation because it is optional
 
       it('should prevent exceeding paymentPlan lastWill limit', async () => {
         await lastWillsModel.create({
@@ -226,7 +213,7 @@ describe('LastWillsController (e2e)', () => {
   })
 
   describe('/lastwill (Get)', () => {
-    describe('Positives', () => {
+    describe('Positive Tests', () => {
       it('should return all last wills for the authenticated user', async () => {
         await lastWillsModel.create({
           ...sampleObject,
@@ -261,7 +248,7 @@ describe('LastWillsController (e2e)', () => {
       })
     })
 
-    describe('Negatives', () => {
+    describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
           .get('/lastwill')
@@ -273,7 +260,7 @@ describe('LastWillsController (e2e)', () => {
   })
 
   describe('/lastwill/:id (Get)', () => {
-    describe('Positives', () => {
+    describe('Positive Tests', () => {
       it('should return one last will for the authenticated user', async () => {
         const lastWill = (
           await lastWillsModel.create({
@@ -293,8 +280,8 @@ describe('LastWillsController (e2e)', () => {
       })
     })
 
-    describe('Negatives', () => {
-      it('should return not Found if it doesnt exist', async () => {
+    describe('Negative Tests', () => {
+      it('should return not found if it doesnt exist', async () => {
         await request(app.getHttpServer())
           .get(`/lastwill/${'aaaaaaaaaaaaaaaaaaaaaaa2'}`)
           .set('Authorization', `Bearer ${token}`)
@@ -319,7 +306,7 @@ describe('LastWillsController (e2e)', () => {
   })
 
   describe('/lastwill/:id (Put)', () => {
-    describe('Positives', () => {
+    describe('Positive Tests', () => {
       it('should update one last will for the authenticated user', async () => {
         const lastWill = (
           await lastWillsModel.create({
@@ -341,17 +328,10 @@ describe('LastWillsController (e2e)', () => {
       })
     })
 
-    describe('Negatives', () => {
+    describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
-        const lastWill = (
-          await lastWillsModel.create({
-            ...sampleObject,
-            accountId: user._id,
-          })
-        ).toObject()
-
         await request(app.getHttpServer())
-          .put(`/lastwill/${lastWill._id}`)
+          .put(`/lastwill/aaaaaaaaaaaaaaaaaaaaa222`)
           .set('Authorization', `Bearer ${token}a`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
@@ -394,7 +374,7 @@ describe('LastWillsController (e2e)', () => {
       ).toObject()
     })
 
-    describe('Positives', () => {
+    describe('Positive Tests', () => {
       it('should delete one last will for the authenticated user', async () => {
         await request(app.getHttpServer())
           .delete(`/lastwill/${lastWill._id}`)
@@ -408,7 +388,7 @@ describe('LastWillsController (e2e)', () => {
       })
     })
 
-    describe('Negatives', () => {
+    describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
           .delete(`/lastwill/${lastWill._id}`)
