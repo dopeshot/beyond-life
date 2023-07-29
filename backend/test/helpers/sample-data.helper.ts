@@ -24,7 +24,7 @@ const sampleHumanHeir = {
   isHandicapped: false,
   isInsolvent: false,
   percentage: 50,
-  itemIds: [1, 2, 3],
+  itemIds: ['11111111', '22222222'],
   child: {
     type: 'natural',
     relationship: 'childTogether',
