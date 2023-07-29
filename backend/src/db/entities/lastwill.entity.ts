@@ -234,7 +234,7 @@ class Address {
 class PersonBase {
   @prop({ required: true, type: String })
   @ApiProperty({
-    description: 'Name',
+    description: 'Full name',
     example: swaggerExampleHumanHeir.name,
     type: String,
   })
