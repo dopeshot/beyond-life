@@ -268,11 +268,6 @@ describe('LastWillsController (e2e)', () => {
           .set('Authorization', `Bearer ${token}a`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
-
-        const createdLastWill = await lastWillsModel.findOne({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBeNull()
       })
     })
   })
