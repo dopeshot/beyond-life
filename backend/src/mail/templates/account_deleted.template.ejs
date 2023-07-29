@@ -1,11 +1,63 @@
 <!DOCTYPE html>
+
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta template="account_deleted" />
-    <title>Sehr geehrte(r) Kunde/Kundin</title>
-  </head>
-  <body>
-    Ihr Account wurde erfolgreich gelöscht.
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta template="account_deleted" />
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans";
+      display: flex;
+      flex-direction: column;
+      justify-content: center
+    }
+
+    h1 {
+      font-family: "Arbutus Slab";
+      margin: 0;
+    }
+
+    .title-bar {
+      background-color: #FFBF00;
+      width: 100%;
+      padding: 2em;
+      margin-bottom: 1em;
+    }
+
+    .main-button-container {
+      display: inline-block;
+      background-color: black;
+      border-radius: 10px;
+      padding: 1em 1em;
+      width: auto;
+      align-self: center;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
+    .not-a-button {
+      text-align: center;
+      text-decoration: none;
+      color: white;
+    }
+
+    .signing-container p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="title-bar">
+    <h1>Sehr geehrte(r) Kunde/Kundin</h1>
+  </div>
+  <p>Ihr Account wurde erfolgreich gelöscht.</p>
+
+  <div class="signing-container">
+    <p>Mit freundlichen Grüßen</p>
+    <p>Ihr <a style="font-style: italic;">Siebtes Leben</a>-Team</p>
+  </div>
+</body>
+
 </html>
