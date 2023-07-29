@@ -63,11 +63,13 @@ export class LastWillsService {
     userId: ObjectId,
     updateLastWillDto: UpdateLastWillDto,
   ) {
-    return await this.lastWillModel
+    const updatedLastWill = await this.lastWillModel
       .findOneAndUpdate({ _id: id, accountId: userId }, updateLastWillDto, {
         new: true,
       })
       .lean()
+    if (!updatedLastWill) throw new NotFoundException('Last will not found')
+    return updatedLastWill
   }
 
   async deleteOneById(id: string, userId: ObjectId) {

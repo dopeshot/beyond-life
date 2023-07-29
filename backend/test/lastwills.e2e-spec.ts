@@ -251,7 +251,7 @@ describe('LastWillsController (e2e)', () => {
         expect(res.body[0]).toEqual(new LastWillMetadata(res.body[0]))
       })
 
-      it('should return empty array if none could be found', async () => {
+      it('should return empty array if there are none', async () => {
         const res = await request(app.getHttpServer())
           .get('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -264,7 +264,7 @@ describe('LastWillsController (e2e)', () => {
     describe('Negatives', () => {
       it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
-          .post('/lastwill')
+          .get('/lastwill')
           .set('Authorization', `Bearer ${token}a`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
@@ -273,20 +273,6 @@ describe('LastWillsController (e2e)', () => {
           accountId: user._id,
         })
         expect(createdLastWill).toBeNull()
-      })
-
-      it('should fail with no user in db', async () => {
-        await userModel.deleteMany({})
-        await request(app.getHttpServer())
-          .post('/lastwill')
-          .set('Authorization', `Bearer ${token}`)
-          .send(sampleObject)
-          .expect(HttpStatus.UNAUTHORIZED)
-
-        const createdLastWill = await lastWillsModel.count({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBe(0)
       })
     })
   })
@@ -300,6 +286,7 @@ describe('LastWillsController (e2e)', () => {
             accountId: user._id,
           })
         ).toObject()
+
         const res = await request(app.getHttpServer())
           .get(`/lastwill/${lastWill._id}`)
           .set('Authorization', `Bearer ${token}`)
@@ -320,23 +307,16 @@ describe('LastWillsController (e2e)', () => {
       })
 
       it('should fail with invalid token', async () => {
+        const lastWill = (
+          await lastWillsModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
         await request(app.getHttpServer())
-          .post('/lastwill')
+          .get(`/lastwill/${lastWill._id}`)
           .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
-          .expect(HttpStatus.UNAUTHORIZED)
-
-        const createdLastWill = await lastWillsModel.findOne({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBeNull()
-      })
-
-      it('should fail with no user in db', async () => {
-        await userModel.deleteMany({})
-        await request(app.getHttpServer())
-          .post('/lastwill')
-          .set('Authorization', `Bearer ${token}`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
       })
@@ -344,67 +324,116 @@ describe('LastWillsController (e2e)', () => {
   })
 
   describe('/lastwill/:id (Put)', () => {
-    describe('Positives', () => {})
+    describe('Positives', () => {
+      it('should update one last will for the authenticated user', async () => {
+        const lastWill = (
+          await lastWillsModel.create({
+            ...sampleObject,
+            progressKeys: [],
+            accountId: user._id,
+          })
+        ).toObject()
+        const res = await request(app.getHttpServer())
+          .put(`/lastwill/${lastWill._id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send({ ...sampleObject })
+          .expect(HttpStatus.OK)
+
+        expect(res.body).toBeDefined()
+        expect(res.body.progressKeys).toContain(
+          sampleObject.progressKeys.at(-1),
+        )
+      })
+    })
 
     describe('Negatives', () => {
       it('should fail with invalid token', async () => {
+        const lastWill = (
+          await lastWillsModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
         await request(app.getHttpServer())
-          .post('/lastwill')
+          .put(`/lastwill/${lastWill._id}`)
           .set('Authorization', `Bearer ${token}a`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
-
-        const createdLastWill = await lastWillsModel.findOne({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBeNull()
       })
 
-      it('should fail with no user in db', async () => {
-        await userModel.deleteMany({})
+      it('should fail with no last will to update', async () => {
         await request(app.getHttpServer())
-          .post('/lastwill')
+          .put(`/lastwill/${sampleObject._id}`)
           .set('Authorization', `Bearer ${token}`)
           .send(sampleObject)
-          .expect(HttpStatus.UNAUTHORIZED)
+          .expect(HttpStatus.NOT_FOUND)
+      })
 
-        const createdLastWill = await lastWillsModel.count({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBe(0)
+      it('should fail if last will does not belong to user', async () => {
+        const lastWill = (
+          await lastWillsModel.create({
+            ...sampleObject,
+            progressKeys: [],
+            accountId: 'aaaaaaaaaaaaaaaaaaaaa222',
+          })
+        ).toObject()
+
+        await request(app.getHttpServer())
+          .put(`/lastwill/${lastWill._id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(sampleObject)
+          .expect(HttpStatus.NOT_FOUND)
       })
     })
   })
 
   describe('/lastwill/:id (Delete)', () => {
-    describe('Positives', () => {})
+    let lastWill
+    beforeEach(async () => {
+      lastWill = (
+        await lastWillsModel.create({
+          ...sampleObject,
+          accountId: user._id,
+        })
+      ).toObject()
+    })
 
-    describe('Negatives', () => {
-      it('should fail with invalid token', async () => {
+    describe('Positives', () => {
+      it('should delete one last will for the authenticated user', async () => {
         await request(app.getHttpServer())
-          .post('/lastwill')
-          .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
-          .expect(HttpStatus.UNAUTHORIZED)
+          .delete(`/lastwill/${lastWill._id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NO_CONTENT)
 
         const createdLastWill = await lastWillsModel.findOne({
           accountId: user._id,
         })
         expect(createdLastWill).toBeNull()
       })
+    })
 
-      it('should fail with no user in db', async () => {
-        await userModel.deleteMany({})
+    describe('Negatives', () => {
+      it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
-          .post('/lastwill')
-          .set('Authorization', `Bearer ${token}`)
+          .delete(`/lastwill/${lastWill._id}`)
+          .set('Authorization', `Bearer ${token}a`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
+      })
 
-        const createdLastWill = await lastWillsModel.count({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBe(0)
+      it('should fail if user does not own last will', async () => {
+        await lastWillsModel.updateOne(
+          {},
+          { accountId: 'aaaaaaaaaaaaaaaaaaaaa222' },
+        )
+        await request(app.getHttpServer())
+          .delete(`/lastwill/${lastWill._id}`)
+          .set('Authorization', `Bearer ${token}`)
+          .send(sampleObject)
+
+        const createdLastWill = await lastWillsModel.count()
+        expect(createdLastWill).toBe(1)
       })
     })
   })
