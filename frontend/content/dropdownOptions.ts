@@ -1,7 +1,7 @@
 import { HeirsTypes } from '../src/store/last-will/heirs/state'
-import { ComponentOptions, DropdownButtonOptions } from '../src/types/form'
+import { DropdownButtonOptions, DropdownOptions } from '../src/types/form'
 
-export const genderOptions: ComponentOptions[] = [
+export const genderOptions: DropdownOptions[] = [
 	{
 		value: 'male',
 		label: 'Männlich',
@@ -19,7 +19,7 @@ export const genderOptions: ComponentOptions[] = [
 	},
 ]
 
-export const childRelationshipOptions: ComponentOptions[] = [
+export const childRelationshipOptions: DropdownOptions[] = [
 	{
 		value: 'childTogether',
 		label: 'Gemeinsames Kind mit Ehepartner',
