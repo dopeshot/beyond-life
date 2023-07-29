@@ -6,6 +6,7 @@ import { CreateLastWillDto } from '../../last-wills/dto/create-lastwill.dto'
 import { UpdateLastWillDto } from '../../last-wills/dto/update-lastwill.dto'
 import { paymentPlans } from '../../payments/interfaces/payments'
 import { LastWill } from '../entities/lastwill.entity'
+import { UserService } from './user.service'
 
 @Injectable()
 export class LastWillsService {
@@ -13,13 +14,16 @@ export class LastWillsService {
   constructor(
     @InjectModel(LastWill)
     private readonly lastWillModel: ReturnModelType<typeof LastWill>,
+    private readonly userService: UserService,
   ) {}
 
   async createOne(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
     const lastWillCount = await this.lastWillModel.countDocuments({
       accountId: userId,
     })
-    const plan = 'single' // TODO: add plan to auth user or make userService request here
+    const user = await this.userService.findOneById(userId)
+    if (!user) throw new UnauthorizedException('Only Existing users can create')
+    const plan = user.paymentPlan
     const allowedWills = Math.abs(paymentPlans[plan])
     if (lastWillCount >= allowedWills)
       throw new UnauthorizedException(
