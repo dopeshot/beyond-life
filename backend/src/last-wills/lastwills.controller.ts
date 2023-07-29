@@ -19,6 +19,7 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -59,6 +60,7 @@ export class LastWillsController {
       createLastWillDto,
       user.id,
     )
+    console.log(createdLastWill)
     return new LastWill(createdLastWill)
   }
 
@@ -75,18 +77,23 @@ export class LastWillsController {
     const metadataArray = await this.lastWillsService.findAllByUser(user.id)
     return metadataArray.map(
       (metadata) =>
-        new LastWillMetadata({ ...metadata, testator: metadata.testator.name }),
+        new LastWillMetadata({
+          ...metadata,
+          testator: metadata.testator.name,
+        }),
     )
   }
 
   @Get(':id')
   @ApiOkResponse({ description: 'Full last will', type: LastWill })
   @ApiUnauthorizedResponse({ description: 'Unauthorized to get last will' })
+  @ApiNotFoundResponse({ description: 'Last will not found' })
   async findFullById(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
   ) {
     const fullLastWill = await this.lastWillsService.findFullById(id, user.id)
+    console.log(fullLastWill)
     return new LastWill(fullLastWill)
   }
 

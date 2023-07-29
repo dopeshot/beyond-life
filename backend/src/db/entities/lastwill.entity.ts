@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Severity, prop } from '@typegoose/typegoose'
 import { Expose, Type } from 'class-transformer'
 import {
@@ -408,7 +408,7 @@ class Organisation {
     example: sampleOrganisationHeir.address,
   })
   @IsOptional()
-  @ValidateNested({ each: true })
+  @ValidateNested()
   @Type(() => Address)
   address?: Address
 }
@@ -612,7 +612,18 @@ export class LastWill {
   }
 }
 
-export class LastWillMetadata extends PickType(LastWill, ['progressKeys']) {
+// PickTypes don't work with class-transformer, so we have to create a new class
+export class LastWillMetadata {
+  @ApiProperty({
+    description: 'Progress keys',
+    example: sampleObject.progressKeys,
+    enum: SidebarPages,
+    type: String,
+    isArray: true,
+  })
+  @Expose()
+  progressKeys: SidebarPages[]
+
   @ApiProperty({
     description: 'Testator',
     example: 'jeff',
@@ -620,4 +631,8 @@ export class LastWillMetadata extends PickType(LastWill, ['progressKeys']) {
   })
   @Expose()
   testator: string
+
+  constructor(partial: Partial<LastWillMetadata>) {
+    Object.assign(this, partial)
+  }
 }

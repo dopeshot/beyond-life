@@ -1,5 +1,10 @@
 import { InjectModel } from '@m8a/nestjs-typegoose'
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { ObjectId } from 'mongoose'
 import { CreateLastWillDto } from '../../last-wills/dto/create-lastwill.dto'
@@ -38,11 +43,15 @@ export class LastWillsService {
   }
 
   async findAllByUser(userId: ObjectId) {
-    return await this.lastWillModel.find({ accountId: userId })
+    return await this.lastWillModel.find({ accountId: userId }).lean()
   }
 
   async findFullById(id: string, userId: ObjectId) {
-    return await this.lastWillModel.findOne({ _id: id, accountId: userId })
+    const lastWill = await this.lastWillModel
+      .findOne({ _id: id, accountId: userId })
+      .lean()
+    if (!lastWill) throw new NotFoundException('Last will not found')
+    return lastWill
   }
 
   async getFullTextLastWill(id: string, userId: ObjectId) {
@@ -54,11 +63,11 @@ export class LastWillsService {
     userId: ObjectId,
     updateLastWillDto: UpdateLastWillDto,
   ) {
-    return await this.lastWillModel.findOneAndUpdate(
-      { _id: id, accountId: userId },
-      updateLastWillDto,
-      { new: true },
-    )
+    return await this.lastWillModel
+      .findOneAndUpdate({ _id: id, accountId: userId }, updateLastWillDto, {
+        new: true,
+      })
+      .lean()
   }
 
   async deleteOneById(id: string, userId: ObjectId) {
