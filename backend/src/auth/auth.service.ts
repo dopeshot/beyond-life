@@ -84,8 +84,8 @@ export class AuthService {
 
     const mailContent: VerifyMailData = {
       verifyUrl: `${this.configService.get(
-        'BACKEND_DOMAIN',
-      )}/auth/verify-email?token=${verifyToken}`,
+        'FRONTEND_DOMAIN',
+      )}/account/email-verified?token=${verifyToken}`,
     }
     const mail: MailData = {
       recipient: {
@@ -156,6 +156,7 @@ export class AuthService {
     return this.jwtService.sign({
       id: user._id,
       email: user.email,
+      hasVerifiedEmail: user.hasVerifiedEmail,
     } as JWTPayload)
   }
 
@@ -228,8 +229,8 @@ export class AuthService {
         },
       )
       const resetUrl = `${this.configService.get(
-        'BACKEND_DOMAIN',
-      )}/auth/verify-email?token=${resetToken}`
+        'FRONTEND_DOMAIN',
+      )}/account/change-password?token=${resetToken}`
 
       mailContent = { resetUrl } as PasswordResetMailData
       mailTemplate = MailTemplates.PASSWORD_RESET

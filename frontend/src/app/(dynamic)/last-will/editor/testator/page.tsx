@@ -7,6 +7,7 @@ import { ObjectSchema, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
+import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -93,8 +94,20 @@ const Testator = () => {
 								<div className="2xl:w-2/3">
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
-										<TextInput name="firstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-										<TextInput name="lastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+										<TextInput
+											name="firstName"
+											inputRequired
+											labelText="Vorname"
+											placeholder="Vorname"
+											autoComplete="given-name"
+										/>
+										<TextInput
+											name="lastName"
+											inputRequired
+											labelText="Nachname"
+											placeholder="Nachname"
+											autoComplete="family-name"
+										/>
 
 										{/* Gender and Birth */}
 										<div className="grid gap-x-3 md:grid-cols-2">
@@ -105,21 +118,32 @@ const Testator = () => {
 												hasMargin
 												options={genderOptions}
 											/>
-											{/* // TODO: Replace with datepicker */}
-											<TextInput name="birthDate" labelText="Geburtstag" placeholder="Geburtstag" />
+											<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
 										</div>
 										<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
 										<div className="md:col-start-1 md:col-end-3">
-											<TextInput name="street" inputRequired labelText="Straße" placeholder="Straße" />
+											<TextInput
+												name="street"
+												inputRequired
+												labelText="Straße"
+												placeholder="Straße"
+												autoComplete="street-address"
+											/>
 										</div>
 										<div className="md:col-start-3 md:col-end-4">
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="md:col-start-1 md:col-end-2">
-											<TextInput name="postalCode" inputRequired labelText="Postleitzahl" placeholder="Postleitzahl" />
+											<TextInput
+												name="postalCode"
+												inputRequired
+												labelText="Postleitzahl"
+												placeholder="Postleitzahl"
+												autoComplete="postal-code"
+											/>
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
 											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
