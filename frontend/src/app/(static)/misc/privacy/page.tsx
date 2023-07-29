@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
@@ -24,9 +25,9 @@ const Privacy = () => {
 									Einführung
 								</Headline>
 								<p className="mb-2">
-									Herzlich willkommen auf SiebtesLeben.de. Wir sind verpflichtet, Ihre persönlichen Daten zu schützen, und wir verstehen,
-									dass Sie wissen möchten, wie Informationen über Sie verwendet und weitergegeben werden. Wir hoffen,
-									dass diese Datenschutzrichtlinie diese Fragen beantworten wird.
+									Herzlich willkommen auf SiebtesLeben.de. Wir sind verpflichtet, Ihre persönlichen Daten zu schützen,
+									und wir verstehen, dass Sie wissen möchten, wie Informationen über Sie verwendet und weitergegeben
+									werden. Wir hoffen, dass diese Datenschutzrichtlinie diese Fragen beantworten wird.
 								</p>
 								<p className="mb-8">
 									Bitte lesen Sie diese Richtlinie sorgfältig durch, bevor Sie unsere Website oder Dienstleistungen
@@ -140,6 +141,53 @@ const Privacy = () => {
 									Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wir empfehlen Ihnen, diese
 									Seite regelmäßig zu besuchen, um über eventuelle Änderungen informiert zu sein.
 								</p>
+							</div>
+
+							{/* Third-Party Cookies */}
+							<div>
+								<Headline level={3} size="text-xl">
+									Third-Party Cookies
+								</Headline>
+								<p className="mb-2">
+									Wir verwenden Drittanbieter-Cookies auf unserer Website, um die Benutzererfahrung zu verbessern und
+									relevante Inhalte bereitzustellen. Diese können Tracking-Informationen über Sie enthalten. Die
+									Drittanbieter-Cookies, die wir verwenden, sind:
+								</p>
+								<ul className="mb-2 list-disc">
+								<li className="mb-2">
+										<Headline level={4} size="text-lg">
+											Google Analytics 
+										</Headline>
+										Wir verwenden Google Analytics, um die Nutzung unserer Website zu analysieren. Die
+										Datenschutzrichtlinie von Google Analytics können Sie{' '}
+										<Link href="https://marketingplatform.google.com/about/analytics/" className='font-bold underline'>
+											hier
+										</Link>{' '}
+										einsehen.
+									</li>
+									<li className="mb-2">
+										<Headline level={4} size="text-lg">
+											Google Fonts 
+										</Headline>
+										Wir nutzen Google Fonts für die Anzeige von Schriftarten auf unserer Website. Die
+										Datenschutzrichtlinie von Google Fonts können Sie{' '}
+										<Link href="https://fonts.google.com/" className='font-bold underline'>
+											hier
+										</Link>{' '}
+										einsehen.
+									</li>
+									<li className="mb-8">
+										<Headline level={4} size="text-lg">
+											Material Symbols
+										</Headline>
+										Wir verwenden Material Symbols für Icons auf unserer Website. Die
+										Datenschutzrichtlinie von Google, der Firma, die Material Symbols bereitstellt, können Sie {' '}
+										<Link href="https://fonts.google.com/icons" className='font-bold underline'>
+											hier
+										</Link>{' '}
+										einsehen.
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>
