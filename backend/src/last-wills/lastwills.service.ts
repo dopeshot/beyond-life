@@ -7,11 +7,11 @@ import {
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { ObjectId } from 'mongoose'
-import { CreateLastWillDto } from '../../last-wills/dto/create-lastwill.dto'
-import { UpdateLastWillDto } from '../../last-wills/dto/update-lastwill.dto'
-import { paymentPlans } from '../../payments/interfaces/payments'
-import { LastWill } from '../entities/lastwill.entity'
-import { UserService } from './user.service'
+import { LastWill } from '../db/entities/lastwill.entity'
+import { UserService } from '../db/services/user.service'
+import { paymentPlans } from '../payments/interfaces/payments'
+import { CreateLastWillDto } from './dto/create-lastwill.dto'
+import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 
 @Injectable()
 export class LastWillsService {
