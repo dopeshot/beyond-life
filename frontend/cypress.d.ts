@@ -13,6 +13,11 @@ declare global {
 			 * @param customSelector add custom child selector, is used like css selectors.
 			 */
 			datacy(datacy: string, customSelector?: string): Chainable<void>
+			/**
+			 * Mocks the mail verification endpoint.
+			 * @param response Set the response for the mail verification endpoint.
+			 */
+			mockMailVerify(response?: 'OK' | 'UNAUTHORIZED' | 'USER_NOT_FOUND' | 'USER_ALREADY_VERIFIED'): Chainable<void>
 		}
 	}
 }
