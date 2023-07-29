@@ -88,7 +88,7 @@ describe('LastWillsController (e2e)', () => {
 
   describe('/lastwill (POST)', () => {
     describe('Positives', () => {
-      it.only('should create a new last will for the authenticated user', async () => {
+      it('should create a new last will for the authenticated user', async () => {
         const res = await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -151,7 +151,7 @@ describe('LastWillsController (e2e)', () => {
         expect(createdLastWill).toBe(0)
       })
 
-      it('should fail missing data', async () => {
+      it('should fail with missing data', async () => {
         await userModel.deleteMany({})
         await request(app.getHttpServer())
           .post('/lastwill')
@@ -293,7 +293,7 @@ describe('LastWillsController (e2e)', () => {
 
   describe('/lastwill/:id (Get)', () => {
     describe('Positives', () => {
-      it.only('should return one last will for the authenticated user', async () => {
+      it('should return one last will for the authenticated user', async () => {
         const lastWill = (
           await lastWillsModel.create({
             ...sampleObject,
@@ -307,8 +307,7 @@ describe('LastWillsController (e2e)', () => {
 
         expect(res.body).toBeDefined()
         expect(res.body.accountId).toEqual(user._id.toString())
-        console.log(res.body)
-        //expect(res.body).toEqual(new LastWill(res.body))
+        expect(res.body).toEqual(new LastWill(res.body))
       })
     })
 

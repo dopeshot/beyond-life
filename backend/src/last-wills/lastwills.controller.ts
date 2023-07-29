@@ -60,7 +60,6 @@ export class LastWillsController {
       createLastWillDto,
       user.id,
     )
-    console.log(createdLastWill)
     return new LastWill(createdLastWill)
   }
 
@@ -93,7 +92,6 @@ export class LastWillsController {
     @Req() { user }: RequestWithJWTPayload,
   ) {
     const fullLastWill = await this.lastWillsService.findFullById(id, user.id)
-    console.log(fullLastWill)
     return new LastWill(fullLastWill)
   }
 
