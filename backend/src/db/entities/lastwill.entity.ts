@@ -62,7 +62,7 @@ enum ChildRelationShip {
   CHILD_FROM_OTHER = 'childFromOther',
 }
 
-const swaggerExampleHumanHeir: Person = {
+const swaggerExamplePersonHeir: Person = {
   id: '987654321',
   type: PersonType.CHILD,
   name: 'Heir Name',
