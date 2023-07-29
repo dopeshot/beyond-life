@@ -128,6 +128,7 @@ const sampleObject: LastWill = {
 
 // This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
 class Discriminator {
+  @IsEnum(PersonType)
   type: PersonType
 }
 
@@ -299,6 +300,7 @@ class PersonBase {
   })
   @IsOptional()
   @ValidateNested()
+  @Type(() => Address)
   address?: Address
 }
 
@@ -350,6 +352,7 @@ class Person extends PersonBase {
   })
   @IsOptional()
   @ValidateNested()
+  @Type(() => ChildInfo)
   child?: ChildInfo
 }
 
@@ -406,6 +409,7 @@ class Organisation {
   })
   @IsOptional()
   @ValidateNested({ each: true })
+  @Type(() => Address)
   address?: Address
 }
 
@@ -489,7 +493,6 @@ export class LastWill {
     example: sampleObject._id,
   })
   @Type(() => String)
-  //@Transform(({ value }) => value.toString())
   @Expose()
   _id: ObjectId | string
 
