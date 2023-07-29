@@ -200,7 +200,7 @@ describe('LastWillController (e2e)', () => {
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
           .send(sampleObject)
-          .expect(HttpStatus.UNAUTHORIZED)
+          .expect(HttpStatus.FORBIDDEN)
 
         const createdLastWill = await lastWillModel.count({
           accountId: user._id,
