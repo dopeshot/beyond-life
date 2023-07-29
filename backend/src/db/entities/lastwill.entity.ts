@@ -3,7 +3,6 @@ import { Severity, prop } from '@typegoose/typegoose'
 import { Expose, Type } from 'class-transformer'
 import {
   Equals,
-  IsArray,
   IsBoolean,
   IsEnum,
   IsNumber,
@@ -73,7 +72,7 @@ const sampleHumanHeir: Person = {
   isHandicapped: false,
   isInsolvent: false,
   percentage: 50,
-  itemIds: [1, 2, 3],
+  itemIds: ['11111111', '22222222'],
   child: {
     type: ChildType.NATURAL,
     relationship: ChildRelationShip.CHILD_TOGETHER,
@@ -338,9 +337,9 @@ class Person extends PersonBase {
     type: [Number],
     isArray: true,
   })
-  @IsNumber({}, { each: true })
+  @IsString({ each: true })
   @IsOptional()
-  itemIds?: number[]
+  itemIds?: string[]
 
   // Heirs
   @prop({ required: false, type: ChildInfo, _id: false })
@@ -484,12 +483,14 @@ class FinancialAsset {
   currency?: string
 }
 
-@Expose()
 export class LastWill {
   @ApiProperty({
     description: 'Id',
     example: sampleObject._id,
   })
+  @Type(() => String)
+  //@Transform(({ value }) => value.toString())
+  @Expose()
   _id: ObjectId | string
 
   @prop({
@@ -505,6 +506,7 @@ export class LastWill {
     type: String,
   })
   @IsString()
+  @Expose()
   accountId: string
 
   @prop({ required: true, type: Common, _id: false })
@@ -515,6 +517,8 @@ export class LastWill {
   })
   @IsObject()
   @ValidateNested()
+  @Type(() => Common)
+  @Expose()
   common: Common
 
   @prop({ required: true, type: Testator, _id: false })
@@ -525,6 +529,8 @@ export class LastWill {
   })
   @IsObject()
   @ValidateNested()
+  @Type(() => Testator)
+  @Expose()
   testator: Testator
 
   @prop({
@@ -554,6 +560,7 @@ export class LastWill {
     },
     keepDiscriminatorProperty: true,
   })
+  @Expose()
   heirs: (Person | Organisation)[]
 
   @prop({ required: true, type: [Item], default: [], _id: false })
@@ -563,8 +570,9 @@ export class LastWill {
     isArray: true,
     example: sampleObject.items,
   })
-  @IsArray()
   @ValidateNested({ each: true })
+  @Type(() => Item)
+  @Expose()
   items: Item[]
 
   @prop({
@@ -579,8 +587,9 @@ export class LastWill {
     isArray: true,
     example: sampleObject.financialAssets,
   })
-  @IsArray()
   @ValidateNested({ each: true })
+  @Type(() => FinancialAsset)
+  @Expose()
   financialAssets: FinancialAsset[]
 
   @prop({ required: true, default: [], allowMixed: Severity.ALLOW })
@@ -591,8 +600,8 @@ export class LastWill {
     type: String,
     isArray: true,
   })
-  @IsArray()
   @IsEnum(SidebarPages, { each: true })
+  @Expose()
   progressKeys: SidebarPages[]
 
   constructor(partial: Partial<LastWill>) {
@@ -600,12 +609,12 @@ export class LastWill {
   }
 }
 
-@Expose()
 export class LastWillMetadata extends PickType(LastWill, ['progressKeys']) {
   @ApiProperty({
     description: 'Testator',
     example: 'jeff',
     type: String,
   })
+  @Expose()
   testator: string
 }
