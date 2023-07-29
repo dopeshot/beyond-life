@@ -69,10 +69,10 @@ export class ProfileService {
     }
   }
 
-  async deleteProfile(id: ObjectId, password: string) {
+  async deleteProfile(id: ObjectId) {
     const user = await this.userService.findOneById(id)
 
-    if (!user || !(await compare(password, user.password))) {
+    if (!user) {
       throw new UnauthorizedException()
     }
 
