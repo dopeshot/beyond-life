@@ -8,6 +8,7 @@ import { genderOptions } from '../../../../../../content/dropdownOptions'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
+import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { Label } from '../../../../../components/Form/Label/Label'
@@ -156,8 +157,20 @@ const Marriage = () => {
 									<div className="2xl:w-2/3">
 										{/* Name */}
 										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
-											<TextInput name="partnerFirstName" inputRequired labelText="Vorname" placeholder="Vorname" />
-											<TextInput name="partnerLastName" inputRequired labelText="Nachname" placeholder="Nachname" />
+											<TextInput
+												name="partnerFirstName"
+												inputRequired
+												labelText="Vorname"
+												placeholder="Vorname"
+												autoComplete="given-name"
+											/>
+											<TextInput
+												name="partnerLastName"
+												inputRequired
+												labelText="Nachname"
+												placeholder="Nachname"
+												autoComplete="family-name"
+											/>
 										</div>
 
 										{/* Gender and Birth */}
@@ -169,15 +182,20 @@ const Marriage = () => {
 												hasMargin
 												options={genderOptions}
 											/>
-											{/* // TODO(Zoe-Bot): Replace with datepicker */}
-											<TextInput name="partnerDateOfBirth" labelText="Geburtstag" placeholder="Geburtstag" />
+											<FormDatepicker name="partnerDateOfBirth" labelText="Geburtstag" autoComplete="bday" />
 											<TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
 										</div>
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="partnerStreet" inputRequired labelText="Straße" placeholder="Straße" />
+												<TextInput
+													name="partnerStreet"
+													inputRequired
+													labelText="Straße"
+													placeholder="Straße"
+													autoComplete="street-address"
+												/>
 											</div>
 											<div className="w-1/3 md:w-1/4">
 												<TextInput
@@ -196,6 +214,7 @@ const Marriage = () => {
 													inputRequired
 													labelText="Postleitzahl"
 													placeholder="Postleitzahl"
+													autoComplete="postal-code"
 												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">

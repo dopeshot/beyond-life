@@ -6,23 +6,39 @@ services:
     ports:
       - 3001:3001
     environment:
+      # DB
       - DB_USER_NAME=${BACKEND_DB_USER_NAME:-admin}
       - DB_USER_PW=${BACKEND_DB_USER_PW:-admin}
       - DB_HOST=${BACKEND_DB_HOST:-db}
       - DB_PORT=${BACKEND_DB_PORT:-27017}
-      - JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET:-verysecret}
-      - JWT_REFRESH_EXPIRE_TIME=${BACKEND_JWT_REFRESH_EXPIRE_TIME:-10d}
+      - DB_DB=${BACKEND_DB_DB:-siebtesleben}
+      # JWT
       - JWT_SECRET=${BACKEND_JWT_SECRET:-secret}
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
+      - JWT_REFRESH_SECRET=${BACKEND_JWT_REFRESH_SECRET:-verysecret}
+      - JWT_REFRESH_EXPIRE_TIME=${BACKEND_JWT_REFRESH_EXPIRE_TIME:-10d}
       - JWT_VERIFY_SECRET=${BACKEND_JWT_VERIFY_SECRET:-evenmoresecret}
       - JWT_VERIFY_EXPIRE_TIME=${BACKEND_JWT_VERIFY_EXPIRE_TIME:-1d}
-      - BACKEND_DOMAIN=${BACKEND_BACKEND_DOMAIN:-http://localhost:3001}
+      - JWT_PASSWORD_RESET_SECRET=${BACKEND_JWT_PASSWORD_RESET_SECRET:-evensecretersecret}
+      - JWT_PASSWORD_RESET_EXPIRE_TIME=${BACKEND_JWT_PASSWORD_RESET_EXPIRE_TIME:-4h}
+      # Mail
       - MAIL_HOST=${BACKEND_MAIL_HOST:-smtp}
       - MAIL_HOST_PORT=${BACKEND_MAIL_HOST_PORT:-25}
       - MAIL_IS_SECURE=${BACKLEND_MAIL_IS_SECURE:-false}
       - MAIL_AUTH_USERNAME=${BACKEND_MAIL_AUTH_USERNAME:-mail}
       - MAIL_AUTH_PW=${BACKEND_MAIL_AUTH_PW:-mail}
       - MAIL_DEFAULT_SENDE=${BACKEND_MAIL_DEFAULT_SENDER:-hello@siebtesleben.de}
+      # Stripe
+      - STRIPE_SECRET_KEY=${BACKEND_STRIPE_SECRET_KEY}
+      - STRIPE_CURRENCY=${BACKEND_STRIPE_CURRENCY:-eur}
+      - STRIPE_WEBHOOK_SECRET=${BACKEND_STRIPE_WEBHOOK_SECRET}
+      - STRIPE_ITEM_SINGLE=${BACKEND_STRIPE_ITEM_SINGLE}
+      - STRIPE_ITEM_FAMILY=${BACKEND_STRIPE_ITEM_FAMILY}
+      - STRIPE_ITEM_SINGLE_TO_FAMILY=${BACKEND_STRIPE_ITEM_SINGLE_TO_FAMILY}
+      - STRIPE_SUCCESS_URL=${BACKEND_STRIPE_SUCCESS_URL}
+      - STRIPE_CANCEL_URL=${BACKEND_STRIPE_CANCEL_URL}
+      # Other
+      - FRONTEND_DOMAIN=${BACKEND_FRONTEND_DOMAIN:-http://localhost:3000}
       - NODE_ENV=${BACKEND_NODE_ENV:-development}
     links:
       - db:db
@@ -40,8 +56,8 @@ services:
     image: rnwood/smtp4dev:v3
     restart: "always"
     ports:
-      - "25:25"
-      - 5000:80
+      - 25:25
+      - 5001:80
       - 143:143
     environment:
       - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNAME:-mail}
@@ -50,14 +66,14 @@ services:
   db:
     image: mongo:6.0.8
     ports:
-      - 27017:27017
+      - 27018:27017
     restart: "always"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PW:-admin}
       - MONGO_INITDB_DATABASE:=${MONGO_DB:-siebtesleben}
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27018/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5

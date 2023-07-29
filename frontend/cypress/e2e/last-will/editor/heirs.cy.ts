@@ -20,7 +20,7 @@ describe('Last Will Heirs Page', () => {
 			cy.datacy('gender-dropdown-button').click()
 			cy.datacy('gender-dropdown-option-female').click()
 
-			cy.datacy('textinput-dateOfBirth-input').type('01.01.1990')
+			cy.datacy('datepicker-dateOfBirth-input').type('1990-11-13')
 			cy.datacy('textinput-placeOfBirth-input').type('Here')
 
 			// Adress

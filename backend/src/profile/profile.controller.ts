@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Patch,
@@ -21,6 +22,7 @@ import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.i
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { ChangeEmailDTO } from './dtos/change-email.dto'
 import { ChangePasswordDto } from './dtos/change-password.dto'
+import { DeleteMeDTO } from './dtos/delete-me.dto'
 import { ProfileService } from './profile.service'
 
 @Controller('profile')
@@ -74,5 +76,14 @@ export class ProfileController {
     @Body() { email }: ChangeEmailDTO,
   ) {
     await this.profileService.updateUserEmail(user.id, email)
+  }
+
+  @Delete()
+  @UseGuards(JwtGuard)
+  async deleteUser(
+    @Req() { user }: RequestWithJWTPayload,
+    @Body() { password }: DeleteMeDTO,
+  ) {
+    await this.profileService.deleteProfile(user.id, password)
   }
 }

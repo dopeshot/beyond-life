@@ -236,7 +236,7 @@ const Inheritance = () => {
 													id: nanoid(),
 													name: '',
 													description: '',
-												} satisfies Item)
+												} as Item)
 											}
 											type="button"
 											className="ml-auto mt-4 md:mt-0"
