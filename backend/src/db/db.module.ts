@@ -1,7 +1,7 @@
 import { TypegooseModule } from '@m8a/nestjs-typegoose'
 import { Module } from '@nestjs/common'
+import { LastWillsService } from '../last-wills/lastwills.service'
 import { MODELS } from './entities'
-import { LastWillsService } from './services/lastwills.service'
 import { MailEventService } from './services/mail-event.service'
 import { UserService } from './services/user.service'
 
