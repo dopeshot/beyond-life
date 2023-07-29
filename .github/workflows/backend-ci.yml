@@ -10,12 +10,11 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"
-      - ".github/workflows/docker-build-and-push.template.yml"
-      - ".github/workflows/setup.template.yaml"
+      - ".github/workflows/*.template.yml"
 
 jobs:
   setup:
-    uses: ./.github/workflows/setup.template.yaml
+    uses: ./.github/workflows/setup.template.yml
     with:
       context: backend
 
@@ -39,9 +38,9 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        command: 
-        - test
-        - test:e2e
+        command:
+          - test
+          - test:e2e
     defaults:
       run:
         shell: bash
@@ -62,6 +61,26 @@ jobs:
 
       - name: tests
         run: npm run ${{ matrix.command }}
+
+      - name: rename report
+        run: cp coverage/coverage-final.json coverage/coverage-final-${{ hashFiles('backend/coverage/coverage-final.json') }}.json
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: backend/coverage/coverage-final-${{ hashFiles('backend/coverage/coverage-final.json') }}.json
+
+  generate-codecov-badge:
+    needs: tests
+    uses: ./.github/workflows/codecov.template.yml
+    # Dont run this when merging into stable => Bot cannot commit to main
+    if: github.ref != 'stable' || github.base_ref != 'stable'
+    with:
+      context: backend
+    secrets:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+      BOT_MAIL: ${{ secrets.BOT_MAIL }}
+      BOT_PAT: ${{ secrets.BOT_PAT }}
 
   docker-build-and-push:
     needs: tests

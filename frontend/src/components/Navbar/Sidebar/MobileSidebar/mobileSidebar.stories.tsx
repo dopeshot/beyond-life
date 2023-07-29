@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { LastWillContextProvider } from '../../../../store/last-will/LastWillContext'
+import { Provider } from 'react-redux'
+import { store } from '../../../../store/store'
 import { SidebarProps } from '../Sidebar'
 import { MobileSidebar } from './MobileSidebar'
 
@@ -19,9 +20,9 @@ type Story = StoryObj<SidebarProps>
 const Template: Story = {
 	render: (args) => {
 		return (
-			<LastWillContextProvider>
+			<Provider store={store}>
 				<MobileSidebar {...args} />
-			</LastWillContextProvider>
+			</Provider>
 		)
 	},
 }

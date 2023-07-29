@@ -13,7 +13,7 @@ npm run dev # Run in watch
 
 ```sh
 npm run build
-npm run serve # Starts that build
+npm run start # Starts that build
 ```
 
 ### Testing

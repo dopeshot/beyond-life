@@ -1,10 +1,10 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 'use client'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { sidebarElements } from '../../../../../content/sidebar'
-import { fontArbutusSlab } from '../../../../services/font/font'
 import { routes } from '../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
+import { useAppSelector } from '../../../../store/hooks'
 import { SidebarButtonState } from '../../../../types/sidebar'
 import { Icon } from '../../../Icon/Icon'
 import { SidebarProps } from '../Sidebar'
@@ -16,7 +16,7 @@ import { SidebarButton } from '../SidebarButton/SidebarButton'
 export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 	const [isOpen, setIsOpen] = useState(false)
 
-	const { lastWill } = useLastWillContext()
+	const progressKeys = useAppSelector((state) => state.lastWill.data.progressKeys)
 
 	const currentElementIndex = sidebarElements.findIndex((element) => path.includes(element.page))
 
@@ -37,14 +37,15 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-800" />
 				</Link>
 
-				<div className="relative flex w-full cursor-pointer flex-col items-center" onClick={() => setIsOpen(!isOpen)}>
-					<div className={`flex flex-col text-xl md:text-2xl ${fontArbutusSlab.className} mt-1`}>
-						{sidebarElements[currentElementIndex].title}
-					</div>
-					<div className="mb-1 ml-2 flex justify-center text-xs">
+				<div
+					className="relative flex w-full cursor-pointer flex-col items-center py-1"
+					onClick={() => setIsOpen(!isOpen)}
+				>
+					<h2 className={`font-serif text-xl md:text-2xl`}>{sidebarElements[currentElementIndex].title}</h2>
+					<p className="flex items-center text-xs">
 						Menü
 						<Icon icon={isOpen ? 'expand_less' : 'expand_more'} className="mt-0.5 text-xs text-gray-800" />
-					</div>
+					</p>
 				</div>
 				<Link
 					className={`flex items-center justify-center pr-2 pl-8${
@@ -67,7 +68,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 							state={
 								path.includes(element.page) // button is active if url contains the page name
 									? SidebarButtonState.ACTIVE
-									: lastWill.common.progressKeys.includes(element.page)
+									: progressKeys.includes(element.page)
 									? SidebarButtonState.DEFAULT // button is default if page was visited yet
 									: SidebarButtonState.DISABLED // button is disabled if page was not visited yet
 							}

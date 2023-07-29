@@ -24,7 +24,7 @@ describe('Last Will Testator Page', () => {
 			cy.datacy('gender-dropdown-button').click()
 			cy.datacy('gender-dropdown-option-male').click()
 
-			cy.datacy('textinput-birthDate-input').type('01.01.1990')
+			cy.datacy('datepicker-birthDate-input').type('1990-01-01')
 			cy.datacy('textinput-birthPlace-input').type('Here')
 
 			// Address

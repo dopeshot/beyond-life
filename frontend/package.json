@@ -5,8 +5,7 @@
 	"scripts": {
 		"dev": "npx next dev",
 		"build": "npx next build",
-		"start": "npx next start",
-		"serve": "npx serve@latest out",
+		"start": "npx serve@latest out",
 		"lint": "npx next lint",
 		"test": "npx cypress open",
 		"tc:cli": "npx cypress run --component",
@@ -15,6 +14,7 @@
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
+		"@reduxjs/toolkit": "^1.9.5",
 		"@types/node": "^20.2.4",
 		"@types/react": "^18.2.0",
 		"@types/react-dom": "^18.2.1",
@@ -26,11 +26,13 @@
 		"postcss": "^8.4.23",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-redux": "^8.1.1",
 		"tailwindcss": "^3.3.2",
 		"typescript": "^5.1.3",
 		"yup": "^1.1.0"
 	},
 	"devDependencies": {
+		"@cypress/code-coverage": "^3.11.0",
 		"@storybook/addon-essentials": "^7.0.12",
 		"@storybook/addon-interactions": "^7.0.12",
 		"@storybook/addon-links": "^7.0.12",
@@ -39,13 +41,25 @@
 		"@storybook/react": "^7.0.12",
 		"@storybook/testing-library": "^0.2.0",
 		"@typescript-eslint/eslint-plugin": "^5.58.0",
-		"cypress": "^12.9.0",
+		"babel-plugin-istanbul": "^6.1.1",
+		"cypress": "^12.16.0",
 		"eslint": "^8.38.0",
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-storybook": "^0.6.12",
+		"nyc": "^15.1.0",
 		"prettier": "^2.8.8",
 		"prettier-plugin-tailwindcss": "^0.3.0",
 		"serve": "^14.2.0",
 		"storybook": "^7.0.12"
+	},
+	"nyc": {
+		"all": true,
+		"excludeAfterRemap": true,
+		"include": "src/**/*.{ts,tsx}",
+		"exclude": [
+			"cypress/**/*.{ts,tsx}",
+			"src/**/*.{unit,cy,stories}.{ts,tsx}",
+			"src/types/**/*"
+		]
 	}
 }

@@ -4,11 +4,16 @@ import {
   Injectable,
   Logger,
   ServiceUnavailableException,
+  UnprocessableEntityException,
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
-import { ObjectId, Schema } from 'mongoose'
-import { User } from '../entities/users.entity'
 import { hash as bhash } from 'bcrypt'
+import { ObjectId, Schema } from 'mongoose'
+import {
+  CheckoutInformation,
+  PaymentOptions,
+} from '../../payments/interfaces/payments'
+import { User } from '../entities/users.entity'
 
 @Injectable()
 export class UserService {
@@ -37,7 +42,6 @@ export class UserService {
    * @description Set user last login time to current time (based on db system time)
    */
   async setLoginTimestamp(id: ObjectId): Promise<void> {
-    // Use postgres function to get the current timestamp. This allows for consistent time measurements even with multiple auth services running
     await this.userModel.updateOne(
       { _id: id },
       {
@@ -60,7 +64,6 @@ export class UserService {
       return user
     } catch (error) {
       this.logger.error(error)
-      // Necessary due to incomplete typeorm type
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
       else if (error instanceof ServiceUnavailableException) throw error
@@ -89,5 +92,72 @@ export class UserService {
   async updateUserPassword(id: ObjectId, password: string) {
     const hashedPw = await this.hashPassword(password)
     await this.userModel.updateOne({ _id: id }, { password: hashedPw })
+  }
+
+  async updateUserEmail(id: ObjectId, email: string) {
+    try {
+      await this.userModel.updateOne(
+        { _id: id },
+        { email, hasVerifiedEmail: false },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      if (error.code === 11000 && error.keyPattern.email)
+        throw new ConflictException('Email is already taken.')
+    }
+  }
+
+  async deleteUserById(_id: ObjectId) {
+    await this.userModel.deleteOne({ _id })
+  }
+
+  async updateUserPaymentPlan(
+    stripeCustomerId: string,
+    paymentPlan: PaymentOptions,
+  ) {
+    try {
+      await this.userModel.findOneAndUpdate(
+        { stripeCustomerId },
+        { paymentPlan },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException(
+        'Could not update payment plan of the provided customer from Stripe',
+      )
+    }
+  }
+
+  async updateUserCheckoutInformation(
+    stripeCustomerId: string,
+    checkoutInformation: CheckoutInformation,
+  ) {
+    // We do 2 calls here since we want to know if the customerId exists
+    const user = await this.userModel.findOne({ stripeCustomerId })
+    if (!user)
+      throw new UnprocessableEntityException(
+        'Could not match Stripe event to any user',
+      )
+    try {
+      await this.userModel.findOneAndUpdate(
+        {
+          stripeCustomerId,
+          'checkoutInformation.lastInformationTime': {
+            $lt: checkoutInformation.lastInformationTime,
+          },
+        },
+        { checkoutInformation },
+        { new: true },
+      )
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException(
+        'Something went wrong, please try again later!',
+      )
+    }
+  }
+
+  async updateUserStripeCustomerId(_id: string, stripeCustomerId: string) {
+    await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 }

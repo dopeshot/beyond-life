@@ -10,16 +10,18 @@ import * as nodemailer from 'nodemailer'
 import { NodemailerMock } from 'nodemailer-mock'
 import * as request from 'supertest'
 import { AuthModule } from '../src/auth/auth.module'
+import { PasswordResetJWTPayload } from '../src/auth/interfaces/pw-reset-jwt-payload.interface'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
 import { VerifyJWTPayload } from '../src/auth/interfaces/verify-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { User } from '../src/db/entities/users.entity'
+import { MailTemplates } from '../src/mail/interfaces/mail.interface'
 import { MailModule } from '../src/mail/mail.module'
 import { JWTPayload } from '../src/shared/interfaces/jwt-payload.interface'
 import { SharedModule } from '../src/shared/shared.module'
 import { MockConfigService } from './helpers/config-service.helper'
 import { comparePassword } from './helpers/general.helper'
-import { getVerifyTokenFromMail } from './helpers/mail.helper'
+import { getMailUsedTemplate, getTokenFromMail } from './helpers/mail.helper'
 import {
   closeInMongodConnection,
   rootTypegooseTestModule,
@@ -139,8 +141,8 @@ describe('AuthController (e2e)', () => {
           .send(SAMPLE_USER)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        const sendMail = mock.getSentMail()[0]
-        const verifyToken = getVerifyTokenFromMail(sendMail.html as string)
+        const sentMail = mock.getSentMail()[0]
+        const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
         })
@@ -403,6 +405,7 @@ describe('AuthController (e2e)', () => {
         {
           id: user._id,
           email: user.email,
+          hasVerifiedEmail: false
         } as JWTPayload,
         { secret: configService.get('JWT_SECRET') },
       )
@@ -421,10 +424,18 @@ describe('AuthController (e2e)', () => {
 
       it('should not send mail if user email is already verified', async () => {
         // ARRANGE
-        await userModel.updateOne(
+        const user = await userModel.findOneAndUpdate(
           { email: SAMPLE_USER.email },
           { hasVerifiedEmail: true },
         )
+        token = jwtService.sign(
+        {
+          id: user._id,
+          email: user.email,
+          hasVerifiedEmail: true 
+        } as JWTPayload,
+        { secret: configService.get('JWT_SECRET') },
+      )
         // ACT
         const res = await request(app.getHttpServer())
           .get('/auth/request-verify-email')
@@ -441,8 +452,8 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        const sendMail = mock.getSentMail()[0]
-        const verifyToken = getVerifyTokenFromMail(sendMail.html as string)
+        const sentMail = mock.getSentMail()[0]
+        const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
         })
@@ -484,7 +495,181 @@ describe('AuthController (e2e)', () => {
     })
   })
 
-  describe('Test of the entire flow', () => {
+  describe('/auth/forgot-password (POST)', () => {
+    beforeEach(async () => {
+      await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+    })
+
+    describe('Positive Tests', () => {
+      it('should send reset email for user with verified email', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: true },
+        )
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password')
+          .send({
+            email: SAMPLE_USER.email,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        expect(mock.getSentMail().length).toEqual(1)
+        const mail = mock.getSentMail()[0]
+        const template = getMailUsedTemplate(mail.html as string)
+        expect(template).toEqual(MailTemplates.PASSWORD_RESET)
+      })
+
+      it('should send valid token in reset mail ', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: true },
+        )
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password')
+          .send({
+            email: SAMPLE_USER.email,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        expect(mock.getSentMail().length).toEqual(1)
+        const mail = mock.getSentMail()[0]
+        const token = getTokenFromMail(mail.html as string)
+        const tokenPayload: PasswordResetJWTPayload = jwtService.verify(token, {
+          secret: configService.get('JWT_PASSWORD_RESET_SECRET'),
+        })
+        const user = await userModel.findOne({ _id: tokenPayload.id })
+        expect(user.email).toEqual(SAMPLE_USER.email)
+      })
+
+      it('should send "please contact support" mail if email address is not verified', async () => {
+        // ARRANGE
+        await userModel.updateOne(
+          { email: SAMPLE_USER.email },
+          { hasVerifiedEmail: false },
+        )
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password')
+          .send({
+            email: SAMPLE_USER.email,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        expect(mock.getSentMail().length).toEqual(1)
+        const mail = mock.getSentMail()[0]
+        const template = getMailUsedTemplate(mail.html as string)
+        expect(template).toEqual(MailTemplates.PASSWORD_RESET_SUPPORT)
+      })
+    })
+
+    describe('Negative Tests', () => {
+      it('should not send email if user does not exist', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password')
+          .send({
+            email: 'not.a@real.email',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        expect(mock.getSentMail().length).toEqual(0)
+      })
+
+      it('should fail if mail could not be sent', async () => {
+        // ARRANGE
+        mock.setShouldFail(true)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password')
+          .send({
+            email: SAMPLE_USER.email,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.SERVICE_UNAVAILABLE)
+        expect(mock.getSentMail().length).toEqual(0)
+      })
+    })
+  })
+
+  describe('/auth/forgot-password-submit (POST)', () => {
+    let token
+    beforeEach(async () => {
+      const user = await userModel.create({
+        ...SAMPLE_USER,
+        password: await SAMPLE_USER_PW_HASH(),
+      })
+      token = jwtService.sign(
+        {
+          id: user._id,
+        } as PasswordResetJWTPayload,
+        {
+          secret: configService.get('JWT_PASSWORD_RESET_SECRET'),
+        },
+      )
+    })
+
+    describe('Positive Tests', () => {
+      it('should reset password for user with valid token', async () => {
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({ token })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.CREATED)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(comparePassword(SAMPLE_USER.password, user.password)).toEqual(
+          false,
+        )
+        expect(comparePassword('newPassword', user.password)).toEqual(true)
+      })
+    })
+
+    describe('Negative Tests', () => {
+      it('should fail if user does not exist anymore', async () => {
+        // ARRANGE
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({
+            token,
+          })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.INTERNAL_SERVER_ERROR)
+      })
+
+      it('should fail with invalid token', async () => {
+        // ARRANGE
+        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        // ACT
+        const res = await request(app.getHttpServer())
+          .post('/auth/forgot-password-submit')
+          .query({
+            token: `${token}a`,
+          })
+          .send({
+            password: 'newPassword',
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
+      })
+    })
+  })
+
+  describe('Test of the entire register and login flow', () => {
     it('should allow for the user to create an account, login with credentials and then login with refresh token', async () => {
       // ACT 1
       const registerRes = await request(app.getHttpServer())
