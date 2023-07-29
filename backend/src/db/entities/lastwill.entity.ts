@@ -62,7 +62,7 @@ enum ChildRelationShip {
   CHILD_FROM_OTHER = 'childFromOther',
 }
 
-const sampleHumanHeir: Person = {
+const swaggerExampleHumanHeir: Person = {
   id: '987654321',
   type: PersonType.CHILD,
   name: 'Heir Name',
@@ -85,7 +85,7 @@ const sampleHumanHeir: Person = {
   },
 }
 
-const sampleOrganisationHeir: Organisation = {
+const swaggerExampleOrgaHeir: Organisation = {
   id: 'jeffsId',
   type: PersonType.ORGANISATION,
   name: 'Strongpong e.V.',
@@ -97,7 +97,7 @@ const sampleOrganisationHeir: Organisation = {
   },
 }
 
-const sampleObject: LastWill = {
+const swaggerExampleObject: LastWill = {
   _id: '6175f1906be245001e352a0e',
   accountId: 'aaaaaaaaaaaaaaaaaaaaaaaa',
   common: {
@@ -114,7 +114,7 @@ const sampleObject: LastWill = {
     isInsolvent: false,
     relationshipStatus: RelationshipStatus.MARRIED,
   },
-  heirs: [sampleHumanHeir, sampleOrganisationHeir],
+  heirs: [swaggerExampleHumanHeir, swaggerExampleOrgaHeir],
   items: [
     { id: '11111111', name: 'Item 1', description: 'Description 1' },
     { id: '22222222', name: 'Item 2', description: 'Description 2' },
@@ -137,7 +137,7 @@ class ChildInfo {
   @prop({ required: false, enum: ChildType, type: String })
   @ApiPropertyOptional({
     description: 'Child type',
-    example: sampleHumanHeir.child.type,
+    example: swaggerExampleHumanHeir.child.type,
     enum: ChildType,
     type: String,
   })
@@ -148,7 +148,7 @@ class ChildInfo {
   @prop({ required: false, enum: ChildRelationShip, type: String })
   @ApiPropertyOptional({
     description: 'Child relationship',
-    example: sampleHumanHeir.child.relationship,
+    example: swaggerExampleHumanHeir.child.relationship,
     enum: ChildRelationShip,
     type: String,
   })
@@ -162,7 +162,7 @@ export class Common {
   @prop({ required: false, type: Boolean })
   @ApiPropertyOptional({
     description: 'Is it a Berlin Will',
-    example: sampleObject.common.isBerlinWill,
+    example: swaggerExampleObject.common.isBerlinWill,
     type: Boolean,
   })
   @IsOptional()
@@ -172,7 +172,7 @@ export class Common {
   @prop({ required: false, type: Boolean })
   @ApiPropertyOptional({
     description: 'Does the partner have a german citizenship',
-    example: sampleObject.common.isPartnerGermanCitizenship,
+    example: swaggerExampleObject.common.isPartnerGermanCitizenship,
     type: Boolean,
   })
   @IsOptional()
@@ -182,7 +182,7 @@ export class Common {
   @prop({ required: false, enum: MatrimonialProperty, type: String })
   @ApiPropertyOptional({
     description: 'How to handle the property',
-    example: sampleObject.common.matrimonialProperty,
+    example: swaggerExampleObject.common.matrimonialProperty,
     enum: MatrimonialProperty,
     type: String,
   })
@@ -196,7 +196,7 @@ class Address {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Street',
-    example: sampleHumanHeir.address.street,
+    example: swaggerExampleHumanHeir.address.street,
     type: String,
   })
   @IsOptional()
@@ -206,7 +206,7 @@ class Address {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'House number',
-    example: sampleHumanHeir.address.houseNumber,
+    example: swaggerExampleHumanHeir.address.houseNumber,
     type: String,
   })
   @IsOptional()
@@ -216,7 +216,7 @@ class Address {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Zip code',
-    example: sampleHumanHeir.address.zipCode,
+    example: swaggerExampleHumanHeir.address.zipCode,
     type: String,
   })
   @IsOptional()
@@ -235,7 +235,7 @@ class PersonBase {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Name',
-    example: sampleHumanHeir.name,
+    example: swaggerExampleHumanHeir.name,
     type: String,
   })
   @IsString()
@@ -245,7 +245,7 @@ class PersonBase {
   @ApiPropertyOptional({
     required: false,
     enum: Gender,
-    example: sampleHumanHeir.gender,
+    example: swaggerExampleHumanHeir.gender,
     type: String,
   })
   @IsOptional()
@@ -255,7 +255,7 @@ class PersonBase {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Birthdate',
-    example: sampleHumanHeir.birthDate,
+    example: swaggerExampleHumanHeir.birthDate,
     type: String,
   })
   @IsOptional()
@@ -265,7 +265,7 @@ class PersonBase {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Birthplace',
-    example: sampleHumanHeir.birthPlace,
+    example: swaggerExampleHumanHeir.birthPlace,
     type: String,
   })
   @IsOptional()
@@ -275,7 +275,7 @@ class PersonBase {
   @prop({ required: false, type: Boolean })
   @ApiPropertyOptional({
     description: 'Is handicapped',
-    example: sampleHumanHeir.isHandicapped,
+    example: swaggerExampleHumanHeir.isHandicapped,
     type: Boolean,
   })
   @IsOptional()
@@ -285,7 +285,7 @@ class PersonBase {
   @prop({ required: false, type: Boolean })
   @ApiPropertyOptional({
     description: 'Is insolvent',
-    example: sampleHumanHeir.isInsolvent,
+    example: swaggerExampleHumanHeir.isInsolvent,
     type: Boolean,
   })
   @IsOptional()
@@ -296,7 +296,7 @@ class PersonBase {
   @ApiPropertyOptional({
     description: 'Address',
     type: Address,
-    example: sampleHumanHeir.address,
+    example: swaggerExampleHumanHeir.address,
   })
   @IsOptional()
   @ValidateNested()
@@ -307,14 +307,18 @@ class PersonBase {
 @Expose()
 class Person extends PersonBase {
   @prop({ required: true, type: String })
-  @ApiProperty({ description: 'Id', example: sampleHumanHeir.id, type: String })
+  @ApiProperty({
+    description: 'Id',
+    example: swaggerExampleHumanHeir.id,
+    type: String,
+  })
   @IsString()
   id: string
 
   @prop({ required: true, enum: PersonType, type: String })
   @ApiProperty({
     description: 'Persontype',
-    example: sampleHumanHeir.type,
+    example: swaggerExampleHumanHeir.type,
     enum: PersonType,
     type: String,
   })
@@ -325,7 +329,7 @@ class Person extends PersonBase {
   @prop({ required: false, type: Number })
   @ApiPropertyOptional({
     description: 'Percentage',
-    example: sampleHumanHeir.percentage,
+    example: swaggerExampleHumanHeir.percentage,
     type: Number,
   })
   @IsNumber()
@@ -335,7 +339,7 @@ class Person extends PersonBase {
   @prop({ required: false, type: [Number], default: [] })
   @ApiPropertyOptional({
     description: 'Item ids',
-    example: sampleHumanHeir.itemIds,
+    example: swaggerExampleHumanHeir.itemIds,
     type: [Number],
     isArray: true,
   })
@@ -348,7 +352,7 @@ class Person extends PersonBase {
   @ApiPropertyOptional({
     description: 'Child Info',
     type: ChildInfo,
-    example: sampleHumanHeir.child,
+    example: swaggerExampleHumanHeir.child,
   })
   @IsOptional()
   @ValidateNested()
@@ -361,7 +365,7 @@ class Testator extends PersonBase {
   @prop({ required: false, enum: RelationshipStatus, type: String })
   @ApiPropertyOptional({
     description: 'Relationship status',
-    example: sampleObject.testator.relationshipStatus,
+    example: swaggerExampleObject.testator.relationshipStatus,
     enum: RelationshipStatus,
     type: String,
   })
@@ -375,7 +379,7 @@ class Organisation {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
-    example: sampleOrganisationHeir.id,
+    example: swaggerExampleOrgaHeir.id,
     type: String,
   })
   @IsString()
@@ -384,7 +388,7 @@ class Organisation {
   @prop({ required: true, enum: PersonType, type: String })
   @ApiProperty({
     description: 'Persontype',
-    example: sampleHumanHeir.type,
+    example: swaggerExampleHumanHeir.type,
     enum: PersonType,
     type: String,
   })
@@ -394,7 +398,7 @@ class Organisation {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Name',
-    example: sampleOrganisationHeir.name,
+    example: swaggerExampleOrgaHeir.name,
     type: String,
   })
   @IsString()
@@ -405,7 +409,7 @@ class Organisation {
   @ApiPropertyOptional({
     description: 'Address',
     type: Address,
-    example: sampleOrganisationHeir.address,
+    example: swaggerExampleOrgaHeir.address,
   })
   @IsOptional()
   @ValidateNested()
@@ -418,7 +422,7 @@ class Item {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
-    example: sampleObject.items[0].id,
+    example: swaggerExampleObject.items[0].id,
     type: String,
   })
   @IsString()
@@ -427,7 +431,7 @@ class Item {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Name',
-    example: sampleObject.items[0].name,
+    example: swaggerExampleObject.items[0].name,
     type: String,
   })
   @IsString()
@@ -437,7 +441,7 @@ class Item {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Description',
-    example: sampleObject.items[0].description,
+    example: swaggerExampleObject.items[0].description,
     type: String,
   })
   @IsString()
@@ -450,7 +454,7 @@ class FinancialAsset {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
-    example: sampleObject.financialAssets[0].id,
+    example: swaggerExampleObject.financialAssets[0].id,
     type: String,
   })
   @IsString()
@@ -459,7 +463,7 @@ class FinancialAsset {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Where',
-    example: sampleObject.financialAssets[0].where,
+    example: swaggerExampleObject.financialAssets[0].where,
     type: String,
   })
   @IsString()
@@ -469,7 +473,7 @@ class FinancialAsset {
   @prop({ required: false, type: Number })
   @ApiPropertyOptional({
     description: 'Amount',
-    example: sampleObject.financialAssets[0].amount,
+    example: swaggerExampleObject.financialAssets[0].amount,
     type: Number,
   })
   @IsNumber()
@@ -479,7 +483,7 @@ class FinancialAsset {
   @prop({ required: false, type: String })
   @ApiPropertyOptional({
     description: 'Currency',
-    example: sampleObject.financialAssets[0].currency,
+    example: swaggerExampleObject.financialAssets[0].currency,
     type: String,
   })
   @IsString()
@@ -490,7 +494,7 @@ class FinancialAsset {
 export class LastWill {
   @ApiProperty({
     description: 'Id',
-    example: sampleObject._id,
+    example: swaggerExampleObject._id,
   })
   @Type(() => String)
   @Expose()
@@ -505,7 +509,7 @@ export class LastWill {
   })
   @ApiProperty({
     description: 'Account id',
-    example: sampleObject.accountId,
+    example: swaggerExampleObject.accountId,
     type: String,
   })
   @IsString()
@@ -516,7 +520,7 @@ export class LastWill {
   @ApiProperty({
     type: Common,
     description: 'Common data for the will',
-    example: sampleObject.common,
+    example: swaggerExampleObject.common,
   })
   @IsObject()
   @ValidateNested()
@@ -528,7 +532,7 @@ export class LastWill {
   @ApiProperty({
     type: Testator,
     description: 'Testator data',
-    example: sampleObject.testator,
+    example: swaggerExampleObject.testator,
   })
   @IsObject()
   @ValidateNested()
@@ -545,7 +549,7 @@ export class LastWill {
   @ApiProperty({
     description: 'Heirs',
     isArray: true,
-    example: sampleObject.heirs,
+    example: swaggerExampleObject.heirs,
   })
   @ValidateNested({ each: true })
   /*We know how it works, but not why it works, the Type and Transform are both from the transformer class.
@@ -586,7 +590,7 @@ export class LastWill {
     type: [Item],
     description: 'Items',
     isArray: true,
-    example: sampleObject.items,
+    example: swaggerExampleObject.items,
   })
   @ValidateNested({ each: true })
   @Type(() => Item)
@@ -603,7 +607,7 @@ export class LastWill {
     type: FinancialAsset,
     description: 'Financial assets',
     isArray: true,
-    example: sampleObject.financialAssets,
+    example: swaggerExampleObject.financialAssets,
   })
   @ValidateNested({ each: true })
   @Type(() => FinancialAsset)
@@ -613,7 +617,7 @@ export class LastWill {
   @prop({ required: true, default: [], allowMixed: Severity.ALLOW })
   @ApiProperty({
     description: 'Progress keys',
-    example: sampleObject.progressKeys,
+    example: swaggerExampleObject.progressKeys,
     enum: SidebarPages,
     type: String,
     isArray: true,
@@ -631,7 +635,7 @@ export class LastWill {
 export class LastWillMetadata {
   @ApiProperty({
     description: 'Progress keys',
-    example: sampleObject.progressKeys,
+    example: swaggerExampleObject.progressKeys,
     enum: SidebarPages,
     type: String,
     isArray: true,
