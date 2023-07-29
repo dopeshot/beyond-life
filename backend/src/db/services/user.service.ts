@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { hash as bhash } from 'bcrypt'
-import { ObjectId, Schema } from 'mongoose'
+import { ObjectId } from 'mongoose'
 import {
   CheckoutInformation,
   PaymentOptions,
@@ -34,7 +34,7 @@ export class UserService {
   /**
    * @description Fetch one user based on id
    */
-  async findOneById(id: Schema.Types.ObjectId): Promise<User> {
+  async findOneById(id: ObjectId): Promise<User> {
     return await this.userModel.findOne({ _id: id }).lean()
   }
 
@@ -42,12 +42,7 @@ export class UserService {
    * @description Set user last login time to current time (based on db system time)
    */
   async setLoginTimestamp(id: ObjectId): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: id },
-      {
-        lastLogin: new Date(),
-      },
-    )
+    await this.userModel.updateOne({ _id: id }, { lastLogin: new Date() })
   }
 
   /**
