@@ -1,6 +1,5 @@
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
-import { routes } from '../../../../services/routes/routes'
 
 export const metadata = {
 	title: 'Privacy | Siebtes Leben',
@@ -28,7 +27,7 @@ const Privacy = () => {
 									dass Sie wissen möchten, wie Informationen über Sie verwendet und weitergegeben werden. Wir hoffen,
 									dass diese Datenschutzrichtlinie diese Fragen beantworten wird.
 								</p>
-								<p className="mb-2">
+								<p className="mb-8">
 									Bitte lesen Sie diese Richtlinie sorgfältig durch, bevor Sie unsere Website oder Dienstleistungen
 									nutzen, da sie Ihre Rechte und Pflichten in Bezug auf Ihre persönlichen Daten erklärt. Wenn Sie nicht
 									zustimmen, dass wir Ihre Daten auf die in dieser Richtlinie beschriebene Weise sammeln, speichern,
@@ -53,7 +52,7 @@ const Privacy = () => {
 										Technische Daten: einschließlich, aber nicht beschränkt auf Ihre IP-Adresse, Ihren Browser-Typ, Ihre
 										Hardware-Konfiguration, Ihre Betriebssystemversion und Ihre Einstellungen und Standorteinstellungen.
 									</li>
-									<li className="mb-2">
+									<li className="mb-8">
 										Testament-Daten: einschließlich, aber nicht beschränkt auf die Informationen, die Sie uns im Rahmen
 										der Erstellung Ihres Testaments zur Verfügung stellen.
 									</li>
@@ -74,7 +73,7 @@ const Privacy = () => {
 									<li className="mb-2">
 										Um unsere Dienstleistungen zu verbessern und neue Dienstleistungen zu entwickeln.
 									</li>
-									<li className="mb-2">
+									<li className="mb-8">
 										Um die Sicherheit unserer Dienstleistungen zu gewährleisten und Betrug zu verhindern oder
 										aufzudecken.
 									</li>
@@ -101,7 +100,7 @@ const Privacy = () => {
 										Verlust zu verhindern, oder in Verbindung mit einer Untersuchung von mutmaßlichem oder tatsächlichem
 										Betrug oder illegaler Aktivität.
 									</li>
-									<li className="mb-2">
+									<li className="mb-8">
 										Im Falle eines Verkaufs oder einer Fusion unseres Unternehmens würden wir Ihre Daten im Rahmen
 										dieses Prozesses weitergeben.
 									</li>
@@ -113,7 +112,7 @@ const Privacy = () => {
 								<Headline level={3} size="text-xl">
 									Ihre Rechte
 								</Headline>
-								<p className="mb-2">
+								<p className="mb-8">
 									Sie haben das Recht, auf Ihre Daten zuzugreifen, sie zu berichtigen, zu löschen, zu beschränken oder
 									zu widersprechen und das Recht auf Datenübertragbarkeit. Sie haben auch das Recht, Ihre Zustimmung
 									jederzeit zu widerrufen.
@@ -125,7 +124,7 @@ const Privacy = () => {
 								<Headline level={3} size="text-xl">
 									Sicherheit
 								</Headline>
-								<p className="mb-2">
+								<p className="mb-8">
 									Wir verwenden geeignete technische und organisatorische Maßnahmen, um Ihre persönlichen Daten zu
 									schützen und sicherzustellen, dass sie nur für die beabsichtigten Zwecke verwendet werden.
 								</p>
@@ -136,7 +135,7 @@ const Privacy = () => {
 								<Headline level={3} size="text-xl">
 									Änderungen an dieser Datenschutzrichtlinie
 								</Headline>
-								<p className="mb-2">
+								<p className="mb-8">
 									Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wir empfehlen Ihnen, diese
 									Seite regelmäßig zu besuchen, um über eventuelle Änderungen informiert zu sein.
 								</p>
@@ -153,7 +152,7 @@ const Privacy = () => {
 					<p className="mb-2 text-gray-700 md:mb-4">
 						Haben Sie immer noch unbeantwortete Fragen und möchten Sie Kontakt aufnehmen?
 					</p>
-					<Route href={routes.misc.imprint} kind="secondary">
+					<Route href="mailto:info@siebtesleben.de" kind="secondary">
 						Kontakt aufnehmen
 					</Route>
 				</div>
