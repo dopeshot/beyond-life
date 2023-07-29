@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { cardContent, clientCards, tutorialSteps } from '../../../../../content/lastWill'
-import headerBackground from '../../../../assets/images/layout/sunset.jpg'
+import headerBackground from '../../../../assets/images/layout/family3.jpg'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
 import { Icon } from '../../../../components/Icon/Icon'
