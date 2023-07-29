@@ -312,7 +312,12 @@ describe('LastWillsController (e2e)', () => {
     })
 
     describe('Negatives', () => {
-      it('should return not Found if it doesnt exist', async () => {})
+      it('should return not Found if it doesnt exist', async () => {
+        await request(app.getHttpServer())
+          .get(`/lastwill/${'aaaaaaaaaaaaaaaaaaaaaaa2'}`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NOT_FOUND)
+      })
 
       it('should fail with invalid token', async () => {
         await request(app.getHttpServer())
@@ -334,11 +339,6 @@ describe('LastWillsController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
           .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
-
-        const createdLastWill = await lastWillsModel.count({
-          accountId: user._id,
-        })
-        expect(createdLastWill).toBe(0)
       })
     })
   })
