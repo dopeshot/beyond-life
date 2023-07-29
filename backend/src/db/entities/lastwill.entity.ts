@@ -551,8 +551,9 @@ export class LastWill {
   /*We know how it works, but not why it works, the Type and Transform are both from the transformer class.
     The Type is needed for the validation
     The Transform is needed for the Serialization
-    But the Type also says that it transforms with the subTypes and creates Instanzes, so we are uncertain why this doesn't fix both
+    But the Type also says that it transforms with the subTypes and creates instances, so we are uncertain why this doesn't fix both
     The Transform is performed after the Type, but in Serialization it seems the Type is not enough transformation
+    This is only needed if lastwillModel returns flattenMaps (for example not on .create)
   */
   @Type(() => Discriminator, {
     discriminator: {
@@ -571,11 +572,11 @@ export class LastWill {
   })
   @Expose()
   @Transform(({ value }) =>
-    value?.map((o: Person | Organisation) => {
-      if (o.type === PersonType.ORGANISATION) {
-        return plainToClass(Organisation, o)
+    value?.map((object: Person | Organisation) => {
+      if (object.type === PersonType.ORGANISATION) {
+        return plainToClass(Organisation, object)
       }
-      return plainToClass(Person, o)
+      return plainToClass(Person, object)
     }),
   )
   heirs: (Person | Organisation)[]
