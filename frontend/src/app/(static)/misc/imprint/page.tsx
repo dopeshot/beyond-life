@@ -1,9 +1,10 @@
-import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
-import { routes } from '../../../../services/routes/routes'
+import Image from 'next/image'
+import emailImage from '../../../../assets/images/email/email.png'
 
 export const metadata = {
 	title: 'Imprint | Siebtes Leben',
+	noIndex: true,
 }
 
 const Imprint = () => {
@@ -21,7 +22,7 @@ const Imprint = () => {
 							<Headline level={3} size="text-xl">
 								Angaben gemäß § 5 TMG:
 							</Headline>
-							<p className="mb-2">E-Mail: info@siebtesleben.de</p>
+							<Image src={emailImage} alt="Siebtes Leben Email" className=" w-1/3 mb-8" />
 							<Headline level={3} size="text-xl">
 								Hinweis auf EU-Streitschlichtung:
 							</Headline>
@@ -31,19 +32,6 @@ const Imprint = () => {
 							</p>
 						</div>
 					</div>
-				</div>
-
-				{/* Contact */}
-				<div className="mb-10 mt-20">
-					<Headline level={2} size="text-2xl">
-						Haben Sie noch Fragen?
-					</Headline>
-					<p className="mb-2 text-gray-700 md:mb-4">
-						Haben Sie immer noch unbeantwortete Fragen und möchten Sie Kontakt aufnehmen?
-					</p>
-					<Route href={routes.misc.imprint} kind="secondary">
-						Kontakt aufnehmen
-					</Route>
 				</div>
 			</main>
 		</div>
