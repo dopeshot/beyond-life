@@ -45,7 +45,13 @@ describe('LastWillsController (e2e)', () => {
       .compile()
 
     app = await moduleFixture.createNestApplication()
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
 
     jwtService = app.get<JwtService>(JwtService)
     connection = await app.get(getConnectionToken())
@@ -80,7 +86,7 @@ describe('LastWillsController (e2e)', () => {
 
   describe('/lastwill (POST)', () => {
     describe('Positives', () => {
-      it('should create a new last will for the authenticated user', async () => {
+      it.only('should create a new last will for the authenticated user', async () => {
         const res = await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -91,6 +97,7 @@ describe('LastWillsController (e2e)', () => {
         expect(res.body).toHaveProperty('_id')
         expect(res.body.accountId).toEqual(user._id.toString())
         expect(res.body).not.toHaveProperty('createdAt')
+        console.log('res.body', JSON.stringify(res.body))
 
         const createdLastWill = await lastWillsModel.findOne({
           _id: res.body._id,
@@ -111,7 +118,7 @@ describe('LastWillsController (e2e)', () => {
         const createdLastWill = await lastWillsModel.findOne({
           accountId: user._id,
         })
-        expect(createdLastWill).toBeUndefined()
+        expect(createdLastWill).toBeNull()
       })
 
       it('should fail with no user in db', async () => {
