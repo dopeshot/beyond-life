@@ -2,8 +2,46 @@
 
 import { LOCAL_STORAGE_KEY } from '../../src/services/auth/session'
 import sessiondata from '../fixtures/auth/sessionData.json'
+import tokens from '../fixtures/auth/tokens.json'
 
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
+const unauthorizedResponse = {
+	UNAUTHORIZED: {
+		statusCode: 401,
+		body: {
+			message: 'Unauthorized',
+			statusCode: 401,
+		},
+	},
+}
+const loginResponseTypes = {
+	OK: {
+		statusCode: 200,
+		body: tokens,
+	},
+	NETWORK_ERROR: {
+		forceNetworkError: true,
+	},
+	...unauthorizedResponse,
+}
+
+const registerResponseTypes = {
+	OK: {
+		statusCode: 200,
+		body: tokens,
+	},
+	EMAIL_CONFLICT: {
+		statusCode: 409,
+		body: {
+			error: 'Conflict',
+			message: 'Email is already taken.',
+			statusCode: 409,
+		},
+	},
+	NETWORK_ERROR: {
+		forceNetworkError: true,
+	},
+}
 
 /**** Command Helper ****/
 Cypress.Commands.add('datacy', (datacy, customSelector = '') => {
@@ -11,43 +49,23 @@ Cypress.Commands.add('datacy', (datacy, customSelector = '') => {
 })
 
 /**** Interceptors ****/
-Cypress.Commands.add('mockLogin', () => {
-	cy.intercept('POST', `${apiUrl}/auth/login`, {
-		fixture: 'auth/tokens.json',
-	}).as('mockLogin')
+Cypress.Commands.add('mockLogin', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/auth/login`, loginResponseTypes[response]).as('mockLogin')
+})
 
+Cypress.Commands.add('mockRegister', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/auth/register`, registerResponseTypes[response]).as('mockRegister')
+})
+
+Cypress.Commands.add('mockRefreshToken', () => {
 	cy.intercept('POST', `${apiUrl}/auth/refresh-token`, {
 		fixture: 'auth/tokens.json',
 	}).as('mockRefreshToken')
 })
 
-Cypress.Commands.add('mockRegister', (options) => {
-	let body
-	let statusCode
-
-	if (options?.statusCode) {
-		statusCode = options.statusCode
-		body = {
-			error: 'Conflict',
-			message: options.errorMessage || 'Email is already taken.',
-			statusCode: options.statusCode,
-		}
-	} else {
-		statusCode = 200
-		body = {
-			fixture: 'auth/tokens.json',
-		}
-	}
-
-	cy.intercept('POST', `${apiUrl}/auth/register`, {
-		statusCode,
-		body,
-	}).as('mockRegister')
-})
-
 /**** Mocks ****/
 Cypress.Commands.add('login', ({ route, visitOptions }) => {
-	cy.mockLogin()
+	cy.mockRefreshToken()
 
 	cy.visit(route, {
 		...visitOptions,

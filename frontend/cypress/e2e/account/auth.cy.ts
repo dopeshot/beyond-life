@@ -1,12 +1,26 @@
 describe('Auth', () => {
 	describe('Account Login Page', () => {
 		beforeEach(() => {
+			cy.mockRefreshToken()
 			cy.visit('/account/login')
 		})
 
-		describe('Login Base Flow', () => {
-			it('should login successfully', () => {
-				cy.mockLogin()
+		it('should login successfully', () => {
+			cy.mockLogin()
+
+			cy.datacy('textinput-email-input').type('test@test.de')
+			cy.datacy('textinput-password-input').type('test12345678')
+
+			cy.datacy('submit-button').click()
+
+			cy.wait('@mockLogin')
+
+			cy.url().should('include', '/profile/last-will')
+		})
+
+		describe('Error handling', () => {
+			it('should show unauthorized error when unauthorized', () => {
+				cy.mockLogin('UNAUTHORIZED')
 
 				cy.datacy('textinput-email-input').type('test@test.de')
 				cy.datacy('textinput-password-input').type('test12345678')
@@ -15,7 +29,20 @@ describe('Auth', () => {
 
 				cy.wait('@mockLogin')
 
-				cy.url().should('include', '/profile/last-will')
+				cy.contains('Hoppla! Die von Ihnen eingegebene E-Mail oder das Passwort ist falsch.').should('be.visible')
+			})
+
+			it('should show generic error alert when network error', () => {
+				cy.mockLogin('NETWORK_ERROR')
+
+				cy.datacy('textinput-email-input').type('test@test.de')
+				cy.datacy('textinput-password-input').type('test12345678')
+
+				cy.datacy('submit-button').click()
+
+				cy.wait('@mockLogin')
+
+				cy.contains('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.').should('be.visible')
 			})
 		})
 	})
@@ -25,24 +52,22 @@ describe('Auth', () => {
 			cy.visit('/account/register')
 		})
 
-		describe('Register Base Flow', () => {
-			it('should register successfully', () => {
-				cy.mockRegister()
+		it('should register successfully', () => {
+			cy.mockRegister()
 
-				cy.datacy('textinput-email-input').type('test@test.de')
-				cy.datacy('textinput-password-input').type('test12345678')
+			cy.datacy('textinput-email-input').type('test@test.de')
+			cy.datacy('textinput-password-input').type('test12345678')
 
-				cy.datacy('submit-button').click()
+			cy.datacy('submit-button').click()
 
-				cy.wait('@mockRegister')
+			cy.wait('@mockRegister')
 
-				cy.url().should('include', '/profile/last-will')
-			})
+			cy.url().should('include', '/profile/last-will')
 		})
 
 		describe('Error handling', () => {
 			it('should show error alert when email is already taken', () => {
-				cy.mockRegister({ statusCode: 409, errorMessage: 'Email is already taken.' })
+				cy.mockRegister('EMAIL_CONFLICT')
 
 				cy.datacy('textinput-email-input').type('test@test.de')
 				cy.datacy('textinput-password-input').type('test12345678')
@@ -51,7 +76,22 @@ describe('Auth', () => {
 
 				cy.wait('@mockRegister')
 
-				cy.datacy('alert-error').should('be.visible')
+				cy.contains('Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.').should(
+					'be.visible'
+				)
+			})
+
+			it('should show generic error alert when network error', () => {
+				cy.mockRegister('NETWORK_ERROR')
+
+				cy.datacy('textinput-email-input').type('test@test.de')
+				cy.datacy('textinput-password-input').type('test12345678')
+
+				cy.datacy('submit-button').click()
+
+				cy.wait('@mockRegister')
+
+				cy.contains('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.').should('be.visible')
 			})
 		})
 	})

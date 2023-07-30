@@ -1,4 +1,3 @@
-import { HttpStatusCode } from 'axios'
 import { mount } from 'cypress/react'
 
 declare global {
@@ -16,12 +15,21 @@ declare global {
 			datacy(datacy: string, customSelector?: string): Chainable<void>
 			/**
 			 * Mocks login request.
+			 * @param response the response we want to mock.
+			 * @example cy.mockLogin('OK')
 			 */
-			mockLogin(): Chainable<void>
+			mockLogin(response?: 'OK' | 'UNAUTHORIZED' | 'NETWORK_ERROR'): Chainable<void>
 			/**
 			 * Mocks register request.
+			 * @param response the response we want to mock.
+			 * @example cy.mockRegister('OK')
 			 */
-			mockRegister(options?: { statusCode: HttpStatusCode; errorMessage?: string }): Chainable<void>
+			mockRegister(response?: 'OK' | 'EMAIL_CONFLICT' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mocks refresh token request.
+			 * @example cy.mockRefreshToken()
+			 */
+			mockRefreshToken(): Chainable<void>
 			/**
 			 * Login to the app (Sets sessiondata to localstorage).
 			 * @param route the route we want to go after login
