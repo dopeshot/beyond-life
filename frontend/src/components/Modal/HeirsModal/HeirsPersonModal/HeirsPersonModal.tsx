@@ -5,7 +5,7 @@ import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
 import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/heirs'
 import { useAppDispatch } from '../../../../store/hooks'
-import { addPersonHeir } from '../../../../store/lastwill'
+import { addPersonHeir, updatePersonHeir } from '../../../../store/lastwill'
 import { Gender } from '../../../../types/gender'
 import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -92,9 +92,8 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 	})
 
 	const onSubmit = async (values: PersonFormPayload) => {
-		console.log(values)
 		if (editPerson) {
-			// await services.updatePerson(values)
+			dispatch(updatePersonHeir(values))
 		} else {
 			dispatch(addPersonHeir(values))
 		}

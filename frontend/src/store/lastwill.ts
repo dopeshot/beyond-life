@@ -304,6 +304,26 @@ const lastWillSlice = createSlice({
 				},
 			})
 		},
+		updatePersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
+			const { payload: person } = action
+			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === person.id)
+			state.data.heirs[heirIndex] = {
+				id: person.id,
+				type: person.type,
+				name: person.name,
+				gender: person.gender,
+				birthDate: person.birthDate,
+				birthPlace: person.birthPlace,
+				isHandicapped: person.moreInfos ? person.moreInfos.includes('isHandicapped') : false,
+				isInsolvent: person.moreInfos ? person.moreInfos.includes('isInsolvent') : false,
+				address: {
+					street: person.street,
+					houseNumber: person.houseNumber,
+					zipCode: person.zipCode,
+					city: person.city,
+				},
+			}
+		},
 		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const { payload: organisation } = action
 			state.data.heirs.push({
@@ -358,6 +378,7 @@ export const {
 	setTestator,
 	setMarriage,
 	addPersonHeir,
+	updatePersonHeir,
 	addOrganisationHeir,
 	removeHeir,
 } = lastWillSlice.actions
