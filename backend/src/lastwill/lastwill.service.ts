@@ -6,12 +6,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
-import { LastWill } from '../../db/entities/lastwill.entity'
-import { LastWillDBService } from '../../db/services/lastwill.service'
-import { UserDBService } from '../../db/services/user.service'
-import { paymentPlans } from '../../payments/interfaces/payments'
-import { CreateLastWillDto } from '../dto/create-lastwill.dto'
-import { GeneratedLastWillDTO } from '../dto/generated-lastwill.dto'
+import { LastWill } from '../db/entities/lastwill.entity'
+import { LastWillDBService } from '../db/services/lastwill.service'
+import { UserDBService } from '../db/services/user.service'
+import { paymentPlans } from '../payments/interfaces/payments'
+import { CreateLastWillDto } from './dto/create-lastwill.dto'
+import { GeneratedLastWillDTO } from './dto/generated-lastwill.dto'
 import {
   generateFinancialInheritancePragraphs,
   generateInitialText,
@@ -19,7 +19,7 @@ import {
   generateLocationHeader,
   generateTestatorHeader,
   getLegalClauses,
-} from '../utilities/lastwill-templating.util'
+} from './utilities/lastwill-templating.util'
 
 @Injectable()
 export class LastWillService {
@@ -29,7 +29,6 @@ export class LastWillService {
     private readonly lastwillDbService: LastWillDBService,
   ) {}
 
-  // TODO: implement in other issue
   async getFullTextLastWill(id: string, userId: ObjectId) {
     const lastWill = await this.lastwillDbService.findFullById(id, userId)
 
@@ -56,7 +55,7 @@ export class LastWillService {
     return await this.lastwillDbService.createOne(createLastWillDto, userId)
   }
 
-  private includesFinancialInheritance(lastWill: LastWill): boolean {
+  includesFinancialInheritance(lastWill: LastWill): boolean {
     if (lastWill.financialAssets.length === 0) return false
     for (const heir of lastWill.heirs) {
       if (heir.percentage) {
@@ -67,7 +66,7 @@ export class LastWillService {
     return false
   }
 
-  private includesItemInheritance(lastWill: LastWill): boolean {
+  includesItemInheritance(lastWill: LastWill): boolean {
     if (lastWill.items.length === 0) return false
     for (const heir of lastWill.heirs) {
       if (heir.itemIds?.length > 0) {
