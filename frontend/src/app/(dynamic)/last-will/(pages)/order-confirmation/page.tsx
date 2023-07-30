@@ -11,18 +11,23 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const OrderConfirmation = () => {
 	return (
-		<div className="relative min-h-[420px]">
-			<div>
-				<Image className="h-44 w-full object-cover object-top sm:h-56 md:h-64" src={headerBackground} alt="Couple" />
-				<div className="absolute top-0 mx-8 mt-6 sm:mx-20 sm:mt-16 md:mx-32 lg:mx-48 xl:mx-96">
+		<>
+			<header className="relative w-full">
+				<Image
+					height={256}
+					className="absolute -z-10 h-full w-full object-cover object-top"
+					src={headerBackground}
+					alt="Couple"
+				/>
+				<div className="mx-8 my-12 sm:mx-20 sm:my-16 md:mx-32 lg:mx-48 xl:mx-96 xl:my-24">
 					<Headline className="mb-4 text-yellow">Ihre Zahlung war erfolgreich!</Headline>
 					<p className="text-base font-medium text-white sm:text-lg">
 						Vielen Dank für Ihre Zahlung. Im nächsten Schritt können Sie nun ihr generiertes Testament einsehen und
 						abschreiben.
 					</p>
 				</div>
-			</div>
-			<div className="flex w-full flex-col items-center px-8">
+			</header>
+			<main className="flex w-full flex-col items-center px-8">
 				<PaymentSummaryTable tableData={tableData} />
 				<Route
 					datacy="button-submit"
@@ -33,8 +38,8 @@ const OrderConfirmation = () => {
 				>
 					Weiter zum Testament
 				</Route>
-			</div>
-		</div>
+			</main>
+		</>
 	)
 }
 
