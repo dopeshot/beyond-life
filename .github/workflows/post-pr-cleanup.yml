@@ -1,0 +1,38 @@
+name: cleanup-codecov-reports
+
+on:
+  pull_request:
+    types: [closed, labeled]
+    branches: [main]
+
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: dopeshot/beyond-life-codecov
+          token: ${{ secrets.BOT_PAT }}
+          ref: main
+
+      - name: Extract branch name
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
+        id: extract_branch
+
+      - name: cleanup html reports
+        run: rm -rf  ${{ steps.extract_branch.outputs.branch }} || true
+
+      - name: Commit
+        run: |
+          git config user.name ${{ secrets.BOT_NAME }}
+          git config user.email ${{ secrets.BOT_MAIL }}
+          git add ./${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }} 
+          git commit -m "${{ inputs.context }} coverage for branch ${{ steps.extract_branch.outputs.branch}}" || echo "No changes to commit"
+
+      - name: Push
+        run: git push
+
+
+
