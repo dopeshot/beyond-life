@@ -5,7 +5,7 @@ name: cleanup-codecov-reports
 
 on:
   pull_request:
-    types: [closed, labeled]
+    types: [closed]
     branches: [main]
 
 
