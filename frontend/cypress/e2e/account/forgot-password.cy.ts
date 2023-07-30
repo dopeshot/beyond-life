@@ -18,7 +18,8 @@ describe('Forgot password', () => {
 
 		describe('Error Handling', () => {
 			it('should show error message when email not valid', () => {
-				cy.datacy('textinput-email-input').type('test').blur()
+				cy.datacy('textinput-email-input').type('test')
+				cy.datacy('textinput-email-input').blur()
 
 				cy.datacy('formerror-email').should('be.visible')
 			})
