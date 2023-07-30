@@ -1,0 +1,10 @@
+{
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YmNmNDllZDdiM2U0M2VjZjJjOGZlZSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTAxMjk2ODAsImV4cCI6MTY5MDEzMzI4MH0.ApMP1eNEQzaL7ELRQMgz3qrcc9yPRKSxnFxNraFZYTE",
+	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YmNmNDllZDdiM2U0M2VjZjJjOGZlZSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTAxMjk2ODAsImV4cCI6MTY5MDk5MzY4MH0.9CnHBT0zYKQETyBGk9Tkt4GLKM3pGFRPA_DgdgWEzA4",
+	"decodedAccessToken": {
+		"id": "64bcf49ed7b3e43ecf2c8fee",
+		"email": "test@test.test",
+		"iat": 1690129680,
+		"exp": 1690133280
+	}
+}
