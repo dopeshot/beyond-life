@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   backend:
-    image: ghcr.io/dopeshot/beyond-life/backend:main
+    image: ghcr.io/dopeshot/beyond-life/backend:pr-270
     restart: "always"
     ports:
       - 3001:3001

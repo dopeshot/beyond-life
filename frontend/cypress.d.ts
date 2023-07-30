@@ -14,6 +14,10 @@ declare global {
 			 */
 			datacy(datacy: string, customSelector?: string): Chainable<void>
 			/**
+			 * Checks if the 404 page is displayed.
+			 */
+			check404(): Chainable<void>
+			/**
 			 * Mocks the mail verification endpoint.
 			 * @param response Set the response for the mail verification endpoint.
 			 */

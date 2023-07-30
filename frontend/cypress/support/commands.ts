@@ -34,7 +34,12 @@ Cypress.Commands.add('datacy', (datacy, customSelector = '') => {
 	cy.get(`[datacy=${datacy}]${customSelector}`)
 })
 
+Cypress.Commands.add('check404', () => {
+	cy.contains('404').should('be.visible')
+	cy.contains('Seite nicht gefunden').should('be.visible')
+})
+
 /**** Interceptors ****/
 Cypress.Commands.add('mockMailVerify', (response = 'OK') => {
-	cy.intercept('GET', `${apiUrl}/auth/verify-email`, apiResponseTypes[response])
+	cy.intercept('GET', `${apiUrl}/auth/verify-email?token=*`, apiResponseTypes[response]).as('mockMailVerify')
 })
