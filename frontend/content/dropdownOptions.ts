@@ -32,3 +32,30 @@ export const childRelationshipOptions: DropdownOptions[] = [
 		label: 'Kind vom Ehepartner',
 	},
 ]
+
+export const heirsPersonType: DropdownOptions[] = [
+	{
+		value: 'partner',
+		label: 'Partner',
+	},
+	{
+		value: 'mother',
+		label: 'Mutter',
+	},
+	{
+		value: 'father',
+		label: 'Vater',
+	},
+	{
+		value: 'child',
+		label: 'Kind',
+	},
+	{
+		value: 'siblings',
+		label: 'Geschwisterteil',
+	},
+	{
+		value: 'other',
+		label: 'Sonstige',
+	},
+]

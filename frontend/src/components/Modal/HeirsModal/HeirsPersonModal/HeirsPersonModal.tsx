@@ -2,7 +2,7 @@ import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
 import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
-import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
+import { childRelationshipOptions, genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
 import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/heirs'
 import { useAppDispatch } from '../../../../store/hooks'
 import { addPersonHeir, updatePersonHeir } from '../../../../store/lastwill'
@@ -120,6 +120,13 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								labelText="Vor- und Nachname"
 								placeholder="Vor- und Nachname"
 								autoComplete="name"
+							/>
+							<FormDropdown
+								name="type"
+								labelText="Beziehung zum Erblasser"
+								placeholder="Beziehung zum Erblasser"
+								hasMargin
+								options={heirsPersonType}
 							/>
 						</div>
 
