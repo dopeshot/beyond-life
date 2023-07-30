@@ -4,6 +4,8 @@ import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions } from '../../../../../content/dropdownOptions'
 import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/heirs'
+import { useAppDispatch } from '../../../../store/hooks'
+import { addHeir } from '../../../../store/lastwill'
 import { Gender } from '../../../../types/gender'
 import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -47,6 +49,8 @@ type HeirsPersonModalProps = {
  * Modal to add/edit a heirs person.
  */
 export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
+	const dispatch = useAppDispatch()
+
 	const initialFormValues: PersonFormPayload = {
 		id: editPerson?.id ?? nanoid(),
 		name: editPerson?.name ?? '',
@@ -89,11 +93,11 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 	const onSubmit = async (values: PersonFormPayload) => {
 		console.log(values)
-		// if (editPerson) {
-		// 	await services.updatePerson(values)
-		// } else {
-		// 	await services.addPerson(values)
-		// }
+		if (editPerson) {
+			// await services.updatePerson(values)
+		} else {
+			dispatch(addHeir(values))
+		}
 
 		// Close and reset Modal
 		onClose()

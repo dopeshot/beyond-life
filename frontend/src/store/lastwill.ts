@@ -2,6 +2,8 @@ import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/t
 import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
 import { MarriageFormPayload } from '../app/(dynamic)/last-will/editor/marriage/page'
 import { TestatorFormPayload } from '../app/(dynamic)/last-will/editor/testator/page'
+import { OrganisationFormPayload } from '../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
+import { PersonFormPayload } from '../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { FinancialAsset, Item, MatrimonialProperty, Organisation, Person, Testator } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
@@ -283,6 +285,42 @@ const lastWillSlice = createSlice({
 			state.data.common.matrimonialProperty = action.payload.matrimonialProperty
 			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
+		addHeir: (state, action: PayloadAction<PersonFormPayload | OrganisationFormPayload>) => {
+			const isPerson = 'type' in action.payload && action.payload.type !== 'organisation'
+			console.log(action, isPerson)
+			if (isPerson) {
+				const personPayload = action.payload as PersonFormPayload
+				state.data.heirs.push({
+					id: personPayload.id,
+					type: personPayload.type,
+					name: personPayload.name,
+					gender: personPayload.gender,
+					birthDate: personPayload.birthDate,
+					birthPlace: personPayload.birthPlace,
+					isHandicapped: personPayload.moreInfos ? personPayload.moreInfos.includes('isHandicapped') : false,
+					isInsolvent: personPayload.moreInfos ? personPayload.moreInfos.includes('isInsolvent') : false,
+					address: {
+						street: personPayload.street,
+						houseNumber: personPayload.houseNumber,
+						zipCode: personPayload.zipCode,
+						city: personPayload.city,
+					},
+				})
+			} else {
+				const organisationPayload = action.payload as OrganisationFormPayload
+				state.data.heirs.push({
+					id: organisationPayload.id,
+					type: 'organisation',
+					name: organisationPayload.name,
+					address: {
+						city: organisationPayload.city,
+						houseNumber: organisationPayload.houseNumber,
+						zipCode: organisationPayload.zipCode,
+						street: organisationPayload.street,
+					},
+				})
+			}
+		},
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
 			state.data.heirs.splice(heirIndex, 1)
@@ -316,5 +354,5 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage, removeHeir } =
+export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage, addHeir, removeHeir } =
 	lastWillSlice.actions
