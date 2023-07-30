@@ -1,5 +1,24 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
+import { ApiErrorResponse } from '../../types/api'
 
-export const verifyMail = (token: string) => {
-	return axios.post('/api/verifyMail', { token })
+/**
+ * Verify email request.
+ * @param token - Token to verify email comes from param.
+ * @returns Axios response.
+ */
+export const verifyMail = async (token: string) => {
+	try {
+		await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/verify-email?token=${token}`)
+
+		return 'OK'
+	} catch (error) {
+		if (
+			isAxiosError<ApiErrorResponse>(error) &&
+			error.response &&
+			error.response.data.message === 'This user already verified their email'
+		) {
+			return 'ALREADY_VERIFIED'
+		}
+		return 'ERROR'
+	}
 }

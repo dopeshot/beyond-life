@@ -1,33 +1,106 @@
+'use client'
+import { MaterialSymbol } from 'material-symbols'
+import { notFound, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { verifyMail } from '../../../../../services/api/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata = {
-	title: 'Email verified | Siebtes Leben',
-}
 
 /**
  * Email Verified Page.
  */
 const EmailVerified = () => {
+	const searchParams = useSearchParams()
+	const token = searchParams.get('token')
+
+	const [loading, setLoading] = useState<boolean>(true)
+	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED'>('OK')
+
+	const verifyMailRequest = async () => {
+		setLoading(true)
+
+		const response = await verifyMail(token ?? '')
+		setStatus(response)
+		setLoading(false)
+	}
+
+	useEffect(() => {
+		if (!token) return notFound()
+		verifyMailRequest()
+	}, [token]) // eslint-disable-line react-hooks/exhaustive-deps
+
+	if (!token) {
+		return notFound()
+	}
+
+	if (loading)
+		return (
+			<div className="container mt-5">
+				<p>E-Mail wird verifiziert...</p>
+			</div>
+		)
+
+	const verifyMailContent: {
+		[key: string]: {
+			icon: MaterialSymbol
+			headline: string
+			description: string
+			link?: string
+			onClick?: () => void
+			text: string
+		}
+	} = {
+		OK: {
+			icon: 'mark_email_read',
+			headline: 'Ihre E-Mail Adresse wurde erfolgreich bestätigt',
+			description: 'Erstellen Sie Ihr Testament in nur wenigen Schritten.',
+			link: routes.lastWill.start,
+			text: 'Testament erstellen',
+		},
+		ERROR: {
+			icon: 'mark_email_unread',
+			headline: 'Ihre E-Mail Adresse konnte nicht bestätigt werden',
+			description: 'Bitte versuchen Sie es erneut.',
+			onClick: () => verifyMailRequest(),
+			text: 'Erneut versuchen',
+		},
+		ALREADY_VERIFIED: {
+			icon: 'mark_email_read',
+			headline: 'Ihre E-Mail Adresse wurde bereits bestätigt',
+			description: 'Erstellen Sie Ihr Testament in nur wenigen Schritten.',
+			link: routes.lastWill.start,
+			text: 'Testament erstellen',
+		},
+	}
+
 	return (
 		<main className="container my-auto flex flex-col">
 			<div className="flex flex-col md:flex-row lg:w-2/3 xl:w-1/2">
 				{/* Icon */}
 				<div className="mb-2 mr-5 flex h-12 w-12 min-w-[48px] items-center justify-center rounded-xl bg-yellow md:mb-0">
-					<Icon icon="mark_email_read" className="text-3xl" />
+					<Icon icon={verifyMailContent[status].icon} className="text-3xl" />
 				</div>
 				<div>
 					{/* Header */}
-					<Headline>Ihre E-Mail Adresse wurde erfolgreich bestätigt</Headline>
-					<p className="mb-2 font-semibold md:mb-4">Erstellen Sie Ihr Testament in nur wenigen Schritten.</p>
+					<Headline>{verifyMailContent[status].headline}</Headline>
+					<p className="mb-2 font-semibold md:mb-4">{verifyMailContent[status].description}</p>
 
 					{/* Buttons */}
 					<div className="flex flex-col items-center gap-3 md:flex-row md:gap-4">
-						<Route icon="history_edu" href={routes.lastWill.start}>
-							Testament erstellen
-						</Route>
+						{verifyMailContent[status].link ? (
+							<Route icon="history_edu" href={routes.lastWill.start}>
+								{verifyMailContent[status].text}
+							</Route>
+						) : (
+							verifyMailContent[status].onClick && (
+								<Button icon="sync" onClick={verifyMailContent[status].onClick}>
+									{verifyMailContent[status].text}
+								</Button>
+							)
+						)}
 						<Route icon="home" kind="tertiary" href={routes.index}>
 							Zur Startseite
 						</Route>
