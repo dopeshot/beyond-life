@@ -40,12 +40,15 @@ jobs:
   generate-and-commit-badge:
     runs-on: ubuntu-latest
     needs: merge-coverage
+    # Only push the svg on main branch
+    if: ${{ GITHUB_REF }} == 'refs/heads/feaure/291-move-badge-svgs-to-helper-repository'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          repository: dopeshot/beyond-life-codecov
           token: ${{ secrets.BOT_PAT }}
-          ref: ${{ github.head_ref }}
+          ref: main
 
       - uses: actions/download-artifact@v3
         with:
@@ -56,13 +59,13 @@ jobs:
         run: |
           cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
           color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
-          npx --yes badge-maker  ${{ inputs.context }}-coverage ${cov}% $color > .github/badges/${{ inputs.context }}-coverage.svg
+          npx --yes badge-maker  ${{ inputs.context }}-coverage ${cov}% $color > badges/${{ inputs.context }}-coverage.svg
 
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
-          git add .github/badges/${{ inputs.context }}-coverage.svg 
+          git add badges/${{ inputs.context }}-coverage.svg
           git commit -m "[no ci] ${{ inputs.context }} coverage" || echo "No changes to commit"
 
       - name: Push
