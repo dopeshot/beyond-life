@@ -4,8 +4,8 @@ import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
 import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/heirs'
-import { useAppDispatch } from '../../../../store/hooks'
-import { addPersonHeir, updatePersonHeir } from '../../../../store/lastwill'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill'
 import { Gender } from '../../../../types/gender'
 import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
@@ -49,6 +49,7 @@ type HeirsPersonModalProps = {
  * Modal to add/edit a heirs person.
  */
 export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 	const dispatch = useAppDispatch()
 
 	const initialFormValues: PersonFormPayload = {
@@ -97,6 +98,8 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		} else {
 			dispatch(addPersonHeir(values))
 		}
+
+		await dispatch(sendLastWillState())
 
 		// Close and reset Modal
 		onClose()
@@ -219,13 +222,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						</Button>
 
 						{/* Submit Button */}
-						<Button
-							datacy="button-submit"
-							type="submit"
-							loading={false} /** TODO */
-							className="mb-4 md:mb-0"
-							icon="check"
-						>
+						<Button datacy="button-submit" type="submit" loading={isLoading} className="mb-4 md:mb-0" icon="check">
 							Speichern
 						</Button>
 					</div>
