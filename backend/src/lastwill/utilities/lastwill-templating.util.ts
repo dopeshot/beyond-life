@@ -14,7 +14,7 @@ import {
   joinStringArrayForSentence,
 } from './grammar.utils'
 
-const PLACEHOLDERS = {
+export const PLACEHOLDERS = {
   CITY: '[Stadt]',
   HOUSE_NUMBER: '[Hausnummer]',
   ZIP_CODE: '[PLZ]',
@@ -30,7 +30,7 @@ const PLACEHOLDERS = {
   ITEM_NAME: '[Gegenstand]',
 }
 
-const PARAGRAPH_TITLES = {
+export const PARAGRAPH_TITLES = {
   FINANCIAL: 'Erbeinsetzung',
   FINANCIAL_ADDITIONAL: 'Ersatzerbe',
   ITEM: 'Vermächtnisse',
@@ -74,7 +74,7 @@ export function generateInitialText(
   }, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:`
 }
 
-function generateInheritanceForOrganisation(
+export function generateInheritanceForOrganisation(
   organisation: Organisation,
 ): string {
   return `Das Unternehmen, ${
@@ -86,7 +86,7 @@ function generateInheritanceForOrganisation(
   } Prozent meines Vermögens`
 }
 
-function generateInheritanceForPerson(person: Person) {
+export function generateInheritanceForPerson(person: Person) {
   const correctPossessivePronouns = getPossessivePronouns(
     person.type,
     person.gender,

@@ -18,7 +18,8 @@ export function getPossessivePronouns(type: PersonType, gender: Gender) {
   }
 }
 
-export function joinStringArrayForSentence(arr: string[]) {
-  if (arr.length === 0) return arr.at(-1)
+export function joinStringArrayForSentence(arr: string[]): string {
+  if (arr.length === 0) return null
+  if (arr.length === 1) return arr.at(-1)
   return `${arr.slice(0, -1).join(', ')} und ${arr.at(-1)}`
 }
