@@ -284,7 +284,6 @@ const lastWillSlice = createSlice({
 			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
 		removeHeir: (state, action: PayloadAction<string>) => {
-			// use slice to remove heir
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
 			state.data.heirs.splice(heirIndex, 1)
 		},
