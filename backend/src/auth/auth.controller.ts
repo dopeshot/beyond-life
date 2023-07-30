@@ -93,7 +93,7 @@ export class AuthController {
     type: TokenResponse,
   })
   @ApiUnauthorizedResponse({
-    description: 'Invalid refresh token',
+    description: 'Invalid or expired JWT',
   })
   async getAuthViaRefreshToken(
     @Req() { user }: RequestWithDbUser,
@@ -104,7 +104,6 @@ export class AuthController {
   @Get('verify-email')
   @UseGuards(VerifyTokenGuard)
   @ApiOperation({ summary: 'Verify a users email' })
-  @ApiQuery({ name: 'token', description: 'Verify jwt token', type: String })
   @ApiOkResponse({
     description: 'Email has been verified',
   })
@@ -113,6 +112,13 @@ export class AuthController {
   })
   @ApiConflictResponse({
     description: 'User`s email has already been verified',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or expired JWT',
+  })
+  @ApiQuery({
+    name: 'token',
+    description: 'The verify token as provided by the link in the reset email',
   })
   async verifyMail(@Req() { user }: RequestWithVerifyContent) {
     await this.authService.verifyUserMail(user.email)
@@ -133,12 +139,16 @@ export class AuthController {
   @ApiNotFoundResponse({
     description: 'Specified user could not be found (this SHOULD never happen)',
   })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or expired JWT',
+  })
+  @ApiBearerAuth('access_token')
   async requestVerifyMail(@Req() { user }: RequestWithJWTPayload) {
     await this.authService.requestUserVerifyMail(user.id)
   }
 
   @Post('forgot-password')
-  @ApiOperation({ description: 'Request a password reset email' })
+  @ApiOperation({ summary: 'Request a password reset email' })
   @ApiCreatedResponse({ description: 'Password reset email has been sent' })
   @ApiBody({
     type: ForgotPasswordDTO,
@@ -156,10 +166,10 @@ export class AuthController {
   @Post('forgot-password-submit')
   @UseGuards(PasswordResetTokenGuard)
   @ApiOperation({
-    description: 'Submit new password for user',
+    summary: 'Submit new password for user',
   })
   @ApiUnauthorizedResponse({
-    description: 'Token was invalid or has expired',
+    description: 'Invalid or expired JWT',
   })
   @ApiCreatedResponse({
     description: 'Password has been updated',
@@ -174,7 +184,10 @@ export class AuthController {
   @ApiBadRequestResponse({
     description: 'Provided body did not comply to specs of DTO',
   })
-  @ApiBearerAuth('password_reset_token')
+  @ApiQuery({
+    name: 'token',
+    description: 'The reset token as provided by the link in the reset email',
+  })
   async setNewPassword(
     @Req() { user }: RequestWithPasswordResetPayload,
     @Body() { password }: SubmitNewPasswordDTO,
