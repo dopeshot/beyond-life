@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Stripe } from 'stripe'

@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { SwaggerTheme } from 'swagger-themes'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
@@ -19,9 +20,9 @@ async function bootstrap() {
   // Swagger
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
-      .setTitle('BeyondLife Api')
-      .setDescription('The BeyondLife Api')
-      .setVersion('0.1')
+      .setTitle('Siebtesleben Api')
+      .setDescription('The Siebtesleben Api')
+      .setVersion('0.2')
       .addBearerAuth(
         {
           description: `Please enter access token in following format: Bearer <JWT>`,
@@ -51,7 +52,10 @@ async function bootstrap() {
       ignoreGlobalPrefix: false,
     })
 
-    SwaggerModule.setup('swagger', app, document)
+    const theme = new SwaggerTheme('v3')
+    SwaggerModule.setup('swagger', app, document, {
+      customCss: theme.getBuffer('dark'),
+    })
   }
 
   app.enableCors({

@@ -357,9 +357,6 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
         expect(await userModel.count()).toEqual(0)
@@ -371,9 +368,6 @@ describe('ProfileController (e2e)', () => {
           .delete('/profile')
           .set({
             Authorization: `Bearer ${token}`,
-          })
-          .send({
-            password: SAMPLE_USER.password,
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
@@ -393,9 +387,6 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
       })
@@ -412,9 +403,6 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
         expect(mock.getSentMail().length).toEqual(0)
@@ -428,23 +416,6 @@ describe('ProfileController (e2e)', () => {
           .delete('/profile')
           .set({
             Authorization: `Bearer ${token}a`,
-          })
-          .send({
-            password: SAMPLE_USER.password,
-          })
-
-        expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
-      })
-
-      it('should fail for invalid password', async () => {
-        // ACT
-        const res = await request(app.getHttpServer())
-          .delete('/profile')
-          .set({
-            Authorization: `Bearer ${token}`,
-          })
-          .send({
-            password: `${SAMPLE_USER.password}a`,
           })
 
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)

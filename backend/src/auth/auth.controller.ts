@@ -55,7 +55,7 @@ export class AuthController {
     description: 'User properties already in use',
   })
   @ApiBadRequestResponse({
-    description: 'Malformed dto passed',
+    description: 'Provided body did not comply to specs of DTO',
   })
   @ApiCreatedResponse({
     description: 'User has been created',
@@ -75,6 +75,9 @@ export class AuthController {
   @ApiOkResponse({
     description: 'Authorized',
     type: TokenResponse,
+  })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
   })
   async login(@Body() loginData: LoginDTO): Promise<TokenResponse> {
     return new TokenResponse(await this.authService.login(loginData))
@@ -143,6 +146,9 @@ export class AuthController {
   @ApiServiceUnavailableResponse({
     description: 'Mail could not be sent',
   })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
+  })
   async startForgottenPasswordFlow(@Body() { email }: ForgotPasswordDTO) {
     await this.authService.startForgottenPasswordFlow(email)
   }
@@ -164,6 +170,9 @@ export class AuthController {
   @ApiInternalServerErrorResponse({
     description:
       'The user was deleted or cannot be found anymore...something is off',
+  })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
   })
   @ApiBearerAuth('password_reset_token')
   async setNewPassword(
