@@ -1,6 +1,6 @@
-import { Headline } from '../../../../components/Headline/Headline'
 import Image from 'next/image'
 import emailImage from '../../../../assets/images/email/email.png'
+import { Headline } from '../../../../components/Headline/Headline'
 
 export const metadata = {
 	title: 'Imprint | Siebtes Leben',
@@ -22,14 +22,22 @@ const Imprint = () => {
 							<Headline level={3} size="text-xl">
 								Angaben gemäß § 5 TMG:
 							</Headline>
-							<Image src={emailImage} alt="Siebtes Leben Email" className=" w-1/3 mb-8" />
+							<Image src={emailImage} alt="Siebtes Leben Email" className=" mb-8 w-64" />
 							<Headline level={3} size="text-xl">
 								Hinweis auf EU-Streitschlichtung:
 							</Headline>
 							<p className="mb-2">
-								Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
-								http://ec.europa.eu/consumers/odr Unsere E-Mail-Adresse finden Sie oben.
+								Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
+								<a
+									href="https://ec.europa.eu/consumers/odr/"
+									target=""
+									rel="noopener noreferrer"
+									className=" font-bold underline"
+								>
+									https://ec.europa.eu/consumers/odr/
+								</a>
 							</p>
+							<p>Unsere E-Mail-Adresse finden Sie oben.</p>
 						</div>
 					</div>
 				</div>
