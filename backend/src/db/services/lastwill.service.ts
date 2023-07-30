@@ -55,4 +55,8 @@ export class LastWillDBService {
   async countDocuments(accountId: ObjectId) {
     return await this.lastWillModel.countDocuments({ accountId })
   }
+
+  async deleteAllByUser(accountId: ObjectId) {
+    await this.lastWillModel.deleteMany({ accountId })
+  }
 }
