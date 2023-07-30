@@ -101,7 +101,7 @@ const EmailVerified = () => {
 								</Button>
 							)
 						)}
-						<Route icon="home" kind="tertiary" href={routes.index}>
+						<Route kind="tertiary" href={routes.index}>
 							Zur Startseite
 						</Route>
 					</div>
