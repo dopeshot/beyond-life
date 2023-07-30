@@ -38,7 +38,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				<Alert
 					color="red"
 					headline="E-Mail verifizieren"
-					description="Bitte bestätige deine E-Mail-Adresse, um alle Funktionen nutzen zu können. Schaue in deinem Postfach nach einer E-Mail von uns."
+					description="Bitte bestätigen Sie Ihre E-Mail-Adresse, um alle Funktionen nutzen zu können."
 				/>
 			</nav>
 
