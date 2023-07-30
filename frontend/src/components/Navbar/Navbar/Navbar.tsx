@@ -3,14 +3,17 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { routes } from '../../../services/routes/routes'
 import { NavLink } from '../../../types/routes'
-import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { IconButton } from '../../IconButton/IconButton'
 import { NavbarLink } from '../NavbarLink/NavbarLink'
+import { DynamicNavbarLinks } from './DynamicNavbarLinks'
+import { StaticNavbarLinks } from './StaticNavbarLinks'
 
 // TODO: The api for this component is to complicated and confusing
 type NavbarProps = {
 	/** When true has a transparent background. For modules. */
 	background?: boolean
+	/** Set to true when using static site adjust the navbar to not use redux. */
+	isStaticPage?: boolean
 	/** Left side of navbar */
 	children: React.ReactNode
 }
@@ -18,7 +21,7 @@ type NavbarProps = {
 /**
  * Display Top Navbar.
  */
-export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) => {
+export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage, children }) => {
 	const pathname = usePathname()
 
 	// Local States
@@ -63,16 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, children }) =
 					))}
 
 					{/* Navlinks End */}
-					<li className="order-1 md:order-none md:ml-auto">
-						<Route kind="secondary" href={routes.account.login()}>
-							Login
-						</Route>
-					</li>
-					<li>
-						<NavbarLink href={routes.account.register()} isActive={routes.account.register() === pathname}>
-							Register
-						</NavbarLink>
-					</li>
+					{isStaticPage ? <StaticNavbarLinks /> : <DynamicNavbarLinks />}
 				</ul>
 			</nav>
 		</div>

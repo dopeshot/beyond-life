@@ -1,9 +1,11 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ObjectSchema, object, string } from 'yup'
 import { routes } from '../../../services/routes/routes'
+import { loginApi, registerApi } from '../../../store/auth/auth'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { Alert } from '../../Alert/Alert'
 import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { PasswordInput } from '../PasswordInput/PasswordInput'
@@ -20,9 +22,12 @@ type AccountDto = {
 
 export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const router = useRouter()
+	const searchparams = useSearchParams()
 
-	// Local State
-	const [isLoading, setIsLoading] = useState(false)
+	// Redux
+	const dispatch = useAppDispatch()
+	const registerError = useAppSelector((state) => state.auth.registerError)
+	const loginError = useAppSelector((state) => state.auth.loginError)
 
 	// Formik
 	const initialFormValues: AccountDto = {
@@ -34,41 +39,24 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 		email: string()
 			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
 			.required('E-Mail Adresse ist erforderlich.'),
-		password: string().required('Password ist erforderlich.'),
+		password: string().min(8, 'Passwort muss mindestens 8 Zeichen lang sein.').required('Password ist erforderlich.'),
 	})
 
-	const onLoginFormSubmit = async (values: AccountDto) => {
-		console.log(values)
+	const onSubmitAccountForm = async (values: AccountDto) => {
+		let response
+		if (type === 'login') {
+			response = await dispatch(loginApi({ email: values.email, password: values.password }))
+		} else {
+			response = await dispatch(registerApi({ email: values.email, password: values.password }))
+		}
 
-		// Simulate request
-		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
-		setIsLoading(false)
-
-		// Redirect to profile page
-		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.profile.myLastWills)
-	}
-
-	const onRegisterFormSubmit = async (values: AccountDto) => {
-		console.log(values)
-
-		// Simulate request
-		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
-		setIsLoading(false)
-
-		// Redirect to profile page
-		// TODO: implement callbackurl when paywall is implemented
-		router.push(routes.profile.myLastWills)
+		if (response.meta.requestStatus === 'rejected') return
+		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
+		router.replace(callbackUrl)
 	}
 
 	return (
-		<Formik
-			initialValues={initialFormValues}
-			validationSchema={accountValidationSchema}
-			onSubmit={type === 'login' ? onLoginFormSubmit : onRegisterFormSubmit}
-		>
+		<Formik initialValues={initialFormValues} validationSchema={accountValidationSchema} onSubmit={onSubmitAccountForm}>
 			{({ dirty, isValid }) => (
 				<Form className="mb-3">
 					<TextInput autoComplete="email" type="email" name="email" labelText="E-Mail" placeholder="E-Mail" />
@@ -79,12 +67,23 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 						</Route>
 					)}
 
+					{loginError && type === 'login' && (
+						<div className="mt-5">
+							<Alert datacy="alert-error" headline="Fehler" description={loginError} />
+						</div>
+					)}
+
+					{registerError && type === 'register' && (
+						<div className="mt-5">
+							<Alert datacy="alert-error" headline="Fehler" description={registerError} />
+						</div>
+					)}
+
 					<Button
 						className="mt-8 md:justify-center"
 						width="w-full"
 						datacy="submit-button"
 						icon="login"
-						loading={isLoading}
 						disabled={!(dirty && isValid)}
 						type="submit"
 					>
