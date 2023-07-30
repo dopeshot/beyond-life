@@ -3,12 +3,11 @@ import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { validateMail } from '../../../../../../utils/validateMail'
-import { Alert } from '../../../../../components/Alert/Alert'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { forgotPassword } from '../../../../../services/api/resetPassword'
-import { AlertResponse } from '../../../../../types/api'
 
 type ResetPasswordFormValues = {
 	email: string
@@ -20,7 +19,7 @@ type ResetPasswordFormValues = {
 const ResetPassword = () => {
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
-	const [alert, setAlert] = useState<AlertResponse | null>(null)
+	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
 
 	// Formik
 	const initalFormValues: ResetPasswordFormValues = {
@@ -32,13 +31,25 @@ const ResetPassword = () => {
 	})
 
 	const onSubmit = async (values: ResetPasswordFormValues) => {
-		console.log(values)
-
-		// Simulate request
 		setIsLoading(true)
 		const response = await forgotPassword(values.email)
-		setAlert(response)
+		setStatus(response)
 		setIsLoading(false)
+	}
+
+	const alertContent: { [key: string]: AlertProps } = {
+		OK: {
+			icon: 'check_circle',
+			color: 'green',
+			headline: 'Erfolgreich',
+			description: 'Wir haben Ihnen einen Link zum Passwort zurücksetzen gesendet.',
+		},
+		ERROR: {
+			icon: 'warning',
+			color: 'red',
+			headline: 'Fehler',
+			description: 'Beim Senden der E-Mail ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+		},
 	}
 
 	return (
@@ -73,14 +84,7 @@ const ResetPassword = () => {
 					)}
 				</Formik>
 
-				{alert && (
-					<Alert
-						headline={alert.headline}
-						icon={alert.status === 201 ? 'check_circle' : 'warning'}
-						color={alert.status === 201 ? 'green' : 'red'}
-						description={alert.message}
-					/>
-				)}
+				{status && <Alert {...alertContent[status]} />}
 			</main>
 		</div>
 	)

@@ -1,14 +1,15 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { notFound, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
-import { Alert } from '../../../../../components/Alert/Alert'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { changePassword } from '../../../../../services/api/resetPassword'
-import { AlertResponse } from '../../../../../types/api'
+import { ChangePasswordResponse, changePassword } from '../../../../../services/api/resetPassword'
+import { routes } from '../../../../../services/routes/routes'
 
 type ChangePasswordFormValues = {
 	newPassword: string
@@ -20,10 +21,16 @@ type ChangePasswordFormValues = {
  */
 const ChangePassword = () => {
 	const searchParams = useSearchParams()
+	const token = searchParams.get('token')
 
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
-	const [alert, setAlert] = useState<AlertResponse | null>(null)
+	const [status, setStatus] = useState<ChangePasswordResponse | null>(null)
+
+	// Render 404 if no token is provided
+	if (!token) {
+		return notFound()
+	}
 
 	// Formik
 	const initalFormValues: ChangePasswordFormValues = {
@@ -39,22 +46,43 @@ const ChangePassword = () => {
 	})
 
 	const onSubmit = async (values: ChangePasswordFormValues) => {
-		const token = searchParams.get('token')
-		if (!token) {
-			setAlert({
-				status: 400,
-				headline: 'Fehler',
-				message: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es erneut.',
-			})
-			return
-		}
-
 		setIsLoading(true)
-
 		const response = await changePassword(values.newPassword, token)
-		setAlert(response)
-
+		setStatus(response)
 		setIsLoading(false)
+	}
+
+	console.log(status)
+
+	const alertContent: { [key: string]: AlertProps } = {
+		OK: {
+			icon: 'check_circle',
+			color: 'green',
+			headline: 'Erfolgreich!',
+			description: (
+				<>
+					<p>
+						Passwort wurde erfolgreich geändert. Klicken Sie{' '}
+						<Link className="inline font-semibold text-green-600 hover:text-green-700" href={routes.account.login()}>
+							hier{' '}
+						</Link>
+						um sich einzuloggen.
+					</p>
+				</>
+			),
+		},
+		TOKEN_INVALID: {
+			icon: 'warning',
+			color: 'red',
+			headline: 'Ungültiger Link',
+			description: 'Der Link ist ungültig. Bitte fordern Sie einen neuen Link an.',
+		},
+		ERROR: {
+			icon: 'warning',
+			color: 'red',
+			headline: 'Fehler!',
+			description: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+		},
 	}
 
 	return (
@@ -92,14 +120,7 @@ const ChangePassword = () => {
 					)}
 				</Formik>
 
-				{alert && (
-					<Alert
-						headline={alert.headline}
-						icon={alert.status === 201 ? 'check_circle' : 'warning'}
-						color={alert.status === 201 ? 'green' : 'red'}
-						description={alert.message}
-					/>
-				)}
+				{status && <Alert {...alertContent[status]} />}
 			</main>
 		</div>
 	)
