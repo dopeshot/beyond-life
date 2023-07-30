@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
-import { LastWill, PersonType } from '../../db/entities/lastwill.entity'
+import { LastWill } from '../../db/entities/lastwill.entity'
 import { LastWillDBService } from '../../db/services/lastwill.service'
 import { UserDBService } from '../../db/services/user.service'
 import { paymentPlans } from '../../payments/interfaces/payments'
@@ -70,11 +70,8 @@ export class LastWillService {
   private includesItemInheritance(lastWill: LastWill): boolean {
     if (lastWill.items.length === 0) return false
     for (const heir of lastWill.heirs) {
-      if (heir.type !== PersonType.ORGANISATION) {
-        // heir is now guaranteed to be a Person
-        if (heir.itemIds?.length > 0) {
-          return true
-        }
+      if (heir.itemIds?.length > 0) {
+        return true
       }
     }
     // false bc noone actually inherits anything
@@ -125,10 +122,8 @@ export class LastWillService {
     if (this.includesItemInheritance(lastWill)) {
       const itemHeirs = []
       for (const heir of lastWill.heirs) {
-        if (heir.type !== PersonType.ORGANISATION) {
-          if (heir.itemIds?.length > 0) {
-            itemHeirs.push(heir)
-          }
+        if (heir.itemIds?.length > 0) {
+          itemHeirs.push(heir)
         }
       }
       generatedLastWill.paragraphs.push(

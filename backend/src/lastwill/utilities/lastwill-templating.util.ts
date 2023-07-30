@@ -143,7 +143,7 @@ export function generateFinancialInheritancePragraphs(
 }
 
 export function generateItemInheritanceParagraph(
-  heirs: Person[],
+  heirs: (Person | Organisation)[],
   items: Item[],
 ): LastWillParagraph {
   const paragraph: LastWillParagraph = {
@@ -160,13 +160,23 @@ export function generateItemInheritanceParagraph(
     const itemNames = heir.itemIds.map(
       (id) => itemMap.get(id).name || PLACEHOLDERS.ITEM_NAME,
     )
-    paragraph.contents.push(
-      `Ich vermache ${
-        heir.name || PLACEHOLDERS.PERSON_NAME
-      } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
-        itemNames,
-      )}`,
-    )
+    if (heir.type === PersonType.ORGANISATION) {
+      paragraph.contents.push(
+        `Ich vermache dem Unternehmen${
+          heir.name || PLACEHOLDERS.COMPANY_NAME
+        } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
+          itemNames,
+        )}`,
+      )
+    } else {
+      paragraph.contents.push(
+        `Ich vermache ${
+          heir.name || PLACEHOLDERS.PERSON_NAME
+        } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
+          itemNames,
+        )}`,
+      )
+    }
   }
   // Legal gibberish
   paragraph.contents.push(

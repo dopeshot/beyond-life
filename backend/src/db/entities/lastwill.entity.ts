@@ -96,6 +96,8 @@ const swaggerExampleOrgaHeir: Organisation = {
     zipCode: '12345',
     city: 'Berlin',
   },
+  percentage: 50,
+  itemIds: ['11111111', '22222222'],
 }
 
 const swaggerExampleObject: LastWill = {
@@ -428,6 +430,17 @@ export class Organisation {
   @IsNumber()
   @IsOptional()
   percentage?: number
+
+  @prop({ required: false, type: [String], default: [] })
+  @ApiPropertyOptional({
+    description: 'Item ids',
+    example: swaggerExamplePersonHeir.itemIds,
+    type: String,
+    isArray: true,
+  })
+  @IsString({ each: true })
+  @IsOptional()
+  itemIds?: string[]
 }
 
 @Expose()
