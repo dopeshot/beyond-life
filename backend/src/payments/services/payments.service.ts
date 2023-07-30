@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config'
 import { Request } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
-import { UserService } from '../../db/services/user.service'
+import { UserDBService } from '../../db/services/user.service'
 import { PaymentOptions, paymentPlans } from '../interfaces/payments'
 import { StripeService } from './stripe.service'
 
@@ -20,7 +20,7 @@ export class PaymentsService {
   constructor(
     private stripeService: StripeService,
     private configService: ConfigService,
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
   ) {}
 
   async createCheckoutSession(plan: string, userId: Schema.Types.ObjectId) {

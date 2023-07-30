@@ -6,11 +6,11 @@ import {
   ServiceUnavailableException,
   forwardRef,
 } from '@nestjs/common'
-import { MailSendService } from './send.service'
-import { MailEventService } from '../../db/services/mail-event.service'
 import { Cron } from '@nestjs/schedule'
-import { MailData, MailEvent } from '../../db/entities/mail-event.entity'
 import { ObjectId } from 'mongoose'
+import { MailData, MailEvent } from '../../db/entities/mail-event.entity'
+import { MailEventDBService } from '../../db/services/mail-event.service'
+import { MailSendService } from './send.service'
 
 /**
  * @description Service reliable for scheduling the sending of emails
@@ -21,7 +21,7 @@ export class MailScheduleService {
   constructor(
     @Inject(forwardRef(() => MailSendService))
     private readonly mailSendService: MailSendService,
-    private readonly mailEventService: MailEventService,
+    private readonly mailEventService: MailEventDBService,
   ) {}
 
   async scheduleMailNow(mail: MailData): Promise<void> {

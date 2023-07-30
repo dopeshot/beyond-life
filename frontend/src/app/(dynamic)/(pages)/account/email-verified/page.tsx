@@ -1,11 +1,8 @@
+'use client'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata = {
-	title: 'Email verified | Siebtes Leben',
-}
 
 /**
  * Email Verified Page.
