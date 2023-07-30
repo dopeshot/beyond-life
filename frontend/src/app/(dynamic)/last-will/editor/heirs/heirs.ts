@@ -14,13 +14,15 @@ export const heirsTypes = {
 export const determineHeirRelationship = (heir: Person | Organisation) => {
 	const isPerson = heir.type !== 'organisation'
 
-	if (heir.type === 'siblings' && isPerson && heir.gender === 'male') return 'Bruder'
-	if (heir.type === 'siblings' && isPerson && heir.gender === 'female') return 'Schwester'
+	if (isPerson && heir.type === 'siblings' && heir.gender === 'male') return 'Bruder'
+	if (isPerson && heir.type === 'siblings' && heir.gender === 'female') return 'Schwester'
 
-	return {
-		...heirsTypes,
-		partner: 'Partner*in',
-	}[heir.type]
+	return (
+		{
+			...heirsTypes,
+			partner: 'Partner*in',
+		} as const
+	)[heir.type]
 }
 
 export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
