@@ -43,6 +43,7 @@
     "stripe": "^12.14.0"
   },
   "devDependencies": {
+    "swagger-themes": "^1.2.30",
     "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^10.1.10",
     "@nestjs/schematics": "^10.0.1",

@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
@@ -42,6 +43,9 @@ export class PaymentsController {
   })
   @ApiServiceUnavailableResponse({
     description: ' Payment service is unavailable',
+  })
+  @ApiBadRequestResponse({
+    description: 'Malformed dto passed',
   })
   @ApiOperation({ summary: 'Create a checkout session' })
   @ApiBody({ type: PaymentDTO })
