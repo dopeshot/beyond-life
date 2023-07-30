@@ -13,6 +13,7 @@ const Privacy = () => {
 			{/* Header */}
 			<header>
 				<Headline>Datenschutz</Headline>
+				<p>Letzte Änderung: 30.Juli 2023</p>
 			</header>
 
 			<main>
@@ -21,7 +22,7 @@ const Privacy = () => {
 						<div>
 							{/* Einführung */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Einführung
 								</Headline>
 								<p className="mb-2">
@@ -29,7 +30,7 @@ const Privacy = () => {
 									und wir verstehen, dass Sie wissen möchten, wie Informationen über Sie verwendet und weitergegeben
 									werden. Wir hoffen, dass diese Datenschutzrichtlinie diese Fragen beantworten wird.
 								</p>
-								<p className="mb-8">
+								<p className="mb-4 md:mb-8">
 									Bitte lesen Sie diese Richtlinie sorgfältig durch, bevor Sie unsere Website oder Dienstleistungen
 									nutzen, da sie Ihre Rechte und Pflichten in Bezug auf Ihre persönlichen Daten erklärt. Wenn Sie nicht
 									zustimmen, dass wir Ihre Daten auf die in dieser Richtlinie beschriebene Weise sammeln, speichern,
@@ -39,13 +40,13 @@ const Privacy = () => {
 
 							{/* Information, die wir sammeln */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Information, die wir sammeln
 								</Headline>
 								<p className="mb-2">
 									Wenn Sie unsere Dienstleistungen nutzen, können wir folgende Informationen sammeln:
 								</p>
-								<ul className="mb-2 list-disc">
+								<ul className="mb-2 list-disc ml-8">
 									<li className="mb-2">
 										Persönliche Informationen: einschließlich, aber nicht beschränkt auf Ihren Namen, Ihre Adresse, Ihre
 										E-Mail-Adresse, Ihr Geburtsdatum und andere Kontaktinformationen, die Sie uns zur Verfügung stellen.
@@ -54,7 +55,7 @@ const Privacy = () => {
 										Technische Daten: einschließlich, aber nicht beschränkt auf Ihre IP-Adresse, Ihren Browser-Typ, Ihre
 										Hardware-Konfiguration, Ihre Betriebssystemversion und Ihre Einstellungen und Standorteinstellungen.
 									</li>
-									<li className="mb-8">
+									<li className="mb-4 md:mb-8">
 										Testament-Daten: einschließlich, aber nicht beschränkt auf die Informationen, die Sie uns im Rahmen
 										der Erstellung Ihres Testaments zur Verfügung stellen.
 									</li>
@@ -63,11 +64,11 @@ const Privacy = () => {
 
 							{/* Verwendung der Informationen */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Verwendung der Informationen
 								</Headline>
 								<p className="mb-2">Die von uns gesammelten Informationen verwenden wir für folgende Zwecke:</p>
-								<ul className="mb-2 list-disc">
+								<ul className="mb-2 list-disc ml-8">
 									<li className="mb-2">Um Ihnen die angeforderten Dienstleistungen bereitzustellen.</li>
 									<li className="mb-2">
 										Um mit Ihnen zu kommunizieren und auf Ihre Anfragen und Anliegen zu reagieren.
@@ -75,7 +76,7 @@ const Privacy = () => {
 									<li className="mb-2">
 										Um unsere Dienstleistungen zu verbessern und neue Dienstleistungen zu entwickeln.
 									</li>
-									<li className="mb-8">
+									<li className="mb-4 md:mb-8">
 										Um die Sicherheit unserer Dienstleistungen zu gewährleisten und Betrug zu verhindern oder
 										aufzudecken.
 									</li>
@@ -84,11 +85,11 @@ const Privacy = () => {
 
 							{/* Weitergabe von Informationen */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Weitergabe von Informationen
 								</Headline>
 								<p className="mb-2">Wir geben Ihre persönlichen Daten nur unter folgenden Umständen weiter:</p>
-								<ul className="mb-2 list-disc">
+								<ul className="mb-2 list-disc ml-8">
 									<li className="mb-2">
 										An Dritte, die Dienstleistungen für uns erbringen, einschließlich Datenanalyse,
 										Hosting-Dienstleistungen und Kundendienst.
@@ -102,7 +103,7 @@ const Privacy = () => {
 										Verlust zu verhindern, oder in Verbindung mit einer Untersuchung von mutmaßlichem oder tatsächlichem
 										Betrug oder illegaler Aktivität.
 									</li>
-									<li className="mb-8">
+									<li className="mb-4 md:mb-8">
 										Im Falle eines Verkaufs oder einer Fusion unseres Unternehmens würden wir Ihre Daten im Rahmen
 										dieses Prozesses weitergeben.
 									</li>
@@ -111,10 +112,10 @@ const Privacy = () => {
 
 							{/* Rechte */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Ihre Rechte
 								</Headline>
-								<p className="mb-8">
+								<p className="mb-4 md:mb-8">
 									Sie haben das Recht, auf Ihre Daten zuzugreifen, sie zu berichtigen, zu löschen, zu beschränken oder
 									zu widersprechen und das Recht auf Datenübertragbarkeit. Sie haben auch das Recht, Ihre Zustimmung
 									jederzeit zu widerrufen.
@@ -123,10 +124,10 @@ const Privacy = () => {
 
 							{/* Sicherheit */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Sicherheit
 								</Headline>
-								<p className="mb-8">
+								<p className="mb-4 md:mb-8">
 									Wir verwenden geeignete technische und organisatorische Maßnahmen, um Ihre persönlichen Daten zu
 									schützen und sicherzustellen, dass sie nur für die beabsichtigten Zwecke verwendet werden.
 								</p>
@@ -134,10 +135,10 @@ const Privacy = () => {
 
 							{/* Änderung Datenschutzrichtlinie */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Änderungen an dieser Datenschutzrichtlinie
 								</Headline>
-								<p className="mb-8">
+								<p className="mb-4 md:mb-8">
 									Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wir empfehlen Ihnen, diese
 									Seite regelmäßig zu besuchen, um über eventuelle Änderungen informiert zu sein.
 								</p>
@@ -145,7 +146,7 @@ const Privacy = () => {
 
 							{/* Third-Party Cookies */}
 							<div>
-								<Headline level={3} size="text-xl">
+								<Headline level={3} size="text-lg md:text-xl">
 									Third-Party Cookies
 								</Headline>
 								<p className="mb-2">
@@ -153,9 +154,9 @@ const Privacy = () => {
 									relevante Inhalte bereitzustellen. Diese können Tracking-Informationen über Sie enthalten. Die
 									Drittanbieter-Cookies, die wir verwenden, sind:
 								</p>
-								<ul className="mb-2 list-disc">
+								<ul className="mb-2 list-disc ml-8">
 								<li className="mb-2">
-										<Headline level={4} size="text-lg">
+										<Headline level={4} size="text-base md:text-lg">
 											Google Analytics 
 										</Headline>
 										Wir verwenden Google Analytics, um die Nutzung unserer Website zu analysieren. Die
@@ -166,7 +167,7 @@ const Privacy = () => {
 										einsehen.
 									</li>
 									<li className="mb-2">
-										<Headline level={4} size="text-lg">
+										<Headline level={4} size="text-base md:text-lg">
 											Google Fonts 
 										</Headline>
 										Wir nutzen Google Fonts für die Anzeige von Schriftarten auf unserer Website. Die
@@ -176,8 +177,8 @@ const Privacy = () => {
 										</Link>{' '}
 										einsehen.
 									</li>
-									<li className="mb-8">
-										<Headline level={4} size="text-lg">
+									<li className="mb-4 md:mb-8">
+										<Headline level={4} size="text-base md:text-lg">
 											Material Symbols
 										</Headline>
 										Wir verwenden Material Symbols für Icons auf unserer Website. Die
