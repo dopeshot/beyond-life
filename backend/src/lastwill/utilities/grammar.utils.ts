@@ -17,3 +17,8 @@ export function getPossessivePronouns(type: PersonType, gender: Gender) {
       return 'Mein Verwandter'
   }
 }
+
+export function joinStringArrayForSentence(arr: string[]) {
+  if (arr.length === 0) return arr.at(-1)
+  return `${arr.slice(0, -1).join(', ')} und ${arr.at(-1)}`
+}

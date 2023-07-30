@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
-import { LastWill } from '../../db/entities/lastwill.entity'
+import { LastWill, PersonType } from '../../db/entities/lastwill.entity'
 import { LastWillDBService } from '../../db/services/lastwill.service'
 import { UserDBService } from '../../db/services/user.service'
 import { paymentPlans } from '../../payments/interfaces/payments'
@@ -15,8 +15,10 @@ import { GeneratedLastWillDTO } from '../dto/generated-lastwill.dto'
 import {
   generateFinancialInheritancePragraphs,
   generateInitialText,
+  generateItemInheritanceParagraph,
   generateLocationHeader,
   generateTestatorHeader,
+  getLegalClauses,
 } from '../utilities/lastwill-templating.util'
 
 @Injectable()
@@ -34,6 +36,7 @@ export class LastWillService {
     if (!lastWill) {
       throw new NotFoundException()
     }
+    return this.generateLastWillFullText(lastWill)
   }
 
   async createLastWill(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
@@ -60,6 +63,22 @@ export class LastWillService {
         return true
       }
     }
+    // false bc noone actually inherits anything
+    return false
+  }
+
+  private includesItemInheritance(lastWill: LastWill): boolean {
+    if (lastWill.items.length === 0) return false
+    for (const heir of lastWill.heirs) {
+      if (heir.type !== PersonType.ORGANISATION) {
+        // heir is now guaranteed to be a Person
+        if (heir.itemIds?.length > 0) {
+          return true
+        }
+      }
+    }
+    // false bc noone actually inherits anything
+    return false
   }
 
   private generateLastWillFullText(lastWill: LastWill): GeneratedLastWillDTO {
@@ -102,6 +121,22 @@ export class LastWillService {
         ),
       )
     }
+
+    if (this.includesItemInheritance(lastWill)) {
+      const itemHeirs = []
+      for (const heir of lastWill.heirs) {
+        if (heir.type !== PersonType.ORGANISATION) {
+          if (heir.itemIds?.length > 0) {
+            itemHeirs.push(heir)
+          }
+        }
+      }
+      generatedLastWill.paragraphs.push(
+        generateItemInheritanceParagraph(itemHeirs, lastWill.items),
+      )
+    }
+
+    generatedLastWill.paragraphs.push(...getLegalClauses())
     return generatedLastWill
   }
 }

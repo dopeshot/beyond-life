@@ -1,5 +1,6 @@
 import {
   FinancialAsset,
+  Item,
   Organisation,
   Person,
   PersonType,
@@ -8,13 +9,16 @@ import {
   LastWillParagraph,
   TestatorHeader,
 } from '../dto/generated-lastwill.dto'
-import { getPossessivePronouns } from './grammar.utils'
+import {
+  getPossessivePronouns,
+  joinStringArrayForSentence,
+} from './grammar.utils'
 
 const PLACEHOLDERS = {
   CITY: '[Stadt]',
   HOUSE_NUMBER: '[Hausnummer]',
   ZIP_CODE: '[PLZ]',
-  NAME: '[Name]',
+  PERSON_NAME: '[Name]',
   STREET: '[Straßenname]',
   BIRTH_DATE: '[Geburtsdatum]',
   BIRTH_PLACE: '[Geburtsort]',
@@ -23,11 +27,15 @@ const PLACEHOLDERS = {
   CURRENCY: '[Währung]',
   CALCULATED_AMOUNT: '[Errechneter Wert]',
   FINANCIAL_ASSET_LOCATION: '[Bank/Ort]',
+  ITEM_NAME: '[Gegenstand]',
 }
 
 const PARAGRAPH_TITLES = {
   FINANCIAL: 'Erbeinsetzung',
   FINANCIAL_ADDITIONAL: 'Ersatzerbe',
+  ITEM: 'Vermächtnisse',
+  GERMAN_LAW: 'Rechtswahl',
+  SEVERABILITY_CLAUSE: 'Salvatorische Klausel',
 }
 
 export function generateTestatorHeader(
@@ -38,7 +46,7 @@ export function generateTestatorHeader(
   testatorZipCode: string,
 ): TestatorHeader {
   return {
-    fullName: testatorName || PLACEHOLDERS.NAME,
+    fullName: testatorName || PLACEHOLDERS.PERSON_NAME,
     AddressStreet: `${testatorStreet || PLACEHOLDERS.STREET} ${
       testatorhouseNumber || PLACEHOLDERS.HOUSE_NUMBER
     }`,
@@ -59,7 +67,7 @@ export function generateInitialText(
   birthdate: string,
   birthPlace: string,
 ): string {
-  return `Ich, ${testatorName || PLACEHOLDERS.NAME}, geboren am ${
+  return `Ich, ${testatorName || PLACEHOLDERS.PERSON_NAME}, geboren am ${
     birthdate || PLACEHOLDERS.BIRTH_DATE
   } in ${
     birthPlace || PLACEHOLDERS.BIRTH_PLACE
@@ -84,7 +92,7 @@ function generateInheritanceForPerson(person: Person) {
     person.gender,
   )
   return `${correctPossessivePronouns}, ${
-    person.name || PLACEHOLDERS.NAME
+    person.name || PLACEHOLDERS.PERSON_NAME
   } geboren am ${
     person.birthDate || PLACEHOLDERS.BIRTH_DATE
   } mit einem Anteil von ${
@@ -106,8 +114,8 @@ export function generateFinancialInheritancePragraphs(
   )
 
   mainParagraph.contents.push(
-    `Als Erbe meines Vermögens, aufgeteilt auf ${financialAssetLocations.join(
-      ',',
+    `Als Erbe meines Vermögens, aufgeteilt auf ${joinStringArrayForSentence(
+      financialAssetLocations,
     )}, setze ich folgende Personen ein:`,
   )
 
@@ -129,6 +137,60 @@ export function generateFinancialInheritancePragraphs(
       title: PARAGRAPH_TITLES.FINANCIAL_ADDITIONAL,
       contents: [
         'Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem Verhältnis der von mir vorgegebenen Erbanteile.',
+      ],
+    },
+  ]
+}
+
+export function generateItemInheritanceParagraph(
+  heirs: Person[],
+  items: Item[],
+): LastWillParagraph {
+  const paragraph: LastWillParagraph = {
+    title: PARAGRAPH_TITLES.ITEM,
+    contents: [],
+  }
+  // Build hashmap for efficiency
+  const itemMap: Map<string, Item> = new Map<string, Item>()
+  for (const item of items) {
+    itemMap.set(item.id, item)
+  }
+
+  for (const heir of heirs) {
+    const itemNames = heir.itemIds.map(
+      (id) => itemMap.get(id).name || PLACEHOLDERS.ITEM_NAME,
+    )
+    paragraph.contents.push(
+      `Ich vermache ${
+        heir.name || PLACEHOLDERS.PERSON_NAME
+      } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
+        itemNames,
+      )}`,
+    )
+  }
+  // Legal gibberish
+  paragraph.contents.push(
+    ...[
+      'Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.',
+      'Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.',
+      'Ersatzvermächtnisnehmer sind nicht bestimmt. Das jeweilige Vermächtnis entfällt ersatzlos, wenn der/die Vermächtnisnehmer/-in vor oder nach dem Erbfall, gleich aus welchem Grunde, wegfällt.',
+    ],
+  )
+  return paragraph
+}
+
+export function getLegalClauses(): LastWillParagraph[] {
+  return [
+    {
+      title: PARAGRAPH_TITLES.GERMAN_LAW,
+      contents: [
+        'Auf meinen gesamten Nachlass sowie für Fragen, die die Wirksamkeit dieses Testaments betreffen, soll deutsches Erbrecht anwendbar sein. Diese Rechtswahl soll auch dann weiterhin Gültigkeit haben, wenn ich meinen letzten gewöhnlichen Aufenthalt im Ausland habe.',
+      ],
+    },
+    {
+      title: PARAGRAPH_TITLES.SEVERABILITY_CLAUSE,
+      contents: [
+        'Sollte eine der in diesem Testament enthaltenen Anordnungen unwirksam sein, so behalten dennoch alle anderen Anordnungen ihre Wirkung.',
       ],
     },
   ]

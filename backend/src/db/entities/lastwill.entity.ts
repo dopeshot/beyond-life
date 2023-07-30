@@ -431,7 +431,7 @@ export class Organisation {
 }
 
 @Expose()
-class Item {
+export class Item {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
