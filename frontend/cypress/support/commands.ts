@@ -1,11 +1,13 @@
 /// <reference types="cypress" />
 
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
-
-const apiResponseTypes = {
+const okResponse = {
 	OK: {
 		statusCode: 200,
 	},
+}
+const verifyMailApiResponseTypes = {
+	...okResponse,
 	UNAUTHORIZED: {
 		statusCode: 401,
 		body: {
@@ -41,5 +43,5 @@ Cypress.Commands.add('check404', () => {
 
 /**** Interceptors ****/
 Cypress.Commands.add('mockMailVerify', (response = 'OK') => {
-	cy.intercept('GET', `${apiUrl}/auth/verify-email?token=*`, apiResponseTypes[response]).as('mockMailVerify')
+	cy.intercept('GET', `${apiUrl}/auth/verify-email?token=*`, verifyMailApiResponseTypes[response]).as('mockMailVerify')
 })
