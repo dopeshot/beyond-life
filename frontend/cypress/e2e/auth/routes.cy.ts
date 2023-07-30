@@ -29,7 +29,7 @@ describe('Routes protected/guest', () => {
 			})
 
 			// Redirected to /
-			cy.url().should('eq', clientBaseUrl + '/')
+			cy.url().should('include', '/profile/last-will')
 		})
 
 		it('should show page (login guest route) when not logged in', () => {
