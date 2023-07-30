@@ -1,5 +1,8 @@
 name: cleanup-codecov-reports
 
+
+# This workflow deletes the html reports for the given PR to tidy up the helper repository
+
 on:
   pull_request:
     types: [closed, labeled]
@@ -33,6 +36,26 @@ jobs:
 
       - name: Push
         run: git push
+
+
+
+  update-pr-comment:
+    runs-on: ubuntu-latest
+    needs: merge-coverage
+    strategy:
+      matrix:
+        context:
+          - backend
+          - frontend
+    steps:
+
+      - name: Comment coverage on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            This PR has been closed. All codecov information has been deleted...
+          comment_tag: ${{matrix.context}}codecov
+          create_if_not_exists: false
 
 
 
