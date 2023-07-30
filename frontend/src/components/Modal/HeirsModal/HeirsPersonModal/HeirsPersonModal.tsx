@@ -47,7 +47,6 @@ type HeirsPersonModalProps = {
  * Modal to add/edit a heirs person.
  */
 export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
-	console.log('editperson', editPerson)
 	const initialFormValues: PersonFormPayload = {
 		id: editPerson?.id ?? nanoid(),
 		name: editPerson?.name ?? '',
