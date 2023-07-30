@@ -15,7 +15,7 @@ import {
 import { ObjectId } from 'mongoose'
 import { User } from './users.entity'
 
-enum PersonType {
+export enum PersonType {
   MOTHER = 'mother',
   FATHER = 'father',
   CHILD = 'child',
@@ -24,7 +24,7 @@ enum PersonType {
   ORGANISATION = 'organisation',
 }
 
-enum Gender {
+export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
   DIVERS = 'divers',
@@ -307,7 +307,7 @@ class PersonBase {
 }
 
 @Expose()
-class Person extends PersonBase {
+export class Person extends PersonBase {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
@@ -377,7 +377,7 @@ class Testator extends PersonBase {
 }
 
 @Expose()
-class Organisation {
+export class Organisation {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',
@@ -417,6 +417,17 @@ class Organisation {
   @ValidateNested()
   @Type(() => Address)
   address?: Address
+
+  // Succession
+  @prop({ required: false, type: Number })
+  @ApiPropertyOptional({
+    description: 'Percentage',
+    example: swaggerExamplePersonHeir.percentage,
+    type: Number,
+  })
+  @IsNumber()
+  @IsOptional()
+  percentage?: number
 }
 
 @Expose()
@@ -452,7 +463,7 @@ class Item {
 }
 
 @Expose()
-class FinancialAsset {
+export class FinancialAsset {
   @prop({ required: true, type: String })
   @ApiProperty({
     description: 'Id',

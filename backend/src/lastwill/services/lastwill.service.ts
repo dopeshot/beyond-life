@@ -12,7 +12,12 @@ import { UserDBService } from '../../db/services/user.service'
 import { paymentPlans } from '../../payments/interfaces/payments'
 import { CreateLastWillDto } from '../dto/create-lastwill.dto'
 import { GeneratedLastWillDTO } from '../dto/generated-lastwill.dto'
-import { LastWillTemplateRendererService } from './lastwill-template-renderer.service'
+import {
+  generateFinancialInheritancePragraphs,
+  generateInitialText,
+  generateLocationHeader,
+  generateTestatorHeader,
+} from '../utilities/lastwill-templating.util'
 
 @Injectable()
 export class LastWillService {
@@ -20,7 +25,6 @@ export class LastWillService {
   constructor(
     private readonly userService: UserDBService,
     private readonly lastwillDbService: LastWillDBService,
-    private readonly lastWillTemplateRendererService: LastWillTemplateRendererService,
   ) {}
 
   // TODO: implement in other issue
@@ -49,13 +53,55 @@ export class LastWillService {
     return await this.lastwillDbService.createOne(createLastWillDto, userId)
   }
 
-  private generateLastWillFullText(lastWill: LastWill) {
+  private includesFinancialInheritance(lastWill: LastWill): boolean {
+    if (lastWill.financialAssets.length === 0) return false
+    for (const heir of lastWill.heirs) {
+      if (heir.percentage) {
+        return true
+      }
+    }
+  }
+
+  private generateLastWillFullText(lastWill: LastWill): GeneratedLastWillDTO {
     let generatedLastWill: GeneratedLastWillDTO
     // 1. Set headers
-    //generatedLastWill.testatorHeader = generateTestatorHeader
+    const testator = lastWill.testator
+    const testatorAddress = testator.address
+    generatedLastWill.testatorHeader = generateTestatorHeader(
+      testator.name,
+      testatorAddress.street,
+      testatorAddress.houseNumber,
+      testatorAddress.city,
+      testatorAddress.zipCode,
+    )
 
-    generatedLastWill.locationHeader = `${
-      lastWill.testator.address.city || '[Stadt]'
-    }, den ${new Date().toLocaleDateString('de-DE')}`
+    generatedLastWill.locationHeader = generateLocationHeader(
+      lastWill.testator.address?.city,
+    )
+
+    generatedLastWill.title = 'Mein letzter Wille und Testament'
+
+    // Generate outer text
+    generatedLastWill.initialText = generateInitialText(
+      testator.name,
+      testator.birthDate,
+      testator.birthPlace,
+    )
+    // Generate Erbeinsetzung
+    if (this.includesFinancialInheritance(lastWill)) {
+      const financialHeirs = []
+      for (const heir of lastWill.heirs) {
+        if (heir.percentage) {
+          financialHeirs.push(heir)
+        }
+      }
+      generatedLastWill.paragraphs.push(
+        ...generateFinancialInheritancePragraphs(
+          financialHeirs,
+          lastWill.financialAssets,
+        ),
+      )
+    }
+    return generatedLastWill
   }
 }
