@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiInternalServerErrorResponse,
@@ -22,7 +23,6 @@ import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.i
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { ChangeEmailDTO } from './dtos/change-email.dto'
 import { ChangePasswordDto } from './dtos/change-password.dto'
-import { DeleteMeDTO } from './dtos/delete-me.dto'
 import { ProfileService } from './profile.service'
 
 @Controller('profile')
@@ -46,6 +46,9 @@ export class ProfileController {
   @ApiUnauthorizedResponse({
     description:
       'Either jwt was invalid, old password was wrong or user does not exist anymore',
+  })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
   })
   @ApiBearerAuth('access_token')
   async updatePassword(
@@ -71,6 +74,9 @@ export class ProfileController {
   @ApiInternalServerErrorResponse({
     description: 'Db write could not performed or other internal error',
   })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
+  })
   async updateUserEmail(
     @Req() { user }: RequestWithJWTPayload,
     @Body() { email }: ChangeEmailDTO,
@@ -80,10 +86,14 @@ export class ProfileController {
 
   @Delete()
   @UseGuards(JwtGuard)
-  async deleteUser(
-    @Req() { user }: RequestWithJWTPayload,
-    @Body() { password }: DeleteMeDTO,
-  ) {
-    await this.profileService.deleteProfile(user.id, password)
+  @ApiBearerAuth('access_token')
+  @ApiOkResponse({
+    description: 'Account was deleted',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Provided token was invalid',
+  })
+  async deleteUser(@Req() { user }: RequestWithJWTPayload) {
+    await this.profileService.deleteProfile(user.id)
   }
 }
