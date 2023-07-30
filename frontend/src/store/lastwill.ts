@@ -285,41 +285,38 @@ const lastWillSlice = createSlice({
 			state.data.common.matrimonialProperty = action.payload.matrimonialProperty
 			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
-		addHeir: (state, action: PayloadAction<PersonFormPayload | OrganisationFormPayload>) => {
-			const isPerson = 'type' in action.payload && action.payload.type !== 'organisation'
-			console.log(action, isPerson)
-			if (isPerson) {
-				const personPayload = action.payload as PersonFormPayload
-				state.data.heirs.push({
-					id: personPayload.id,
-					type: personPayload.type,
-					name: personPayload.name,
-					gender: personPayload.gender,
-					birthDate: personPayload.birthDate,
-					birthPlace: personPayload.birthPlace,
-					isHandicapped: personPayload.moreInfos ? personPayload.moreInfos.includes('isHandicapped') : false,
-					isInsolvent: personPayload.moreInfos ? personPayload.moreInfos.includes('isInsolvent') : false,
-					address: {
-						street: personPayload.street,
-						houseNumber: personPayload.houseNumber,
-						zipCode: personPayload.zipCode,
-						city: personPayload.city,
-					},
-				})
-			} else {
-				const organisationPayload = action.payload as OrganisationFormPayload
-				state.data.heirs.push({
-					id: organisationPayload.id,
-					type: 'organisation',
-					name: organisationPayload.name,
-					address: {
-						city: organisationPayload.city,
-						houseNumber: organisationPayload.houseNumber,
-						zipCode: organisationPayload.zipCode,
-						street: organisationPayload.street,
-					},
-				})
-			}
+		addPersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
+			const { payload: person } = action
+			state.data.heirs.push({
+				id: person.id,
+				type: person.type,
+				name: person.name,
+				gender: person.gender,
+				birthDate: person.birthDate,
+				birthPlace: person.birthPlace,
+				isHandicapped: person.moreInfos ? person.moreInfos.includes('isHandicapped') : false,
+				isInsolvent: person.moreInfos ? person.moreInfos.includes('isInsolvent') : false,
+				address: {
+					street: person.street,
+					houseNumber: person.houseNumber,
+					zipCode: person.zipCode,
+					city: person.city,
+				},
+			})
+		},
+		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
+			const { payload: organisation } = action
+			state.data.heirs.push({
+				id: organisation.id,
+				type: 'organisation',
+				name: organisation.name,
+				address: {
+					city: organisation.city,
+					houseNumber: organisation.houseNumber,
+					zipCode: organisation.zipCode,
+					street: organisation.street,
+				},
+			})
 		},
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
@@ -354,5 +351,13 @@ const lastWillSlice = createSlice({
 })
 
 export const lastWillReducer = lastWillSlice.reducer
-export const { setProgressKeys, resetLastWill, setInheritance, setTestator, setMarriage, addHeir, removeHeir } =
-	lastWillSlice.actions
+export const {
+	setProgressKeys,
+	resetLastWill,
+	setInheritance,
+	setTestator,
+	setMarriage,
+	addPersonHeir,
+	addOrganisationHeir,
+	removeHeir,
+} = lastWillSlice.actions

@@ -2,7 +2,7 @@ import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
 import { ObjectSchema, object, string } from 'yup'
 import { useAppDispatch } from '../../../../store/hooks'
-import { addHeir } from '../../../../store/lastwill'
+import { addOrganisationHeir } from '../../../../store/lastwill'
 import { Organisation } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
@@ -58,7 +58,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 		if (editOrganisation) {
 			// await services.updateOrganisation(values)
 		} else {
-			dispatch(addHeir(values))
+			dispatch(addOrganisationHeir(values))
 		}
 
 		// Close and reset Modal
