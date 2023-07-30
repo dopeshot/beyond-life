@@ -62,7 +62,8 @@ export class PaymentsService {
     )
 
     this.logger.debug('customer:', customer)
-    // This prevents the user from receiving a session if we can't match the customerId in the db or set his status to pending, this guarantees consistency in Information
+    // This prevents the user from receiving a session if we can't match the customerId in the db or set his status to pending
+    // Guarantees consistency in information since we would later not be able to upgrade the users plan
     await this.userService.updateUserCheckoutInformation(customer, {
       status: 'pending',
       lastInformationTime: session.created,
