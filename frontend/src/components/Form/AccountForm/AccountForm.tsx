@@ -52,7 +52,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 		if (response.meta.requestStatus === 'rejected') return
 		const callbackUrl = searchparams.get('callbackUrl') ?? routes.profile.myLastWills
-		router.push(callbackUrl)
+		router.replace(callbackUrl)
 	}
 
 	return (
