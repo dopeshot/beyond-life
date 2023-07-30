@@ -4,11 +4,12 @@ import { profileLinks } from '../../../../../content/profilelinks'
 import isAuth from '../../../../components/Auth/isAuth'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
-import { useAppDispatch } from '../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
 
+	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
 	const dispatch = useAppDispatch()
 
 	return (
@@ -18,7 +19,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 				<div className="rounded-xl border-2 border-gray-200 px-5 pb-3 pt-5">
 					{/* Header */}
 					<div className="mb-2 flex flex-row">
-						<Headline size="text-xl md:text-2xl mx-auto">email@gmail.com</Headline>
+						<Headline size="text-xl md:text-2xl mx-auto truncate" title={email}>
+							{email}
+						</Headline>
 					</div>
 
 					<hr className="mb-2 border md:mb-4" />
