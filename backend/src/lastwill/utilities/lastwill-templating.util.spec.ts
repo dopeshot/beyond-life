@@ -1,5 +1,6 @@
 import {
   FinancialAsset,
+  Item,
   Organisation,
   Person,
   PersonType,
@@ -11,8 +12,10 @@ import {
   generateInheritanceForOrganisation,
   generateInheritanceForPerson,
   generateInitialText,
+  generateItemInheritanceParagraph,
   generateLocationHeader,
   generateTestatorHeader,
+  getLegalClauses,
 } from './lastwill-templating.util'
 
 const SAMPLE_ORGANISATION: Organisation = {
@@ -42,6 +45,12 @@ const SAMPLE_PERSON: Person = {
   birthDate: '01.01.1970',
   birthPlace: 'Coruscant',
   itemIds: ['a', 'b', 'c'],
+}
+
+const SAMPLE_ITEM: Item = {
+  id: 'a',
+  name: 'testItem01',
+  description: 'an item for testing',
 }
 
 const SAMPLE_FINANCIAL_ASSET: FinancialAsset = {
@@ -200,7 +209,7 @@ describe('lastwill-templating.util.ts', () => {
   })
 
   describe('generateFinancialInheritancePragraphs', () => {
-    it('should valid paragraph for person', () => {
+    it('should return valid paragraph for person', () => {
       // ACT
       // Use first as the following is legal giberish
       const res = generateFinancialInheritancePragraphs(
@@ -219,7 +228,7 @@ describe('lastwill-templating.util.ts', () => {
       ).toBeTruthy()
     })
 
-    it('should valid paragraph for organisation', () => {
+    it('should return valid paragraph for organisation', () => {
       // ACT
       // Use first as the following is legal giberish
       const res = generateFinancialInheritancePragraphs(
@@ -239,7 +248,7 @@ describe('lastwill-templating.util.ts', () => {
       ).toBeTruthy()
     })
 
-    it('should valid paragraph for array of organisation and person', () => {
+    it('should return valid paragraph for array of organisation and person', () => {
       // ACT
       // Use first as the following is legal giberish
       const res = generateFinancialInheritancePragraphs(
@@ -288,9 +297,152 @@ describe('lastwill-templating.util.ts', () => {
         res.contents.find((e) => e.includes(COPIED_ASSET.where)),
       ).toBeTruthy()
     })
+
+    it('should use placeholders for missing values', () => {
+      // ACT
+      const res = generateFinancialInheritancePragraphs(
+        [SAMPLE_ORGANISATION],
+        [{ ...SAMPLE_FINANCIAL_ASSET, where: null }],
+      )[0]
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.FINANCIAL)
+      expect(
+        res.contents.find((e) =>
+          e.includes(PLACEHOLDERS.FINANCIAL_ASSET_LOCATION),
+        ),
+      ).toBeTruthy()
+    })
   })
 
-  //describe('generateItemInheritanceParagraph', () => {
-  //  it('should generate valid paragraphs for ')
-  // })
+  describe('generateItemInheritanceParagraph', () => {
+    it('should return valid paragraphs for person', () => {
+      // ACT
+      const res = generateItemInheritanceParagraph(
+        [{ ...SAMPLE_PERSON, itemIds: [SAMPLE_ITEM.id] }],
+        [SAMPLE_ITEM],
+      )
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.ITEM)
+      expect(
+        res.contents.find(
+          (e) => e.includes(SAMPLE_ITEM.name) && e.includes(SAMPLE_PERSON.name),
+        ),
+      ).toBeTruthy()
+    })
+
+    it('should return valid paragraphs for organisation', () => {
+      // ACT
+      const res = generateItemInheritanceParagraph(
+        [{ ...SAMPLE_ORGANISATION, itemIds: [SAMPLE_ITEM.id] }],
+        [SAMPLE_ITEM],
+      )
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.ITEM)
+      expect(
+        res.contents.find(
+          (e) =>
+            e.includes(SAMPLE_ITEM.name) &&
+            e.includes(SAMPLE_ORGANISATION.name),
+        ),
+      ).toBeTruthy()
+    })
+
+    it('should return valid paragraph for person and organisation ', () => {
+      // ACT
+      const res = generateItemInheritanceParagraph(
+        [
+          { ...SAMPLE_ORGANISATION, itemIds: [SAMPLE_ITEM.id] },
+          {
+            ...SAMPLE_PERSON,
+            itemIds: ['b'],
+          },
+        ],
+        [SAMPLE_ITEM, { ...SAMPLE_ITEM, name: 'testItem02', id: 'b' }],
+      )
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.ITEM)
+      expect(
+        res.contents.find(
+          (e) =>
+            e.includes(SAMPLE_ITEM.name) &&
+            e.includes(SAMPLE_ORGANISATION.name),
+        ),
+      ).toBeTruthy()
+      expect(
+        res.contents.find(
+          (e) => e.includes('testItem02') && e.includes(SAMPLE_PERSON.name),
+        ),
+      ).toBeTruthy()
+    })
+
+    it('should list all items if one entity inherits multiple ', () => {
+      // ACT
+      const res = generateItemInheritanceParagraph(
+        [{ ...SAMPLE_ORGANISATION, itemIds: [SAMPLE_ITEM.id, 'b'] }],
+        [SAMPLE_ITEM, { ...SAMPLE_ITEM, name: 'testItem02', id: 'b' }],
+      )
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.ITEM)
+      expect(
+        res.contents.find(
+          (e) =>
+            e.includes(SAMPLE_ITEM.name) &&
+            e.includes(SAMPLE_ORGANISATION.name),
+        ),
+      ).toBeTruthy()
+      expect(
+        res.contents.find(
+          (e) =>
+            e.includes('testItem02') &&
+            e.includes(SAMPLE_ORGANISATION.name) &&
+            e.includes(SAMPLE_ITEM.name),
+        ),
+      ).toBeTruthy()
+    })
+
+    it('should use placeholders for missing values ', () => {
+      // ACT
+      const res = generateItemInheritanceParagraph(
+        [
+          { ...SAMPLE_ORGANISATION, itemIds: [SAMPLE_ITEM.id], name: null },
+          {
+            ...SAMPLE_PERSON,
+            itemIds: ['b'],
+            name: null,
+          },
+        ],
+        [SAMPLE_ITEM, { ...SAMPLE_ITEM, name: null, id: 'b' }],
+      )
+      // ASSERT
+      expect(res.title).toEqual(PARAGRAPH_TITLES.ITEM)
+      expect(
+        res.contents.find(
+          (e) =>
+            e.includes(PLACEHOLDERS.ITEM_NAME) &&
+            e.includes(PLACEHOLDERS.PERSON_NAME),
+        ),
+      ).toBeTruthy()
+      expect(
+        res.contents.find((e) => e.includes(PLACEHOLDERS.COMPANY_NAME)),
+      ).toBeTruthy()
+    })
+  })
+
+  describe('getLegalClauses', () => {
+    it('should return legal clauses', () => {
+      // ACT
+      const res = getLegalClauses()
+      // ASSERT
+      expect(res.length).toBeGreaterThan(0)
+    })
+
+    it('should return clauses with valid titles', () => {
+      // ACT
+      const res = getLegalClauses()
+      // ASSERT
+      for (const clause of res) {
+        expect(Object.values(PARAGRAPH_TITLES)).toContain(clause.title)
+      }
+    })
+  })
 })
