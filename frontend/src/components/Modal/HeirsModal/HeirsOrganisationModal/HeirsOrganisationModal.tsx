@@ -1,8 +1,8 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
 import { ObjectSchema, object, string } from 'yup'
-import { useAppDispatch } from '../../../../store/hooks'
-import { addOrganisationHeir, updateOrganisationHeir } from '../../../../store/lastwill'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { addOrganisationHeir, sendLastWillState, updateOrganisationHeir } from '../../../../store/lastwill'
 import { Organisation } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
@@ -32,6 +32,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	onClose,
 	editOrganisation,
 }) => {
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 	const dispatch = useAppDispatch()
 
 	const initialFormValues: OrganisationFormPayload = {
@@ -59,6 +60,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 		} else {
 			dispatch(addOrganisationHeir(values))
 		}
+		await dispatch(sendLastWillState())
 
 		// Close and reset Modal
 		onClose()
@@ -125,13 +127,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 						</Button>
 
 						{/* Submit Button */}
-						<Button
-							datacy="button-submit"
-							type="submit"
-							loading={false} /** TODO */
-							className="mb-4 md:mb-0"
-							icon="check"
-						>
+						<Button datacy="button-submit" type="submit" loading={isLoading} className="mb-4 md:mb-0" icon="check">
 							Speichern
 						</Button>
 					</div>
