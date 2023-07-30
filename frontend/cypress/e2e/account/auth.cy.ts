@@ -41,7 +41,7 @@ describe('Auth', () => {
 		})
 
 		describe('Error handling', () => {
-			it.only('should show error alert when email is already taken', () => {
+			it('should show error alert when email is already taken', () => {
 				cy.mockRegister({ statusCode: 409, errorMessage: 'Email is already taken.' })
 
 				cy.datacy('textinput-email-input').type('test@test.de')

@@ -176,6 +176,8 @@ const authSlice = createSlice({
 			.addCase(loginApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Unauthorized' && action.payload?.statusCode === 401) {
 					state.loginError = 'Hoppla! Die von Ihnen eingegebene E-Mail oder das Passwort ist falsch.'
+				} else {
+					state.loginError = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'
 				}
 				state.isInitialized = true
 				state.isAuthenticated = false
@@ -194,6 +196,8 @@ const authSlice = createSlice({
 			.addCase(registerApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
 					state.registerError = 'Hoppla! Die von Ihnen eingegebene E-Mail ist bereits mit einem Konto verknüpft.'
+				} else {
+					state.registerError = 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.'
 				}
 				state.isInitialized = true
 				state.isAuthenticated = false
