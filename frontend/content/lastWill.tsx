@@ -1,6 +1,6 @@
-import final from '../src/assets/images/tutorial/Final.jpg'
-import heirs from '../src/assets/images/tutorial/Heirs.jpg'
-import testator from '../src/assets/images/tutorial/Testator.jpg'
+import final from '../src/assets/images/tutorial/final.jpg'
+import heirs from '../src/assets/images/tutorial/heirs.jpg'
+import testator from '../src/assets/images/tutorial/testator.jpg'
 import { CardWithIconProps } from '../src/components/Layout/CardWithIcon/CardWithIcon'
 
 // TODO: this content folder is a bit out of place... We should find a good solution for this.
