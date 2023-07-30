@@ -1,7 +1,7 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
 import { notFound, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -19,18 +19,18 @@ const EmailVerified = () => {
 	const [loading, setLoading] = useState<boolean>(true)
 	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED'>('OK')
 
-	const verifyMailRequest = async () => {
-		setLoading(true)
+	const verifyMailRequest = useCallback(async () => {
+		if (!token) return notFound()
 
+		setLoading(true)
 		const response = await verifyMail(token ?? '')
 		setStatus(response)
 		setLoading(false)
-	}
+	}, [token])
 
 	useEffect(() => {
-		if (!token) return notFound()
 		verifyMailRequest()
-	}, [token]) // eslint-disable-line react-hooks/exhaustive-deps
+	}, [verifyMailRequest])
 
 	if (!token) {
 		return notFound()
