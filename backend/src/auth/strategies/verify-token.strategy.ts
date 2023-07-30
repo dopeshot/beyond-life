@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { UserService } from '../../db/services/user.service'
+import { UserDBService } from '../../db/services/user.service'
 import { VerifyJWTPayload } from '../interfaces/verify-jwt-payload.interface'
 
 /**
@@ -15,7 +15,7 @@ export class VerifyTokenStrategy extends PassportStrategy(
 ) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromUrlQueryParameter('token'),

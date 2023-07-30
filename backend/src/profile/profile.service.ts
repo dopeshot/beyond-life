@@ -9,7 +9,7 @@ import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { AuthService } from '../auth/auth.service'
 import { MailData } from '../db/entities/mail-event.entity'
-import { UserService } from '../db/services/user.service'
+import { UserDBService } from '../db/services/user.service'
 import { MailTemplates } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
 
@@ -17,7 +17,7 @@ import { MailScheduleService } from '../mail/services/scheduler.service'
 export class ProfileService {
   private readonly logger = new Logger(ProfileService.name)
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
     private readonly authService: AuthService,
     private readonly mailService: MailScheduleService,
   ) {}

@@ -14,7 +14,7 @@ import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
-import { UserService } from '../db/services/user.service'
+import { UserDBService } from '../db/services/user.service'
 import {
   MailTemplateContent,
   MailTemplates,
@@ -34,7 +34,7 @@ import { TokenResponse } from './responses/token.response'
 export class AuthService {
   private readonly logger = new Logger(AuthService.name)
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly mailService: MailScheduleService,

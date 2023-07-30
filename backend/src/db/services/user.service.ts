@@ -16,8 +16,8 @@ import {
 import { User } from '../entities/users.entity'
 
 @Injectable()
-export class UserService {
-  private readonly logger = new Logger(UserService.name)
+export class UserDBService {
+  private readonly logger = new Logger(UserDBService.name)
 
   constructor(
     @InjectModel(User)

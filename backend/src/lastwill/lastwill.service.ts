@@ -2,11 +2,12 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
+  NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
-import { LastWillDBService } from '../db/services/lastwill.db.service'
-import { UserService } from '../db/services/user.service'
+import { LastWillDBService } from '../db/services/lastwill.service'
+import { UserDBService } from '../db/services/user.service'
 import { paymentPlans } from '../payments/interfaces/payments'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
 
@@ -14,13 +15,13 @@ import { CreateLastWillDto } from './dto/create-lastwill.dto'
 export class LastWillService {
   private readonly logger = new Logger(LastWillService.name)
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
     private readonly lastwillDbService: LastWillDBService,
   ) {}
 
   // TODO: implement in other issue
   async getFullTextLastWill(id: string, userId: ObjectId) {
-    return `This action returns a #${id} lastWill`
+    throw new NotImplementedException()
   }
 
   async createLastWill(createLastWillDto: CreateLastWillDto, userId: ObjectId) {

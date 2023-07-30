@@ -26,7 +26,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { LastWill, LastWillMetadata } from '../db/entities/lastwill.entity'
-import { LastWillDBService } from '../db/services/lastwill.db.service'
+import { LastWillDBService } from '../db/services/lastwill.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
