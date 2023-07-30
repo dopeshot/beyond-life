@@ -31,7 +31,7 @@ import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
-import { LastWillService } from './lastwill.service'
+import { LastWillService } from './services/lastwill.service'
 
 @UseGuards(JwtGuard)
 @ApiTags('lastwill')
