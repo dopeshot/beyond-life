@@ -25,7 +25,7 @@ const isAuth = <P,>(Component: React.ComponentType<P>, routeType: 'protected' | 
 		}
 
 		if (routeType === 'guest' && isAuthenticated && isInitialized) {
-			redirect(routes.index, RedirectType.replace)
+			redirect(routes.profile.myLastWills, RedirectType.replace)
 		}
 
 		return <Component {...props} />
