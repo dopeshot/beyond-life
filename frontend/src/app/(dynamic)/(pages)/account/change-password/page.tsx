@@ -39,7 +39,9 @@ const ChangePassword = () => {
 	}
 
 	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-		newPassword: string().required('Bitte geben Sie ein neues Passwort ein.'),
+		newPassword: string()
+			.required('Bitte geben Sie ein neues Passwort ein.')
+			.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.'),
 		newPasswordConfirm: string()
 			.required('Bitte geben Sie ihr neues Passwort erneut ein.')
 			.oneOf([ref('newPassword')], 'Passwörter müssen übereinstimmen.'),
@@ -51,8 +53,6 @@ const ChangePassword = () => {
 		setStatus(response)
 		setIsLoading(false)
 	}
-
-	console.log(status)
 
 	const alertContent: { [key: string]: AlertProps } = {
 		OK: {
