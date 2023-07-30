@@ -1,6 +1,6 @@
-import { ComponentOptions } from '../src/types/form'
+import { DropdownOptions } from '../src/types/form'
 
-export const genderOptions: ComponentOptions[] = [
+export const genderOptions: DropdownOptions[] = [
 	{
 		value: 'male',
 		label: 'Männlich',
@@ -18,7 +18,7 @@ export const genderOptions: ComponentOptions[] = [
 	},
 ]
 
-export const childRelationshipOptions: ComponentOptions[] = [
+export const childRelationshipOptions: DropdownOptions[] = [
 	{
 		value: 'childTogether',
 		label: 'Gemeinsames Kind mit Ehepartner',

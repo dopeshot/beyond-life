@@ -83,5 +83,3 @@ export class User {
 
   */
 }
-
-export type UserModel = User & Document
