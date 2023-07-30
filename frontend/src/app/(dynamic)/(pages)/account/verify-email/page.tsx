@@ -17,13 +17,13 @@ const EmailVerified = () => {
 	const token = searchParams.get('token')
 
 	const [loading, setLoading] = useState<boolean>(true)
-	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED'>('OK')
+	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED' | null>(null)
 
 	const verifyMailRequest = useCallback(async () => {
 		if (!token) return notFound()
 
 		setLoading(true)
-		const response = await verifyMail(token ?? '')
+		const response = await verifyMail(token)
 		setStatus(response)
 		setLoading(false)
 	}, [token])
@@ -36,7 +36,7 @@ const EmailVerified = () => {
 		return notFound()
 	}
 
-	if (loading)
+	if (loading || status === null)
 		return (
 			<div className="container mt-5">
 				<p>E-Mail wird verifiziert...</p>
