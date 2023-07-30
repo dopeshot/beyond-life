@@ -15,7 +15,7 @@ const OrderConfirmation = () => {
 			<header className="relative w-full">
 				<Image
 					height={256}
-					className="absolute -z-10 h-full w-full object-cover object-top"
+					className="absolute -z-10 h-full w-full object-cover object-top brightness-50"
 					src={headerBackground}
 					alt="Couple"
 				/>
