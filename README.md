@@ -1,6 +1,6 @@
 # beyond-life
 
-![frontend codecov](.github/badges/frontend-coverage.svg) ![backend codecov](.github/badges/backend-coverage.svg)
+[![frontend codecov](https://codecov.siebtesleben.de/badges/frontend-coverage.svg)](https://codecov.siebtesleben.de/main/frontend/index.html) [![backend codecov](https://codecov.siebtesleben.de/badges/backend-coverage.svg)](https://codecov.siebtesleben.de/main/backend/index.html)
 
 ## Quick start
 
