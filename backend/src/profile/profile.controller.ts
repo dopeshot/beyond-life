@@ -86,7 +86,7 @@ export class ProfileController {
   @Delete()
   @UseGuards(JwtGuard)
   @ApiOperation({
-    summary: 'Delete the users account',
+    summary: 'Delete the users account and related last wills',
   })
   @ApiOkResponse({
     description: 'Account was deleted',
