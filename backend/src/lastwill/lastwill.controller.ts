@@ -122,7 +122,7 @@ export class LastWillController {
   @ApiBadRequestResponse({
     description: 'Bad request: Invalid data provided',
   })
-  @ApiOperation({ summary: 'Create last will' })
+  @ApiOperation({ summary: 'Update/Replace last will' })
   async updateOneById(
     @Param('id') id: string,
     @Body() updateLastWillDto: UpdateLastWillDto,
