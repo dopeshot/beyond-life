@@ -33,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			{!isInitialized ? (
 				<p>init...</p>
 			) : (
+				// TODO: Add loading screen
 				<div className={`flex h-screen min-h-screen w-full overflow-y-scroll sm:flex-col lg:flex-row`}>
 					<Sidebar path={path} />
 					<div className="flex h-fit min-h-screen flex-grow flex-col">
