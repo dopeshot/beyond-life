@@ -65,9 +65,7 @@ export class LastWillService {
   includesItemInheritance(lastWill: LastWill): boolean {
     if (lastWill.items.length === 0) return false
     for (const heir of lastWill.heirs) {
-      if (heir.itemIds?.length > 0) {
-        return true
-      }
+      if (heir.itemIds?.length > 0) return true
     }
     // false bc noone actually inherits anything
     return false
