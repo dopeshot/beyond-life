@@ -106,9 +106,7 @@ export class LastWillService {
     if (this.includesFinancialInheritance(lastWill)) {
       const financialHeirs = []
       for (const heir of lastWill.heirs) {
-        if (heir.percentage) {
-          financialHeirs.push(heir)
-        }
+        if (heir.percentage) financialHeirs.push(heir)
       }
       generatedLastWill.paragraphs.push(
         ...generateFinancialInheritancePragraphs(
