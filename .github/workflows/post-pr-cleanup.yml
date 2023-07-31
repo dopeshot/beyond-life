@@ -53,7 +53,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            This PR has been closed. All codecov information has been deleted...
+        This PR has been closed. All codecov information for branch ${{ steps.extract_branch.outputs.branch }} has been deleted.
           comment_tag: ${{matrix.context}}codecov
           create_if_not_exists: false
 
