@@ -10,7 +10,8 @@ services:
       - DB_USER_NAME=${BACKEND_DB_USER_NAME:-admin}
       - DB_USER_PW=${BACKEND_DB_USER_PW:-admin}
       - DB_HOST=${BACKEND_DB_HOST:-db}
-      - DB_PORT=${BACKEND_DB_PORT:-27018}
+      - DB_PORT=${BACKEND_DB_PORT:-27017}
+      - DB_DB=${BACKEND_DB_DB:-siebtesleben}
       # JWT
       - JWT_SECRET=${BACKEND_JWT_SECRET:-secret}
       - JWT_EXPIRE_TIME=${BACKEND_JWT_EXPIRE_TIME:-1h}
@@ -37,7 +38,7 @@ services:
       - STRIPE_SUCCESS_URL=${BACKEND_STRIPE_SUCCESS_URL}
       - STRIPE_CANCEL_URL=${BACKEND_STRIPE_CANCEL_URL}
       # Other
-      - BACKEND_DOMAIN=${BACKEND_BACKEND_DOMAIN:-http://localhost:3001}
+      - FRONTEND_DOMAIN=${BACKEND_FRONTEND_DOMAIN:-http://localhost:3000}
       - NODE_ENV=${BACKEND_NODE_ENV:-development}
     links:
       - db:db
@@ -55,8 +56,8 @@ services:
     image: rnwood/smtp4dev:v3
     restart: "always"
     ports:
-      - "25:25"
-      - 5000:80
+      - 25:25
+      - 5001:80
       - 143:143
     environment:
       - RelayOptions__Login=${BACKEND_MAIL_AUTH_USERNAME:-mail}
@@ -77,3 +78,10 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+
+  stripe-cli:
+    image: stripe/stripe-cli:v1.17.0
+    container_name: stripe-cli
+    command: "listen --api-key ${BACKEND_STRIPE_SECRET_KEY} --device-name docker_compose_stack --forward-to backend:3001/payments/webhook"
+    links:
+      - backend:backend

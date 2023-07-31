@@ -1,11 +1,13 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { ObjectSchema, object, ref, string } from 'yup'
+import { validateMail } from '../../../../../../utils/validateMail'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { useAppSelector } from '../../../../../store/hooks'
 
 type EmailChange = {
 	newEmail: string
@@ -37,7 +39,7 @@ const initalAccountDeleteValues: AccountDelete = {
 
 const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
 	newEmail: string()
-		.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
+		.matches(validateMail.regex, validateMail.message)
 		.required('Bitte geben Sie eine E-Mail Adresse ein.'),
 })
 
@@ -67,13 +69,15 @@ const AccountSettings = () => {
 		console.log(values)
 	}
 
+	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
+
 	return (
 		<div>
 			{/* Change Mail */}
 			<div className="rounded-xl border-2 border-gray-200 p-6">
 				<Headline level={4}>E-Mail Adresse ändern</Headline>
 				<p className="mb-4">
-					Ihre alte E-Mail ist <span className="text-red">email@gmail.com</span>
+					Ihre aktuelle E-Mail ist <span className="select-all text-red">{email}</span>
 				</p>
 
 				<Formik
@@ -88,6 +92,7 @@ const AccountSettings = () => {
 									name="newEmail"
 									labelText="Neue E-Mail Adresse"
 									placeholder="Gebe eine neue E-Mail Adresse ein"
+									autoComplete="email"
 								/>
 							</div>
 							<div className="flex justify-end">

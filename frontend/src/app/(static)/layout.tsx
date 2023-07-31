@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<Navbar>
+			<Navbar isStaticPage>
 				<div className="mr-5">
 					<NavbarLogo />
 				</div>

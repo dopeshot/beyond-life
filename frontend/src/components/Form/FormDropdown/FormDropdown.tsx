@@ -1,7 +1,7 @@
 'use-client'
 import { Field, FieldProps } from 'formik'
 import { useState } from 'react'
-import { ComponentOptions } from '../../../types/form'
+import { DropdownOptions } from '../../../types/form'
 import { Icon } from '../../Icon/Icon'
 import { Label } from '../Label/Label'
 
@@ -15,7 +15,7 @@ export type FormDropdownProps = {
 	/** When set Required * will be seen. */
 	inputRequired?: boolean
 	/** A list of options to choose from. */
-	options: readonly ComponentOptions[]
+	options: readonly DropdownOptions[]
 	/** When true add margin to dropdown like other inputs. */
 	hasMargin?: boolean
 }

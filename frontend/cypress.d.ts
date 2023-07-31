@@ -13,6 +13,52 @@ declare global {
 			 * @param customSelector add custom child selector, is used like css selectors.
 			 */
 			datacy(datacy: string, customSelector?: string): Chainable<void>
+			/**
+			 * Checks if the 404 page is displayed.
+			 */
+			check404(): Chainable<void>
+			/**
+			 * Mock the forgot password endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockForgotPassword('OK')
+			 */
+			mockForgotPassword(response?: 'OK' | 'SERVICE_UNAVAILABLE'): Chainable<void>
+			/**
+			 * Mock the forgot password submit endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockForgotPasswordSubmit('OK')
+			 */
+			mockForgotPasswordSubmit(
+				response?: 'OK' | 'INVALID_TOKEN' | 'INTERNAL_SERVER_ERROR' | 'SERVICE_UNAVAILABLE'
+			): Chainable<void>
+			/**
+			 * Mocks the mail verification endpoint.
+			 * @param response Set the response for the mail verification endpoint.
+			 */
+			mockMailVerify(response?: 'OK' | 'UNAUTHORIZED' | 'USER_NOT_FOUND' | 'USER_ALREADY_VERIFIED'): Chainable<void>
+			/**
+			 * Mocks login request.
+			 * @param response the response we want to mock.
+			 * @example cy.mockLogin('OK')
+			 */
+			mockLogin(response?: 'OK' | 'UNAUTHORIZED' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mocks register request.
+			 * @param response the response we want to mock.
+			 * @example cy.mockRegister('OK')
+			 */
+			mockRegister(response?: 'OK' | 'EMAIL_CONFLICT' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mocks refresh token request.
+			 * @example cy.mockRefreshToken()
+			 */
+			mockRefreshToken(): Chainable<void>
+			/**
+			 * Login to the app (Sets sessiondata to localstorage).
+			 * @param route the route we want to go after login
+			 * @param visitOptions the options we have when visiting page for example failOnStatusCode: false
+			 */
+			login(options: { route: string; visitOptions?: Partial<Cypress.VisitOptions> }): Chainable<void>
 		}
 	}
 }

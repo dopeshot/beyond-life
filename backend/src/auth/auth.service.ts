@@ -14,7 +14,7 @@ import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
-import { UserService } from '../db/services/user.service'
+import { UserDBService } from '../db/services/user.service'
 import {
   MailTemplateContent,
   MailTemplates,
@@ -34,7 +34,7 @@ import { TokenResponse } from './responses/token.response'
 export class AuthService {
   private readonly logger = new Logger(AuthService.name)
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly mailService: MailScheduleService,
@@ -84,8 +84,8 @@ export class AuthService {
 
     const mailContent: VerifyMailData = {
       verifyUrl: `${this.configService.get(
-        'BACKEND_DOMAIN',
-      )}/auth/verify-email?token=${verifyToken}`,
+        'FRONTEND_DOMAIN',
+      )}/account/verify-email?token=${verifyToken}`,
     }
     const mail: MailData = {
       recipient: {
@@ -156,6 +156,8 @@ export class AuthService {
     return this.jwtService.sign({
       id: user._id,
       email: user.email,
+      hasVerifiedEmail: user.hasVerifiedEmail,
+      paymentPlan: user.paymentPlan,
     } as JWTPayload)
   }
 
@@ -228,8 +230,8 @@ export class AuthService {
         },
       )
       const resetUrl = `${this.configService.get(
-        'BACKEND_DOMAIN',
-      )}/auth/verify-email?token=${resetToken}`
+        'FRONTEND_DOMAIN',
+      )}/account/change-password?token=${resetToken}`
 
       mailContent = { resetUrl } as PasswordResetMailData
       mailTemplate = MailTemplates.PASSWORD_RESET
@@ -262,6 +264,8 @@ export class AuthService {
     }
     try {
       await this.userService.updateUserPassword(id, newPassword)
+      // No tests for db failure
+      /* istanbul ignore next */
     } catch (error) {
       this.logger.warn(
         `Could not update a user password due to an error ${error}`,

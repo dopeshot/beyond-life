@@ -6,4 +6,6 @@ import { Schema } from 'mongoose'
 export interface JWTPayload {
   id: Schema.Types.ObjectId
   email: string
+  hasVerifiedEmail: boolean
+  paymentPlan: string
 }

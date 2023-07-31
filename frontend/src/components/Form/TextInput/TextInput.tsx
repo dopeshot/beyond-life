@@ -35,6 +35,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 	inputRequired = false,
 	helperText,
 	datacy,
+	autoComplete = "on",
 	icon,
 	iconOnClick,
 	hasBottomMargin: hasMargin = false,
@@ -53,6 +54,7 @@ export const TextInput: React.FC<TextInputProps> = ({
 								id={name}
 								datacy={datacy ?? `textinput-${name}-input`}
 								type={type}
+								autoComplete={autoComplete}
 								{...fieldProps.field}
 								{...props}
 								className={`flex w-full items-center rounded-lg border border-gray-100 bg-gray-100 p-2 px-4 placeholder:text-gray-400 ${

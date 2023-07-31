@@ -68,7 +68,7 @@ jobs:
         with:
           working-directory: ./frontend
           build: npm run build
-          start: npm run serve
+          start: npm run start
           command: npm run ${{ matrix.command }}
 
       - uses: actions/upload-artifact@v3
