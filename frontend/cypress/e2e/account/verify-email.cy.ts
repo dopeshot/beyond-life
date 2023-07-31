@@ -1,10 +1,44 @@
-describe('Mail Verify Page', () => {
+describe('Mail Verify', () => {
 	it('should verify mail successfully', () => {
+		cy.mockRefreshToken()
 		cy.mockMailVerify()
+
 		cy.visit('/account/verify-email?token=token')
 		cy.wait('@mockMailVerify')
 
 		cy.contains('Ihre E-Mail Adresse wurde erfolgreich bestätigt').should('be.visible')
+	})
+
+	it('should show mail verify info on profile when email not verified', () => {
+		cy.login({
+			route: '/profile/last-will',
+		})
+
+		cy.contains('E-Mail verifizieren').should('be.visible')
+	})
+
+	it('should not show mail verify info on profile when email is verified', () => {
+		cy.login({
+			route: '/profile/last-will',
+			hasMailVerified: true,
+		})
+
+		cy.wait('@mockRefreshToken')
+
+		cy.contains('E-Mail verifizieren').should('not.exist')
+		cy.datacy('verify-email-alert').should('not.exist')
+	})
+
+	it('should resend mail when resend button is clicked', () => {
+		cy.login({
+			route: '/profile/last-will',
+		})
+
+		cy.mockResendVerifyMail()
+
+		cy.datacy('resend-mail-button').click()
+
+		cy.wait('@mockResendVerifyMail')
 	})
 
 	describe('Error Handling', () => {

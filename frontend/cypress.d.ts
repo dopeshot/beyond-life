@@ -23,6 +23,10 @@ declare global {
 			 */
 			mockMailVerify(response?: 'OK' | 'UNAUTHORIZED' | 'USER_NOT_FOUND' | 'USER_ALREADY_VERIFIED'): Chainable<void>
 			/**
+			 * Mocks the request mail verification endpoint.
+			 */
+			mockResendVerifyMail(): Chainable<void>
+			/**
 			 * Mocks login request.
 			 * @param response the response we want to mock.
 			 * @example cy.mockLogin('OK')
@@ -37,14 +41,20 @@ declare global {
 			/**
 			 * Mocks refresh token request.
 			 * @example cy.mockRefreshToken()
+			 * @param hasMailVerified if the user has already verified his mail
 			 */
-			mockRefreshToken(): Chainable<void>
+			mockRefreshToken(hasMailVerified?: boolean): Chainable<void>
 			/**
 			 * Login to the app (Sets sessiondata to localstorage).
 			 * @param route the route we want to go after login
 			 * @param visitOptions the options we have when visiting page for example failOnStatusCode: false
+			 * @param hasMailVerified if the user has already verified his mail
 			 */
-			login(options: { route: string; visitOptions?: Partial<Cypress.VisitOptions> }): Chainable<void>
+			login(options: {
+				route: string
+				visitOptions?: Partial<Cypress.VisitOptions>
+				hasMailVerified?: boolean
+			}): Chainable<void>
 		}
 	}
 }

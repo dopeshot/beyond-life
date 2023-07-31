@@ -52,7 +52,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 								<p>
 									Bitte bestätigen Sie Ihre E-Mail-Adresse, um alle Funktionen nutzen zu können. Wenn Sie keine E-Mail
 									erhalten haben, können Sie diese{' '}
-									<button className="text-red-500 hover:text-red-600" onClick={() => requestVerifyMail()}>
+									<button
+										datacy="resend-mail-button"
+										className="text-red-500 hover:text-red-600"
+										onClick={() => requestVerifyMail()}
+									>
 										hier
 									</button>{' '}
 									erneut anfordern.
