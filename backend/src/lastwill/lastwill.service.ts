@@ -119,9 +119,7 @@ export class LastWillService {
     if (this.includesItemInheritance(lastWill)) {
       const itemHeirs = []
       for (const heir of lastWill.heirs) {
-        if (heir.itemIds?.length > 0) {
-          itemHeirs.push(heir)
-        }
+        if (heir.itemIds?.length > 0) itemHeirs.push(heir)
       }
       generatedLastWill.paragraphs.push(
         generateItemInheritanceParagraph(itemHeirs, lastWill.items),
