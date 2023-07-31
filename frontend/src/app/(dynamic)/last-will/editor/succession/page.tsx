@@ -207,25 +207,30 @@ const Succession = () => {
 						/>
 
 						{/* Active Heir Modal to select Items */}
-						<Modal open={isModalOpen} headline={selectedHeir.name} onClose={() => setIsModalOpen(false)}>
-							{/* Percentage */}
-							<div className="w-96">
-								<div className="flex items-center justify-between">
-									<Headline level={5} hasMargin={false}>
-										Anteil
-									</Headline>
-									<TextInput
-										type="number"
-										width="w-20"
-										hasBottomMargin={false}
-										onClick={(e) => e.preventDefault()}
-										name={`heirs.${selectedHeir.index}.percentage`}
-									/>
-								</div>
-								<div className="mb-4 flex items-center justify-between">
-									<p className="ml-2 text-gray-500">Pflichtanteil</p>
-									<p className="text-gray-500">15%</p>
-								</div>
+						{selectedHeirIndex !== undefined && (
+							<Modal
+								open={isModalOpen}
+								headline={values.heirs[selectedHeirIndex].name}
+								onClose={() => setIsModalOpen(false)}
+							>
+								{/* Percentage */}
+								<div className="w-96">
+									<div className="flex items-center justify-between">
+										<Headline level={5} hasMargin={false}>
+											Anteil
+										</Headline>
+										<TextInput
+											type="number"
+											width="w-20"
+											hasBottomMargin={false}
+											onClick={(e) => e.preventDefault()}
+											name={`heirs.${selectedHeirIndex}.percentage`}
+										/>
+									</div>
+									<div className="mb-4 flex items-center justify-between">
+										<p className="ml-2 text-gray-500">Pflichtanteil</p>
+										<p className="text-gray-500">15%</p>
+									</div>
 
 								{/* Items List */}
 								{
