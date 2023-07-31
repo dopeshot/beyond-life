@@ -48,7 +48,7 @@ export const initialState: LastWillState = {
 		common: {},
 		testator: {
 			name: '',
-			gender: 'male',
+			gender: 'female',
 			birthDate: '',
 			birthPlace: '',
 			isHandicapped: false,
