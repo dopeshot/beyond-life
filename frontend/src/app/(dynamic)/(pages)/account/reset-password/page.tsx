@@ -1,12 +1,13 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { validateMail } from '../../../../../../utils/validateMail'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { routes } from '../../../../../services/routes/routes'
+import { forgotPassword } from '../../../../../services/api/resetPassword'
 
 type ResetPasswordFormValues = {
 	email: string
@@ -16,10 +17,9 @@ type ResetPasswordFormValues = {
  * Reset Password Page with enter email Form.
  */
 const ResetPassword = () => {
-	const router = useRouter()
-
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
+	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
 
 	// Formik
 	const initalFormValues: ResetPasswordFormValues = {
@@ -27,20 +27,29 @@ const ResetPassword = () => {
 	}
 
 	const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
-		email: string()
-			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
-			.required('E-Mail Adresse ist erforderlich.'),
+		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
 	})
 
 	const onSubmit = async (values: ResetPasswordFormValues) => {
-		console.log(values)
-
-		// Simulate request
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const response = await forgotPassword(values.email)
+		setStatus(response)
 		setIsLoading(false)
+	}
 
-		router.push(routes.account.login())
+	const alertContent: { [key: string]: AlertProps } = {
+		OK: {
+			icon: 'check_circle',
+			color: 'green',
+			headline: 'Erfolgreich',
+			description: 'Wir haben Ihnen einen Link zum Passwort zurücksetzen gesendet.',
+		},
+		ERROR: {
+			icon: 'warning',
+			color: 'red',
+			headline: 'Fehler',
+			description: 'Beim Senden der E-Mail ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+		},
 	}
 
 	return (
@@ -59,7 +68,7 @@ const ResetPassword = () => {
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
 				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
-						<Form>
+						<Form className="mb-4">
 							<TextInput name="email" labelText="E-Mail" placeholder="Geben Sie Ihre E-Mail Adresse ein." />
 							<Button
 								datacy="submit-button"
@@ -74,6 +83,8 @@ const ResetPassword = () => {
 						</Form>
 					)}
 				</Formik>
+
+				{status && <Alert {...alertContent[status]} />}
 			</main>
 		</div>
 	)

@@ -1,6 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { ObjectSchema, object, ref, string } from 'yup'
+import { validateMail } from '../../../../../../utils/validateMail'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
@@ -38,7 +39,7 @@ const initalAccountDeleteValues: AccountDelete = {
 
 const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
 	newEmail: string()
-		.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
+		.matches(validateMail.regex, validateMail.message)
 		.required('Bitte geben Sie eine E-Mail Adresse ein.'),
 })
 
