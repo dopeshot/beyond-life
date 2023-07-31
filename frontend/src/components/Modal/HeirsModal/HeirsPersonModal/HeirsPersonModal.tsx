@@ -7,7 +7,7 @@ import { heirsTypes } from '../../../../app/(dynamic)/last-will/editor/heirs/hei
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill'
 import { Gender } from '../../../../types/gender'
-import { ChildRelationShip, HeirsTypes, Person, PersonType } from '../../../../types/lastWill'
+import { ChildRelationShip, HeirsTypes, Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../Form/FormDatepicker/FormDatepicker'
@@ -15,24 +15,6 @@ import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
-
-export type PersonFormPayload = {
-	id: string
-	type: HeirsTypes
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
-	moreInfos?: string[]
-	childRelationShip?: ChildRelationShip
-	ownChild?: string[]
-}
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */

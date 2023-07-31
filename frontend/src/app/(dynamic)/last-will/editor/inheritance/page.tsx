@@ -13,13 +13,9 @@ import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill'
-import { FinancialAsset, Item } from '../../../../../types/lastWill'
+import { FinancialAsset, InheritanceFormPayload, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-export type InheritanceFormPayload = {
-	financialAssets: FinancialAsset[]
-	items: Item[]
-}
 /**
  * Inheritance Page
  */

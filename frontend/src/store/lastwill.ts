@@ -1,10 +1,17 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
-import { InheritanceFormPayload } from '../app/(dynamic)/last-will/editor/inheritance/page'
-import { MarriageFormPayload } from '../app/(dynamic)/last-will/editor/marriage/page'
-import { TestatorFormPayload } from '../app/(dynamic)/last-will/editor/testator/page'
-import { OrganisationFormPayload } from '../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
-import { PersonFormPayload } from '../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
-import { FinancialAsset, Item, MatrimonialProperty, Organisation, Person, Testator } from '../types/lastWill'
+import {
+	FinancialAsset,
+	InheritanceFormPayload,
+	Item,
+	MarriageFormPayload,
+	MatrimonialProperty,
+	Organisation,
+	OrganisationFormPayload,
+	Person,
+	PersonFormPayload,
+	Testator,
+	TestatorFormPayload,
+} from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import { RootState } from './store'
 

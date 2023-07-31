@@ -16,21 +16,8 @@ import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setProgressKeys, setTestator } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
+import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-
-export type TestatorFormPayload = {
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
-	moreInfos?: string[]
-}
 
 /**
  * Testator Page

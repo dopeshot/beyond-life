@@ -1,5 +1,4 @@
-import { MarriageFormPayload } from '../app/(dynamic)/last-will/editor/marriage/page'
-import { Organisation, Person } from '../types/lastWill'
+import { MarriageFormPayload, Organisation, Person } from '../types/lastWill'
 import { SidebarPages } from '../types/sidebar'
 import {
 	LastWillState,
@@ -123,7 +122,7 @@ describe('lastWillSlice', () => {
 	})
 
 	describe('marriage', () => {
-		const action = {
+		const action: MarriageFormPayload = {
 			name: 'John Doe',
 			gender: 'male',
 			birthDate: '1990-01-01',
@@ -136,7 +135,7 @@ describe('lastWillSlice', () => {
 			isPartnerGermanCitizenship: ['isPartnerGermanCitizenship'],
 			matrimonialProperty: 'communityOfGain',
 			relationshipStatus: 'married',
-		} as MarriageFormPayload
+		}
 
 		const expectedPartnerObject = {
 			type: 'partner',

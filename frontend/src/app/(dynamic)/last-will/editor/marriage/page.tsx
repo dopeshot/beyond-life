@@ -18,29 +18,12 @@ import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setMarriage, setProgressKeys } from '../../../../../store/lastwill'
 import { Gender } from '../../../../../types/gender'
-import { Person } from '../../../../../types/lastWill'
+import { MarriageFormPayload, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
-
-export type MarriageFormPayload = {
-	// Person
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
-	relationshipStatus?: RelationshipStatus
-	isPartnerGermanCitizenship?: string[]
-	moreInfos?: string[] // update type
-	matrimonialProperty?: MatrimonialProperty
-}
 
 /**
  * Marriage Page

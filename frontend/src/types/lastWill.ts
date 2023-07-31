@@ -1,3 +1,92 @@
+// Form types
+export type TestatorFormPayload = {
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	moreInfos?: string[]
+}
+
+export type MarriageFormPayload = {
+	// Person
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	relationshipStatus?: RelationshipStatus
+	isPartnerGermanCitizenship?: string[]
+	moreInfos?: string[] // update type
+	matrimonialProperty?: MatrimonialProperty
+}
+
+export type OrganisationFormPayload = {
+	id: string
+	name?: string
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+}
+
+export type PersonFormPayload = {
+	id: string
+	type: HeirsTypes
+	name?: string
+	gender?: Gender
+	birthDate?: string
+	birthPlace?: string
+
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
+
+	moreInfos?: string[]
+	childRelationShip?: ChildRelationShip
+	ownChild?: string[]
+}
+
+export type SuccessionFormPayload = {
+	persons: SuccessionPerson[]
+	organisations: SuccessionOrganisation[]
+	partner: SuccessionPartner
+}
+
+export type InheritanceFormPayload = {
+	financialAssets: FinancialAsset[]
+	items: Item[]
+}
+
+export type SuccessionPerson = {
+	id: number | null
+	percentage: number
+	itemIds: number[]
+}
+
+export type SuccessionPartner = {
+	percentage: number
+	itemIds: number[]
+}
+
+export type SuccessionOrganisation = {
+	id: number | null
+	percentage: number
+	itemIds: number[]
+}
+
+// Store types
+
 export type Testator = {
 	relationshipStatus?: RelationshipStatus
 } & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'child'>

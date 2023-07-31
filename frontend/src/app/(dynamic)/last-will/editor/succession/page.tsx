@@ -4,33 +4,11 @@ import { useEffect } from 'react'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch } from '../../../../../store/hooks'
 import { setProgressKeys } from '../../../../../store/lastwill'
+import { SuccessionFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
 const NEXT_LINK = routes.lastWill.final('1')
-
-export type SuccessionFormPayload = {
-	persons: SuccessionPerson[]
-	organisations: SuccessionOrganisation[]
-	partner: SuccessionPartner
-}
-
-export type SuccessionPerson = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionPartner = {
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionOrganisation = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
 
 /**
  * Succession Page
