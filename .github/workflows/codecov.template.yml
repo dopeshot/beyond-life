@@ -97,7 +97,7 @@ jobs:
           echo >> comment.txt
           echo "[HTML Report](https://codecov.siebtesleben.de/${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }})" >> comment.txt
           echo >> comment.txt
-          echo "<details open><summary> Full coverage report </summary>" >> comment.txt
+          echo "<details><summary> Full coverage report </summary>" >> comment.txt
           echo >> comment.txt
           npx nyc report -t merged --reporter text |  tail -n +2 | head -n -1 >> comment.txt
           echo >> comment.txt
