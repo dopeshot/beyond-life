@@ -18,6 +18,20 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mock the forgot password endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockForgotPassword('OK')
+			 */
+			mockForgotPassword(response?: 'OK' | 'SERVICE_UNAVAILABLE'): Chainable<void>
+			/**
+			 * Mock the forgot password submit endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockForgotPasswordSubmit('OK')
+			 */
+			mockForgotPasswordSubmit(
+				response?: 'OK' | 'INVALID_TOKEN' | 'INTERNAL_SERVER_ERROR' | 'SERVICE_UNAVAILABLE'
+			): Chainable<void>
+			/**
 			 * Mocks the mail verification endpoint.
 			 * @param response Set the response for the mail verification endpoint.
 			 */

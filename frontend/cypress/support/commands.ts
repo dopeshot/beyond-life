@@ -5,6 +5,11 @@ import sessiondata from '../fixtures/auth/sessionData.json'
 import tokens from '../fixtures/auth/tokens.json'
 
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
+const postOkResponse = {
+	OK: {
+		statusCode: 201,
+	},
+}
 const okResponse = {
 	OK: {
 		statusCode: 200,
@@ -19,6 +24,40 @@ const unauthorizedResponse = {
 		},
 	},
 }
+const forgotPasswordApiResponseTypes = {
+	...postOkResponse,
+	SERVICE_UNAVAILABLE: {
+		statusCode: 503,
+		body: {
+			message: 'Password could not be set, please try again later',
+			statusCode: 503,
+		},
+	},
+}
+const forgotPasswordSubmitApiResponseTypes = {
+	...postOkResponse,
+	INVALID_TOKEN: {
+		statusCode: 401,
+		body: {
+			message: 'Unauthorized',
+			statusCode: 401,
+		},
+	},
+	INTERNAL_SERVER_ERROR: {
+		statusCode: 500,
+		body: {
+			message: 'This user does not seem to exist anymore',
+			statusCode: 500,
+		},
+	},
+	SERVICE_UNAVAILABLE: {
+		statusCode: 503,
+		body: {
+			message: 'Password could not be set, please try again later',
+			statusCode: 503,
+		},
+	},
+}
 
 const verifyMailApiResponseTypes = {
 	...okResponse,
@@ -27,6 +66,20 @@ const verifyMailApiResponseTypes = {
 		body: {
 			message: 'Unauthorized',
 			statusCode: 401,
+		},
+	},
+	INTERNAL_SERVER_ERROR: {
+		statusCode: 500,
+		body: {
+			message: 'This user does not seem to exist anymore',
+			statusCode: 500,
+		},
+	},
+	SERVICE_UNAVAILABLE: {
+		statusCode: 503,
+		body: {
+			message: 'Password could not be set, please try again later',
+			statusCode: 503,
 		},
 	},
 	USER_NOT_FOUND: {
@@ -85,6 +138,20 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockForgotPassword', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/auth/forgot-password`, forgotPasswordApiResponseTypes[response]).as(
+		'mockForgotPassword'
+	)
+})
+
+Cypress.Commands.add('mockForgotPasswordSubmit', (response = 'OK') => {
+	cy.intercept(
+		'POST',
+		`${apiUrl}/auth/forgot-password-submit?token=*`,
+		forgotPasswordSubmitApiResponseTypes[response]
+	).as('mockForgotPasswordSubmit')
+})
+
 Cypress.Commands.add('mockMailVerify', (response = 'OK') => {
 	cy.intercept('GET', `${apiUrl}/auth/verify-email?token=*`, verifyMailApiResponseTypes[response]).as('mockMailVerify')
 })

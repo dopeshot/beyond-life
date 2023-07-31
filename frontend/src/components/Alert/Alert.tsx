@@ -34,10 +34,10 @@ export const Alert: React.FC<AlertProps> = ({
 			<Icon
 				datacy={`${datacy}-icon`}
 				icon={icon}
-				className={`flex items-center text-${color} mr-2 h-8 w-8 min-w-[32px]`}
+				className={`flex items-center text-${color}-500 mr-2 h-8 w-8 min-w-[32px]`}
 			/>
 			<div>
-				<Headline datacy={`${datacy}-headline`} level={5} className={`text-${color}`}>
+				<Headline datacy={`${datacy}-headline`} level={5} className={`text-${color}-500`}>
 					{headline}
 				</Headline>
 				<div datacy={`${datacy}-description`} className="text-sm text-gray-600">

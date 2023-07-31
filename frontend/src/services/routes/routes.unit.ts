@@ -61,7 +61,7 @@ describe('Router', () => {
 		})
 
 		it('should return privacy policy path', () => {
-			expect(routes.misc.privacy).to.equal('/misc/privacy-policy')
+			expect(routes.misc.privacy).to.equal('/misc/privacy')
 		})
 
 		it('should return faq overview', () => {

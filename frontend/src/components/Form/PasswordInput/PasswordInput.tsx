@@ -6,6 +6,7 @@ type PasswordInputProps = {
 	name?: string
 	labelText?: string
 	placeholder?: string
+	minLength?: number
 }
 
 /**
@@ -15,6 +16,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 	name = 'password',
 	labelText = 'Password',
 	placeholder = 'Password',
+	minLength = 8,
 }) => {
 	const [isPasswordEyeOpen, setIsPasswordEyeOpen] = useState(false)
 
@@ -25,6 +27,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 			name={name}
 			labelText={labelText}
 			placeholder={placeholder}
+			min={minLength}
 			icon={isPasswordEyeOpen ? 'visibility' : 'visibility_off'}
 			iconOnClick={() => setIsPasswordEyeOpen(!isPasswordEyeOpen)}
 		/>
