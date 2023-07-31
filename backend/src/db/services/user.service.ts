@@ -61,7 +61,8 @@ export class UserDBService {
       this.logger.error(error)
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
-      else if (error instanceof ServiceUnavailableException) throw error
+      /* istanbul ignore next */
+      throw new ServiceUnavailableException()
     }
   }
 
@@ -114,6 +115,7 @@ export class UserDBService {
         { paymentPlan },
       )
     } catch (error) {
+      /* istanbul ignore next */
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Could not update payment plan of the provided customer from Stripe',
@@ -143,6 +145,7 @@ export class UserDBService {
         { new: true },
       )
     } catch (error) {
+      /* istanbul ignore next */
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Something went wrong, please try again later!',

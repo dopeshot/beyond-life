@@ -30,6 +30,7 @@ import { LastWillDBService } from '../db/services/lastwill.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { RequestWithJWTPayload } from '../shared/interfaces/request-with-user.interface'
 import { CreateLastWillDto } from './dto/create-lastwill.dto'
+import { GeneratedLastWillDTO } from './dto/generated-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 import { LastWillService } from './lastwill.service'
 
@@ -103,17 +104,27 @@ export class LastWillController {
     return new LastWill(fullLastWill)
   }
 
-  // TODO: implement in other issue
   @Get(':id/fulltext')
   @ApiOperation({ summary: 'Get Testament as fulltext' })
+  @ApiOkResponse({
+    description: 'Last will',
+    type: GeneratedLastWillDTO,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'JWT is invalid or expired',
+  })
+  @ApiNotFoundResponse({
+    description: 'No last will with this id has been found for the user',
+  })
   async getFullTextLastWill(
     @Param('id') id: string,
     @Req() { user }: RequestWithJWTPayload,
-  ) {
+  ): Promise<GeneratedLastWillDTO> {
     const fulltextLastWill = await this.lastWillService.getFullTextLastWill(
       id,
       user.id,
     )
+    return new GeneratedLastWillDTO(fulltextLastWill)
   }
 
   @Put(':id')
