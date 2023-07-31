@@ -14,6 +14,15 @@ declare global {
 			 */
 			datacy(datacy: string, customSelector?: string): Chainable<void>
 			/**
+			 * Checks if the 404 page is displayed.
+			 */
+			check404(): Chainable<void>
+			/**
+			 * Mocks the mail verification endpoint.
+			 * @param response Set the response for the mail verification endpoint.
+			 */
+			mockMailVerify(response?: 'OK' | 'UNAUTHORIZED' | 'USER_NOT_FOUND' | 'USER_ALREADY_VERIFIED'): Chainable<void>
+			/**
 			 * Mocks login request.
 			 * @param response the response we want to mock.
 			 * @example cy.mockLogin('OK')
