@@ -126,9 +126,17 @@ describe('lastwill-templating.util.ts', () => {
       expect(res).toContain('testCity')
     })
 
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
     it('should contain date in valid format', () => {
-      // ARRANGE
       const date = new Date()
+      // ARRANGE
+      jest.useFakeTimers()
+      // Mock new Date constructor with given value
+      jest.setSystemTime(date)
+
       const currentDate = `${date.getDay()}.${
         date.getUTCMonth() + 1
       }.${date.getFullYear()}`
