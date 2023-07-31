@@ -16,7 +16,6 @@ import { StripeService } from './stripe.service'
 @Injectable()
 export class PaymentsService {
   private logger = new Logger(PaymentsService.name)
-  private stripe: Stripe
   constructor(
     private stripeService: StripeService,
     private configService: ConfigService,
@@ -29,12 +28,15 @@ export class PaymentsService {
       throw new UnauthorizedException(
         'This user does not exist and cannot make a purchase', // How unfortunate, we always want money
       )
+    if (!user.hasVerifiedEmail)
+      throw new UnauthorizedException(
+        'Verified mail is needed to make a purchase',
+      )
 
     if (plan === user.paymentPlan)
       throw new ForbiddenException('You cannot rebuy a plan') // Actually I would love to allow it if it means more money
-    if (paymentPlans[plan] < paymentPlans[user.paymentPlan]) {
+    if (paymentPlans[plan] < paymentPlans[user.paymentPlan])
       throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
-    }
 
     let price_id: string
 
