@@ -3,29 +3,29 @@ import { TextInput } from '../Form/TextInput/TextInput'
 import { Headline } from '../Headline/Headline'
 import { IconButton } from '../IconButton/IconButton'
 
-export type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
+export type HeirType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 export type Item = {
 	id: number
 	name: string
 }
 
-export type SuccessionPersonProps = {
+export type SuccessionHeirProps = {
 	name: string
-	type: PersonType
-	share: number
-	mandatoryShare: number
+	type: HeirType
+	percentageName: string
+	mandatoryPercentage: number
 	items: Item[]
 	onClick: () => void
 }
 
 /**
- * SuccessionPerson component
+ * SuccessionHeir component
  */
-export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
+export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
 	name,
 	type,
-	share,
-	mandatoryShare,
+	percentageName,
+	mandatoryPercentage,
 	items,
 	onClick,
 }) => {
@@ -35,17 +35,11 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 				<Headline className="text truncate" hasMargin={false} level={4}>
 					{name}
 				</Headline>
-				<TextInput
-					width="w-20"
-					hasBottomMargin={false}
-					onClick={(e) => e.preventDefault()}
-					name={`share-${name}`}
-					value={`${share}%`}
-				/>
+				<TextInput type="number" width="w-20" hasBottomMargin={false} name={percentageName} />
 			</div>
 			<div className="flex justify-between">
 				<p className="ml-2 text-gray-500">{type}</p>
-				<p className="text-gray-500">{`${mandatoryShare}%`}</p>
+				<p className="text-gray-500">{`${mandatoryPercentage}%`}</p>
 			</div>
 			<div className="flex h-full justify-between">
 				<div className="mt-2">
@@ -56,6 +50,7 @@ export const SuccessionPerson: React.FC<SuccessionPersonProps> = ({
 								{item.name}
 							</p>
 						))}
+						{items.length >= 3 && <p className="text-gray-500">und weitere...</p>}
 					</div>
 				</div>
 				<div className="flex h-full items-end">

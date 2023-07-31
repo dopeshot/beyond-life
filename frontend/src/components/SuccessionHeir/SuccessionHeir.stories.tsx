@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { SuccessionPerson } from './SuccessionPerson'
+import { SuccessionHeir } from './SuccessionHeir'
 
-const meta: Meta<typeof SuccessionPerson> = {
-	title: 'Design System/SuccessionPerson',
-	component: SuccessionPerson,
+const meta: Meta<typeof SuccessionHeir> = {
+	title: 'Design System/SuccessionHeir',
+	component: SuccessionHeir,
 }
 
 export default meta
-type Story = StoryObj<typeof SuccessionPerson>
+type Story = StoryObj<typeof SuccessionHeir>
 
 export const Default: Story = {
 	args: {
 		name: 'Kathi Maier',
 		type: 'mother',
-		share: 20,
-		mandatoryShare: 15,
+		Name: 20,
+		mandatoryPercentage: 15,
 		items: [],
 	},
 }
@@ -23,8 +23,8 @@ export const WithItems: Story = {
 	args: {
 		name: 'Kathi Maier',
 		type: 'mother',
-		share: 20,
-		mandatoryShare: 15,
+		Name: 20,
+		mandatoryPercentage: 15,
 		items: [
 			{
 				id: 1,

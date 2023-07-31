@@ -2,115 +2,146 @@
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
+import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
-import { Item, PersonType, SuccessionPerson } from '../../../../../components/SuccessionPerson/SuccessionPerson'
+import { Item, SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
 import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { SuccessionFormPayload } from '../../../../../store/last-will/succession/actions'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
 const NEXT_LINK = routes.lastWill.final('1')
 
-const heirs: {
-	id: number
+type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
+type Gender = 'male' | 'female' | 'divers'
+
+type Person = {
+	id: string
+	type: PersonType
 	name: string
-	heirsType: PersonType
-	share: number
-	mandatoryShare: number
-	items: Item[]
-}[] = [
+	gender: Gender
+
+	// Succession
+	percentage: number
+	itemIds: number[]
+}
+
+type Organisation = {
+	id: string
+	name: string
+	type: 'organisation'
+	percentage: number
+	itemIds: number[]
+}
+
+type SuccessionFormPayload = {
+	heirs: (Person | Organisation)[]
+}
+
+const initialHeirs: any[] = [
 	{
 		id: 1,
+		type: 'father',
 		name: 'Max Mustermann',
-		heirsType: 'father',
-		share: 20,
-		mandatoryShare: 15,
-		items: [
-			{
-				id: 1,
-				name: 'Auto',
-			},
-			{
-				id: 2,
-				name: 'Haus',
-			},
-			{
-				id: 3,
-				name: 'Geld',
-			},
-			{
-				id: 4,
-				name: 'Fahrrad',
-			},
-		],
+		gender: 'male',
+		percentage: 20,
+		// mandatoryPercentage: 15,
+		itemIds: [1, 2],
 	},
 	{
 		id: 2,
 		name: 'Anna Mustermann',
 		heirsType: 'mother',
-		share: 20,
-		mandatoryShare: 15,
-		items: [],
+		percentage: 20,
+		// mandatoryShare: 15,
+		itemIds: [],
 	},
 	{
-		id: 1,
+		id: 3,
 		name: 'Max Mustermann',
 		heirsType: 'father',
-		share: 20,
-		mandatoryShare: 15,
-		items: [
-			{
-				id: 1,
-				name: 'Auto',
-			},
-			{
-				id: 2,
-				name: 'Haus',
-			},
-			{
-				id: 3,
-				name: 'Geld',
-			},
-			{
-				id: 4,
-				name: 'Fahrrad',
-			},
-		],
+		percentage: 20,
+		// mandatoryShare: 15,
+		itemIds: [],
 	},
 	{
-		id: 2,
+		id: 4,
 		name: 'Anna Mustermann',
 		heirsType: 'mother',
-		share: 20,
-		mandatoryShare: 15,
-		items: [],
+		percentage: 20,
+		// mandatoryShare: 15,
+		itemIds: [],
 	},
 	{
-		id: 1,
+		id: 5,
 		name: 'Max Mustermann',
 		heirsType: 'father',
-		share: 20,
-		mandatoryShare: 15,
-		items: [],
+		percentage: 80,
+		// mandatoryShare: 15,
+		itemIds: [],
 	},
 	{
-		id: 2,
+		id: 6,
 		name: 'Anna Mustermann',
 		heirsType: 'mother',
-		share: 20,
-		mandatoryShare: 15,
-		items: [],
+		percentage: 20,
+		// mandatoryShare: 15,
+		itemIds: [],
 	},
 ]
+
+const items: Item[] = [
+	{
+		id: 1,
+		name: 'Auto',
+	},
+	{
+		id: 2,
+		name: 'Haus',
+	},
+	{
+		id: 3,
+		name: 'Geld',
+	},
+	{
+		id: 4,
+		name: 'Fahrrad',
+	},
+]
+
+const ItemRow: React.FC<{ name: string; isAssigned: boolean; onClick: () => void }> = ({
+	name,
+	isAssigned,
+	onClick,
+}) => {
+	const [hover, setHover] = useState(false)
+	return (
+		<div
+			className="flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+			onClick={onClick}
+			onMouseEnter={() => setHover(true)}
+			onMouseLeave={() => setHover(false)}
+		>
+			<p className="text-gray-500">{name}</p>
+			{hover && <Icon className="text-gray-500" icon={isAssigned ? 'expand_more' : 'expand_less'} />}
+		</div>
+	)
+}
 
 /**
  * Succession Page
  */
 const Succession = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [selectedHeir, setSelectedHeir] = useState<{ id: number; name: string }>({ id: -1, name: '' })
+	const [selectedHeir, setSelectedHeir] = useState<{ id: string; index?: number; name: string }>({
+		id: '0',
+		index: undefined,
+		name: '',
+	})
+	const [heirs, setHeirs] = useState(false)
 
 	const router = useRouter()
 
@@ -118,22 +149,23 @@ const Succession = () => {
 	const { lastWill, services } = useLastWillContext()
 
 	// Formik
-	const initialFormValues: any = {
-		heirs: lastWill.heirs,
+	const initialFormValues: SuccessionFormPayload = {
+		heirs: initialHeirs,
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
 		console.log(values, href)
+		try {
+			// Update store
+			router.push(href)
+		} catch (error) {
+			console.error('An error occured while submitting the form: ', error)
+		}
 	}
 
 	useEffect(() => {
 		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
 	}, [services])
-
-	const handleClickPerson = (id: number, name: string) => {
-		setSelectedHeir({ id, name })
-		setIsModalOpen(true)
-	}
 
 	return (
 		<div className="container my-5 flex flex-1 flex-col">
@@ -143,36 +175,114 @@ const Succession = () => {
 					<Form>
 						{/* heirs */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 xl:grid-cols-3">
-							{heirs.map((heir) => (
-								<SuccessionPerson
-									onClick={() => handleClickPerson(heir.id, heir.name)}
+							{values.heirs.map((heir, index) => (
+								<SuccessionHeir
+									onClick={() => {
+										setSelectedHeir({
+											id: heir.id,
+											name: heir.name,
+											index: values.heirs.findIndex((inner) => inner.id === heir.id),
+										})
+										setIsModalOpen(true)
+									}}
 									key={`heir-${heir.id}`}
 									name={heir.name}
-									type={heir.heirsType}
-									share={heir.share}
-									mandatoryShare={heir.mandatoryShare}
-									items={heir.items}
+									type={heir.type}
+									percentageName={`heirs.${index}.percentage`}
+									mandatoryPercentage={0}
+									items={items.filter((item) => heir.itemIds?.includes(item.id))}
 								/>
 							))}
 						</div>
+
+						{/* Form Steps Buttons */}
+						<FormStepsButtons
+							loading={lastWill.common.isLoading}
+							dirty={dirty}
+							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
+							previousHref={PREVIOUS_LINK}
+							nextHref={NEXT_LINK}
+						/>
+
+						{/* Active Heir Modal to select Items */}
+						<Modal open={isModalOpen} headline={selectedHeir.name} onClose={() => setIsModalOpen(false)}>
+							{/* Percentage */}
+							<div className="w-96">
+								<div className="flex items-center justify-between">
+									<Headline level={5} hasMargin={false}>
+										Anteil
+									</Headline>
+									<TextInput
+										type="number"
+										width="w-20"
+										hasBottomMargin={false}
+										onClick={(e) => e.preventDefault()}
+										name={`heirs.${selectedHeir.index}.percentage`}
+									/>
+								</div>
+								<div className="mb-4 flex items-center justify-between">
+									<p className="ml-2 text-gray-500">Pflichtanteil</p>
+									<p className="text-gray-500">15%</p>
+								</div>
+
+								{/* Items List */}
+								{
+									<Headline level={5} hasMargin={false}>
+										Gegenstände
+									</Headline>
+								}
+								<div className="mb-4">
+									{items
+										.filter((item) =>
+											values.heirs.find((heir) => heir.id === selectedHeir.id)?.itemIds?.includes(item.id)
+										)
+										.map((item) => (
+											<ItemRow
+												key={item.id}
+												isAssigned={true}
+												name={item.name}
+												onClick={() => {
+													if (selectedHeir.index === undefined) return
+													let heirs = values.heirs
+
+													const newItemIds = heirs[selectedHeir.index].itemIds.filter((itemId) => itemId !== item.id)
+													heirs[selectedHeir.index].itemIds = newItemIds
+													setFieldValue('heirs', heirs)
+													setHeirs(!heirs)
+												}}
+											/>
+										))}
+								</div>
+								<Headline level={5} hasMargin={false}>
+									{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id))).length !== 0
+										? 'Noch nicht zugeordnete Gegenstände'
+										: 'Alle Gegenstände zugeordnet'}
+								</Headline>
+								<div>
+									{items
+										.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+										.map((item) => (
+											<ItemRow
+												key={item.id}
+												name={item.name}
+												isAssigned={false}
+												onClick={() => {
+													if (selectedHeir.index === undefined) return
+													let heirs = values.heirs
+
+													const newItemIds = heirs[selectedHeir.index].itemIds.concat(item.id)
+													heirs[selectedHeir.index].itemIds = newItemIds
+													setFieldValue('heirs', heirs)
+													setHeirs(!heirs)
+												}}
+											/>
+										))}
+								</div>
+							</div>
+						</Modal>
 					</Form>
 				)}
 			</Formik>
-			<Modal open={isModalOpen} headline={selectedHeir.name} onClose={() => setIsModalOpen(false)}>
-				<Headline level={5} hasMargin={false}>
-					Gegenstände
-				</Headline>
-				<div>
-					{heirs
-						.find((heir) => heir.id === selectedHeir.id)
-						?.items.map((item) => (
-							<p key={item.id}>{item.name}</p>
-						))}
-				</div>
-				<Headline level={5} hasMargin={false}>
-					Weitere Items
-				</Headline>
-			</Modal>
 		</div>
 	)
 }
