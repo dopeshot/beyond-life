@@ -13,7 +13,7 @@ export const Default: Story = {
 	args: {
 		name: 'Kathi Maier',
 		type: 'mother',
-		Name: 20,
+		percentageName: undefined,
 		mandatoryPercentage: 15,
 		items: [],
 	},
@@ -23,7 +23,7 @@ export const WithItems: Story = {
 	args: {
 		name: 'Kathi Maier',
 		type: 'mother',
-		Name: 20,
+		percentageName: undefined,
 		mandatoryPercentage: 15,
 		items: [
 			{
