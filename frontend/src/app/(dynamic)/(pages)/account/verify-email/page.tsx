@@ -8,6 +8,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { verifyMail } from '../../../../../services/api/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
+import { Color } from '../../../../../types/color'
 
 /**
  * Email Verified Page.
@@ -46,6 +47,7 @@ const EmailVerified = () => {
 	const verifyMailContent: {
 		[key: string]: {
 			icon: MaterialSymbol
+			color: Color
 			headline: string
 			description: string
 			link?: string
@@ -55,20 +57,23 @@ const EmailVerified = () => {
 	} = {
 		OK: {
 			icon: 'mark_email_read',
+			color: 'green',
 			headline: 'Ihre E-Mail Adresse wurde erfolgreich bestätigt',
 			description: 'Erstellen Sie Ihr Testament in nur wenigen Schritten.',
 			link: routes.lastWill.start,
 			text: 'Testament erstellen',
 		},
 		ERROR: {
-			icon: 'mark_email_unread',
+			icon: 'unsubscribe',
+			color: 'red',
 			headline: 'Ihre E-Mail Adresse konnte nicht bestätigt werden',
 			description: 'Bitte versuchen Sie es erneut.',
 			onClick: () => verifyMailRequest(),
 			text: 'Erneut versuchen',
 		},
 		ALREADY_VERIFIED: {
-			icon: 'mark_email_read',
+			icon: 'unsubscribe',
+			color: 'red',
 			headline: 'Ihre E-Mail Adresse wurde bereits bestätigt',
 			description: 'Erstellen Sie Ihr Testament in nur wenigen Schritten.',
 			link: routes.lastWill.start,
@@ -80,7 +85,9 @@ const EmailVerified = () => {
 		<main className="container my-auto flex flex-col">
 			<div className="flex flex-col md:flex-row lg:w-2/3 xl:w-1/2">
 				{/* Icon */}
-				<div className="mb-2 mr-5 flex h-12 w-12 min-w-[48px] items-center justify-center rounded-xl bg-yellow md:mb-0">
+				<div
+					className={`mb-2 mr-5 flex h-12 w-12 min-w-[48px] items-center justify-center rounded-xl bg-${verifyMailContent[status].color}-400 md:mb-0`}
+				>
 					<Icon icon={verifyMailContent[status].icon} className="text-3xl" />
 				</div>
 				<div>
