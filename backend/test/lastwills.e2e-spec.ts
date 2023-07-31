@@ -452,17 +452,8 @@ describe('LastWillController (e2e)', () => {
       })
 
       it('should fail if will does not exist', async () => {
-        const lastWill = (
-          await lastWillModel.create({
-            ...sampleObject,
-            accountId: user._id,
-          })
-        ).toObject()
-
-        await lastWillModel.deleteOne({ _id: lastWill._id })
-
         await request(app.getHttpServer())
-          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .get(`/lastwill/${'aaaaaaaaaaaaaaaaaaaaaaaa'}/fulltext`)
           .set('Authorization', `Bearer ${token}`)
           .expect(HttpStatus.NOT_FOUND)
       })
