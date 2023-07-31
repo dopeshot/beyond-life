@@ -8,6 +8,8 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { verifyMail } from '../../../../../services/api/mail/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
+import { refreshToken } from '../../../../../store/auth/auth'
+import { useAppDispatch } from '../../../../../store/hooks'
 import { Color } from '../../../../../types/color'
 
 /**
@@ -16,6 +18,7 @@ import { Color } from '../../../../../types/color'
 const EmailVerified = () => {
 	const searchParams = useSearchParams()
 	const token = searchParams.get('token')
+	const dispatch = useAppDispatch()
 
 	const [loading, setLoading] = useState<boolean>(true)
 	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED' | null>(null)
@@ -25,9 +28,11 @@ const EmailVerified = () => {
 
 		setLoading(true)
 		const response = await verifyMail(token)
+		await dispatch(refreshToken(false))
+
 		setStatus(response)
 		setLoading(false)
-	}, [token])
+	}, [token]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
 		verifyMailRequest()
