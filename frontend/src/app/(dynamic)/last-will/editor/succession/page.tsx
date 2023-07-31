@@ -137,12 +137,7 @@ const ItemRow: React.FC<{ name: string; isAssigned: boolean; onClick: () => void
  */
 const Succession = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [selectedHeir, setSelectedHeir] = useState<{ id: string; index?: number; name: string }>({
-		id: '0',
-		index: undefined,
-		name: '',
-	})
-	const [heirs, setHeirs] = useState(false)
+	const [selectedHeirIndex, setSelectedHeirIndex] = useState<number>()
 
 	const router = useRouter()
 
@@ -180,11 +175,7 @@ const Succession = () => {
 							{values.heirs.map((heir, index) => (
 								<SuccessionHeir
 									onClick={() => {
-										setSelectedHeir({
-											id: heir.id,
-											name: heir.name,
-											index: values.heirs.findIndex((inner) => inner.id === heir.id),
-										})
+										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
 										setIsModalOpen(true)
 									}}
 									key={`heir-${heir.id}`}
@@ -232,61 +223,62 @@ const Succession = () => {
 										<p className="text-gray-500">15%</p>
 									</div>
 
-								{/* Items List */}
-								{
+									{/* Items List */}
+									{
+										<Headline level={5} hasMargin={false}>
+											Gegenstände
+										</Headline>
+									}
+									<div className="mb-4">
+										{items
+											.filter((item) =>
+												values.heirs
+													.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
+													?.itemIds?.includes(item.id)
+											)
+											.map((item) => (
+												<ItemRow
+													key={item.id}
+													isAssigned={true}
+													name={item.name}
+													onClick={() => {
+														if (selectedHeirIndex === undefined) return
+														let heirs = values.heirs
+
+														const newItemIds = heirs[selectedHeirIndex].itemIds.filter((itemId) => itemId !== item.id)
+														heirs[selectedHeirIndex].itemIds = newItemIds
+														setFieldValue('heirs', heirs)
+													}}
+												/>
+											))}
+									</div>
 									<Headline level={5} hasMargin={false}>
-										Gegenstände
+										{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id))).length !== 0
+											? 'Noch nicht zugeordnete Gegenstände'
+											: 'Alle Gegenstände zugeordnet'}
 									</Headline>
-								}
-								<div className="mb-4">
-									{items
-										.filter((item) =>
-											values.heirs.find((heir) => heir.id === selectedHeir.id)?.itemIds?.includes(item.id)
-										)
-										.map((item) => (
-											<ItemRow
-												key={item.id}
-												isAssigned={true}
-												name={item.name}
-												onClick={() => {
-													if (selectedHeir.index === undefined) return
-													let heirs = values.heirs
+									<div>
+										{items
+											.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+											.map((item) => (
+												<ItemRow
+													key={item.id}
+													name={item.name}
+													isAssigned={false}
+													onClick={() => {
+														if (selectedHeirIndex === undefined) return
+														let heirs = values.heirs
 
-													const newItemIds = heirs[selectedHeir.index].itemIds.filter((itemId) => itemId !== item.id)
-													heirs[selectedHeir.index].itemIds = newItemIds
-													setFieldValue('heirs', heirs)
-													setHeirs(!heirs)
-												}}
-											/>
-										))}
+														const newItemIds = heirs[selectedHeirIndex].itemIds.concat(item.id)
+														heirs[selectedHeirIndex].itemIds = newItemIds
+														setFieldValue('heirs', heirs)
+													}}
+												/>
+											))}
+									</div>
 								</div>
-								<Headline level={5} hasMargin={false}>
-									{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id))).length !== 0
-										? 'Noch nicht zugeordnete Gegenstände'
-										: 'Alle Gegenstände zugeordnet'}
-								</Headline>
-								<div>
-									{items
-										.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
-										.map((item) => (
-											<ItemRow
-												key={item.id}
-												name={item.name}
-												isAssigned={false}
-												onClick={() => {
-													if (selectedHeir.index === undefined) return
-													let heirs = values.heirs
-
-													const newItemIds = heirs[selectedHeir.index].itemIds.concat(item.id)
-													heirs[selectedHeir.index].itemIds = newItemIds
-													setFieldValue('heirs', heirs)
-													setHeirs(!heirs)
-												}}
-											/>
-										))}
-								</div>
-							</div>
-						</Modal>
+							</Modal>
+						)}
 					</Form>
 				)}
 			</Formik>
