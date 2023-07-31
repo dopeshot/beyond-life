@@ -162,17 +162,18 @@ export function generateItemInheritanceParagraph(
     )
     if (heir.type === PersonType.ORGANISATION) {
       paragraph.contents.push(
-        `Ich vermache dem Unternehmen${
+        `Ich vermache dem Unternehmen ${
           heir.name || PLACEHOLDERS.COMPANY_NAME
         } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
           itemNames,
         )}`,
       )
     } else {
+      // Add birthdate
       paragraph.contents.push(
-        `Ich vermache ${
-          heir.name || PLACEHOLDERS.PERSON_NAME
-        } die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
+        `Ich vermache ${heir.name || PLACEHOLDERS.PERSON_NAME}, geboren am ${
+          heir.birthDate || PLACEHOLDERS.BIRTH_DATE
+        } , die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
           itemNames,
         )}`,
       )

@@ -365,12 +365,16 @@ describe('lastwill-templating.util.ts', () => {
         res.contents.find(
           (e) =>
             e.includes(SAMPLE_ITEM.name) &&
-            e.includes(SAMPLE_ORGANISATION.name),
+            e.includes(SAMPLE_ORGANISATION.name) &&
+            !e.includes('testItem02'),
         ),
       ).toBeTruthy()
       expect(
         res.contents.find(
-          (e) => e.includes('testItem02') && e.includes(SAMPLE_PERSON.name),
+          (e) =>
+            e.includes('testItem02') &&
+            e.includes(SAMPLE_PERSON.name) &&
+            !e.includes(SAMPLE_ITEM.name),
         ),
       ).toBeTruthy()
     })
@@ -386,13 +390,6 @@ describe('lastwill-templating.util.ts', () => {
       expect(
         res.contents.find(
           (e) =>
-            e.includes(SAMPLE_ITEM.name) &&
-            e.includes(SAMPLE_ORGANISATION.name),
-        ),
-      ).toBeTruthy()
-      expect(
-        res.contents.find(
-          (e) =>
             e.includes('testItem02') &&
             e.includes(SAMPLE_ORGANISATION.name) &&
             e.includes(SAMPLE_ITEM.name),
@@ -404,11 +401,16 @@ describe('lastwill-templating.util.ts', () => {
       // ACT
       const res = generateItemInheritanceParagraph(
         [
-          { ...SAMPLE_ORGANISATION, itemIds: [SAMPLE_ITEM.id], name: null },
+          {
+            ...SAMPLE_ORGANISATION,
+            itemIds: [SAMPLE_ITEM.id],
+            name: null,
+          },
           {
             ...SAMPLE_PERSON,
             itemIds: ['b'],
             name: null,
+            birthDate: null,
           },
         ],
         [SAMPLE_ITEM, { ...SAMPLE_ITEM, name: null, id: 'b' }],
@@ -419,7 +421,8 @@ describe('lastwill-templating.util.ts', () => {
         res.contents.find(
           (e) =>
             e.includes(PLACEHOLDERS.ITEM_NAME) &&
-            e.includes(PLACEHOLDERS.PERSON_NAME),
+            e.includes(PLACEHOLDERS.PERSON_NAME) &&
+            e.includes(PLACEHOLDERS.BIRTH_DATE),
         ),
       ).toBeTruthy()
       expect(
