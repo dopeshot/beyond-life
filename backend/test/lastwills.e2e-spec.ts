@@ -412,4 +412,53 @@ describe('LastWillController (e2e)', () => {
       })
     })
   })
+
+  describe('/lastwill/:id/fulltext', () => {
+    describe('Positive Tests', () => {})
+    describe('Negative Tests', () => {
+      it('should fail with invalid token', async () => {
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
+        await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}a`)
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should fail if will does not exist', async () => {
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
+        await lastWillModel.deleteOne({ _id: lastWill._id })
+
+        await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NOT_FOUND)
+      })
+
+      it('should fail if lastwill does not belong to user', async () => {
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: 'aaaaaaaaaaaaaxaaaaaaaaa1',
+          })
+        ).toObject()
+
+        await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NOT_FOUND)
+      })
+    })
+  })
 })
