@@ -157,6 +157,7 @@ export class AuthService {
       id: user._id,
       email: user.email,
       hasVerifiedEmail: user.hasVerifiedEmail,
+      paymentPlan: user.paymentPlan,
     } as JWTPayload)
   }
 
