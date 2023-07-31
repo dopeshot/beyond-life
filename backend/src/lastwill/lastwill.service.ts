@@ -32,9 +32,7 @@ export class LastWillService {
   async getFullTextLastWill(id: string, userId: ObjectId) {
     const lastWill = await this.lastwillDbService.findFullById(id, userId)
 
-    if (!lastWill) {
-      throw new NotFoundException()
-    }
+    if (!lastWill) throw new NotFoundException()
     return this.generateLastWillFullText(lastWill)
   }
 
