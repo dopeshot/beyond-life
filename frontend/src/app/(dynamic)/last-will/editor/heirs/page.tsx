@@ -10,7 +10,7 @@ import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/Hei
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { removeHeir, setProgressKeys } from '../../../../../store/lastwill'
+import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill'
 import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 import { determineHeirRelationship, getPersonAddHeirsOptions } from './heirs'
@@ -61,6 +61,7 @@ const Heirs = () => {
 		if (id === null) return
 
 		dispatch(removeHeir(id))
+		await dispatch(sendLastWillState())
 
 		setIsDeleteModalOpen(false)
 	}
@@ -185,7 +186,13 @@ const Heirs = () => {
 					</Button>
 
 					{/* Submit Button */}
-					<Button datacy="button-delete" onClick={deleteHeirs} loading={false} className="mb-4 md:mb-0" icon="delete">
+					<Button
+						datacy="button-delete"
+						onClick={deleteHeirs}
+						loading={isLoading}
+						className="mb-4 md:mb-0"
+						icon="delete"
+					>
 						Löschen
 					</Button>
 				</div>
@@ -204,13 +211,7 @@ const Heirs = () => {
 			</DropdownButton>
 
 			{/* Form Steps Buttons */}
-			<FormStepsButtons
-				loading={isLoading}
-				dirty={false}
-				previousOnClick={async () => console.log('TODO: Maybe fetch here ')}
-				previousHref={PREVIOUS_LINK}
-				nextHref={NEXT_LINK}
-			/>
+			<FormStepsButtons dirty={false} previousHref={PREVIOUS_LINK} nextHref={NEXT_LINK} />
 		</div>
 	)
 }
