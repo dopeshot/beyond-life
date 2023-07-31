@@ -99,7 +99,7 @@ jobs:
     steps:
       
       - name: trigger webhook
-        run: curl ${{ secrets.CFP_DEPLOY_WEBHOOK }}
+        run: curl -X POST ${{ secrets.CFP_DEPLOY_WEBHOOK }}
 
 
   generate-codecov-badge:
