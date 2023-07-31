@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
+import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { validateMail } from '../../../../../../utils/validateMail'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
@@ -7,6 +8,7 @@ import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { ChangeEmailResponse, changeEmail } from '../../../../../services/api/profile/profile'
 import { useAppSelector } from '../../../../../store/hooks'
 
 type EmailChange = {
@@ -57,8 +59,15 @@ const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().sh
  * Account Settings Page
  */
 const AccountSettings = () => {
-	const onSubmitEmailChange = (values: EmailChange) => {
-		console.log(values)
+	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
+	const [isLoadingChangeMail, setIsLoadingChangeMail] = useState(false)
+	const [changeMailStatus, setChangeMailStatus] = useState<ChangeEmailResponse | null>(null)
+
+	const onSubmitEmailChange = async (values: EmailChange) => {
+		setIsLoadingChangeMail(true)
+		const response = await changeEmail(values.newEmail)
+		setChangeMailStatus(response)
+		setIsLoadingChangeMail(false)
 	}
 
 	const onSubmitPasswordChange = (values: PasswordChange) => {
@@ -68,8 +77,6 @@ const AccountSettings = () => {
 	const onSubmitAccountDelete = (values: AccountDelete) => {
 		console.log(values)
 	}
-
-	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
 
 	return (
 		<div>
@@ -96,7 +103,7 @@ const AccountSettings = () => {
 								/>
 							</div>
 							<div className="flex justify-end">
-								<Button type="submit" kind="secondary" disabled={!(dirty && isValid)}>
+								<Button type="submit" kind="secondary" loading={isLoadingChangeMail} disabled={!(dirty && isValid)}>
 									E-Mail senden
 								</Button>
 							</div>
