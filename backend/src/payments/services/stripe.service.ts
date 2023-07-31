@@ -18,7 +18,16 @@ export class StripeService {
       return await this.stripe.customers.create({ email })
     } catch (error) {
       this.logger.error(error)
-      throw new ServiceUnavailableException('Payment service is unavailable')
+      throw new ServiceUnavailableException('Stripe, cannot create customer')
+    }
+  }
+
+  async customer_update(customerId: string, email: string) {
+    try {
+      await this.stripe.customers.update(customerId, { email })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Stripe, cannot update customer')
     }
   }
 
