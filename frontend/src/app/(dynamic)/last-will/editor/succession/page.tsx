@@ -9,7 +9,8 @@ import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { Item, SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { setProgressKeys } from '../../../../../store/lastwill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 const PREVIOUS_LINK = routes.lastWill.inheritance('1')
@@ -146,7 +147,8 @@ const Succession = () => {
 	const router = useRouter()
 
 	// Global State
-	const { lastWill, services } = useLastWillContext()
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+	const dispatch = useAppDispatch()
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
@@ -164,8 +166,8 @@ const Succession = () => {
 	}
 
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
+	}, [dispatch])
 
 	return (
 		<div className="container my-5 flex flex-1 flex-col">
@@ -197,7 +199,7 @@ const Succession = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							loading={lastWill.common.isLoading}
+							loading={isLoading}
 							dirty={dirty}
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							previousHref={PREVIOUS_LINK}
