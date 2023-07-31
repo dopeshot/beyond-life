@@ -76,6 +76,7 @@ export class PaymentsService {
   // Make sure Stripe is configured to only send the relevant events, in our case checkout.session.completed
   async handleWebhook(req: RawBodyRequest<Request>) {
     const signature = req.headers['stripe-signature']
+    this.logger.warn(signature)
     const event = await this.stripeService.webhook_constructEvent(
       req.body,
       signature as string,
