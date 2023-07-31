@@ -8,6 +8,7 @@ import * as request from 'supertest'
 import { DbModule } from '../src/db/db.module'
 import { LastWill, LastWillMetadata } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
+import { GeneratedLastWillDTO } from '../src/lastwill/dto/generated-lastwill.dto'
 import { LastWillModule } from '../src/lastwill/lastwill.module'
 import { paymentPlans } from '../src/payments/interfaces/payments'
 import { SharedModule } from '../src/shared/shared.module'
@@ -253,7 +254,6 @@ describe('LastWillController (e2e)', () => {
         await request(app.getHttpServer())
           .get('/lastwill')
           .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
       })
     })
@@ -299,7 +299,6 @@ describe('LastWillController (e2e)', () => {
         await request(app.getHttpServer())
           .get(`/lastwill/${lastWill._id}`)
           .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
       })
     })
@@ -414,7 +413,28 @@ describe('LastWillController (e2e)', () => {
   })
 
   describe('/lastwill/:id/fulltext', () => {
-    describe('Positive Tests', () => {})
+    describe('Positive Tests', () => {
+      it('should return last will', async () => {
+        // ARRANGE
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+
+        // ASSERT
+        expect(res.status).toEqual(HttpStatus.OK)
+        expect(new GeneratedLastWillDTO(res.body)).toEqual(res.body)
+      })
+
+      // Further tests are not really needed here. The testament generation is covered by unit tests
+    })
     describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         const lastWill = (

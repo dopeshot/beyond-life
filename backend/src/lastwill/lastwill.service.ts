@@ -78,30 +78,36 @@ export class LastWillService {
   }
 
   private generateLastWillFullText(lastWill: LastWill): GeneratedLastWillDTO {
-    let generatedLastWill: GeneratedLastWillDTO
     // 1. Set headers
     const testator = lastWill.testator
     const testatorAddress = testator.address
-    generatedLastWill.testatorHeader = generateTestatorHeader(
+    const testatorHeader = generateTestatorHeader(
       testator.name,
-      testatorAddress.street,
-      testatorAddress.houseNumber,
-      testatorAddress.city,
-      testatorAddress.zipCode,
+      testatorAddress?.street,
+      testatorAddress?.houseNumber,
+      testatorAddress?.city,
+      testatorAddress?.zipCode,
     )
 
-    generatedLastWill.locationHeader = generateLocationHeader(
+    const locationHeader = generateLocationHeader(
       lastWill.testator.address?.city,
     )
 
-    generatedLastWill.title = 'Mein letzter Wille und Testament'
-
     // Generate outer text
-    generatedLastWill.initialText = generateInitialText(
+    const initialText = generateInitialText(
       testator.name,
       testator.birthDate,
       testator.birthPlace,
     )
+
+    const generatedLastWill: GeneratedLastWillDTO = {
+      testatorHeader,
+      locationHeader,
+      title: 'Mein letzter Wille und Testament',
+      initialText,
+      paragraphs: [],
+    }
+
     // Generate Erbeinsetzung
     if (this.includesFinancialInheritance(lastWill)) {
       const financialHeirs = []
