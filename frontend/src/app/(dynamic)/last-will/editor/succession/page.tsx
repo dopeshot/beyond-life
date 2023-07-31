@@ -121,12 +121,12 @@ const ItemRow: React.FC<{ name: string; isAssigned: boolean; onClick: () => void
 	const [hover, setHover] = useState(false)
 	return (
 		<div
-			className="flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+			className="flex max-w-full justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 			onClick={onClick}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
 		>
-			<p className="text-gray-500">{name}</p>
+			<p className="truncate text-gray-500">{name}</p>
 			{hover && <Icon className="text-gray-500" icon={isAssigned ? 'expand_more' : 'expand_less'} />}
 		</div>
 	)
