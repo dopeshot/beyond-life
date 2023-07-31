@@ -97,7 +97,7 @@ export class LastWillService {
     const generatedLastWill: GeneratedLastWillDTO = {
       testatorHeader,
       locationHeader,
-      title: 'Mein letzter Wille und Testament',
+      title: 'Mein letzter Wille',
       initialText,
       paragraphs: [],
     }
