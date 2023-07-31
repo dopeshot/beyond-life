@@ -56,9 +56,7 @@ export class LastWillService {
   includesFinancialInheritance(lastWill: LastWill): boolean {
     if (lastWill.financialAssets.length === 0) return false
     for (const heir of lastWill.heirs) {
-      if (heir.percentage) {
-        return true
-      }
+      if (heir.percentage) return true
     }
     // false bc noone actually inherits anything
     return false
