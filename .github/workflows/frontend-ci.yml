@@ -92,10 +92,10 @@ jobs:
 
 
   trigger-cloudflare-deploy:
-    needs: tests
+    needs: [tests, audit]
     runs-on: ubuntu-lastest
     # TODO
-    if: github.event_name == 'push' && github.ref == 'refs/devops/236-deployment'
+    if: github.event_name == 'push' && github.ref == 'devops/236-deployment'
     steps:
       
       - name: trigger webhook
