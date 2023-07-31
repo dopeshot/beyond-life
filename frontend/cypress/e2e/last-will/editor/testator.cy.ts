@@ -4,7 +4,8 @@ describe('Last Will Testator Page', () => {
 	})
 
 	describe('Basic Flow', () => {
-		it('should fill out testator and redirect to /last-will/editor/marriage after submit', () => {
+		// TODO MC: What does this test?
+		it('', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
 
@@ -18,8 +19,7 @@ describe('Last Will Testator Page', () => {
 			cy.wait(200)
 
 			// Personal Data
-			cy.datacy('textinput-firstName-input').type('Name')
-			cy.datacy('textinput-lastName-input').type('Lastname')
+			cy.datacy('textinput-name-input').type('Name')
 
 			cy.datacy('gender-dropdown-button').click()
 			cy.datacy('gender-dropdown-option-male').click()
@@ -31,12 +31,12 @@ describe('Last Will Testator Page', () => {
 			cy.datacy('textinput-street-input').type('Street')
 			cy.datacy('textinput-houseNumber-input').type('123')
 
-			cy.datacy('textinput-postalCode-input').type('12345')
+			cy.datacy('textinput-zipCode-input').type('12345')
 			cy.datacy('textinput-city-input').type('City')
 
 			// More Infos
-			cy.datacy('checkbox-moreInfos-option-testatorHandicapped').click()
-			cy.datacy('checkbox-moreInfos-option-testatorInsolvent').click()
+			cy.datacy('checkbox-moreInfos-option-isHandicapped').click()
+			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
 
 			// Submit
 			cy.datacy('button-next-submit').click()
