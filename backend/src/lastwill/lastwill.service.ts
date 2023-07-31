@@ -58,7 +58,7 @@ export class LastWillService {
     for (const heir of lastWill.heirs) {
       if (heir.percentage) return true
     }
-    // false bc noone actually inherits anything
+    // False because noone actually inherits anything
     return false
   }
 
