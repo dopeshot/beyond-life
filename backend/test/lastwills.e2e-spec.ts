@@ -435,6 +435,7 @@ describe('LastWillController (e2e)', () => {
 
       // Further tests are not really needed here. The testament generation is covered by unit tests
     })
+    
     describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         const lastWill = (
