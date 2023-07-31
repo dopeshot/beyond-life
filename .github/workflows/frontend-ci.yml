@@ -5,6 +5,7 @@ on:
     branches:
       - "stable"
       - "main"
+      - "devops/236-deployment"
   pull_request:
     branches: [main]
     paths:
@@ -89,11 +90,23 @@ jobs:
           name: coverage-report
           path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
+
+  trigger-cloudflare-deploy:
+    needs: tests
+    runs-on: ubuntu-lastest
+    # TODO
+    if: github.event_name == 'push' && github.ref == 'refs/devops/236-deployment'
+    steps:
+      
+      - name: trigger webhook
+        run: curl ${{ secrets.CFP_DEPLOY_WEBHOOK }}
+
+
   generate-codecov-badge:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
-    # Dont run this when merging into stable => Bot cannot commit to main
-    if: github.ref != 'stable' || github.base_ref != 'stable'
+    # Dont run this when merging into stable 
+    if: ${{ github.ref != 'refs/heads/main' }}
     with:
       context: frontend
     secrets:
