@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config'
 import { Request } from 'express'
 import { Schema } from 'mongoose'
 import Stripe from 'stripe'
-import { UserService } from '../../db/services/user.service'
+import { UserDBService } from '../../db/services/user.service'
 import { PaymentOptions, paymentPlans } from '../interfaces/payments'
 import { StripeService } from './stripe.service'
 
@@ -20,7 +20,7 @@ export class PaymentsService {
   constructor(
     private stripeService: StripeService,
     private configService: ConfigService,
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
   ) {}
 
   async createCheckoutSession(plan: string, userId: Schema.Types.ObjectId) {
@@ -62,7 +62,8 @@ export class PaymentsService {
     )
 
     this.logger.debug('customer:', customer)
-    // This prevents the user from receiving a session if we can't match the customerId in the db or set his status to pending, this guarantees consistency in Information
+    // This prevents the user from receiving a session if we can't match the customerId in the db or set his status to pending
+    // Guarantees consistency in information since we would later not be able to upgrade the users plan
     await this.userService.updateUserCheckoutInformation(customer, {
       status: 'pending',
       lastInformationTime: session.created,

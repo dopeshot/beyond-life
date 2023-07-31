@@ -1,5 +1,9 @@
 describe('Password Change Page', () => {
 	beforeEach(() => {
+		cy.mockLogin()
+
+		cy.login({ route: '/profile/last-will' })
+
 		cy.visit('/account/change-password')
 	})
 

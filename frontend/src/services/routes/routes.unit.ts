@@ -4,10 +4,16 @@ describe('Router', () => {
 	describe('account routes', () => {
 		it('should return account register path', () => {
 			expect(routes.account.register()).to.equal('/account/register')
+			expect(routes.account.register({ callbackUrl: '/last-will/auth' })).to.equal(
+				'/account/register?callbackUrl=%2Flast-will%2Fauth'
+			)
 		})
 
 		it('should return account login path', () => {
 			expect(routes.account.login()).to.equal('/account/login')
+			expect(routes.account.login({ callbackUrl: '/last-will/auth' })).to.equal(
+				'/account/login?callbackUrl=%2Flast-will%2Fauth'
+			)
 		})
 	})
 
