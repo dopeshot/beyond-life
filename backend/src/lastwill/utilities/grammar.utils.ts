@@ -1,6 +1,9 @@
 import { Gender, PersonType } from '../../db/entities/lastwill.entity'
 
-export function getPossessivePronouns(type: PersonType, gender: Gender) {
+export function getPossessivePronouns(
+  type: PersonType,
+  gender: Gender,
+): string {
   switch (type) {
     case PersonType.CHILD:
       return 'Mein Kind'
