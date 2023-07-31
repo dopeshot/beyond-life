@@ -40,29 +40,35 @@ jobs:
   generate-and-commit-badge:
     runs-on: ubuntu-latest
     needs: merge-coverage
+    # Only push the svg to helper repository if this runs on main branch
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          repository: dopeshot/beyond-life-codecov
           token: ${{ secrets.BOT_PAT }}
-          ref: ${{ github.head_ref }}
+          ref: main
 
       - uses: actions/download-artifact@v3
         with:
           name: merged-coverage-report
           path: merged
 
+      - name: create dir if needed
+        run: mkdir -p badges
+
       - name: generate badge
         run: |
           cov=$(npx nyc report -t merged --reporter text-summary | grep -oP 'Statements\s+:\s+\K\d+')
           color=$(if (( cov > 90 )); then echo "brightgreen"; elif (( cov >= 80 )); then echo "green"; elif (( cov >= 70 )); then echo "yellow"; elif (( cov >= 50 )); then echo "orange"; else echo "red"; fi)
-          npx --yes badge-maker  ${{ inputs.context }}-coverage ${cov}% $color > .github/badges/${{ inputs.context }}-coverage.svg
+          npx --yes badge-maker  ${{ inputs.context }}-coverage ${cov}% $color > badges/${{ inputs.context }}-coverage.svg
 
       - name: Commit
         run: |
           git config user.name ${{ secrets.BOT_NAME }}
           git config user.email ${{ secrets.BOT_MAIL }}
-          git add .github/badges/${{ inputs.context }}-coverage.svg 
+          git add badges/${{ inputs.context }}-coverage.svg
           git commit -m "[no ci] ${{ inputs.context }} coverage" || echo "No changes to commit"
 
       - name: Push
@@ -91,15 +97,13 @@ jobs:
           echo >> comment.txt
           echo "[HTML Report](https://codecov.siebtesleben.de/${{ steps.extract_branch.outputs.branch }}/${{ inputs.context }})" >> comment.txt
           echo >> comment.txt
-          echo "<details open><summary> Full coverage report </summary>" >> comment.txt
+          echo "<details><summary> Full coverage report </summary>" >> comment.txt
           echo >> comment.txt
           npx nyc report -t merged --reporter text |  tail -n +2 | head -n -1 >> comment.txt
           echo >> comment.txt
           echo "</details>" >> comment.txt
 
       - name: Comment coverage on PR
-        # Easy way to prevent pipeline failure when run is not triggered by PR
-        continue-on-error: true
         uses: thollander/actions-comment-pull-request@v2
         with:
           filepath: comment.txt
