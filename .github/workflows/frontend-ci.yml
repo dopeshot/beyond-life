@@ -22,7 +22,7 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
-    if: github.ref == 'stable' || github.base_ref == 'stable' || github.ref == 'devops/236-deployment'
+    if: github.ref == 'stable' || github.base_ref == 'stable' || github.ref == 'refs/heads/devops/236-deployment'
     defaults:
       run:
         shell: bash
