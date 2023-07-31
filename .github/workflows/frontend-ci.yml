@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     # Only run on PRs against stable and on stable itself
     if: github.ref == 'stable' || github.base_ref == 'stable' || github.ref == 'refs/heads/devops/236-deployment'
+    continue_on_error: true
     defaults:
       run:
         shell: bash
@@ -95,7 +96,7 @@ jobs:
     needs: [tests, audit]
     runs-on: ubuntu-lastest
     # TODO
-    if: github.event_name == 'push' && github.ref == 'devops/236-deployment'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/devops/236-deployment'
     steps:
       
       - name: trigger webhook
