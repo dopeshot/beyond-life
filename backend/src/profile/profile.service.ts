@@ -56,6 +56,8 @@ export class ProfileService {
         throw error
       }
 
+      // This should only happen on DB failure...which we do not test
+      /* istanbul ignore next */
       this.logger.warn(`Could not update user email due to an error ${error}`)
       throw new InternalServerErrorException(
         'Something went wrong, please try again later',

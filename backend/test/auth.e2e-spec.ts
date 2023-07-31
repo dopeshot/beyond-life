@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { getConnectionToken } from '@m8a/nestjs-typegoose'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -406,7 +405,7 @@ describe('AuthController (e2e)', () => {
         {
           id: user._id,
           email: user.email,
-          hasVerifiedEmail: false
+          hasVerifiedEmail: false,
         } as JWTPayload,
         { secret: configService.get('JWT_SECRET') },
       )
@@ -430,13 +429,13 @@ describe('AuthController (e2e)', () => {
           { hasVerifiedEmail: true },
         )
         token = jwtService.sign(
-        {
-          id: user._id,
-          email: user.email,
-          hasVerifiedEmail: true 
-        } as JWTPayload,
-        { secret: configService.get('JWT_SECRET') },
-      )
+          {
+            id: user._id,
+            email: user.email,
+            hasVerifiedEmail: true,
+          } as JWTPayload,
+          { secret: configService.get('JWT_SECRET') },
+        )
         // ACT
         const res = await request(app.getHttpServer())
           .get('/auth/request-verify-email')
