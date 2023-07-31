@@ -1,12 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { MailEvent } from '../entities/mail-event.entity'
 import { InjectModel } from '@m8a/nestjs-typegoose'
+import { Injectable, Logger } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { ObjectId } from 'mongoose'
+import { MailEvent } from '../entities/mail-event.entity'
 
 @Injectable()
-export class MailEventService {
-  private readonly logger = new Logger(MailEventService.name)
+export class MailEventDBService {
+  private readonly logger = new Logger(MailEventDBService.name)
 
   constructor(
     @InjectModel(MailEvent)

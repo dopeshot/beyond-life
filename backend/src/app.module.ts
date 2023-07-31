@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ScheduleModule } from '@nestjs/schedule'
-import { AppController } from './app.controller'
 import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
+import { LastWillModule } from './lastwill/lastwill.module'
 import { MailModule } from './mail/mail.module'
 import { PaymentsModule } from './payments/payments.module'
 import { ProfileModule } from './profile/profile.module'
@@ -59,8 +59,8 @@ import { SharedModule } from './shared/shared.module'
     AuthModule,
     ProfileModule,
     PaymentsModule,
+    LastWillModule,
   ],
-  controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {

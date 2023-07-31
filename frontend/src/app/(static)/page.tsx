@@ -12,7 +12,7 @@ import { Step } from '../../components/Layout/Step/Step'
 import { PaymentPlan } from '../../components/PaymentPlan/PaymentPlan'
 import { routes } from '../../services/routes/routes'
 
-/**s
+/**
  * Index Page
  */
 const Home: React.FC = () => {

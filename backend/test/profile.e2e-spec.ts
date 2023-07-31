@@ -13,6 +13,7 @@ import { AuthModule } from '../src/auth/auth.module'
 import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.interface'
 import { VerifyJWTPayload } from '../src/auth/interfaces/verify-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
+import { LastWill } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
 import { MailModule } from '../src/mail/mail.module'
 import { ProfileModule } from '../src/profile/profile.module'
@@ -24,7 +25,7 @@ import {
   closeInMongodConnection,
   rootTypegooseTestModule,
 } from './helpers/mongo.helper'
-import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
+import { SAMPLE_USER, SAMPLE_USER_PW_HASH, sampleObject } from './helpers/sample-data.helper'
 const { mock } = nodemailer as unknown as NodemailerMock
 
 describe('ProfileController (e2e)', () => {
@@ -32,6 +33,7 @@ describe('ProfileController (e2e)', () => {
   let jwtService: JwtService
   let connection: Connection
   let userModel: Model<User>
+  let lastWillModel: Model<LastWill>
   let configService: ConfigService
 
   beforeEach(async () => {
@@ -58,6 +60,7 @@ describe('ProfileController (e2e)', () => {
     connection = await app.get(getConnectionToken())
     configService = app.get<ConfigService>(ConfigService)
     userModel = connection.model<User>('User')
+    lastWillModel = connection.model<LastWill>('LastWill')
 
     await app.init()
   })
@@ -333,9 +336,9 @@ describe('ProfileController (e2e)', () => {
 
   describe('/profile (DELETE)', () => {
     let token
-
+    let user: User
     beforeEach(async () => {
-      const user = await userModel.create({
+      user = await userModel.create({
         ...SAMPLE_USER,
         password: await SAMPLE_USER_PW_HASH(),
         hasVerifiedEmail: true,
@@ -357,12 +360,25 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
         expect(await userModel.count()).toEqual(0)
+      })
+
+      it('should delete last wills by User', async () => {
+                await lastWillModel.create({
+          ...sampleObject,
+          accountId: user._id,
+        })
+
+        await request(app.getHttpServer())
+          .delete('/profile')
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+
+        expect(await userModel.count()).toEqual(0)
+        expect(await lastWillModel.count()).toEqual(0)
       })
 
       it('should send email about account deletion', async () => {
@@ -371,9 +387,6 @@ describe('ProfileController (e2e)', () => {
           .delete('/profile')
           .set({
             Authorization: `Bearer ${token}`,
-          })
-          .send({
-            password: SAMPLE_USER.password,
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
@@ -393,9 +406,6 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
       })
@@ -412,9 +422,6 @@ describe('ProfileController (e2e)', () => {
           .set({
             Authorization: `Bearer ${token}`,
           })
-          .send({
-            password: SAMPLE_USER.password,
-          })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
         expect(mock.getSentMail().length).toEqual(0)
@@ -428,23 +435,6 @@ describe('ProfileController (e2e)', () => {
           .delete('/profile')
           .set({
             Authorization: `Bearer ${token}a`,
-          })
-          .send({
-            password: SAMPLE_USER.password,
-          })
-
-        expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
-      })
-
-      it('should fail for invalid password', async () => {
-        // ACT
-        const res = await request(app.getHttpServer())
-          .delete('/profile')
-          .set({
-            Authorization: `Bearer ${token}`,
-          })
-          .send({
-            password: `${SAMPLE_USER.password}a`,
           })
 
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
