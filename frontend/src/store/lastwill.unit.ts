@@ -140,10 +140,12 @@ describe('lastWillSlice', () => {
 			birthPlace: 'New York',
 			isHandicapped: true,
 			isInsolvent: false,
-			street: 'Main St.',
-			houseNumber: '123',
-			zipCode: '12345',
-			city: 'New York',
+			address: {
+				street: 'Main St.',
+				houseNumber: '123',
+				zipCode: '12345',
+				city: 'New York',
+			},
 		}
 
 		beforeEach(() => {
