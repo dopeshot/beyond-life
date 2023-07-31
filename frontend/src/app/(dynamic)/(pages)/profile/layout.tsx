@@ -5,12 +5,14 @@ import { Alert } from '../../../../components/Alert/Alert'
 import isAuth from '../../../../components/Auth/isAuth'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
+import { requestVerifyMail } from '../../../../services/api/mail/verifyMail'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
 	const pathname = usePathname()
 
 	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
+	const hasVerifiedEmail = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.hasVerifiedEmail)
 	const dispatch = useAppDispatch()
 
 	return (
@@ -41,12 +43,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 						))}
 					</div>
 				</div>
-				{/* TODO: add auth check only show when not verified */}
-				<Alert
-					color="red"
-					headline="E-Mail verifizieren"
-					description="Bitte bestätigen Sie Ihre E-Mail-Adresse, um alle Funktionen nutzen zu können."
-				/>
+				{!hasVerifiedEmail && (
+					<Alert
+						color="red"
+						headline="E-Mail verifizieren"
+						description={
+							<>
+								<p>
+									Bitte bestätigen Sie Ihre E-Mail-Adresse, um alle Funktionen nutzen zu können. Wenn Sie keine E-Mail
+									erhalten haben, können Sie diese <button onClick={() => requestVerifyMail()}>hier</button> erneut
+									anfordern.
+								</p>
+							</>
+						}
+					/>
+				)}
 			</nav>
 
 			{/* Content */}
