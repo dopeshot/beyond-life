@@ -242,6 +242,7 @@ describe('AuthController (e2e)', () => {
         expect(tokePayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
+            paymentPlan: SAMPLE_USER.paymentPlan,
           }),
         )
       })
@@ -405,6 +406,7 @@ describe('AuthController (e2e)', () => {
         {
           id: user._id,
           email: user.email,
+          hasVerifiedEmail: false
         } as JWTPayload,
         { secret: configService.get('JWT_SECRET') },
       )
@@ -423,10 +425,18 @@ describe('AuthController (e2e)', () => {
 
       it('should not send mail if user email is already verified', async () => {
         // ARRANGE
-        await userModel.updateOne(
+        const user = await userModel.findOneAndUpdate(
           { email: SAMPLE_USER.email },
           { hasVerifiedEmail: true },
         )
+        token = jwtService.sign(
+        {
+          id: user._id,
+          email: user.email,
+          hasVerifiedEmail: true 
+        } as JWTPayload,
+        { secret: configService.get('JWT_SECRET') },
+      )
         // ACT
         const res = await request(app.getHttpServer())
           .get('/auth/request-verify-email')

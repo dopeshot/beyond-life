@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
@@ -43,13 +44,17 @@ export class PaymentsController {
   @ApiServiceUnavailableResponse({
     description: ' Payment service is unavailable',
   })
+  @ApiBadRequestResponse({
+    description: 'Malformed dto passed',
+  })
   @ApiOperation({ summary: 'Create a checkout session' })
   @ApiBody({ type: PaymentDTO })
   @UseGuards(JwtGuard)
   @ApiBearerAuth('access_token')
   @Post('checkout')
   @ApiCreatedResponse({
-    description: 'Checkout session created',
+    description:
+      'Checkout session created. The return value is the stripe session (Stripe.Response<Stripe.Checkout.Session>)',
     type: Object, // Swagger doesn't work with Stripe objects
   })
   async createCheckoutSession(
@@ -61,6 +66,10 @@ export class PaymentsController {
 
   // This is the endpoint for Stripe handled information and receives rawBody data
   @Post('webhook')
+  @ApiOperation({
+    summary:
+      'Endpoint called by stripe backend to communicate transaction outcome',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   async webhook(@Req() req: RawBodyRequest<Request>) {
     await this.paymentService.handleWebhook(req)

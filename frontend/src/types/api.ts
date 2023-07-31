@@ -1,5 +1,5 @@
-export type AlertResponse = {
-	status: number
-	headline: string
-	message: React.ReactNode
+export type ApiErrorResponse = {
+	error: string
+	message: string
+	statusCode: number
 }
