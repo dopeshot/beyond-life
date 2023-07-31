@@ -6,7 +6,7 @@ export class TestatorHeader {
   @ApiProperty({
     description: 'Full name of the testator',
     type: String,
-    example: 'Kim Jong Un',
+    example: 'Peter Lustig',
   })
   fullName: string
 
@@ -20,7 +20,7 @@ export class TestatorHeader {
   @ApiProperty({
     description: 'City where the testator resides',
     type: String,
-    example: 'DPRK Pyongyang ',
+    example: 'Karl Marx Stadt ',
   })
   AddressCity: string
 }
@@ -54,7 +54,7 @@ export class GeneratedLastWillDTO {
   @ApiProperty({
     description: 'Header for the location and date',
     type: String,
-    example: 'Pyongyang, den 31. Juli 2023',
+    example: 'Karl Marxstadt, den 31. Juli 2023',
   })
   locationHeader: string
 
@@ -69,7 +69,7 @@ export class GeneratedLastWillDTO {
     description: 'Opening text for the last will',
     type: String,
     example:
-      'Ich, Kim Jong Un, geboren am 08.01.1984 in Pyongyang, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:',
+      'Ich, Peter Lustig, geboren am 08.01.1984 in Karl Marx Stadt, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:',
   })
   initialText: string
 
