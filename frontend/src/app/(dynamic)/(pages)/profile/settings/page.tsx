@@ -6,6 +6,7 @@ import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { useAppSelector } from '../../../../../store/hooks'
 
 type EmailChange = {
 	newEmail: string
@@ -67,13 +68,15 @@ const AccountSettings = () => {
 		console.log(values)
 	}
 
+	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
+
 	return (
 		<div>
 			{/* Change Mail */}
 			<div className="rounded-xl border-2 border-gray-200 p-6">
 				<Headline level={4}>E-Mail Adresse ändern</Headline>
 				<p className="mb-4">
-					Ihre alte E-Mail ist <span className="text-red">email@gmail.com</span>
+					Ihre aktuelle E-Mail ist <span className="select-all text-red">{email}</span>
 				</p>
 
 				<Formik

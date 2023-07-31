@@ -1,12 +1,12 @@
 import {
-  ConflictException,
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  NotFoundException,
-  ServiceUnavailableException,
-  UnauthorizedException,
+    ConflictException,
+    HttpException,
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+    ServiceUnavailableException,
+    UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
@@ -14,12 +14,12 @@ import { compare } from 'bcrypt'
 import { ObjectId } from 'mongoose'
 import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
-import { UserService } from '../db/services/user.service'
+import { UserDBService } from '../db/services/user.service'
 import {
-  MailTemplateContent,
-  MailTemplates,
-  PasswordResetMailData,
-  VerifyMailData,
+    MailTemplateContent,
+    MailTemplates,
+    PasswordResetMailData,
+    VerifyMailData,
 } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
@@ -34,7 +34,7 @@ import { TokenResponse } from './responses/token.response'
 export class AuthService {
   private readonly logger = new Logger(AuthService.name)
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly mailService: MailScheduleService,
@@ -85,7 +85,7 @@ export class AuthService {
     const mailContent: VerifyMailData = {
       verifyUrl: `${this.configService.get(
         'FRONTEND_DOMAIN',
-      )}/account/email-verified?token=${verifyToken}`,
+      )}/account/verify-email?token=${verifyToken}`,
     }
     const mail: MailData = {
       recipient: {
@@ -157,6 +157,7 @@ export class AuthService {
       id: user._id,
       email: user.email,
       hasVerifiedEmail: user.hasVerifiedEmail,
+      paymentPlan: user.paymentPlan,
     } as JWTPayload)
   }
 

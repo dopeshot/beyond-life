@@ -19,9 +19,9 @@ async function bootstrap() {
   // Swagger
   if (process.env.NODE_ENV === 'development') {
     const config = new DocumentBuilder()
-      .setTitle('BeyondLife Api')
-      .setDescription('The BeyondLife Api')
-      .setVersion('0.1')
+      .setTitle('Siebtesleben Api')
+      .setDescription('The Siebtesleben Api')
+      .setVersion('0.2')
       .addBearerAuth(
         {
           description: `Please enter access token in following format: Bearer <JWT>`,

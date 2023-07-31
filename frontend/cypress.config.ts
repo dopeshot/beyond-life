@@ -23,5 +23,6 @@ export default defineConfig({
 	viewportHeight: 1080,
 	env: {
 		CYPRESS_BASE_URL: 'http://localhost:3000',
+		CYPRESS_API_BASE_URL: 'http://localhost:3001',
 	},
 })

@@ -242,6 +242,7 @@ describe('AuthController (e2e)', () => {
         expect(tokePayload).toEqual(
           expect.objectContaining({
             email: SAMPLE_USER.email,
+            paymentPlan: SAMPLE_USER.paymentPlan,
           }),
         )
       })

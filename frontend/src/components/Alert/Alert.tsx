@@ -22,12 +22,12 @@ export type AlertProps = {
  * Notification box, to display important informations.
  */
 export const Alert: React.FC<AlertProps> = ({
+	headline,
+	description,
 	color = 'red',
 	icon = 'notifications',
-	headline,
-	className,
-	description,
-	datacy,
+	className = '',
+	datacy = Alert.name,
 }) => {
 	return (
 		<div datacy={datacy} className={`flex rounded-xl border-2 border-${color}-500 ${className} p-4 md:p-6`}>
