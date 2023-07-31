@@ -22,7 +22,7 @@ const Imprint = () => {
 							<Headline level={3} size="text-xl">
 								Angaben gemäß § 5 TMG:
 							</Headline>
-							<Image src={emailImage} alt="Siebtes Leben Email" className=" mb-8 w-64" />
+							<Image src={emailImage} alt="Siebtes Leben Email" className="mb-8 w-64" />
 							<Headline level={3} size="text-xl">
 								Hinweis auf EU-Streitschlichtung:
 							</Headline>
@@ -32,7 +32,7 @@ const Imprint = () => {
 									href="https://ec.europa.eu/consumers/odr/"
 									target=""
 									rel="noopener noreferrer"
-									className=" font-bold underline"
+									className="font-bold underline"
 								>
 									https://ec.europa.eu/consumers/odr/
 								</a>
