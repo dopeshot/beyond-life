@@ -225,7 +225,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_PERSON.percentage.toString()) &&
             e.includes(SAMPLE_PERSON.birthDate),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should return valid paragraph for organisation', () => {
@@ -245,7 +245,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_ORGANISATION.address.zipCode) &&
             e.includes(SAMPLE_ORGANISATION.address.city),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should return valid paragraph for array of organisation and person', () => {
@@ -265,7 +265,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_ORGANISATION.address.zipCode) &&
             e.includes(SAMPLE_ORGANISATION.address.city),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
       expect(
         res.contents.find(
           (e) =>
@@ -273,7 +273,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_PERSON.percentage.toString()) &&
             e.includes(SAMPLE_PERSON.birthDate),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should contain paragraph listing all assets', () => {
@@ -292,10 +292,10 @@ describe('lastwill-templating.util.ts', () => {
       expect(res.title).toEqual(PARAGRAPH_TITLES.FINANCIAL)
       expect(
         res.contents.find((e) => e.includes(SAMPLE_FINANCIAL_ASSET.where)),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
       expect(
         res.contents.find((e) => e.includes(COPIED_ASSET.where)),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should use placeholders for missing values', () => {
@@ -310,7 +310,7 @@ describe('lastwill-templating.util.ts', () => {
         res.contents.find((e) =>
           e.includes(PLACEHOLDERS.FINANCIAL_ASSET_LOCATION),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
   })
 
@@ -327,7 +327,7 @@ describe('lastwill-templating.util.ts', () => {
         res.contents.find(
           (e) => e.includes(SAMPLE_ITEM.name) && e.includes(SAMPLE_PERSON.name),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should return valid paragraphs for organisation', () => {
@@ -344,7 +344,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_ITEM.name) &&
             e.includes(SAMPLE_ORGANISATION.name),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should return valid paragraph for person and organisation ', () => {
@@ -368,7 +368,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_ORGANISATION.name) &&
             !e.includes('testItem02'),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
       expect(
         res.contents.find(
           (e) =>
@@ -376,7 +376,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_PERSON.name) &&
             !e.includes(SAMPLE_ITEM.name),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should list all items if one entity inherits multiple ', () => {
@@ -394,7 +394,7 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(SAMPLE_ORGANISATION.name) &&
             e.includes(SAMPLE_ITEM.name),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
 
     it('should use placeholders for missing values ', () => {
@@ -424,10 +424,10 @@ describe('lastwill-templating.util.ts', () => {
             e.includes(PLACEHOLDERS.PERSON_NAME) &&
             e.includes(PLACEHOLDERS.BIRTH_DATE),
         ),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
       expect(
         res.contents.find((e) => e.includes(PLACEHOLDERS.COMPANY_NAME)),
-      ).toBeTruthy()
+      ).not.toBeUndefined()
     })
   })
 
