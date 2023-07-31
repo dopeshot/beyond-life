@@ -1,5 +1,5 @@
 import axios, { isAxiosError } from 'axios'
-import { ApiErrorResponse } from '../../types/api'
+import { ApiErrorResponse } from '../../../types/api'
 
 /**
  * Verify email request.

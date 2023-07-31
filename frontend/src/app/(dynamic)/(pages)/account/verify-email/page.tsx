@@ -6,7 +6,7 @@ import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
-import { verifyMail } from '../../../../../services/api/verifyMail'
+import { verifyMail } from '../../../../../services/api/auth/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
 import { Color } from '../../../../../types/color'
 
