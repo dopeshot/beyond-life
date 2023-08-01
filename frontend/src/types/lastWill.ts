@@ -1,71 +1,41 @@
 // Form types
-export type TestatorFormPayload = {
+
+type BasicPersonPayload = {
 	name?: string
 	gender?: Gender
 	birthDate?: string
 	birthPlace?: string
+} & Address
 
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
+export type TestatorFormPayload = BasicPersonPayload & {
 	moreInfos?: string[]
 }
 
-export type MarriageFormPayload = {
-	// Person
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-
+export type MarriageFormPayload = BasicPersonPayload & {
 	relationshipStatus?: RelationshipStatus
 	isPartnerGermanCitizenship?: string[]
 	moreInfos?: string[] // update type
 	matrimonialProperty?: MatrimonialProperty
 }
 
-export type OrganisationFormPayload = {
-	id: string
-	name?: string
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
-}
-
-export type PersonFormPayload = {
+export type PersonFormPayload = BasicPersonPayload & {
 	id: string
 	type: PersonType
-	name?: string
-	gender?: Gender
-	birthDate?: string
-	birthPlace?: string
-
-	street?: string
-	houseNumber?: string
-	zipCode?: string
-	city?: string
 
 	moreInfos?: string[]
 	childRelationShip?: ChildRelationShip
 	ownChild?: string[]
 }
 
+export type OrganisationFormPayload = {
+	id: string
+	name?: string
+} & Address
+
 export type SuccessionFormPayload = {
 	persons: SuccessionPerson[]
 	organisations: SuccessionOrganisation[]
 	partner: SuccessionPartner
-}
-
-export type InheritanceFormPayload = {
-	financialAssets: FinancialAsset[]
-	items: Item[]
 }
 
 export type SuccessionPerson = {
@@ -85,8 +55,12 @@ export type SuccessionOrganisation = {
 	itemIds: number[]
 }
 
-// Store types
+export type InheritanceFormPayload = {
+	financialAssets: FinancialAsset[]
+	items: Item[]
+}
 
+// Store
 export type Testator = {
 	relationshipStatus?: RelationshipStatus
 } & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'child'>
@@ -103,8 +77,7 @@ export type Person = {
 	// Succession
 	percentage?: number
 	itemIds?: number[]
-} & Address &
-	ChildInfo &
+} & { address?: Address } & ChildInfo &
 	Id
 
 type ChildInfo = {
@@ -118,8 +91,7 @@ export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFro
 export type Organisation = {
 	name?: string
 	type: OrganisationType
-} & Address &
-	Id
+} & { address?: Address } & Id
 
 export type FinancialAsset = {
 	where?: string
@@ -132,16 +104,17 @@ export type Item = {
 	description?: string
 } & Id
 
+// Base types
+
 type Id = {
 	id: string
 }
+
 type Address = {
-	address?: {
-		street?: string
-		houseNumber?: string
-		zipCode?: string
-		city?: string
-	}
+	street?: string
+	houseNumber?: string
+	zipCode?: string
+	city?: string
 }
 
 export type HeirsTypes = PersonType | OrganisationType
