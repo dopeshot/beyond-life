@@ -23,6 +23,10 @@ export const verifyMail = async (token: string) => {
 	}
 }
 
+/**
+ * Request a new verify mail.
+ * @returns ok or error
+ */
 export const requestVerifyMail = async () => {
 	try {
 		await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/request-verify-email`)

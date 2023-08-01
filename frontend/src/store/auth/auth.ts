@@ -101,8 +101,6 @@ export const refreshToken = createAsyncThunk('auth/getSessionData', async (shoul
 	// No session data found
 	if (!parsedSessionData) return null
 
-	console.log(Date.now(), parsedSessionData.decodedAccessToken.exp * 1000)
-
 	// Return session data if access token is not expired
 	const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
 	if (shouldCheckExpired && !sessionExpired) return parsedSessionData
