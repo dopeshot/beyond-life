@@ -46,7 +46,7 @@ const OrderConfirmation = () => {
 					<p className="text-base font-medium text-white sm:text-lg">{texts.subheader}</p>
 				</div>
 			</header>
-			<main className="flex w-full flex-col items-center px-8">
+			<main datacy={`paymentSucceeded-${paymentSucceeded}`} className="flex w-full flex-col items-center px-8">
 				<div datacy="paymentSummaryTable" className="my-8 w-full space-y-2 sm:w-2/3 md:w-1/2 xl:w-1/2 2xl:w-1/3">
 					<div className="flex items-center">
 						<div className="mr-4 h-0.5 w-full rounded bg-gray-200" />
@@ -56,7 +56,7 @@ const OrderConfirmation = () => {
 						<div className="ml-4 h-0.5 w-full rounded bg-gray-200" />
 					</div>
 					{boughtPlan && (
-						<div className="flex justify-between gap-2">
+						<div datacy={`plan-${boughtPlan}`} className="flex justify-between gap-2">
 							<p>Produkt</p>
 							<p className="flex items-center gap-1 text-end">{boughtPlan}</p>
 						</div>
