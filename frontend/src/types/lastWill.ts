@@ -41,7 +41,7 @@ export type OrganisationFormPayload = {
 
 export type PersonFormPayload = {
 	id: string
-	type: HeirsTypes
+	type: PersonType
 	name?: string
 	gender?: Gender
 	birthDate?: string
