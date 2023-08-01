@@ -65,7 +65,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 		street: string(),
 		houseNumber: string(),
-		zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
+		zipCode: string(),
 		city: string(),
 
 		childRelationShip: string<ChildRelationShip>(),
