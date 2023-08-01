@@ -17,7 +17,7 @@ import {
 	changePassword,
 	deleteAccount,
 } from '../../../../../services/api/profile/profile'
-import { logout } from '../../../../../store/auth/auth'
+import { logout, refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 
 type EmailChange = {
@@ -67,12 +67,6 @@ const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().sh
 })
 
 const alertContentChangeEmail: { [key: string]: AlertProps } = {
-	OK: {
-		icon: 'check_circle',
-		color: 'green',
-		headline: 'Erfolgreich',
-		description: 'Die E-Mail Adresse wurde erfolgreich geändert. Bitte bestätigen Sie die E-Mail Adresse.',
-	},
 	MAIL_CONFLICT: {
 		icon: 'warning',
 		color: 'red',
@@ -88,12 +82,6 @@ const alertContentChangeEmail: { [key: string]: AlertProps } = {
 }
 
 const alertContentChangePassword: { [key: string]: AlertProps } = {
-	OK: {
-		icon: 'check_circle',
-		color: 'green',
-		headline: 'Erfolgreich',
-		description: 'Das Passwort wurde erfolgreich geändert.',
-	},
 	UNAUTHORIZED: {
 		icon: 'warning',
 		color: 'red',
@@ -109,12 +97,6 @@ const alertContentChangePassword: { [key: string]: AlertProps } = {
 }
 
 const alertContentDeleteAccount: { [key: string]: AlertProps } = {
-	OK: {
-		icon: 'check_circle',
-		color: 'green',
-		headline: 'Erfolgreich',
-		description: 'Das Konto wurde erfolgreich gelöscht.',
-	},
 	ERROR: {
 		icon: 'warning',
 		color: 'red',
@@ -145,6 +127,9 @@ const AccountSettings = () => {
 		setIsLoadingChangeMail(true)
 		const response = await changeEmail(values.newEmail)
 		setChangeMailStatus(response)
+		if (response === 'OK') {
+			await dispatch(refreshToken({ shouldCheckExpired: false }))
+		}
 		setIsLoadingChangeMail(false)
 	}
 
@@ -152,6 +137,9 @@ const AccountSettings = () => {
 		setIsLoadingChangePassword(true)
 		const response = await changePassword(values.oldPassword, values.newPassword)
 		setChangePasswordStatus(response)
+		if (response === 'OK') {
+			await dispatch(refreshToken({ shouldCheckExpired: false }))
+		}
 		setIsLoadingChangePassword(false)
 	}
 
@@ -159,7 +147,6 @@ const AccountSettings = () => {
 		setIsLoadingDeleteAccount(true)
 		const response = await deleteAccount()
 		setDeleteAccountStatus(response)
-
 		if (response === 'OK') {
 			dispatch(logout())
 		}

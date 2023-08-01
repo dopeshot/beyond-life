@@ -47,7 +47,8 @@ export const changePassword = async (oldPassword: string, password: string) => {
 		if (
 			isAxiosError(error) &&
 			error.response &&
-			error.response.data.message === 'Unauthorized' &&
+			error.response.data.message ===
+				'This is not allowed...either you do not exist or the provided password was invalid' &&
 			error.response.data.statusCode === 401
 		) {
 			return 'UNAUTHORIZED'

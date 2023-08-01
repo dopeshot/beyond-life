@@ -95,34 +95,37 @@ export const loginApi = createAsyncThunk<
  * Get session data from local storage and update the access token if it has expired.
  * @returns session data or null if no session data is found
  */
-export const refreshToken = createAsyncThunk('auth/getSessionData', async (shouldCheckExpired: boolean) => {
-	const parsedSessionData = getSession()
+export const refreshToken = createAsyncThunk<SessionData | null, { shouldCheckExpired: boolean }>(
+	'auth/getSessionData',
+	async ({ shouldCheckExpired }) => {
+		const parsedSessionData = getSession()
 
-	// No session data found
-	if (!parsedSessionData) return null
+		// No session data found
+		if (!parsedSessionData) return null
 
-	// Return session data if access token is not expired
-	const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
-	if (shouldCheckExpired && !sessionExpired) return parsedSessionData
+		// Return session data if access token is not expired
+		const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
+		if (shouldCheckExpired && !sessionExpired) return parsedSessionData
 
-	// Update token
-	const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
+		// Update token
+		const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
 
-	// Refresh token failed
-	if (tokens === null) {
-		console.error('Session expired and refresh token failed')
-		return null
+		// Refresh token failed
+		if (tokens === null) {
+			console.error('Session expired and refresh token failed')
+			return null
+		}
+
+		// Update axios auth header
+		setAxiosAuthHeader(tokens.access_token)
+
+		// Update session when refresh token succeeded
+		const newSession = createSession(tokens)
+		saveSession(newSession)
+
+		return newSession
 	}
-
-	// Update axios auth header
-	setAxiosAuthHeader(tokens.access_token)
-
-	// Update session when refresh token succeeded
-	const newSession = createSession(tokens)
-	saveSession(newSession)
-
-	return newSession
-})
+)
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -133,6 +136,7 @@ const authSlice = createSlice({
 			state.isAuthenticated = true
 			state.sessionData = action.payload
 
+			setAxiosAuthHeader(action.payload.accessToken)
 			saveSession(action.payload)
 		},
 		logout: (state) => {

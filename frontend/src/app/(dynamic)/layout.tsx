@@ -29,7 +29,7 @@ const Auth: React.FC<AuthProps> = ({ children }) => {
 				return null
 			}
 
-			const sessionPayload = await dispatch(refreshToken(true))
+			const sessionPayload = await dispatch(refreshToken({ shouldCheckExpired: true }))
 			dispatch(login(sessionPayload.payload as SessionData))
 		}
 		checkAuthenticated()

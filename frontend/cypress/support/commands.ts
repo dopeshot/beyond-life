@@ -51,7 +51,11 @@ const changeEmailResponse = {
 
 const changePasswordResponse = {
 	...okResponse,
-	...unauthorizedResponse,
+	UNAUTHORIZED: {
+		message: 'This is not allowed...either you do not exist or the provided password was invalid',
+		error: 'Unauthorized',
+		statusCode: 401,
+	},
 	...networkErrorResponse,
 }
 

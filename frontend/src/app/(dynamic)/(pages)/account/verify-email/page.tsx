@@ -28,7 +28,7 @@ const EmailVerified = () => {
 
 		setLoading(true)
 		const response = await verifyMail(token)
-		await dispatch(refreshToken(false))
+		await dispatch(refreshToken({ shouldCheckExpired: false }))
 
 		setStatus(response)
 		setLoading(false)
