@@ -37,7 +37,8 @@ const Testator = () => {
 	const NEXT_LINK = routes.lastWill.marriage(_id)
 
 	// Convert global state to form state
-	const { isHandicapped, isInsolvent, address, ...formTestator } = testator
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { isHandicapped, isInsolvent, relationshipStatus, address, ...formTestator } = testator
 
 	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
