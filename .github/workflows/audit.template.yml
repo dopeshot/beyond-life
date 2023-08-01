@@ -1,4 +1,4 @@
-iname: Run Package audit
+name: Run Package audit
 
 on:
   workflow_call:
