@@ -19,7 +19,6 @@ jobs:
       context: frontend
 
   audit:
-    runs-on: ubuntu-latest
     if: github.ref == 'stable' || github.base_ref == 'stable'
     uses: ./.github/workflows/audit.template.yml
     with:
