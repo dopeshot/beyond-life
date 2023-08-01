@@ -65,6 +65,9 @@ const SAMPLE_FINANCIAL_ASSET: FinancialAsset = {
  */
 
 describe('lastwill-templating.util.ts', () => {
+  beforeAll(() => {
+    process.env.TZ = 'Europe/Amsterdam'
+  })
   describe('generateTestatorHeader', () => {
     it('should return valid header for given values', () => {
       // ARRANGE
@@ -137,8 +140,8 @@ describe('lastwill-templating.util.ts', () => {
       // Mock new Date constructor with given value
       jest.setSystemTime(date)
 
-      const currentDate = `${date.getDay()}.${
-        date.getUTCMonth() + 1
+      const currentDate = `${date.getDate()}.${
+        date.getMonth() + 1
       }.${date.getFullYear()}`
       // ACT
       const res = generateLocationHeader('testCity')
