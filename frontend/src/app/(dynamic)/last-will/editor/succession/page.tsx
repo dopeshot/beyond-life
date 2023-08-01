@@ -213,6 +213,7 @@ const Succession = () => {
 											hasBottomMargin={false}
 											onClick={(e) => e.preventDefault()}
 											name={`heirs.${selectedHeirIndex}.percentage`}
+											textAlign="right"
 										/>
 									</div>
 

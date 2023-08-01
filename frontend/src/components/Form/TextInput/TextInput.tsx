@@ -22,6 +22,8 @@ export type TextInputProps = {
 	datacy?: string
 	/** If true adds bottom margin. */
 	hasBottomMargin?: boolean
+	/** Sets Text Alignment to left, right or center */
+	textAlign?: 'left' | 'right' | 'center'
 } & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 /**
@@ -35,14 +37,15 @@ export const TextInput: React.FC<TextInputProps> = ({
 	inputRequired = false,
 	helperText,
 	datacy,
-	autoComplete = "on",
+	autoComplete = 'on',
 	icon,
 	iconOnClick,
-	hasBottomMargin: hasMargin = false,
+	hasBottomMargin = false,
+	textAlign = 'left',
 	...props
 }) => {
 	return (
-		<div className={`${width} ${hasMargin ?? 'mb-2 md:mb-4'}`}>
+		<div className={`${width} ${hasBottomMargin ?? 'mb-2 md:mb-4'}`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
 					<div className="relative flex flex-col justify-center gap-1">
@@ -59,7 +62,9 @@ export const TextInput: React.FC<TextInputProps> = ({
 								{...props}
 								className={`flex w-full items-center rounded-lg border border-gray-100 bg-gray-100 p-2 px-4 placeholder:text-gray-400 ${
 									icon && 'pr-12'
-								} ${fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''}`}
+								} ${
+									fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''
+								} text-${textAlign}`}
 							/>
 							{icon && (
 								<div className={'w-0'}>
