@@ -1,5 +1,5 @@
-import { MarriageFormPayload, Organisation, Person } from '../types/lastWill'
-import { SidebarPages } from '../types/sidebar'
+import { MarriageFormPayload, Organisation, Person } from '../../types/lastWill'
+import { SidebarPages } from '../../types/sidebar'
 import {
 	LastWillState,
 	addOrganisationHeir,
@@ -17,10 +17,7 @@ import {
 } from './lastwill'
 
 describe('lastWillSlice', () => {
-	const initialStateTesting: LastWillState = {
-		...initialState,
-		// Override data if needed
-	}
+	const initialStateTesting: LastWillState = initialState
 
 	describe('inheritance', () => {
 		it('should set inheritance', () => {
