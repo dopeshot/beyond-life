@@ -134,7 +134,7 @@ describe('lastwill-templating.util.ts', () => {
     })
 
     it('should contain date in valid format', () => {
-      const date = new Date(Date.now())
+      const date = new Date()
       // ARRANGE
       jest.useFakeTimers()
       // Mock new Date constructor with given value
