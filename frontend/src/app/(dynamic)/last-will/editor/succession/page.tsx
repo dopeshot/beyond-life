@@ -17,13 +17,12 @@ const PREVIOUS_LINK = routes.lastWill.inheritance('1')
 const NEXT_LINK = routes.lastWill.final('1')
 
 type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
-type Gender = 'male' | 'female' | 'divers'
+// const Aufteilung = ;
 
 type Person = {
 	id: string
 	type: PersonType
 	name: string
-	gender: Gender
 
 	// Succession
 	percentage: number
@@ -39,7 +38,7 @@ type Organisation = {
 }
 
 type SuccessionFormPayload = {
-	heirs: (Person | Organisation)[]
+	heirs: Person[]
 }
 
 const initialHeirs: any[] = [
@@ -55,7 +54,7 @@ const initialHeirs: any[] = [
 	{
 		id: 2,
 		name: 'Anna Mustermann',
-		heirsType: 'mother',
+		type: 'mother',
 		percentage: 20,
 		// mandatoryShare: 15,
 		itemIds: [],
@@ -63,7 +62,7 @@ const initialHeirs: any[] = [
 	{
 		id: 3,
 		name: 'Max Mustermann',
-		heirsType: 'father',
+		type: 'father',
 		percentage: 20,
 		// mandatoryShare: 15,
 		itemIds: [],
@@ -71,7 +70,7 @@ const initialHeirs: any[] = [
 	{
 		id: 4,
 		name: 'Anna Mustermann',
-		heirsType: 'mother',
+		type: 'mother',
 		percentage: 20,
 		// mandatoryShare: 15,
 		itemIds: [],
@@ -79,7 +78,7 @@ const initialHeirs: any[] = [
 	{
 		id: 5,
 		name: 'Max Mustermann',
-		heirsType: 'father',
+		type: 'father',
 		percentage: 80,
 		// mandatoryShare: 15,
 		itemIds: [],
@@ -87,7 +86,7 @@ const initialHeirs: any[] = [
 	{
 		id: 6,
 		name: 'Anna Mustermann',
-		heirsType: 'mother',
+		type: 'mother',
 		percentage: 20,
 		// mandatoryShare: 15,
 		itemIds: [],
