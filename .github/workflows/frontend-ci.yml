@@ -5,7 +5,6 @@ on:
     branches:
       - "stable"
       - "main"
-      - "devops/236-deployment"
   pull_request:
     branches: [main]
     paths:
@@ -21,18 +20,10 @@ jobs:
 
   audit:
     runs-on: ubuntu-latest
-    # Only run on PRs against stable and on stable itself
-    if: github.ref == 'stable' || github.base_ref == 'stable' || github.ref == 'refs/heads/devops/236-deployment'
-    defaults:
-      run:
-        shell: bash
-        working-directory: frontend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: audit
-        run: npm audit --omit=dev --audit-level=critical
+    if: github.ref == 'stable' || github.base_ref == 'stable'
+    uses: ./.github/workflows/codecov.template.yml
+    with:
+      context: frontend
 
   tests:
     runs-on: ubuntu-latest
@@ -95,7 +86,7 @@ jobs:
     needs: [tests, audit]
     runs-on: ubuntu-latest
     # TODO
-    if: github.event_name == 'push' && github.ref == 'refs/heads/devops/236-deployment'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/stable'
     steps:
       
       - name: trigger webhook
