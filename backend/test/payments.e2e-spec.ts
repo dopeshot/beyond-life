@@ -66,7 +66,6 @@ describe('PaymentsController (e2e)', () => {
       user = await userModel.create({
         ...SAMPLE_USER,
         password: await SAMPLE_USER_PW_HASH(),
-        hasVerifiedEmail: true,
       })
       token = jwtService.sign(
         {
@@ -186,17 +185,6 @@ describe('PaymentsController (e2e)', () => {
         await request(app.getHttpServer())
           .post('/payments/checkout')
           .set('Authorization', `Bearer ${token}a`)
-          .send({
-            plan: 'single',
-          })
-          .expect(HttpStatus.UNAUTHORIZED)
-      })
-
-      it('should be unauthorized if mail not verified', async () => {
-        await userModel.updateOne({}, { hasVerifiedEmail: false })
-        await request(app.getHttpServer())
-          .post('/payments/checkout')
-          .set('Authorization', `Bearer ${token}`)
           .send({
             plan: 'single',
           })
