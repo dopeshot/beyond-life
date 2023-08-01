@@ -21,7 +21,7 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     if: github.ref == 'stable' || github.base_ref == 'stable'
-    uses: ./.github/workflows/codecov.template.yml
+    uses: ./.github/workflows/audit.template.yml
     with:
       context: backend
 
