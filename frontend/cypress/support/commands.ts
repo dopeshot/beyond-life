@@ -5,6 +5,8 @@ import sessiondata from '../fixtures/auth/sessionData.json'
 import tokens from '../fixtures/auth/tokens.json'
 
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
+
+/**** Response Types ****/
 const postOkResponse = {
 	OK: {
 		statusCode: 201,
@@ -24,6 +26,40 @@ const unauthorizedResponse = {
 		},
 	},
 }
+const emailConflictResponse = {
+	EMAIL_CONFLICT: {
+		statusCode: 409,
+		body: {
+			error: 'Conflict',
+			message: 'Email is already taken.',
+			statusCode: 409,
+		},
+	},
+}
+const networkErrorResponse = {
+	NETWORK_ERROR: {
+		forceNetworkError: true,
+	},
+}
+
+/***** Responses ****/
+const changeEmailResponse = {
+	...okResponse,
+	...emailConflictResponse,
+	...unauthorizedResponse,
+}
+
+const changePasswordResponse = {
+	...okResponse,
+	...unauthorizedResponse,
+	...networkErrorResponse,
+}
+
+const deleteAccountResponse = {
+	...okResponse,
+	...unauthorizedResponse,
+}
+
 const forgotPasswordApiResponseTypes = {
 	...postOkResponse,
 	SERVICE_UNAVAILABLE: {
@@ -103,9 +139,7 @@ const loginResponseTypes = {
 		statusCode: 200,
 		body: tokens,
 	},
-	NETWORK_ERROR: {
-		forceNetworkError: true,
-	},
+	...networkErrorResponse,
 	...unauthorizedResponse,
 }
 
@@ -114,17 +148,8 @@ const registerResponseTypes = {
 		statusCode: 200,
 		body: tokens,
 	},
-	EMAIL_CONFLICT: {
-		statusCode: 409,
-		body: {
-			error: 'Conflict',
-			message: 'Email is already taken.',
-			statusCode: 409,
-		},
-	},
-	NETWORK_ERROR: {
-		forceNetworkError: true,
-	},
+	...emailConflictResponse,
+	...networkErrorResponse,
 }
 
 /**** Command Helper ****/
@@ -138,6 +163,18 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockChangeEmail', (response = 'OK') => {
+	cy.intercept('PATCH', `${apiUrl}/profile/change-email`, changeEmailResponse[response]).as('mockChangeEmail')
+})
+
+Cypress.Commands.add('mockChangePassword', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/profile/change-password`, changePasswordResponse[response]).as('mockChangePassword')
+})
+
+Cypress.Commands.add('mockDeleteAccount', (response = 'OK') => {
+	cy.intercept('DELETE', `${apiUrl}/profile`, deleteAccountResponse[response]).as('mockDeleteAccount')
+})
+
 Cypress.Commands.add('mockForgotPassword', (response = 'OK') => {
 	cy.intercept('POST', `${apiUrl}/auth/forgot-password`, forgotPasswordApiResponseTypes[response]).as(
 		'mockForgotPassword'

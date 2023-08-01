@@ -192,6 +192,7 @@ const AccountSettings = () => {
 							</div>
 							<div className="flex justify-end">
 								<Button
+									datacy="change-email-button"
 									type="submit"
 									kind="secondary"
 									icon="mail"
@@ -233,6 +234,7 @@ const AccountSettings = () => {
 							</div>
 							<div className="flex justify-end">
 								<Button
+									datacy="change-password-button"
 									type="submit"
 									icon="lock_reset"
 									loading={isLoadingChangePassword}
@@ -271,6 +273,7 @@ const AccountSettings = () => {
 							/>
 							<div className="flex justify-end">
 								<Button
+									datacy="delete-account-button"
 									type="submit"
 									icon="delete"
 									loading={isLoadingDeleteAccount}

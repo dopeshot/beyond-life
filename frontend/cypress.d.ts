@@ -18,6 +18,24 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mock the change email endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockChangeEmail('OK')
+			 */
+			mockChangeEmail(response?: 'OK' | 'UNAUTHORIZED' | 'EMAIL_CONFLICT'): Chainable<void>
+			/**
+			 * Mock the change password endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockChangePassword('OK')
+			 */
+			mockChangePassword(response?: 'OK' | 'UNAUTHORIZED' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the delete account endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockDeleteAccount('OK')
+			 */
+			mockDeleteAccount(response?: 'OK' | 'UNAUTHORIZED'): Chainable<void>
+			/**
 			 * Mock the forgot password endpoint.
 			 * @param response the response type we want to mock.
 			 * @example cy.mockForgotPassword('OK')
