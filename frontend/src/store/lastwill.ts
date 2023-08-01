@@ -276,6 +276,20 @@ export const createPerson = (personPayload: PersonFormPayload): Person => {
 	}
 }
 
+export const createOrganisation = (organisationPayload: OrganisationFormPayload): Organisation => {
+	return {
+		id: organisationPayload.id,
+		type: 'organisation',
+		name: organisationPayload.name,
+		address: {
+			city: organisationPayload.city,
+			houseNumber: organisationPayload.houseNumber,
+			zipCode: organisationPayload.zipCode,
+			street: organisationPayload.street,
+		},
+	}
+}
+
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
@@ -326,33 +340,13 @@ const lastWillSlice = createSlice({
 			state.data.heirs[heirIndex] = person
 		},
 		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
-			const { payload: organisation } = action
-			state.data.heirs.push({
-				id: organisation.id,
-				type: 'organisation',
-				name: organisation.name,
-				address: {
-					city: organisation.city,
-					houseNumber: organisation.houseNumber,
-					zipCode: organisation.zipCode,
-					street: organisation.street,
-				},
-			})
+			const organisation = createOrganisation(action.payload)
+			state.data.heirs.push(organisation)
 		},
 		updateOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
-			const { payload: organisation } = action
-			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === organisation.id)
-			state.data.heirs[heirIndex] = {
-				id: organisation.id,
-				type: 'organisation',
-				name: organisation.name,
-				address: {
-					city: organisation.city,
-					houseNumber: organisation.houseNumber,
-					zipCode: organisation.zipCode,
-					street: organisation.street,
-				},
-			}
+			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
+			const organisation = createOrganisation(action.payload)
+			state.data.heirs[heirIndex] = organisation
 		},
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
