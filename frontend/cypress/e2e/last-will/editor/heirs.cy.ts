@@ -14,14 +14,13 @@ describe('Last Will Heirs Page', () => {
 
 		it('should add a person', () => {
 			// Personal data
-			cy.datacy('textinput-firstName-input').type('Joy')
-			cy.datacy('textinput-lastName-input').type('Jumper')
+			cy.datacy('textinput-name-input').type('JoyJumper')
 
 			cy.datacy('gender-dropdown-button').click()
 			cy.datacy('gender-dropdown-option-female').click()
 
-			cy.datacy('datepicker-dateOfBirth-input').type('1990-11-13')
-			cy.datacy('textinput-placeOfBirth-input').type('Here')
+			cy.datacy('datepicker-birthDate-input').type('1990-11-13')
+			cy.datacy('textinput-birthPlace-input').type('Here')
 
 			// Adress
 			cy.datacy('textinput-street-input').type('Cool Street')
@@ -31,8 +30,8 @@ describe('Last Will Heirs Page', () => {
 			cy.datacy('textinput-city-input').type('My Hood')
 
 			// More infos
-			cy.datacy('checkbox-moreInfos-option-personHandicapped').click()
-			cy.datacy('checkbox-moreInfos-option-personInsolvent').click()
+			cy.datacy('checkbox-moreInfos-option-isHandicapped').click()
+			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
 
 			// Children
 			cy.datacy('checkbox-ownChild-option-ownChild').click()
@@ -44,46 +43,45 @@ describe('Last Will Heirs Page', () => {
 			// TODO(Zoe-Bot): Adjust when api is updated
 			cy.wait(510)
 
-			cy.datacy('persons-row-Joy').should('be.visible')
+			cy.datacy('persons-row-JoyJumper').should('be.visible')
 		})
 
 		it('should update a person', () => {
 			// Add person
-			cy.datacy('textinput-firstName-input').type('Joy')
-			cy.datacy('textinput-lastName-input').type('Jumper')
+			cy.datacy('textinput-name-input').type('JoyJumper')
 			cy.datacy('button-submit').click()
 
 			// TODO(Zoe-Bot): Adjust when api is updated
 			cy.wait(510)
 
 			// Edit person
-			cy.datacy('persons-editbutton-Joy').click()
-			cy.datacy('textinput-firstName-input').clear().type('NewJoy')
+			cy.datacy('persons-editbutton-JoyJumper').click()
+			cy.datacy('textinput-name-input').clear().type('NewJoy')
 			cy.datacy('button-submit').click()
 
 			// TODO(Zoe-Bot): Adjust when api is updated
 			cy.wait(510)
 
+			cy.datacy('persons-row-JoyJumper').should('not.exist')
 			cy.datacy('persons-row-NewJoy').should('be.visible')
 		})
 
 		it('should remove a person', () => {
 			// Add person
-			cy.datacy('textinput-firstName-input').type('Joy')
-			cy.datacy('textinput-lastName-input').type('Jumper')
+			cy.datacy('textinput-name-input').type('JoyJumper')
 			cy.datacy('button-submit').click()
 
 			// TODO(Zoe-Bot): Adjust when api is updated
 			cy.wait(510)
 
 			// Delete person
-			cy.datacy('persons-deletebutton-Joy').click()
+			cy.datacy('persons-deletebutton-JoyJumper').click()
 			cy.datacy('button-delete').click()
 
 			// TODO(Zoe-Bot): Adjust when api is updated
 			cy.wait(510)
 
-			cy.datacy('persons-row-Joy').should('not.exist')
+			cy.datacy('persons-row-JoyJumper').should('not.exist')
 		})
 	})
 

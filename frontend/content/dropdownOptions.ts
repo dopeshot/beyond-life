@@ -1,5 +1,4 @@
-import { HeirsTypes } from '../src/store/last-will/heirs/state'
-import { DropdownButtonOptions, DropdownOptions } from '../src/types/form'
+import { DropdownOptions } from '../src/types/form'
 
 export const genderOptions: DropdownOptions[] = [
 	{
@@ -34,17 +33,29 @@ export const childRelationshipOptions: DropdownOptions[] = [
 	},
 ]
 
-export const heirsTypes = {
-	mother: { displayType: 'Mutter', label: 'Mutter hinzufügen' },
-	father: { displayType: 'Vater', label: 'Vater hinzufügen' },
-	child: { displayType: 'Kind', label: 'Kind hinzufügen' },
-	siblings: { displayType: 'Geschwister', label: 'Geschwister hinzufügen' },
-	other: { displayType: 'Andere Person', label: 'Andere Person hinzufügen' },
-	organisation: { displayType: 'Organisation', label: 'Organisation hinzufügen' },
-} as const
-export type SetDropdownOptionFunction = (type: HeirsTypes) => void
-export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFunction): DropdownButtonOptions[] =>
-	Object.entries(heirsTypes).map(([type, { label }]) => ({
-		onClick: () => setDropdownOption(type as HeirsTypes),
-		label,
-	}))
+export const heirsPersonType: DropdownOptions[] = [
+	{
+		value: 'partner',
+		label: 'Partner',
+	},
+	{
+		value: 'mother',
+		label: 'Mutter',
+	},
+	{
+		value: 'father',
+		label: 'Vater',
+	},
+	{
+		value: 'child',
+		label: 'Kind',
+	},
+	{
+		value: 'siblings',
+		label: 'Geschwisterteil',
+	},
+	{
+		value: 'other',
+		label: 'Sonstige',
+	},
+]

@@ -54,8 +54,9 @@ export const TextInput: React.FC<TextInputProps> = ({
 								autoComplete={autoComplete}
 								{...fieldProps.field}
 								{...props}
+								/** TODO: Here is an bug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Bug bounty lars found it!  */
 								className={`flex w-full items-center rounded-lg border border-gray-100 bg-gray-100 p-2 px-4 placeholder:text-gray-400 ${
-									icon && 'pr-12'
+									icon && /** bug this caused undefined classname */ 'pr-12'
 								} ${fieldProps.meta.touched && fieldProps.meta.error ? 'border-red-500 bg-red-50' : ''}`}
 							/>
 							{icon && (

@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import { tableData } from '../../../../../../content/order-confirmation'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'

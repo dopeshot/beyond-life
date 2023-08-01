@@ -193,6 +193,10 @@ Cypress.Commands.add('mockMailVerify', (response = 'OK') => {
 	cy.intercept('GET', `${apiUrl}/auth/verify-email?token=*`, verifyMailApiResponseTypes[response]).as('mockMailVerify')
 })
 
+Cypress.Commands.add('mockResendVerifyMail', () => {
+	cy.intercept('GET', `${apiUrl}/auth/request-verify-email`, okResponse.OK).as('mockResendVerifyMail')
+})
+
 Cypress.Commands.add('mockLogin', (response = 'OK') => {
 	cy.intercept('POST', `${apiUrl}/auth/login`, loginResponseTypes[response]).as('mockLogin')
 })
@@ -201,15 +205,17 @@ Cypress.Commands.add('mockRegister', (response = 'OK') => {
 	cy.intercept('POST', `${apiUrl}/auth/register`, registerResponseTypes[response]).as('mockRegister')
 })
 
-Cypress.Commands.add('mockRefreshToken', () => {
+Cypress.Commands.add('mockRefreshToken', (hasMailVerified = false) => {
+	const fixture = hasMailVerified ? 'auth/tokensMailVerifyTrue.json' : 'auth/tokens.json'
+
 	cy.intercept('POST', `${apiUrl}/auth/refresh-token`, {
-		fixture: 'auth/tokens.json',
+		fixture,
 	}).as('mockRefreshToken')
 })
 
 /**** Mocks ****/
-Cypress.Commands.add('login', ({ route, visitOptions }) => {
-	cy.mockRefreshToken()
+Cypress.Commands.add('login', ({ route, visitOptions, hasMailVerified = false }) => {
+	cy.mockRefreshToken(hasMailVerified)
 
 	cy.visit(route, {
 		...visitOptions,

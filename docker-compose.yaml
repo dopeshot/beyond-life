@@ -78,3 +78,10 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+
+  stripe-cli:
+    image: stripe/stripe-cli:v1.17.0
+    container_name: stripe-cli
+    command: "listen --api-key ${BACKEND_STRIPE_SECRET_KEY} --device-name docker_compose_stack --forward-to backend:3001/payments/webhook"
+    links:
+      - backend:backend

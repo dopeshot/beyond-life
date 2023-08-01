@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { getConnectionToken } from '@m8a/nestjs-typegoose'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -25,7 +24,11 @@ import {
   closeInMongodConnection,
   rootTypegooseTestModule,
 } from './helpers/mongo.helper'
-import { SAMPLE_USER, SAMPLE_USER_PW_HASH, sampleObject } from './helpers/sample-data.helper'
+import {
+  SAMPLE_USER,
+  SAMPLE_USER_PW_HASH,
+  sampleObject,
+} from './helpers/sample-data.helper'
 const { mock } = nodemailer as unknown as NodemailerMock
 
 describe('ProfileController (e2e)', () => {
@@ -86,7 +89,7 @@ describe('ProfileController (e2e)', () => {
         { secret: configService.get('JWT_SECRET') },
       )
     })
-    
+
     describe('Positive Tests', () => {
       it('should set new password', async () => {
         // ACT
@@ -243,6 +246,22 @@ describe('ProfileController (e2e)', () => {
         expect(mock.getSentMail().length).toEqual(1)
       })
 
+      it('should pass if email could not be send', async () => {
+        // ARRANGE
+        mock.setShouldFailOnce(true)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .patch('/profile/change-email')
+          .send({
+            email: newMail,
+          })
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+      })
+
       it('should not send verify email if provided email is not new', async () => {
         // ACT
         const res = await request(app.getHttpServer())
@@ -366,7 +385,7 @@ describe('ProfileController (e2e)', () => {
       })
 
       it('should delete last wills by User', async () => {
-                await lastWillModel.create({
+        await lastWillModel.create({
           ...sampleObject,
           accountId: user._id,
         })
