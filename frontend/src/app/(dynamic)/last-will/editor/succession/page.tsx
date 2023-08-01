@@ -2,19 +2,17 @@
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { ObjectSchema, array, number, object, string } from 'yup'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
-import { Item, SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
+import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { setProgressKeys } from '../../../../../store/lastwill'
 import { SidebarPages } from '../../../../../types/sidebar'
-
-const PREVIOUS_LINK = routes.lastWill.inheritance('1')
-const NEXT_LINK = routes.lastWill.final('1')
 
 type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 // const Aufteilung = ;
@@ -26,7 +24,7 @@ type Person = {
 
 	// Succession
 	percentage: number
-	itemIds: number[]
+	itemIds: string[]
 }
 
 type Organisation = {
@@ -93,25 +91,6 @@ const initialHeirs: any[] = [
 	},
 ]
 
-const items: Item[] = [
-	{
-		id: 1,
-		name: 'Auto',
-	},
-	{
-		id: 2,
-		name: 'Haus',
-	},
-	{
-		id: 3,
-		name: 'Geld',
-	},
-	{
-		id: 4,
-		name: 'Fahrrad',
-	},
-]
-
 /**
  * Succession Page
  */
@@ -122,8 +101,15 @@ const Succession = () => {
 	const router = useRouter()
 
 	// Global State
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	//const heirs = useAppSelector((state) => state.lastWill.data.heirs)
+	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 	const dispatch = useAppDispatch()
+
+	// Prepare links
+	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
+	const NEXT_LINK = routes.lastWill.final(_id)
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
@@ -140,6 +126,20 @@ const Succession = () => {
 		}
 	}
 
+	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({
+		heirs: array().of(
+			object<Person>()
+				.shape({
+					id: string().required(),
+					type: string<PersonType>().nonNullable().required(),
+					name: string().required(),
+					percentage: number().min(0).max(100),
+					itemIds: array().of(number()),
+				})
+				.required()
+		),
+	})
+
 	useEffect(() => {
 		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
 	}, [dispatch])
@@ -147,7 +147,11 @@ const Succession = () => {
 	return (
 		<div className="container my-5 flex flex-1 flex-col">
 			<Headline className="hidden lg:block">Erbfolge</Headline>
-			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
+			<Formik
+				initialValues={initialFormValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
+			>
 				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						{/* heirs */}
@@ -160,7 +164,7 @@ const Succession = () => {
 									}}
 									key={`heir-${heir.id}`}
 									name={heir.name}
-									percentageName={`heirs.${index}.percentage`}
+									inputFieldName={`heirs.${index}.percentage`}
 									items={items.filter((item) => heir.itemIds?.includes(item.id))}
 								/>
 							))}

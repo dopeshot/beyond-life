@@ -1,4 +1,5 @@
 import React from 'react'
+import { Item } from '../../types/lastWill'
 import { TextInput } from '../Form/TextInput/TextInput'
 import { Headline } from '../Headline/Headline'
 import { IconButton } from '../IconButton/IconButton'
@@ -9,7 +10,7 @@ export type SuccessionHeirProps = {
 	/** Sets the name for the input field to connect with Formik */
 	inputFieldName: string
 	/** Array of Items that are assigned to this heir */
-	items: { id: string; name: string }[]
+	items: Item[]
 	/** Click Handler for the edit icon */
 	onClick: () => void
 	/** Custom datacy for testing. */
