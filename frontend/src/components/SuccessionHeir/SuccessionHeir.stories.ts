@@ -12,9 +12,7 @@ type Story = StoryObj<typeof SuccessionHeir>
 export const Default: Story = {
 	args: {
 		name: 'Kathi Maier',
-		type: 'mother',
-		percentageName: undefined,
-		mandatoryPercentage: 15,
+		inputFieldName: undefined,
 		items: [],
 	},
 }
@@ -22,16 +20,14 @@ export const Default: Story = {
 export const WithItems: Story = {
 	args: {
 		name: 'Kathi Maier',
-		type: 'mother',
-		percentageName: undefined,
-		mandatoryPercentage: 15,
+		inputFieldName: undefined,
 		items: [
 			{
-				id: 1,
+				id: '1',
 				name: 'Auto',
 			},
 			{
-				id: 2,
+				id: '2',
 				name: 'Haus',
 			},
 		],
