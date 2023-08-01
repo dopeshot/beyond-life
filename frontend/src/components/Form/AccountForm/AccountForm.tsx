@@ -2,6 +2,7 @@
 import { Form, Formik } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ObjectSchema, object, string } from 'yup'
+import { validateMail } from '../../../../utils/validateMail'
 import { routes } from '../../../services/routes/routes'
 import { loginApi, registerApi } from '../../../store/auth/auth'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
@@ -36,9 +37,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	}
 
 	const accountValidationSchema: ObjectSchema<AccountDto> = object({
-		email: string()
-			.email('Bitte geben Sie eine gültige E-Mail Adresse ein.')
-			.required('E-Mail Adresse ist erforderlich.'),
+		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
 		password: string().min(8, 'Passwort muss mindestens 8 Zeichen lang sein.').required('Password ist erforderlich.'),
 	})
 

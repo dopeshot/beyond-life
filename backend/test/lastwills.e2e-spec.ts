@@ -8,6 +8,7 @@ import * as request from 'supertest'
 import { DbModule } from '../src/db/db.module'
 import { LastWill, LastWillMetadata } from '../src/db/entities/lastwill.entity'
 import { User } from '../src/db/entities/users.entity'
+import { GeneratedLastWillDTO } from '../src/lastwill/dto/generated-lastwill.dto'
 import { LastWillModule } from '../src/lastwill/lastwill.module'
 import { paymentPlans } from '../src/payments/interfaces/payments'
 import { SharedModule } from '../src/shared/shared.module'
@@ -253,7 +254,6 @@ describe('LastWillController (e2e)', () => {
         await request(app.getHttpServer())
           .get('/lastwill')
           .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
       })
     })
@@ -299,7 +299,6 @@ describe('LastWillController (e2e)', () => {
         await request(app.getHttpServer())
           .get(`/lastwill/${lastWill._id}`)
           .set('Authorization', `Bearer ${token}a`)
-          .send(sampleObject)
           .expect(HttpStatus.UNAUTHORIZED)
       })
     })
@@ -409,6 +408,68 @@ describe('LastWillController (e2e)', () => {
 
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
+      })
+    })
+  })
+
+  describe('/lastwill/:id/fulltext', () => {
+    describe('Positive Tests', () => {
+      it('should return last will', async () => {
+        // ARRANGE
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+
+        // ASSERT
+        expect(res.status).toEqual(HttpStatus.OK)
+        expect(new GeneratedLastWillDTO(res.body)).toEqual(res.body)
+      })
+
+      // Further tests are not really needed here. The testament generation is covered by unit tests
+    })
+    
+    describe('Negative Tests', () => {
+      it('should fail with invalid token', async () => {
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+          })
+        ).toObject()
+
+        await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}a`)
+          .expect(HttpStatus.UNAUTHORIZED)
+      })
+
+      it('should fail if will does not exist', async () => {
+        await request(app.getHttpServer())
+          .get(`/lastwill/${'aaaaaaaaaaaaaaaaaaaaaaaa'}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NOT_FOUND)
+      })
+
+      it('should fail if lastwill does not belong to user', async () => {
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: 'aaaaaaaaaaaaaxaaaaaaaaa1',
+          })
+        ).toObject()
+
+        await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(HttpStatus.NOT_FOUND)
       })
     })
   })

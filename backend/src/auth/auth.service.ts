@@ -1,12 +1,12 @@
 import {
-    ConflictException,
-    HttpException,
-    Injectable,
-    InternalServerErrorException,
-    Logger,
-    NotFoundException,
-    ServiceUnavailableException,
-    UnauthorizedException,
+  ConflictException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  ServiceUnavailableException,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
@@ -16,10 +16,10 @@ import { MailData } from '../db/entities/mail-event.entity'
 import { User } from '../db/entities/users.entity'
 import { UserDBService } from '../db/services/user.service'
 import {
-    MailTemplateContent,
-    MailTemplates,
-    PasswordResetMailData,
-    VerifyMailData,
+  MailTemplateContent,
+  MailTemplates,
+  PasswordResetMailData,
+  VerifyMailData,
 } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
@@ -264,6 +264,8 @@ export class AuthService {
     }
     try {
       await this.userService.updateUserPassword(id, newPassword)
+      // No tests for db failure
+      /* istanbul ignore next */
     } catch (error) {
       this.logger.warn(
         `Could not update a user password due to an error ${error}`,

@@ -7,7 +7,7 @@ export type AlertProps = {
 	/** Headline of the alert. */
 	headline: string
 	/** Short description of the alert. */
-	description: string
+	description: React.ReactNode
 	/** Color of the border, icon and headline. Should be red for a warning for example. */
 	color?: Color
 	/** Custom icon. */
@@ -34,15 +34,15 @@ export const Alert: React.FC<AlertProps> = ({
 			<Icon
 				datacy={`${datacy}-icon`}
 				icon={icon}
-				className={`flex items-center text-${color} mr-2 h-8 w-8 min-w-[32px]`}
+				className={`flex items-center text-${color}-500 mr-2 h-8 w-8 min-w-[32px]`}
 			/>
 			<div>
-				<Headline datacy={`${datacy}-headline`} level={5} className={`text-${color}`}>
+				<Headline datacy={`${datacy}-headline`} level={5} className={`text-${color}-500`}>
 					{headline}
 				</Headline>
-				<p datacy={`${datacy}-description`} className="text-sm text-gray-600">
+				<div datacy={`${datacy}-description`} className="text-sm text-gray-600">
 					{description}
-				</p>
+				</div>
 			</div>
 		</div>
 	)
