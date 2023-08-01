@@ -42,10 +42,10 @@ export class StripeService {
           'FRONTEND_DOMAIN',
         )}${this.configService.get(
           'STRIPE_REDIRECT_URL',
-        )}?success=true&plan=${plan}`,
+        )}?success=1&plan=${plan}`,
         cancel_url: `${this.configService.get(
           'FRONTEND_DOMAIN',
-        )}${this.configService.get('STRIPE_REDIRECT_URL')}?success=false`,
+        )}${this.configService.get('STRIPE_REDIRECT_URL')}?success=0`,
         customer,
       })
       return stripeSession
