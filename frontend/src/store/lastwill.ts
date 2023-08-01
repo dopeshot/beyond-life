@@ -237,6 +237,26 @@ export const createTestator = (testatorPayload: TestatorFormPayload): Testator =
 	}
 }
 
+export const createMarriage = (marriagePayload: MarriageFormPayload): Person => {
+	return {
+		type: 'partner',
+		id: nanoid(),
+		name: marriagePayload.name,
+		gender: marriagePayload.gender,
+		birthDate: marriagePayload.birthDate,
+		birthPlace: marriagePayload.birthPlace,
+		isHandicapped: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isHandicapped') : false,
+		isInsolvent: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isInsolvent') : false,
+
+		address: {
+			street: marriagePayload.street,
+			houseNumber: marriagePayload.houseNumber,
+			zipCode: marriagePayload.zipCode,
+			city: marriagePayload.city,
+		},
+	}
+}
+
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
@@ -258,26 +278,11 @@ const lastWillSlice = createSlice({
 			const oldPartner = state.data.heirs.find((heir): heir is Person => heir.type === 'partner')
 			const hasPartner = oldPartner !== undefined
 
-			const partner: Person = {
-				type: 'partner',
-				id: hasPartner ? oldPartner.id : nanoid(),
-				name: action.payload.name,
-				gender: action.payload.gender,
-				birthDate: action.payload.birthDate,
-				birthPlace: action.payload.birthPlace,
-				isHandicapped: action.payload.moreInfos ? action.payload.moreInfos.includes('isHandicapped') : false,
-				isInsolvent: action.payload.moreInfos ? action.payload.moreInfos.includes('isInsolvent') : false,
-
-				address: {
-					street: action.payload.street,
-					houseNumber: action.payload.houseNumber,
-					zipCode: action.payload.zipCode,
-					city: action.payload.city,
-				},
-			}
+			const partner = createMarriage(action.payload)
 
 			// Set state
 			if (hasPartner) {
+				partner.id = oldPartner.id
 				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
 				state.data.heirs[oldPartnerIndex] = partner
 			} else {
