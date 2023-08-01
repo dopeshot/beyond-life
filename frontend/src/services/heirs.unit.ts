@@ -1,4 +1,4 @@
-import { Organisation, Person } from '../types/lastWill'
+import { Organisation, Person, PersonType } from '../types/lastWill'
 import { determineHeirRelationship } from './heirs'
 
 describe('determineHeirRelationship', function () {
@@ -42,8 +42,8 @@ describe('determineHeirRelationship', function () {
 	})
 
 	it('should return undefined for unknown heir types', function () {
-		const unknown: any = {
-			type: 'unknown',
+		const unknown: Person = {
+			type: 'unknown' as PersonType,
 			gender: 'male',
 			id: '1',
 		}
