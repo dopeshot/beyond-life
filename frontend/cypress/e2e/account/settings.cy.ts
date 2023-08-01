@@ -81,7 +81,7 @@ describe('Account Settings', () => {
 			cy.datacy('formerror-newPassword').should('be.visible')
 		})
 
-		it.only('should show error message when old password is wrong', () => {
+		it('should show error message when old password is wrong', () => {
 			cy.datacy('textinput-oldPassword-input').type('test123')
 			cy.datacy('textinput-newPassword-input').type('test1234')
 			cy.datacy('textinput-newPasswordConfirm-input').type('test1234')
