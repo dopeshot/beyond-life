@@ -257,6 +257,25 @@ export const createMarriage = (marriagePayload: MarriageFormPayload): Person => 
 	}
 }
 
+export const createPerson = (personPayload: PersonFormPayload): Person => {
+	return {
+		id: personPayload.id,
+		type: personPayload.type,
+		name: personPayload.name,
+		gender: personPayload.gender,
+		birthDate: personPayload.birthDate,
+		birthPlace: personPayload.birthPlace,
+		isHandicapped: personPayload.moreInfos ? personPayload.moreInfos.includes('isHandicapped') : false,
+		isInsolvent: personPayload.moreInfos ? personPayload.moreInfos.includes('isInsolvent') : false,
+		address: {
+			street: personPayload.street,
+			houseNumber: personPayload.houseNumber,
+			zipCode: personPayload.zipCode,
+			city: personPayload.city,
+		},
+	}
+}
+
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
@@ -298,43 +317,13 @@ const lastWillSlice = createSlice({
 			state.data.testator.relationshipStatus = action.payload.relationshipStatus
 		},
 		addPersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
-			const { payload: person } = action
-			state.data.heirs.push({
-				id: person.id,
-				type: person.type,
-				name: person.name,
-				gender: person.gender,
-				birthDate: person.birthDate,
-				birthPlace: person.birthPlace,
-				isHandicapped: person.moreInfos ? person.moreInfos.includes('isHandicapped') : false,
-				isInsolvent: person.moreInfos ? person.moreInfos.includes('isInsolvent') : false,
-				address: {
-					street: person.street,
-					houseNumber: person.houseNumber,
-					zipCode: person.zipCode,
-					city: person.city,
-				},
-			})
+			const person = createPerson(action.payload)
+			state.data.heirs.push(person)
 		},
 		updatePersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
-			const { payload: person } = action
-			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === person.id)
-			state.data.heirs[heirIndex] = {
-				id: person.id,
-				type: person.type,
-				name: person.name,
-				gender: person.gender,
-				birthDate: person.birthDate,
-				birthPlace: person.birthPlace,
-				isHandicapped: person.moreInfos ? person.moreInfos.includes('isHandicapped') : false,
-				isInsolvent: person.moreInfos ? person.moreInfos.includes('isInsolvent') : false,
-				address: {
-					street: person.street,
-					houseNumber: person.houseNumber,
-					zipCode: person.zipCode,
-					city: person.city,
-				},
-			}
+			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
+			const person = createPerson(action.payload)
+			state.data.heirs[heirIndex] = person
 		},
 		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const { payload: organisation } = action
