@@ -120,7 +120,7 @@ const ItemRow: React.FC<{ name: string; isAssigned: boolean; onClick: () => void
 	const [hover, setHover] = useState(false)
 	return (
 		<div
-			className="flex max-w-full justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+			className="-ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 			onClick={onClick}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
@@ -201,9 +201,9 @@ const Succession = () => {
 								headline={values.heirs[selectedHeirIndex].name}
 								onClose={() => setIsModalOpen(false)}
 							>
-								{/* Percentage */}
-								<div className="w-96">
-									<div className="flex items-center justify-between">
+								<div className="mt-4 w-44 md:w-96">
+									{/* Percentage */}
+									<div className="mb-6 flex items-center justify-between">
 										<Headline level={5} hasMargin={false}>
 											Anteil
 										</Headline>
@@ -216,13 +216,11 @@ const Succession = () => {
 										/>
 									</div>
 
-									{/* Items List */}
-									{
-										<Headline level={5} hasMargin={false}>
-											Gegenstände
-										</Headline>
-									}
-									<div className="mb-4">
+									{/* Assigned Items List */}
+									<Headline level={5} hasMargin={false}>
+										Gegenstände
+									</Headline>
+									<div className="mb-6">
 										{items
 											.filter((item) =>
 												values.heirs
@@ -245,6 +243,8 @@ const Succession = () => {
 												/>
 											))}
 									</div>
+
+									{/* Unassigned Items List */}
 									<Headline level={5} hasMargin={false}>
 										{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id))).length !== 0
 											? 'Noch nicht zugeordnete Gegenstände'
