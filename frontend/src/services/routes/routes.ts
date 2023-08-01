@@ -53,6 +53,7 @@ export const routes = {
 
 			return `/last-will/buy${queryString !== '' ? `?${queryString}` : ''}`
 		},
+		orderConfirmation: (success: boolean) => `/last-will/order-confirmation?success=${success}`,
 		final: (id: string) => `/last-will/editor/final?id=${id}`,
 	},
 	misc: {
