@@ -32,6 +32,7 @@ export type OrganisationFormPayload = {
 	name?: string
 } & Address
 
+// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
 export type SuccessionFormPayload = {
 	persons: SuccessionPerson[]
 	organisations: SuccessionOrganisation[]
@@ -54,6 +55,7 @@ export type SuccessionOrganisation = {
 	percentage: number
 	itemIds: number[]
 }
+// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
 
 export type InheritanceFormPayload = {
 	financialAssets: FinancialAsset[]
