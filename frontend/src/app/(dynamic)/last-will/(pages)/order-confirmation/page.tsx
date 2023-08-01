@@ -12,12 +12,14 @@ const textsPaymentSucceeded = {
 	subheader:
 		'Vielen Dank für Ihre Zahlung. Im nächsten Schritt können Sie nun ihr generiertes Testament einsehen und abschreiben.',
 	paymentStatus: 'erfolgreich',
+	button: 'Weiter zum Testament',
 }
 
 const textsPaymentFailed = {
 	header: 'Die Zahlung konnte nicht durchgeführt werden',
 	subheader: 'Bitte versuchen Sie, den Zahlungsvorgang erneut durchzuführen',
 	paymentStatus: 'fehlgeschlagen',
+	button: 'Zurück zur Produktauswahl',
 }
 
 /**
@@ -27,7 +29,6 @@ const OrderConfirmation = () => {
 	const searchParams = useSearchParams()
 	const paymentSucceeded = searchParams.get('success')
 	const boughtPlan = searchParams.get('plan')
-	console.log(paymentSucceeded, boughtPlan)
 
 	const texts = paymentSucceeded == 'true' ? textsPaymentSucceeded : textsPaymentFailed
 
@@ -73,12 +74,12 @@ const OrderConfirmation = () => {
 				</div>
 				<Route
 					datacy="button-submit"
-					href={routes.lastWill.final('1')}
-					icon="arrow_forward"
+					href={paymentSucceeded == 'true' ? routes.lastWill.final('1') : routes.lastWill.buy()}
+					icon={paymentSucceeded == 'true' ? 'arrow_forward' : 'arrow_back'}
 					kind="primary"
 					className="mb-8"
 				>
-					Weiter zum Testament
+					{texts.button}
 				</Route>
 			</main>
 		</>
