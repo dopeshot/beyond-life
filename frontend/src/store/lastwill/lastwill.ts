@@ -67,18 +67,21 @@ export const initialState: LastWillState = {
 	},
 }
 
-export const sendLastWillState = createAsyncThunk('lastWill/sendLastWillState', async (params, { getState }) => {
-	const state = getState() as RootState
+export const sendLastWillState = createAsyncThunk<LastWillState['data'], undefined, { state: RootState }>(
+	'lastWill/sendLastWillState',
+	async (params, { getState }) => {
+		const state = getState()
 
-	const lastWillData = state.lastWill.data
+		const lastWillData = state.lastWill.data
 
-	const response = await new Promise<LastWillState['data']>((resolve) => setTimeout(() => resolve(lastWillData), 100))
-	return response
-})
+		const response = await new Promise<LastWillState['data']>((resolve) => setTimeout(() => resolve(lastWillData), 100))
+		return response
+	}
+)
 
-export const fetchLastWillState = createAsyncThunk(
+export const fetchLastWillState = createAsyncThunk<LastWillState['data'], { lastWillId: string }>(
 	'lastWill/fetchLastWillState',
-	async ({ lastWillId }: { lastWillId: string }) => {
+	async ({ lastWillId }) => {
 		const data = await new Promise<LastWillState['data']>((resolve) =>
 			setTimeout(() => {
 				const mockedData: LastWillState['data'] = {
