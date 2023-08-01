@@ -124,5 +124,6 @@ export type PersonType = 'partner' | 'mother' | 'father' | 'child' | 'siblings' 
 export type OrganisationType = 'organisation'
 
 type Gender = 'male' | 'female' | 'divers'
-type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
+export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
+export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'

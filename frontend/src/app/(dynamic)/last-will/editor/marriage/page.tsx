@@ -18,12 +18,14 @@ import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setMarriage, setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { Gender } from '../../../../../types/gender'
-import { MarriageFormPayload, Person } from '../../../../../types/lastWill'
+import {
+	MarriageFormPayload,
+	MatrimonialProperty,
+	PartnerMoreInfos,
+	Person,
+	RelationshipStatus,
+} from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-
-export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
-export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
-export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 
 /**
  * Marriage Page
