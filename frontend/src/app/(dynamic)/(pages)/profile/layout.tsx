@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import { profileLinks } from '../../../../../content/profilelinks'
 import { Alert } from '../../../../components/Alert/Alert'
 import isAuth from '../../../../components/Auth/isAuth'
@@ -14,6 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
 	const hasVerifiedEmail = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.hasVerifiedEmail)
 	const dispatch = useAppDispatch()
+	const [hasRequestedEmail, setHasRequestedEmail] = useState(false)
 
 	return (
 		<div className="container my-5 flex flex-col gap-5 md:flex-row md:gap-10">
@@ -55,7 +57,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 									<button
 										datacy="resend-mail-button"
 										className="text-red-500 hover:text-red-600"
-										onClick={() => requestVerifyMail()}
+										onClick={() => {
+											if (hasRequestedEmail) return
+											setHasRequestedEmail(true)
+											requestVerifyMail()
+										}}
 									>
 										hier
 									</button>{' '}
