@@ -11,9 +11,9 @@ import {
 	PersonFormPayload,
 	Testator,
 	TestatorFormPayload,
-} from '../types/lastWill'
-import { SidebarPages } from '../types/sidebar'
-import { RootState } from './store'
+} from '../../types/lastWill'
+import { SidebarPages } from '../../types/sidebar'
+import { RootState } from '../store'
 
 export type LastWillState = {
 	// DO NOT SYNC THIS WITH BACKEND

@@ -7,7 +7,7 @@ import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
 import { MobileSidebar } from '../../../../components/Navbar/Sidebar/MobileSidebar/MobileSidebar'
 import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill'
+import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()

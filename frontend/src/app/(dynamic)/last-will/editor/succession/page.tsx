@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch } from '../../../../../store/hooks'
-import { setProgressKeys } from '../../../../../store/lastwill'
+import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { SuccessionFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 

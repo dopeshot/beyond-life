@@ -4,7 +4,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { LastWill } from '../../../../../components/LastWill/LastWill'
 import { useAppDispatch } from '../../../../../store/hooks'
-import { setProgressKeys } from '../../../../../store/lastwill'
+import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 /**

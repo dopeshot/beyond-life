@@ -12,7 +12,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill'
+import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { FinancialAsset, InheritanceFormPayload, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 

@@ -11,7 +11,7 @@ import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { determineHeirRelationship, getPersonAddHeirsOptions } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill'
+import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
