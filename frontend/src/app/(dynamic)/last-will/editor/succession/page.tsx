@@ -179,9 +179,7 @@ const Succession = () => {
 									}}
 									key={`heir-${heir.id}`}
 									name={heir.name}
-									type={heir.type}
 									percentageName={`heirs.${index}.percentage`}
-									mandatoryPercentage={0}
 									items={items.filter((item) => heir.itemIds?.includes(item.id))}
 								/>
 							))}
@@ -216,10 +214,6 @@ const Succession = () => {
 											onClick={(e) => e.preventDefault()}
 											name={`heirs.${selectedHeirIndex}.percentage`}
 										/>
-									</div>
-									<div className="mb-4 flex items-center justify-between">
-										<p className="ml-2 text-gray-500">Pflichtanteil</p>
-										<p className="text-gray-500">15%</p>
 									</div>
 
 									{/* Items List */}

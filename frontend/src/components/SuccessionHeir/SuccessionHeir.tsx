@@ -11,9 +11,7 @@ export type Item = {
 
 export type SuccessionHeirProps = {
 	name: string
-	type: HeirType
 	percentageName: string
-	mandatoryPercentage: number
 	items: Item[]
 	onClick: () => void
 }
@@ -21,25 +19,14 @@ export type SuccessionHeirProps = {
 /**
  * SuccessionHeir component
  */
-export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
-	name,
-	type,
-	percentageName,
-	mandatoryPercentage,
-	items,
-	onClick,
-}) => {
+export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, percentageName, items, onClick }) => {
 	return (
 		<div className="flex w-auto max-w-xl cursor-pointer flex-col rounded-xl border-2 border-gray-100 p-4 py-3">
 			<div className="flex items-center justify-between">
 				<Headline className="truncate md:text-lg" hasMargin={false} level={3}>
 					{name}
 				</Headline>
-				<TextInput type="number" width="w-20" hasBottomMargin={false} name={percentageName} />
-			</div>
-			<div className="flex justify-between">
-				<p className="ml-2 text-gray-500">{type}</p>
-				<p className="text-gray-500">{`${mandatoryPercentage}%`}</p>
+				<TextInput textAlign="right" type="text" width="w-16" hasBottomMargin={false} name={percentageName} />
 			</div>
 			<div className="flex h-full w-full justify-between">
 				<div className="mt-2 w-5/6">
