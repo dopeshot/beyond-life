@@ -5,6 +5,7 @@ on:
     branches:
       - "stable"
       - "main"
+      - "devops/236-deployment"
   pull_request:
     branches: [main]
     paths:
