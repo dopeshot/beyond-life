@@ -1,5 +1,5 @@
-import { DropdownButtonOptions } from '../../../../../types/form'
-import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
+import { DropdownButtonOptions } from '../types/form'
+import { HeirsTypes, Organisation, Person } from '../types/lastWill'
 
 export const heirsTypes = {
 	mother: 'Mutter',

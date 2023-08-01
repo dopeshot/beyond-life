@@ -8,12 +8,12 @@ import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { determineHeirRelationship, getPersonAddHeirsOptions } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill'
 import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-import { determineHeirRelationship, getPersonAddHeirsOptions } from './heirs'
 
 /**
  * Heirs Page
