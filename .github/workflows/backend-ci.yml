@@ -19,7 +19,7 @@ jobs:
       context: backend
 
   audit:
-    if: github.ref == 'stable' || github.base_ref == 'stable'
+    if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable'
     uses: ./.github/workflows/audit.template.yml
     with:
       context: backend
@@ -66,7 +66,7 @@ jobs:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
     # Dont run this when merging into stable => Bot cannot commit to main
-    if: github.ref != 'stable' || github.base_ref != 'stable'
+    if: github.ref != 'refs/heads/stable' || github.base_ref != 'refs/heads/stable'
     with:
       context: backend
     secrets:

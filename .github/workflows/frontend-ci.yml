@@ -19,7 +19,7 @@ jobs:
       context: frontend
 
   audit:
-    if: github.ref == 'stable' || github.base_ref == 'stable'
+    if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable'
     uses: ./.github/workflows/audit.template.yml
     with:
       context: frontend
