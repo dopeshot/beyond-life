@@ -3,7 +3,7 @@ import { MaterialSymbol } from 'material-symbols'
 import { Dispatch } from 'react'
 import { routes } from '../src/services/routes/routes'
 import { AuthState, logout } from '../src/store/auth/auth'
-import { LastWillState } from '../src/store/lastwill'
+import { LastWillState } from '../src/store/lastwill/lastwill'
 
 export const profileLinks = (
 	dispatch: ThunkDispatch<
