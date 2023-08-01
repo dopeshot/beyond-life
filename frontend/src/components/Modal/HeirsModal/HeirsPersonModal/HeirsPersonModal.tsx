@@ -7,7 +7,7 @@ import { heirsTypes } from '../../../../services/heirs'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill/lastwill'
 import { Gender } from '../../../../types/gender'
-import { ChildRelationShip, HeirsTypes, Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
+import { ChildRelationShip, Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../Form/FormDatepicker/FormDatepicker'
@@ -24,7 +24,7 @@ type HeirsPersonModalProps = {
 	/** When defined we are in edit mode. */
 	editPerson: Person | null
 	/** The type of person. */
-	type: HeirsTypes
+	type: PersonType
 }
 
 /**
