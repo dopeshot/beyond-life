@@ -12,7 +12,7 @@ import { determineHeirRelationship, getPersonAddHeirsOptions } from '../../../..
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill/lastwill'
-import { HeirsTypes, Organisation, Person } from '../../../../../types/lastWill'
+import { HeirsTypes, Organisation, Person, PersonType } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 /**
@@ -142,7 +142,7 @@ const Heirs = () => {
 						setIsPersonModalOpen(false)
 					}}
 					editPerson={selectedPerson}
-					type={heirsType}
+					type={heirsType as PersonType}
 				/>
 			)}
 			{isOrganisationModalOpen && (
