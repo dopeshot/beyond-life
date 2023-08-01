@@ -108,7 +108,7 @@ const EmailVerified = () => {
 							</Route>
 						) : (
 							verifyMailContent[status].onClick && (
-								<Button icon="sync" onClick={verifyMailContent[status].onClick}>
+								<Button icon="sync" datacy="try-again-button" onClick={verifyMailContent[status].onClick}>
 									{verifyMailContent[status].text}
 								</Button>
 							)

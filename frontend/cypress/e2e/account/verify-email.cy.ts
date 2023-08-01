@@ -70,5 +70,15 @@ describe('Mail Verify', () => {
 
 			cy.contains('Ihre E-Mail Adresse konnte nicht bestätigt werden').should('be.visible')
 		})
+
+		it('should try verify again when try again button is clicked', () => {
+			cy.mockMailVerify('UNAUTHORIZED')
+			cy.visit('/account/verify-email?token=token')
+			cy.wait('@mockMailVerify')
+
+			cy.mockMailVerify()
+			cy.datacy('try-again-button').click()
+			cy.wait('@mockMailVerify')
+		})
 	})
 })
