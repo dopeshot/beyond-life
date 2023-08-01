@@ -87,3 +87,15 @@ jobs:
     uses: ./.github/workflows/docker-build-and-push.template.yml
     with:
       context: backend
+
+  redeploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/devops/236-deployment'
+    needs: docker-build-and-push
+    runs-on: ubuntu-latest
+    env:
+      deploy_secret: ${{ secrets.BACKEND_REDEPLOY_WEBHOOK_SECRET }}
+      webhook: ${{ secrets.BACKEND_REDEPLOY_WEBHOOK }}
+    steps:
+      - name: trigger redeploy
+        run: |
+          curl -X GET -H "x-deploy-secret: $deploy_secret" $webhook
