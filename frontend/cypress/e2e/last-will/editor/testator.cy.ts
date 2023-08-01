@@ -4,16 +4,6 @@ describe('Last Will Testator Page', () => {
 	})
 
 	describe('Basic Flow', () => {
-		// TODO MC: What does this test?
-		it('', () => {
-			// TODO: Remove when find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
-			cy.datacy('route-next-submit').click()
-
-			cy.url().should('include', 'last-will/editor/marriage')
-		})
-
 		it('shoud fill out testator data and redirect to /last-will/editor/marriage after submit', () => {
 			// TODO: Remove when find a new fix see /pages/start.cy.ts
 			cy.wait(200)
