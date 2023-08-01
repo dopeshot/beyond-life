@@ -42,7 +42,7 @@ export class StripeService {
           'STRIPE_SUCCESS_URL',
         )}?success=true&plan=${plan}`,
         cancel_url: `${this.configService.get(
-          'STRIPE_SUCCESS_URL',
+          'STRIPE_CANCEL_URL',
         )}?success=false`,
         customer,
       })
