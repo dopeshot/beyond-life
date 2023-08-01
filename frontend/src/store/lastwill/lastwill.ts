@@ -97,6 +97,7 @@ export const fetchLastWillState = createAsyncThunk(
 							zipCode: 'GL_STORE_TESTATOR_ZIPCODE',
 							street: 'GL_STORE_TESTATOR_STREET',
 						},
+						relationshipStatus: 'married',
 					},
 					progressKeys: [],
 					financialAssets: [
