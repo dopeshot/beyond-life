@@ -112,25 +112,6 @@ const items: Item[] = [
 	},
 ]
 
-const ItemRow: React.FC<{ name: string; isAssigned: boolean; onClick: () => void }> = ({
-	name,
-	isAssigned,
-	onClick,
-}) => {
-	const [hover, setHover] = useState(false)
-	return (
-		<div
-			className="-ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
-			onClick={onClick}
-			onMouseEnter={() => setHover(true)}
-			onMouseLeave={() => setHover(false)}
-		>
-			<p className="truncate text-gray-500">{name}</p>
-			{hover && <Icon className="text-gray-500" icon={isAssigned ? 'expand_more' : 'expand_less'} />}
-		</div>
-	)
-}
-
 /**
  * Succession Page
  */
@@ -208,8 +189,8 @@ const Succession = () => {
 											Anteil
 										</Headline>
 										<TextInput
-											type="number"
-											width="w-20"
+											type="text"
+											width="w-16"
 											hasBottomMargin={false}
 											onClick={(e) => e.preventDefault()}
 											name={`heirs.${selectedHeirIndex}.percentage`}
@@ -229,10 +210,9 @@ const Succession = () => {
 													?.itemIds?.includes(item.id)
 											)
 											.map((item) => (
-												<ItemRow
+												<div
 													key={item.id}
-													isAssigned={true}
-													name={item.name}
+													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 													onClick={() => {
 														if (selectedHeirIndex === undefined) return
 														let heirs = values.heirs
@@ -241,7 +221,10 @@ const Succession = () => {
 														heirs[selectedHeirIndex].itemIds = newItemIds
 														setFieldValue('heirs', heirs)
 													}}
-												/>
+												>
+													<p className="truncate text-gray-500">{item.name}</p>
+													<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_more" />
+												</div>
 											))}
 									</div>
 
@@ -255,10 +238,9 @@ const Succession = () => {
 										{items
 											.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
 											.map((item) => (
-												<ItemRow
+												<div
 													key={item.id}
-													name={item.name}
-													isAssigned={false}
+													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 													onClick={() => {
 														if (selectedHeirIndex === undefined) return
 														let heirs = values.heirs
@@ -267,7 +249,10 @@ const Succession = () => {
 														heirs[selectedHeirIndex].itemIds = newItemIds
 														setFieldValue('heirs', heirs)
 													}}
-												/>
+												>
+													<p className="truncate text-gray-500">{item.name}</p>
+													<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_less" />
+												</div>
 											))}
 									</div>
 								</div>

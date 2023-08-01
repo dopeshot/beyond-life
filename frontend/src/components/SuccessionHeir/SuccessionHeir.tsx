@@ -22,7 +22,7 @@ export type SuccessionHeirProps = {
 export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, percentageName, items, onClick }) => {
 	return (
 		<div className="flex w-auto max-w-xl cursor-pointer flex-col rounded-xl border-2 border-gray-100 px-8 py-6">
-			<div className="mb-6 flex items-center justify-between">
+			<div className="mb-4 flex items-center justify-between">
 				<Headline className="w-auto truncate md:text-lg" hasMargin={false} level={3}>
 					{name}
 				</Headline>
