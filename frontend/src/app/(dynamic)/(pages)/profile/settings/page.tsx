@@ -2,8 +2,13 @@
 import { Form, Formik, FormikProps } from 'formik'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
+import {
+	alertContentChangeEmail,
+	alertContentChangePassword,
+	alertContentDeleteAccount,
+} from '../../../../../../content/profileSettings'
 import { validateMail } from '../../../../../../utils/validateMail'
-import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
+import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
@@ -65,45 +70,6 @@ const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().sh
 		.oneOf([ref('newPassword')], 'Passwörter stimmen nicht überein.')
 		.required('Bitte bestätigen Sie Ihr neues Passwort.'),
 })
-
-const alertContentChangeEmail: { [key: string]: AlertProps } = {
-	MAIL_CONFLICT: {
-		icon: 'warning',
-		color: 'red',
-		headline: 'Email bereits vergeben',
-		description: 'Die E-Mail Adresse ist bereits vergeben. Bitte versuchen Sie es mit einer anderen E-Mail Adresse.',
-	},
-	ERROR: {
-		icon: 'warning',
-		color: 'red',
-		headline: 'Fehler',
-		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
-	},
-}
-
-const alertContentChangePassword: { [key: string]: AlertProps } = {
-	UNAUTHORIZED: {
-		icon: 'warning',
-		color: 'red',
-		headline: 'Passwort falsch',
-		description: 'Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.',
-	},
-	ERROR: {
-		icon: 'warning',
-		color: 'red',
-		headline: 'Fehler',
-		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
-	},
-}
-
-const alertContentDeleteAccount: { [key: string]: AlertProps } = {
-	ERROR: {
-		icon: 'warning',
-		color: 'red',
-		headline: 'Fehler',
-		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
-	},
-}
 
 /**
  * Account Settings Page
