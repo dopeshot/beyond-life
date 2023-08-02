@@ -11,7 +11,7 @@ import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
+import { sendLastWillState, setProgressKeys, setSuccession } from '../../../../../store/lastwill/lastwill'
 import { HeirSuccesion, HeirsTypes, SuccessionFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
@@ -54,10 +54,11 @@ const Succession = () => {
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
-		console.log(values, href)
 		try {
 			// Update store
-			// router.push(href)
+			dispatch(setSuccession(values))
+			await dispatch(sendLastWillState())
+			router.push(href)
 		} catch (error) {
 			console.error('An error occured while submitting the form: ', error)
 		}
