@@ -30,31 +30,41 @@ describe('lastWillSlice', () => {
 	const initialStateTesting: LastWillState = initialState
 
 	describe('inheritance', () => {
-		it('should set inheritance', () => {
-			const financialAsset = {
-				id: 'ID_1',
-				where: 'Meine Bank',
-				amount: 100,
-				currency: '€',
-			}
+		const financialAsset = {
+			id: 'ID_1',
+			where: 'Meine Bank',
+			amount: 100,
+			currency: '€',
+		}
 
-			const item = {
-				id: 'ID_3',
-				name: 'Mein Fahrrad',
-				description: 'Bitte damit fahren!',
-			}
+		const item = {
+			id: 'ID_3',
+			name: 'Mein Fahrrad',
+			description: 'Bitte damit fahren!',
+		}
 
+		it(`should set financialAsset when ${setInheritance} is called`, () => {
 			const action = setInheritance({
 				financialAssets: [financialAsset],
+				items: [],
+			})
+
+			const state = lastWillReducer(initialStateTesting, action)
+
+			expect(state.data.financialAssets).to.have.lengthOf(1)
+			expect(state.data.financialAssets[0]).to.be.deep.equal(financialAsset)
+		})
+
+		it(`should set items when ${setInheritance} is called`, () => {
+			const action = setInheritance({
+				financialAssets: [],
 				items: [item],
 			})
 
-			const newState = lastWillReducer(initialStateTesting, action)
+			const state = lastWillReducer(initialStateTesting, action)
 
-			expect(newState.data.financialAssets).to.have.lengthOf(1)
-			expect(newState.data.financialAssets[0]).to.be.deep.equal(financialAsset)
-			expect(newState.data.items).to.have.lengthOf(1)
-			expect(newState.data.items[0]).to.be.deep.equal(item)
+			expect(state.data.items).to.have.lengthOf(1)
+			expect(state.data.items[0]).to.be.deep.equal(item)
 		})
 	})
 
