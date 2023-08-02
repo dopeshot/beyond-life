@@ -34,12 +34,9 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
 	datacy,
 }) => {
 	return (
-		<div
-			datacy={datacy}
-			className="flex w-auto max-w-xl cursor-pointer flex-col rounded-xl border-2 border-gray-100 px-8 py-6"
-		>
+		<div datacy={datacy} className="flex w-auto max-w-xl flex-col rounded-xl border-2 border-gray-100 px-8 py-6">
 			<div className="mb-4 flex items-center justify-between">
-				<Headline className="w-auto truncate md:text-lg" hasMargin={false} level={3}>
+				<Headline title={name} className="w-auto truncate md:text-lg" hasMargin={false} level={3}>
 					{name}
 				</Headline>
 				<div className="flex items-center">
