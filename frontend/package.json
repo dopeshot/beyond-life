@@ -58,6 +58,7 @@
 		"excludeAfterRemap": true,
 		"include": "src/**/*.{ts,tsx}",
 		"exclude": [
+			"src/app/*.{ts,tsx}",
 			"cypress/**/*.{ts,tsx}",
 			"src/**/*.{unit,cy,stories}.{ts,tsx}",
 			"src/types/**/*"
