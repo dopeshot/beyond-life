@@ -211,7 +211,7 @@ const Succession = () => {
 										render={(arrayHelpers) => (
 											<>
 												{/* Assigned Items List */}
-												<Headline level={5} hasMargin={false}>
+												<Headline className="mb-2" level={5} hasMargin={false}>
 													Gegenstände
 												</Headline>
 												<div className="mb-6">
@@ -235,13 +235,22 @@ const Succession = () => {
 														))}
 												</div>
 
+												<hr className="my-2" />
+
 												{/* Unassigned Items List */}
-												<Headline level={5} hasMargin={false}>
-													{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
-														.length !== 0
-														? 'Noch nicht zugeordnete Gegenstände'
-														: 'Alle Gegenstände zugeordnet'}
-												</Headline>
+												{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+													.length !== 0 ? (
+													<>
+														<Headline className="" level={5} hasMargin={false}>
+															Noch nicht zugeordnete Gegenstände:
+														</Headline>
+														<p className="mb-2">(durch Anklicken der Person zuweisen)</p>{' '}
+													</>
+												) : (
+													<Headline className=" font-normal" level={5} hasMargin={false}>
+														Alle Gegenstände zugeordnet
+													</Headline>
+												)}
 												<div>
 													{items
 														.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
