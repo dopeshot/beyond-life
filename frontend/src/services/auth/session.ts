@@ -29,8 +29,17 @@ export const createSession = (tokens: TokensResponse) => {
  * Save session data in local storage.
  * @param sessionData session data to save in local storage
  */
-export const saveSession = (sessionData: SessionData): void => {
+const saveSession = (sessionData: SessionData): void => {
 	localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessionData))
+}
+
+/**
+ * Set the authorization header for axios and save session data in local storage.
+ * @param sessionData session data to save in local storage
+ */
+export const setAndSaveSession = (sessionData: SessionData): void => {
+	setAxiosAuthHeader(sessionData.accessToken)
+	saveSession(sessionData)
 }
 
 /**

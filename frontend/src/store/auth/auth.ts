@@ -1,13 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { refreshTokenApi } from '../../services/api/auth/refreshToken'
-import {
-	LOCAL_STORAGE_KEY,
-	createSession,
-	getSession,
-	saveSession,
-	setAxiosAuthHeader,
-} from '../../services/auth/session'
+import { LOCAL_STORAGE_KEY, createSession, getSession, setAndSaveSession } from '../../services/auth/session'
 import { AuthErrorResponse, SessionData, TokensResponse } from '../../types/auth'
 
 export type AuthState = {
@@ -48,9 +42,6 @@ export const registerApi = createAsyncThunk<
 		})
 
 		const tokens = response.data
-
-		setAxiosAuthHeader(tokens.access_token)
-
 		return tokens
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
@@ -78,9 +69,6 @@ export const loginApi = createAsyncThunk<
 		})
 
 		const tokens = response.data
-
-		setAxiosAuthHeader(tokens.access_token)
-
 		return tokens
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
@@ -118,12 +106,9 @@ export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryC
 			return null
 		}
 
-		// Update axios auth header
-		setAxiosAuthHeader(tokens.access_token)
-
 		// Update session when refresh token succeeded
 		const newSession = createSession(tokens)
-		saveSession(newSession)
+		setAndSaveSession(newSession)
 
 		return newSession
 	}
@@ -138,8 +123,7 @@ const authSlice = createSlice({
 			state.isAuthenticated = true
 			state.sessionData = action.payload
 
-			setAxiosAuthHeader(action.payload.accessToken)
-			saveSession(action.payload)
+			setAndSaveSession(action.payload)
 		},
 		logout: (state) => {
 			// Clear local storage
@@ -178,7 +162,7 @@ const authSlice = createSlice({
 				state.registerError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
-				saveSession(state.sessionData)
+				setAndSaveSession(state.sessionData)
 			})
 			.addCase(loginApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Unauthorized' && action.payload?.statusCode === 401) {
@@ -198,7 +182,7 @@ const authSlice = createSlice({
 				state.loginError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
-				saveSession(state.sessionData)
+				setAndSaveSession(state.sessionData)
 			})
 			.addCase(registerApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
