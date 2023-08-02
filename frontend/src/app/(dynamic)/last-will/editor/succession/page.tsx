@@ -24,9 +24,7 @@ const Succession = () => {
 	const dispatch = useAppDispatch()
 
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
-	const NEXT_LINK = isAuthenticated
-		? routes.lastWill.final(_id)
-		: routes.account.register({ callbackUrl: routes.lastWill.final(_id) })
+	const NEXT_LINK = isAuthenticated ? routes.lastWill.final(_id) : routes.lastWill.plans(_id) // TODO checken, ob für Testament schon bezahlt wurde
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
