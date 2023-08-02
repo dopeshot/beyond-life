@@ -1,0 +1,24 @@
+name: Run Package audit
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        required: true
+        type: string
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.context }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: audit
+        run: npm audit --omit=dev --audit-level=critical
+
+
