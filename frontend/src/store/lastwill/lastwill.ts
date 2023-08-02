@@ -243,7 +243,7 @@ export const createPerson = (personPayload: PersonFormPayload): Person => {
 }
 
 export const patchPerson = (person: Person, personPayload: Partial<PersonFormPayload>): Person => {
-	const newPerson = {
+	const newPerson: Person = {
 		...person,
 		id: person.id,
 		type: personPayload.type || person.type,
