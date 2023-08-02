@@ -41,6 +41,7 @@ export const routes = {
 		heirs: (id: string) => `/last-will/editor/heirs?id=${id}`,
 		inheritance: (id: string) => `/last-will/editor/inheritance?id=${id}`,
 		succession: (id: string) => `/last-will/editor/succession?id=${id}`,
+		plans: (id: string) => `/last-will/plans?id=${id}`,
 		buy: (options?: { id: string }) => {
 			if (!options) return '/last-will/buy'
 

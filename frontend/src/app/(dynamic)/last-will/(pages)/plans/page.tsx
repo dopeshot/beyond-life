@@ -38,10 +38,19 @@ const Plans = () => {
 
 				{/* Buttons */}
 				<div className="flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:justify-between">
-					<Route icon="login" href={routes.account.login({ funnel: true })} kind="tertiary" className="w-auto">
+					<Route
+						icon="login"
+						href={routes.account.login({ callbackUrl: routes.lastWill.buy() })}
+						kind="tertiary"
+						className="w-auto"
+					>
 						Login
 					</Route>
-					<Route icon="arrow_forward" href={routes.account.register({ funnel: true })} className="sm:w-max">
+					<Route
+						icon="arrow_forward"
+						href={routes.account.register({ callbackUrl: routes.lastWill.buy() })}
+						className="sm:w-max"
+					>
 						Account erstellen
 					</Route>
 				</div>
