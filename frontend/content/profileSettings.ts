@@ -13,6 +13,13 @@ export const alertContentChangeEmail: { [key: string]: AlertProps } = {
 		headline: 'Fehler',
 		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
 	},
+	OK: {
+		icon: 'check',
+		color: 'green',
+		headline: 'Eine E-Mail wurde versendet',
+		description:
+			'Bitte bestätigen Sie die Änderung Ihrer E-Mail Adresse über den Link in der E-Mail, die wir Ihnen zugesendet haben.',
+	},
 }
 
 export const alertContentChangePassword: { [key: string]: AlertProps } = {
@@ -27,6 +34,12 @@ export const alertContentChangePassword: { [key: string]: AlertProps } = {
 		color: 'red',
 		headline: 'Fehler',
 		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+	},
+	OK: {
+		icon: 'check',
+		color: 'green',
+		headline: 'Passwort geändert',
+		description: 'Ihr Passwort wurde erfolgreich geändert.',
 	},
 }
 
