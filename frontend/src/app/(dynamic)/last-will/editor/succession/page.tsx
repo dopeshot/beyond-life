@@ -198,7 +198,7 @@ const Succession = () => {
 														.map((item, index) => (
 															<div
 																key={item.id}
-																className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {
 																	arrayHelpers.remove(index)
 																}}
@@ -222,7 +222,7 @@ const Succession = () => {
 														.map((item) => (
 															<div
 																key={item.id}
-																className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {
 																	arrayHelpers.push(item.id)
 																}}
