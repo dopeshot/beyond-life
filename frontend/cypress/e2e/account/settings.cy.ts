@@ -1,3 +1,5 @@
+import { PASSWORD_IS_WRONG_ERROR } from "../../../content/validation"
+
 describe('Account Settings', () => {
 	beforeEach(() => {
 		cy.login({
@@ -91,7 +93,7 @@ describe('Account Settings', () => {
 			cy.wait('@mockChangePassword')
 
 			cy.contains('Passwort falsch').should('be.visible')
-			cy.contains('Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.').should('be.visible')
+			cy.contains(PASSWORD_IS_WRONG_ERROR).should('be.visible')
 		})
 
 		it('should show error message when something went wrong', () => {
