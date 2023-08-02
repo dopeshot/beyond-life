@@ -10,14 +10,12 @@ import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
-import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { useAppSelector } from '../../../../../store/hooks'
+import { HeirsTypes } from '../../../../../types/lastWill'
 
-type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
-// const Aufteilung = ;
-
-type Person = {
+type HeirSuccesion = {
 	id: string
-	type: PersonType
+	type: HeirsTypes
 	name: string
 
 	// Succession
@@ -25,66 +23,51 @@ type Person = {
 	itemIds: string[]
 }
 
-type Organisation = {
-	id: string
-	name: string
-	type: 'organisation'
-	percentage: number
-	itemIds: number[]
-}
-
 type SuccessionFormPayload = {
-	heirs: Person[]
+	heirs: HeirSuccesion[]
 }
 
-const initialHeirs: any[] = [
+const initialHeirs: HeirSuccesion[] = [
 	{
-		id: 1,
+		id: '1',
 		type: 'father',
 		name: 'Max Mustermann',
-		gender: 'male',
 		percentage: 20,
-		// mandatoryPercentage: 15,
-		itemIds: [1, 2],
+		itemIds: ['1', '2'],
 	},
 	{
-		id: 2,
+		id: '2',
 		name: 'Anna Mustermann',
 		type: 'mother',
 		percentage: 20,
-		// mandatoryShare: 15,
 		itemIds: [],
 	},
 	{
-		id: 3,
+		id: '3',
 		name: 'Max Mustermann',
 		type: 'father',
 		percentage: 20,
-		// mandatoryShare: 15,
 		itemIds: [],
 	},
 	{
-		id: 4,
+		id: '4',
 		name: 'Anna Mustermann',
 		type: 'mother',
 		percentage: 20,
-		// mandatoryShare: 15,
 		itemIds: [],
 	},
 	{
-		id: 5,
+		id: '5',
 		name: 'Max Mustermann',
 		type: 'father',
 		percentage: 80,
-		// mandatoryShare: 15,
 		itemIds: [],
 	},
 	{
-		id: 6,
+		id: '6',
 		name: 'Anna Mustermann',
 		type: 'mother',
 		percentage: 20,
-		// mandatoryShare: 15,
 		itemIds: [],
 	},
 ]
@@ -103,7 +86,6 @@ const Succession = () => {
 	//const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
-	const dispatch = useAppDispatch()
 
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
@@ -125,17 +107,19 @@ const Succession = () => {
 	}
 
 	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({
-		heirs: array().of(
-			object<Person>()
-				.shape({
-					id: string().required(),
-					type: string<PersonType>().nonNullable().required(),
-					name: string().required(),
-					percentage: number().min(0).max(100),
-					itemIds: array().of(number()),
-				})
-				.required()
-		),
+		heirs: array()
+			.of(
+				object<HeirSuccesion>()
+					.shape({
+						id: string().required(),
+						type: string<HeirsTypes>().required(),
+						name: string().required(),
+						percentage: number().min(0).max(100).required(),
+						itemIds: array().of(string().required()).required(),
+					})
+					.required()
+			)
+			.required(),
 	})
 
 	return (
