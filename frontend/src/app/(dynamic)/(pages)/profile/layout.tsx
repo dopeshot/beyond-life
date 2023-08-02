@@ -6,7 +6,7 @@ import { Alert } from '../../../../components/Alert/Alert'
 import isAuth from '../../../../components/Auth/isAuth'
 import { Headline } from '../../../../components/Headline/Headline'
 import { ProfileSideBarLink } from '../../../../components/Navbar/ProfileSideBarLink/ProfileSideBarLink'
-import { requestVerifyMail } from '../../../../services/api/mail/verifyMail'
+import { requestVerifyMail } from '../../../../services/api/auth/verifyMail'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
