@@ -100,7 +100,7 @@ const Succession = () => {
 		console.log(values, href)
 		try {
 			// Update store
-			router.push(href)
+			// router.push(href)
 		} catch (error) {
 			console.error('An error occured while submitting the form: ', error)
 		}
