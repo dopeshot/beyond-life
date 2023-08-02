@@ -14,6 +14,7 @@ import {
 	createTestator,
 	initialState,
 	lastWillReducer,
+	patchOrganisation,
 	patchPerson,
 	removeHeir,
 	setInheritance,
@@ -312,6 +313,35 @@ describe('lastWillSlice', () => {
 
 					// Assert that the heir has been updated
 					expect(newState.data.heirs[0]).to.deep.equal({ ...expectedOrganisationHeir, name: 'Updated Organisation A' })
+				})
+
+				it('should patch organisation with new fields (service)', () => {
+					const payload: Partial<OrganisationFormPayload> = {
+						id: 'org_1',
+						name: 'Updated Organisation A',
+						city: 'Updated City A',
+						houseNumber: '2',
+					}
+
+					const patchedOrganisation = patchOrganisation(expectedOrganisationHeir, payload)
+					expect(patchedOrganisation).to.deep.equal({
+						...expectedOrganisationHeir,
+						name: 'Updated Organisation A',
+						address: {
+							...expectedOrganisationHeir.address,
+							city: 'Updated City A',
+							houseNumber: '2',
+						},
+					})
+				})
+
+				it('should not patch organisation id (service)', () => {
+					const payload: Partial<OrganisationFormPayload> = {
+						id: 'org_2',
+					}
+
+					const patchedOrganisation = patchOrganisation(expectedOrganisationHeir, payload)
+					expect(patchedOrganisation).to.deep.equal(expectedOrganisationHeir)
 				})
 			})
 		})
