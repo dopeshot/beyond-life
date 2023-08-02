@@ -282,20 +282,38 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs[0]).to.deep.equal(expectedOrganisationHeir)
 			})
 
-			it('should update an organisation heir', () => {
-				// First, add an organisation heir to the state
-				let newState = lastWillReducer(initialStateTesting, addOrganisationHeir(organisationFormPayload))
+			describe.only('patch organisation', () => {
+				it('should update an organisation heir', () => {
+					// First, add an organisation heir to the state
+					let newState = lastWillReducer(initialStateTesting, addOrganisationHeir(organisationFormPayload))
 
-				// Then, update this heir
-				const action = updateOrganisationHeir({
-					id: 'org_1',
-					name: 'Updated Organisation A',
+					// Then, update this heir
+					const action = updateOrganisationHeir({
+						id: 'org_1',
+						name: 'Updated Organisation A',
+					})
+					newState = lastWillReducer(newState, action)
+
+					// Assert that the heir has been updated
+					expect(newState.data.heirs).to.have.lengthOf(1)
+					expect(newState.data.heirs[0]).to.deep.include({ id: 'org_1', name: 'Updated Organisation A' })
 				})
-				newState = lastWillReducer(newState, action)
 
-				// Assert that the heir has been updated
-				expect(newState.data.heirs).to.have.lengthOf(1)
-				expect(newState.data.heirs[0]).to.deep.include({ id: 'org_1', name: 'Updated Organisation A' })
+				it('should update an organisation heir', () => {
+					// First, add an organisation heir to the state
+					let newState = lastWillReducer(initialStateTesting, addOrganisationHeir(organisationFormPayload))
+
+					// Then, update this heir
+					const action = updateOrganisationHeir({
+						id: 'org_1',
+						name: 'Updated Organisation A',
+					})
+					newState = lastWillReducer(newState, action)
+
+					// Assert that the heir has been updated
+					expect(newState.data.heirs[0]).to.deep.include({ id: 'org_1', name: 'Updated Organisation A' })
+					expect(newState.data.heirs[0]).to.deep.equal({ ...expectedOrganisationHeir, name: 'Updated Organisation A' })
+				})
 			})
 		})
 
@@ -309,24 +327,24 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
 			})
 
-			it('should update a person heir', () => {
-				// First, add a person heir to the state
-				let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
-
-				// Then, update this heir
-				const action = updatePersonHeir({
-					id: 'person_1',
-					type: 'child',
-					name: 'Updated Person A',
-				})
-				newState = lastWillReducer(newState, action)
-
-				// Assert that the heir has been updated
-				expect(newState.data.heirs).to.have.lengthOf(1)
-				expect(newState.data.heirs[0]).to.deep.include({ id: 'person_1', name: 'Updated Person A' })
-			})
-
 			describe('patch person', () => {
+				it('should update a person heir', () => {
+					// First, add a person heir to the state
+					let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+
+					// Then, update this heir
+					const action = updatePersonHeir({
+						id: 'person_1',
+						type: 'child',
+						name: 'Updated Person A',
+					})
+					newState = lastWillReducer(newState, action)
+
+					// Assert that the heir has been updated
+					expect(newState.data.heirs).to.have.lengthOf(1)
+					expect(newState.data.heirs[0]).to.deep.include({ id: 'person_1', name: 'Updated Person A' })
+				})
+
 				it('should patch person with new fields (reducer)', () => {
 					// First, add a person heir to the state
 					let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
