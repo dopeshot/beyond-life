@@ -50,7 +50,12 @@ const Plans = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center xl:order-2 xl:w-1/3">
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:rounded-3xl xl:h-full xl:w-auto">
-					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image
+						priority
+						className=" h-full w-auto object-cover object-top blur-[2px]"
+						src={image}
+						alt="Testament Preview"
+					/>
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] xl:text-[200px]" />
 			</div>

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
@@ -47,7 +48,12 @@ const Buy = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/2">
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
-					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image
+						priority
+						className=" h-full w-auto object-cover object-top blur-[2px]"
+						src={image}
+						alt="Testament Preview"
+					/>
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />
 			</div>
@@ -55,4 +61,4 @@ const Buy = () => {
 	)
 }
 
-export default Buy
+export default isAuth(Buy, 'protected')
