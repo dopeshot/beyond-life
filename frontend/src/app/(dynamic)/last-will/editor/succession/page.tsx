@@ -1,5 +1,5 @@
 'use client'
-import { Form, Formik, FormikProps } from 'formik'
+import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
@@ -180,61 +180,61 @@ const Succession = () => {
 										/>
 									</div>
 
-									{/* Assigned Items List */}
-									<Headline level={5} hasMargin={false}>
-										Gegenstände
-									</Headline>
-									<div className="mb-6">
-										{items
-											.filter((item) =>
-												values.heirs
-													.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
-													?.itemIds?.includes(item.id)
-											)
-											.map((item) => (
-												<div
-													key={item.id}
-													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
-													onClick={() => {
-														let heirs = values.heirs
-
-														const newItemIds = heirs[selectedHeirIndex].itemIds.filter((itemId) => itemId !== item.id)
-														heirs[selectedHeirIndex].itemIds = newItemIds
-														setFieldValue('heirs', heirs)
-													}}
-												>
-													<p className="truncate text-gray-500">{item.name}</p>
-													<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_more" />
+									<FieldArray
+										name={`heirs.${selectedHeirIndex}.itemIds`}
+										render={(arrayHelpers) => (
+											<>
+												{/* Assigned Items List */}
+												<Headline level={5} hasMargin={false}>
+													Gegenstände
+												</Headline>
+												<div className="mb-6">
+													{items
+														.filter((item) =>
+															values.heirs
+																.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
+																?.itemIds?.includes(item.id)
+														)
+														.map((item, index) => (
+															<div
+																key={item.id}
+																className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																onClick={() => {
+																	arrayHelpers.remove(index)
+																}}
+															>
+																<p className="truncate text-gray-500">{item.name}</p>
+																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_more" />
+															</div>
+														))}
 												</div>
-											))}
-									</div>
 
-									{/* Unassigned Items List */}
-									<Headline level={5} hasMargin={false}>
-										{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id))).length !== 0
-											? 'Noch nicht zugeordnete Gegenstände'
-											: 'Alle Gegenstände zugeordnet'}
-									</Headline>
-									<div>
-										{items
-											.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
-											.map((item) => (
-												<div
-													key={item.id}
-													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
-													onClick={() => {
-														let heirs = values.heirs
-
-														const newItemIds = heirs[selectedHeirIndex].itemIds.concat(item.id)
-														heirs[selectedHeirIndex].itemIds = newItemIds
-														setFieldValue('heirs', heirs)
-													}}
-												>
-													<p className="truncate text-gray-500">{item.name}</p>
-													<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_less" />
+												{/* Unassigned Items List */}
+												<Headline level={5} hasMargin={false}>
+													{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+														.length !== 0
+														? 'Noch nicht zugeordnete Gegenstände'
+														: 'Alle Gegenstände zugeordnet'}
+												</Headline>
+												<div>
+													{items
+														.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+														.map((item) => (
+															<div
+																key={item.id}
+																className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																onClick={() => {
+																	arrayHelpers.push(item.id)
+																}}
+															>
+																<p className="truncate text-gray-500">{item.name}</p>
+																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_less" />
+															</div>
+														))}
 												</div>
-											))}
-									</div>
+											</>
+										)}
+									/>
 								</div>
 							</Modal>
 						)}
