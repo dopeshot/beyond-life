@@ -125,20 +125,34 @@ const Succession = () => {
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>
-				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
+				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						{/* heirs */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
 							{values.heirs.map((heir, index) => (
 								<SuccessionHeir
-									onClick={() => {
-										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
-										setIsModalOpen(true)
-									}}
 									key={`heir-${heir.id}`}
 									name={heir.name}
 									inputFieldName={`heirs.${index}.percentage`}
 									items={items.filter((item) => heir.itemIds?.includes(item.id))}
+									onClick={() => {
+										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
+										setIsModalOpen(true)
+									}}
+									onChangeInput={(e) => {
+										e.preventDefault()
+										const value = e.target.value
+										const regex = /^[1-9][0-9]?$|^100$|^$/
+										if (regex.test(value.toString())) {
+											setFieldValue(`heirs.${index}.percentage`, value)
+										}
+									}}
+									onBlurInput={(e) => {
+										const value = e.target.value
+										if (value === '') {
+											setFieldValue(`heirs.${selectedHeirIndex}.percentage`, '0')
+										}
+									}}
 								/>
 							))}
 						</div>
@@ -165,14 +179,31 @@ const Succession = () => {
 										<Headline level={5} hasMargin={false}>
 											Anteil
 										</Headline>
-										<TextInput
-											type="text"
-											width="w-16"
-											hasBottomMargin={false}
-											onClick={(e) => e.preventDefault()}
-											name={`heirs.${selectedHeirIndex}.percentage`}
-											textAlign="right"
-										/>
+										<div className="flex items-center">
+											<TextInput
+												className="pr-6 text-right"
+												type="number"
+												width="w-24"
+												hasBottomMargin={false}
+												name={`heirs.${selectedHeirIndex}.percentage`}
+												onClick={(e) => e.preventDefault()}
+												onChange={(e) => {
+													e.preventDefault()
+													const value = e.target.value
+													const regex = /^[1-9][0-9]?$|^0$|^100$|^$/
+													if (regex.test(value.toString())) {
+														setFieldValue(`heirs.${selectedHeirIndex}.percentage`, value)
+													}
+												}}
+												onBlur={(e) => {
+													const value = e.target.value
+													if (value === '') {
+														setFieldValue(`heirs.${selectedHeirIndex}.percentage`, '0')
+													}
+												}}
+											/>
+											<p className="z-10 -ml-6">%</p>
+										</div>
 									</div>
 
 									<FieldArray

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { Item } from '../../types/lastWill'
 import { TextInput } from '../Form/TextInput/TextInput'
 import { Headline } from '../Headline/Headline'
@@ -13,6 +13,10 @@ export type SuccessionHeirProps = {
 	items: Item[]
 	/** Click Handler for the edit icon */
 	onClick: () => void
+	/** Change handler for the input field  */
+	onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
+	/** Blur Handler for input field */
+	onBlurInput: (e: React.FocusEvent<HTMLInputElement, Element>) => void
 	/** Custom datacy for testing. */
 	datacy?: string
 }
@@ -20,7 +24,15 @@ export type SuccessionHeirProps = {
 /**
  * SuccessionHeir component
  */
-export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputFieldName, items, onClick, datacy }) => {
+export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
+	name,
+	inputFieldName,
+	items,
+	onClick,
+	onChangeInput,
+	onBlurInput,
+	datacy,
+}) => {
 	return (
 		<div
 			datacy={datacy}
@@ -30,20 +42,25 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputField
 				<Headline className="w-auto truncate md:text-lg" hasMargin={false} level={3}>
 					{name}
 				</Headline>
-				<TextInput
-					datacy={datacy}
-					textAlign="right"
-					type="text"
-					width="w-16"
-					hasBottomMargin={false}
-					name={inputFieldName}
-				/>
+				<div className="flex items-center">
+					<TextInput
+						datacy={datacy}
+						className="pr-6 text-right"
+						type="number"
+						width="w-24"
+						hasBottomMargin={false}
+						name={inputFieldName}
+						onChange={onChangeInput}
+						onBlur={onBlurInput}
+					/>
+					<p className="z-10 -ml-6">%</p>
+				</div>
 			</div>
 
 			{/* Items */}
 			<div className="flex h-full w-full justify-between">
 				<div className="w-5/6">
-					<p className="mb-1 w-full">{`Gegenstände (${items.length})`}</p>
+					<p className="mb-1 w-full">{`Gegenstände${items.length > 0 ? ` (${items.length})` : ''}`}</p>
 					{items.slice(0, 2).map((item) => (
 						<p datacy={`${datacy}-item-${item.name}`} className="truncate text-gray-500" key={item.id}>
 							{item.name}
