@@ -301,7 +301,7 @@ const lastWillSlice = createSlice({
 			const hasPartner = oldPartner !== undefined
 
 			const partner = createMarriage(action.payload)
-
+			// TODO: refactor marriage to use PATCH as well
 			// Set state
 			if (hasPartner) {
 				partner.id = oldPartner.id
