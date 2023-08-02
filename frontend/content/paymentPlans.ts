@@ -13,6 +13,7 @@ export const FreePlan: PaymentPlanProps = {
 export const PaymentPlans: PaymentPlanProps[] = [
 	{
 		title: 'Basic',
+		type: 'single',
 		price: '49€',
 		descriptionItems: [
 			{ text: '1 Testament', icon: 'check' },
@@ -22,6 +23,7 @@ export const PaymentPlans: PaymentPlanProps[] = [
 	},
 	{
 		title: 'Premium',
+		type: 'family',
 		price: '149€',
 		descriptionItems: [
 			{ text: '5 Testamente', icon: 'check' },

@@ -10,12 +10,14 @@ export type PaymentPlanDescriptionItem = {
 
 export type PaymentPlanProps = {
 	title: string
+	type?: PaymentPlanType
 	price?: string
 	hasButton?: boolean
 	descriptionItems?: PaymentPlanDescriptionItem[]
-	handleSubmit?: (plan: string) => void
+	handleSubmit?: (plan: PaymentPlanType) => void
 	size?: 'md' | 'lg'
 }
+export type PaymentPlanType = 'single' | 'family'
 
 export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 	title,

@@ -1,33 +1,25 @@
 'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
-import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
+import { PaymentPlan, PaymentPlanType } from '../../../../../components/PaymentPlan/PaymentPlan'
+import { createCheckoutSession } from '../../../../../services/api/payment/payment'
 import { routes } from '../../../../../services/routes/routes'
 
 /**
  * Paywall Page
  */
 const Buy = () => {
-	const handleSubmit = async (plan: 'single' | 'family') => {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_API_CHECKOUT}`, {
-			method: 'POST',
+	const router = useRouter()
 
-			body: JSON.stringify({
-				plan,
-			}),
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
-			},
-		})
-		const data = await res.json()
-		console.log(data.url)
-		window.location.href = data.url
+	const handlePlanSubmit = async (plan?: PaymentPlanType) => {
+		if (!plan) return
+		const response = await createCheckoutSession(plan)
+		router.push(response)
 	}
 
 	return (
@@ -41,13 +33,7 @@ const Buy = () => {
 				{/* Price Plans */}
 				<div className="mb-4 flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					{PaymentPlans.map((plan) => (
-						<PaymentPlan
-							key={plan.title}
-							title={plan.title}
-							price={plan.price}
-							descriptionItems={plan.descriptionItems}
-							handleSubmit={() => handleSubmit(plan.title === 'Basic' ? 'single' : 'family')}
-						/>
+						<PaymentPlan key={plan.type} {...plan} handleSubmit={() => handlePlanSubmit(plan.type)} />
 					))}
 				</div>
 
