@@ -98,7 +98,7 @@ const Testator = () => {
 				onSubmit={(values) => onSubmit(values, routes.lastWill.marriage('1'))}
 			>
 				{({ values, dirty }: FormikProps<TestatorFormPayload>) => {
-					// This blocks the user to leave the page but not the internal navigation
+					// TODO: This blocks the user to leave the page but not the internal navigation
 					addEventListener('beforeunload', (event) => {
 						if (dirty) {
 							event.preventDefault()
