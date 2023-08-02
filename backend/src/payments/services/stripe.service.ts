@@ -38,8 +38,14 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: this.configService.get('STRIPE_SUCCESS_URL'),
-        cancel_url: this.configService.get('STRIPE_CANCEL_URL'),
+        success_url: `${this.configService.get(
+          'FRONTEND_DOMAIN',
+        )}${this.configService.get(
+          'STRIPE_REDIRECT_ROUTE',
+        )}?success=1&plan=${plan}`,
+        cancel_url: `${this.configService.get(
+          'FRONTEND_DOMAIN',
+        )}${this.configService.get('STRIPE_REDIRECT_ROUTE')}?success=0`,
         customer,
       })
       return stripeSession

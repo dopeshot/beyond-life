@@ -1,7 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -11,8 +11,6 @@ import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { setProgressKeys } from '../../../../../store/lastwill'
-import { SidebarPages } from '../../../../../types/sidebar'
 
 type PersonType = 'mother' | 'father' | 'child' | 'siblings' | 'other' | 'organisation'
 // const Aufteilung = ;
@@ -139,10 +137,6 @@ const Succession = () => {
 				.required()
 		),
 	})
-
-	useEffect(() => {
-		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
-	}, [dispatch])
 
 	return (
 		<div className="container my-5 flex flex-1 flex-col">

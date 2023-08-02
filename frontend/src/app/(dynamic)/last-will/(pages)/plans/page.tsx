@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'

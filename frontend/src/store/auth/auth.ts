@@ -1,13 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { refreshTokenApi } from '../../services/api/auth/refreshToken'
-import {
-	LOCAL_STORAGE_KEY,
-	createSession,
-	getSession,
-	saveSession,
-	setAxiosAuthHeader,
-} from '../../services/auth/session'
+import { LOCAL_STORAGE_KEY, createSession, getSession, setAndSaveSession } from '../../services/auth/session'
 import { AuthErrorResponse, SessionData, TokensResponse } from '../../types/auth'
 
 export type AuthState = {
@@ -48,9 +42,6 @@ export const registerApi = createAsyncThunk<
 		})
 
 		const tokens = response.data
-
-		setAxiosAuthHeader(tokens.access_token)
-
 		return tokens
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
@@ -78,9 +69,6 @@ export const loginApi = createAsyncThunk<
 		})
 
 		const tokens = response.data
-
-		setAxiosAuthHeader(tokens.access_token)
-
 		return tokens
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
@@ -95,33 +83,36 @@ export const loginApi = createAsyncThunk<
  * Get session data from local storage and update the access token if it has expired.
  * @returns session data or null if no session data is found
  */
-export const refreshToken = createAsyncThunk('auth/getSessionData', async () => {
-	const parsedSessionData = getSession()
+export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryCheck: boolean }>(
+	'auth/getSessionData',
+	async ({ bypassExpiryCheck }) => {
+		const parsedSessionData = getSession()
 
-	// No session data found
-	if (!parsedSessionData) return null
+		// No session data found
+		if (!parsedSessionData) return null
 
-	// Return session data if access token is not expired
-	if (Date.now() < parsedSessionData.decodedAccessToken.exp * 1000) return parsedSessionData
+		// Return session data if access token is not expired
+		if (!bypassExpiryCheck) {
+			const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
+			if (!sessionExpired) return parsedSessionData
+		}
 
-	// Update token if expired
-	const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
+		// Update token
+		const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
 
-	// Refresh token failed
-	if (tokens === null) {
-		console.error('Session expired and refresh token failed')
-		return null
+		// Refresh token failed
+		if (tokens === null) {
+			console.error('Session expired and refresh token failed')
+			return null
+		}
+
+		// Update session when refresh token succeeded
+		const newSession = createSession(tokens)
+		setAndSaveSession(newSession)
+
+		return newSession
 	}
-
-	// Update axios auth header
-	setAxiosAuthHeader(tokens.access_token)
-
-	// Update session when refresh token succeeded
-	const newSession = createSession(tokens)
-	saveSession(newSession)
-
-	return newSession
-})
+)
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -132,7 +123,7 @@ const authSlice = createSlice({
 			state.isAuthenticated = true
 			state.sessionData = action.payload
 
-			saveSession(action.payload)
+			setAndSaveSession(action.payload)
 		},
 		logout: (state) => {
 			// Clear local storage
@@ -171,7 +162,7 @@ const authSlice = createSlice({
 				state.registerError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
-				saveSession(state.sessionData)
+				setAndSaveSession(state.sessionData)
 			})
 			.addCase(loginApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Unauthorized' && action.payload?.statusCode === 401) {
@@ -191,7 +182,7 @@ const authSlice = createSlice({
 				state.loginError = null
 				state.isAuthenticated = true
 				state.sessionData = createSession(action.payload)
-				saveSession(state.sessionData)
+				setAndSaveSession(state.sessionData)
 			})
 			.addCase(registerApi.rejected, (state, action) => {
 				if (action.payload?.message === 'Email is already taken.' && action.payload?.statusCode === 409) {
