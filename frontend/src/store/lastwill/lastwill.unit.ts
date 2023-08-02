@@ -172,6 +172,41 @@ describe('lastWillSlice', () => {
 			expect(partnerWithoutId).to.be.deep.equal(expectedPartnerObject)
 		})
 
+		it(`should patch partner data when ${setMarriage} is called`, () => {
+			let state = lastWillReducer(initialStateTesting, setMarriage(action))
+			state = lastWillReducer(
+				state,
+				setSuccession({
+					heirs: [
+						{
+							id: state.data.heirs[0].id,
+							type: 'partner',
+							name: 'John Doe',
+							itemIds: ['1', '2', '3'],
+							percentage: 42,
+						},
+					],
+				})
+			)
+
+			state = lastWillReducer(
+				state,
+				setMarriage({
+					...action,
+					name: 'Jane Doe',
+				})
+			)
+
+			const partnerWithoutId = Cypress._.omit(state.data.heirs[0], 'id')
+
+			expect(partnerWithoutId).to.deep.equal({
+				...expectedPartnerObject,
+				name: 'Jane Doe',
+				percentage: 42,
+				itemIds: ['1', '2', '3'],
+			})
+		})
+
 		it('should set relationshipStatus to married when setMarriage is called', () => {
 			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
 			expect(newState.data.testator.relationshipStatus).to.equal('married')

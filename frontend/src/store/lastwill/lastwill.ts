@@ -219,7 +219,16 @@ export const createTestator = (testatorPayload: TestatorFormPayload): Testator =
 export const createMarriage = (marriagePayload: MarriageFormPayload): Person => {
 	return createPerson({
 		...(marriagePayload as PersonFormPayload),
+		id: nanoid(),
 		type: 'partner',
+	})
+}
+
+export const patchMarriage = (marriage: Person, marriagePayload: Partial<MarriageFormPayload>): Person => {
+	return patchPerson(marriage, {
+		...marriagePayload,
+		type: 'partner',
+		id: marriage.id,
 	})
 }
 
@@ -321,14 +330,13 @@ const lastWillSlice = createSlice({
 			const oldPartner = state.data.heirs.find((heir): heir is Person => heir.type === 'partner')
 			const hasPartner = oldPartner !== undefined
 
-			const partner = createMarriage(action.payload)
-			// TODO: refactor marriage to use PATCH as well
 			// Set state
 			if (hasPartner) {
-				partner.id = oldPartner.id
+				const partner = patchMarriage(oldPartner, action.payload)
 				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
 				state.data.heirs[oldPartnerIndex] = partner
 			} else {
+				const partner = createMarriage(action.payload)
 				state.data.heirs.push(partner)
 			}
 
