@@ -68,7 +68,7 @@ export type LastWillState = {
 		// parts
 		// TODO: ensure types are correct
 		testator: Testator
-		heirs: (Person | (Organisation & Succession))[]
+		heirs: (Person | Organisation)[]
 		financialAssets: FinancialAsset[]
 		items: Item[]
 	}
@@ -90,7 +90,8 @@ export type Person = {
 	// Succession
 	percentage?: number
 	itemIds?: number[]
-} & { address?: Address } & ChildInfo &
+} & { address?: Address } & Succession &
+	ChildInfo &
 	Id
 
 type ChildInfo = {
@@ -104,7 +105,8 @@ export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFro
 export type Organisation = {
 	name?: string
 	type: OrganisationType
-} & { address?: Address } & Id
+} & { address?: Address } & Succession &
+	Id
 
 export type FinancialAsset = {
 	where?: string

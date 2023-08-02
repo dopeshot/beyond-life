@@ -1,4 +1,12 @@
-import { LastWillState, MarriageFormPayload, Organisation, Person, SuccessionFormPayload } from '../../types/lastWill'
+import {
+	LastWillState,
+	MarriageFormPayload,
+	Organisation,
+	OrganisationFormPayload,
+	Person,
+	PersonFormPayload,
+	SuccessionFormPayload,
+} from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import {
 	addOrganisationHeir,
@@ -209,47 +217,73 @@ describe('lastWillSlice', () => {
 	})
 
 	describe('heirs', () => {
+		const personFormPayload: PersonFormPayload = {
+			id: 'person_1',
+			type: 'child',
+			name: 'Person A',
+			gender: 'male',
+			birthDate: '2000-01-01',
+			birthPlace: 'Place A',
+			street: 'Street A',
+			houseNumber: '1',
+			zipCode: '12345',
+			city: 'City A',
+			moreInfos: [],
+			childRelationShip: 'childTogether',
+			ownChild: [],
+		}
+
+		const expectedPersonHeir: Person = {
+			id: 'person_1',
+			type: 'child',
+			name: 'Person A',
+			gender: 'male',
+			birthDate: '2000-01-01',
+			birthPlace: 'Place A',
+			address: {
+				street: 'Street A',
+				houseNumber: '1',
+				zipCode: '12345',
+				city: 'City A',
+			},
+			isHandicapped: false,
+			isInsolvent: false,
+		}
+
+		const organisationFormPayload: OrganisationFormPayload = {
+			id: 'org_1',
+			name: 'Organisation A',
+			street: 'Street A',
+			houseNumber: '1',
+			zipCode: '12345',
+			city: 'City A',
+		}
+
+		const expectedOrganisationHeir: Organisation = {
+			id: 'org_1',
+			type: 'organisation',
+			name: 'Organisation A',
+			address: {
+				street: 'Street A',
+				houseNumber: '1',
+				zipCode: '12345',
+				city: 'City A',
+			},
+		}
+
 		describe('organisations', () => {
 			it('should add an organisation heir', () => {
-				const action = addOrganisationHeir({
-					id: 'org_1',
-					name: 'Organisation A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-				})
+				const action = addOrganisationHeir(organisationFormPayload)
 
 				const newState = lastWillReducer(initialStateTesting, action)
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				const expectedOrganisationHeir: Organisation = {
-					id: 'org_1',
-					type: 'organisation',
-					name: 'Organisation A',
-					address: {
-						street: 'Street A',
-						houseNumber: '1',
-						zipCode: '12345',
-						city: 'City A',
-					},
-				}
 				expect(newState.data.heirs[0]).to.deep.equal(expectedOrganisationHeir)
 			})
 
 			it('should update an organisation heir', () => {
 				// First, add an organisation heir to the state
-				let newState = lastWillReducer(
-					initialStateTesting,
-					addOrganisationHeir({
-						id: 'org_1',
-						name: 'Organisation A',
-						street: 'Street A',
-						houseNumber: '1',
-						zipCode: '12345',
-						city: 'City A',
-					})
-				)
+				let newState = lastWillReducer(initialStateTesting, addOrganisationHeir(organisationFormPayload))
 
 				// Then, update this heir
 				const action = updateOrganisationHeir({
@@ -266,80 +300,23 @@ describe('lastWillSlice', () => {
 
 		describe('persons', () => {
 			it('should add a person heir', () => {
-				const action = addPersonHeir({
-					id: 'person_1',
-					type: 'child',
-					name: 'Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-					moreInfos: [],
-					childRelationShip: 'childTogether',
-					ownChild: [],
-				})
-
+				const action = addPersonHeir(personFormPayload)
 				const newState = lastWillReducer(initialStateTesting, action)
+
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				const expectedPersonHeir: Person = {
-					id: 'person_1',
-					type: 'child',
-					name: 'Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					address: {
-						street: 'Street A',
-						houseNumber: '1',
-						zipCode: '12345',
-						city: 'City A',
-					},
-					isHandicapped: false,
-					isInsolvent: false,
-				}
 				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
 			})
 
 			it('should update a person heir', () => {
 				// First, add a person heir to the state
-				let newState = lastWillReducer(
-					initialStateTesting,
-					addPersonHeir({
-						id: 'person_1',
-						type: 'child',
-						name: 'Person A',
-						gender: 'male',
-						birthDate: '2000-01-01',
-						birthPlace: 'Place A',
-						street: 'Street A',
-						houseNumber: '1',
-						zipCode: '12345',
-						city: 'City A',
-						moreInfos: [],
-						childRelationShip: 'childFromOther',
-						ownChild: [],
-					})
-				)
+				let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
 
 				// Then, update this heir
 				const action = updatePersonHeir({
 					id: 'person_1',
 					type: 'child',
 					name: 'Updated Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-					moreInfos: [],
-					childRelationShip: 'childFromOther',
-					ownChild: [],
 				})
 				newState = lastWillReducer(newState, action)
 
@@ -347,39 +324,28 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs).to.have.lengthOf(1)
 				expect(newState.data.heirs[0]).to.deep.include({ id: 'person_1', name: 'Updated Person A' })
 			})
+			it('should perform PATCH and keep heirs fields which are not included in the payload', () => {
+				// First, add a person heir to the state
+				let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+
+				// Then, update this heir
+				const action = updatePersonHeir({
+					id: 'person_1',
+					type: 'child',
+					name: 'Updated Person A',
+				})
+				newState = lastWillReducer(newState, action)
+
+				// Assert that the heir has been updated
+				expect(newState.data.heirs[0]).to.deep.include({ birthPlace: expectedPersonHeir.birthPlace })
+				expect(newState.data.heirs[0]).to.deep.equal({ ...expectedPersonHeir, name: 'Updated Person A' })
+			})
 		})
 
 		it('should remove an heir', () => {
 			// First, add two heirs to the state
-			let newState = lastWillReducer(
-				initialStateTesting,
-				addPersonHeir({
-					id: 'person_1',
-					type: 'child',
-					name: 'Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-					moreInfos: [],
-					childRelationShip: 'childFromOther',
-					ownChild: [],
-				})
-			)
-			newState = lastWillReducer(
-				newState,
-				addOrganisationHeir({
-					id: 'org_1',
-					name: 'Organisation A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-				})
-			)
+			let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+			newState = lastWillReducer(newState, addOrganisationHeir(organisationFormPayload))
 
 			// Then, remove one heir
 			const action = removeHeir('person_1')
@@ -389,45 +355,15 @@ describe('lastWillSlice', () => {
 			expect(newState.data.heirs).to.have.lengthOf(1)
 			expect(newState.data.heirs[0]).to.deep.include({ id: 'org_1', name: 'Organisation A' })
 		})
+
 		describe('succession', () => {
 			it(`should set sucession when ${setSuccession} is called`, () => {
 				// Add heir
-				const action = addPersonHeir({
-					id: 'person_1',
-					type: 'child',
-					name: 'Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					street: 'Street A',
-					houseNumber: '1',
-					zipCode: '12345',
-					city: 'City A',
-					moreInfos: [],
-					childRelationShip: 'childTogether',
-					ownChild: [],
-				})
-
+				const action = addPersonHeir(personFormPayload)
 				let newState = lastWillReducer(initialStateTesting, action)
 
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				const expectedPersonHeir: Person = {
-					id: 'person_1',
-					type: 'child',
-					name: 'Person A',
-					gender: 'male',
-					birthDate: '2000-01-01',
-					birthPlace: 'Place A',
-					address: {
-						street: 'Street A',
-						houseNumber: '1',
-						zipCode: '12345',
-						city: 'City A',
-					},
-					isHandicapped: false,
-					isInsolvent: false,
-				}
 				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
 
 				// Add succession
@@ -449,6 +385,12 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs[0].percentage).to.equal(42)
 				expect(newState.data.heirs[0].itemIds).to.have.lengthOf(3)
 				expect(newState.data.heirs[0].itemIds).to.deep.equal(['1', '2', '3'])
+			})
+
+			it(`should set all succession's heirs when ${setSuccession} is called`, () => {
+				// // Add 2 heir
+				// const action = addPersonHeir(personFormPayload)
+				// let newState = lastWillReducer(initialStateTesting, action)
 			})
 		})
 	})
