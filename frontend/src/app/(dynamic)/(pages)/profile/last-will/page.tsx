@@ -1,5 +1,6 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -24,6 +25,7 @@ export type LastWillProfile = {
  * Profile My LastWills Page
  */
 const MyLastWills = () => {
+	const router = useRouter()
 	const [lastWills, setLastWills] = useState<LastWillProfile[]>([])
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
@@ -51,7 +53,11 @@ const MyLastWills = () => {
 
 					{/* Last Will List */}
 					{lastWills.map((lastWill) => (
-						<div key={lastWill.id} className="mb-2 rounded-2xl border-2 border-gray-200 px-6 py-5 md:mb-4">
+						<div
+							onClick={() => router.push(routes.lastWill.testator(lastWill.id))}
+							key={lastWill.id}
+							className="mb-2 cursor-pointer rounded-2xl border-2 border-gray-200 px-6 py-5 md:mb-4"
+						>
 							<div className="flex items-start justify-between md:items-center">
 								{/* Header */}
 								<div>
@@ -62,9 +68,21 @@ const MyLastWills = () => {
 
 								{/* Actions */}
 								<div className="flex gap-2">
-									<IconButton to={routes.lastWill.final(lastWill.id)} icon="draw" />
-									<IconButton to={routes.lastWill.testator(lastWill.id)} icon="edit" />
-									<IconButton onClick={() => setIsDeleteModalOpen(true)} icon="delete" />
+									<IconButton
+										onClick={(event) => {
+											event.stopPropagation()
+											router.push(routes.lastWill.final(lastWill.id))
+										}}
+										icon="draw"
+									/>
+									<IconButton icon="edit" />
+									<IconButton
+										onClick={(event) => {
+											event.stopPropagation()
+											setIsDeleteModalOpen(true)
+										}}
+										icon="delete"
+									/>
 								</div>
 							</div>
 
