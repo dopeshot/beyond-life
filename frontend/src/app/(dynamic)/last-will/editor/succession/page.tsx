@@ -1,7 +1,7 @@
 'use client'
 import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
@@ -10,8 +10,10 @@ import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
-import { useAppSelector } from '../../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { HeirSuccesion, HeirsTypes, SuccessionFormPayload } from '../../../../../types/lastWill'
+import { SidebarPages } from '../../../../../types/sidebar'
 
 const initialHeirs: HeirSuccesion[] = [
 	{
@@ -73,6 +75,8 @@ const Succession = () => {
 	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
+	const dispatch = useAppDispatch()
+
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
 	const NEXT_LINK = routes.lastWill.final(_id)
@@ -107,6 +111,11 @@ const Succession = () => {
 			)
 			.required(),
 	})
+
+	// Use to handle sidebar display state and progress
+	useEffect(() => {
+		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
+	}, [dispatch])
 
 	return (
 		<div className="container my-5 flex flex-1 flex-col">
