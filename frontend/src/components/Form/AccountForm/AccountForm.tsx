@@ -11,6 +11,7 @@ import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { Route } from '../../ButtonsAndLinks/Route/Route'
 import { PasswordInput } from '../PasswordInput/PasswordInput'
 import { TextInput } from '../TextInput/TextInput'
+import { PASSWORD_MIN_LENGTH_ERROR } from '../../../../content/validation'
 
 type AccountFormProps = {
 	type?: 'login' | 'register'
@@ -38,7 +39,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 
 	const accountValidationSchema: ObjectSchema<AccountDto> = object({
 		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
-		password: string().min(8, 'Passwort muss mindestens 8 Zeichen lang sein.').required('Password ist erforderlich.'),
+		password: string().min(8, PASSWORD_MIN_LENGTH_ERROR).required('Password ist erforderlich.'),
 	})
 
 	const onSubmitAccountForm = async (values: AccountDto) => {

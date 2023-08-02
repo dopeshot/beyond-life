@@ -1,0 +1,7 @@
+export const PASSWORD_MIN_LENGTH_ERROR = 'Das Passwort muss mindestens 8 Zeichen lang sein.'
+export const PASSWORD_REQUIRED_ERROR = 'Das Passwort ist erforderlich.'
+export const PASSWORD_MATCH_ERROR = 'Die Passwörter müssen übereinstimmen.'
+export const PASSWORD_CONFIRM_REQUIRED_ERROR = 'Bitte bestätigen Sie Ihr neues Passwort.'
+export const PASSWORD_NOT_OLD_ERROR = 'Das neue Passwort darf nicht dem alten Passwort entsprechen.'
+export const PASSWORD_ACTUAL_INSERT_ERROR = 'Bitte geben Sie Ihr aktuelles Passwort ein.'
+export const EMAIL_REQUIRED_ERROR = 'Die E-Mail-Adresse ist erforderlich.'
