@@ -258,7 +258,7 @@ export const createPerson = (personPayload: PersonFormPayload): Person => {
 export const patchPerson = (person: Person, personPayload: Partial<PersonFormPayload>): Person => {
 	const newPerson = {
 		...person,
-		id: personPayload.id || person.id,
+		id: person.id,
 		type: personPayload.type || person.type,
 		name: personPayload.name || person.name,
 		gender: personPayload.gender || person.gender,
