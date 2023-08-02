@@ -1,4 +1,4 @@
-import { LastWillState, MarriageFormPayload, Organisation, Person } from '../../types/lastWill'
+import { LastWillState, MarriageFormPayload, Organisation, Person, SuccessionFormPayload } from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import {
 	addOrganisationHeir,
@@ -10,6 +10,7 @@ import {
 	setInheritance,
 	setMarriage,
 	setProgressKeys,
+	setSuccession,
 	setTestator,
 	updateOrganisationHeir,
 	updatePersonHeir,
@@ -387,6 +388,68 @@ describe('lastWillSlice', () => {
 			// Assert that the heir has been removed
 			expect(newState.data.heirs).to.have.lengthOf(1)
 			expect(newState.data.heirs[0]).to.deep.include({ id: 'org_1', name: 'Organisation A' })
+		})
+		describe('succession', () => {
+			it(`should set sucession when ${setSuccession} is called`, () => {
+				// Add heir
+				const action = addPersonHeir({
+					id: 'person_1',
+					type: 'child',
+					name: 'Person A',
+					gender: 'male',
+					birthDate: '2000-01-01',
+					birthPlace: 'Place A',
+					street: 'Street A',
+					houseNumber: '1',
+					zipCode: '12345',
+					city: 'City A',
+					moreInfos: [],
+					childRelationShip: 'childTogether',
+					ownChild: [],
+				})
+
+				let newState = lastWillReducer(initialStateTesting, action)
+
+				// Assert that the new heir has been added to the heirs list
+				expect(newState.data.heirs).to.have.lengthOf(1)
+				const expectedPersonHeir: Person = {
+					id: 'person_1',
+					type: 'child',
+					name: 'Person A',
+					gender: 'male',
+					birthDate: '2000-01-01',
+					birthPlace: 'Place A',
+					address: {
+						street: 'Street A',
+						houseNumber: '1',
+						zipCode: '12345',
+						city: 'City A',
+					},
+					isHandicapped: false,
+					isInsolvent: false,
+				}
+				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
+
+				// Add succession
+				const formPayload: SuccessionFormPayload = {
+					heirs: [
+						{
+							id: 'person_1',
+							name: 'Person A',
+							type: 'child',
+							itemIds: ['1', '2', '3'],
+							percentage: 42,
+						},
+					],
+				}
+				const successionAction = setSuccession(formPayload)
+				newState = lastWillReducer(newState, successionAction)
+
+				// Assert that the succession has been added to the state
+				expect(newState.data.heirs[0].percentage).to.equal(42)
+				expect(newState.data.heirs[0].itemIds).to.have.lengthOf(3)
+				expect(newState.data.heirs[0].itemIds).to.deep.equal(['1', '2', '3'])
+			})
 		})
 	})
 })

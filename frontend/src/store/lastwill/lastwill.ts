@@ -332,7 +332,11 @@ const lastWillSlice = createSlice({
 			state.data.heirs.splice(heirIndex, 1)
 		},
 		setSuccession: (state, action: PayloadAction<SuccessionFormPayload>) => {
-			console.log('Global State TODO: ', action.payload)
+			action.payload.heirs.forEach((heir) => {
+				const stateHeir = state.data.heirs.find((stateHeir) => stateHeir.id === heir.id)!
+				stateHeir.percentage = heir.percentage
+				stateHeir.itemIds = heir.itemIds
+			})
 		},
 		resetLastWill: (state) => {
 			state.isLoading = false
@@ -373,5 +377,6 @@ export const {
 	updatePersonHeir,
 	addOrganisationHeir,
 	updateOrganisationHeir,
+	setSuccession,
 	removeHeir,
 } = lastWillSlice.actions
