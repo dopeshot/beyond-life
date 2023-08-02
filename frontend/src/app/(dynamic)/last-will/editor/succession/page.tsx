@@ -33,7 +33,7 @@ const initialHeirs: HeirSuccesion[] = [
 		type: 'father',
 		name: 'Max Mustermann',
 		percentage: 20,
-		itemIds: ['1', '2'],
+		itemIds: [],
 	},
 	{
 		id: '2',
