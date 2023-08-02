@@ -282,7 +282,7 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs[0]).to.deep.equal(expectedOrganisationHeir)
 			})
 
-			describe.only('patch organisation', () => {
+			describe('patch organisation', () => {
 				it('should update an organisation heir', () => {
 					// First, add an organisation heir to the state
 					let newState = lastWillReducer(initialStateTesting, addOrganisationHeir(organisationFormPayload))
