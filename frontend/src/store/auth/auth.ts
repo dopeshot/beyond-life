@@ -104,8 +104,10 @@ export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryC
 		if (!parsedSessionData) return null
 
 		// Return session data if access token is not expired
-		const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
-		if (bypassExpiryCheck && !sessionExpired) return parsedSessionData
+		if (!bypassExpiryCheck) {
+			const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
+			if (!sessionExpired) return parsedSessionData
+		}
 
 		// Update token
 		const tokens = await refreshTokenApi(parsedSessionData.refreshToken)
