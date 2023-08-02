@@ -6,6 +6,7 @@ import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { routes } from '../../../../../services/routes/routes'
+import { useAppSelector } from '../../../../../store/hooks'
 
 const textsPaymentSucceeded = {
 	header: 'Ihre Zahlung war erfolgreich!',
@@ -30,7 +31,9 @@ const OrderConfirmation = () => {
 	const paymentSucceeded = searchParams.get('success')
 	const boughtPlan = searchParams.get('plan')
 
-	const texts = paymentSucceeded == 'true' ? textsPaymentSucceeded : textsPaymentFailed
+	const texts = paymentSucceeded == '1' ? textsPaymentSucceeded : textsPaymentFailed
+
+	const _id = useAppSelector((state) => state.lastWill.data._id)
 
 	return (
 		<>
@@ -65,8 +68,8 @@ const OrderConfirmation = () => {
 						<p>Zahlungsstatus</p>
 						<p className="flex items-center gap-1 text-end">
 							<Icon
-								icon={paymentSucceeded == 'true' ? 'check_circle' : 'cancel'}
-								className={`text-base ${paymentSucceeded == 'true' ? 'text-yellow-400' : 'text-red-400'}`}
+								icon={paymentSucceeded == '1' ? 'check_circle' : 'cancel'}
+								className={`text-base ${paymentSucceeded == '1' ? 'text-yellow-400' : 'text-red-400'}`}
 							/>
 							{texts.paymentStatus}
 						</p>
@@ -74,8 +77,8 @@ const OrderConfirmation = () => {
 				</div>
 				<Route
 					datacy="button-submit"
-					href={paymentSucceeded == 'true' ? routes.lastWill.final('1') : routes.lastWill.buy()}
-					icon={paymentSucceeded == 'true' ? 'arrow_forward' : 'arrow_back'}
+					href={paymentSucceeded == '1' ? routes.lastWill.final(_id) : routes.lastWill.buy()}
+					icon={paymentSucceeded == '1' ? 'arrow_forward' : 'arrow_back'}
 					kind="primary"
 					className="mb-8"
 				>
