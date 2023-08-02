@@ -1,13 +1,29 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
+import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
+import {
+	alertContentChangeEmail,
+	alertContentChangePassword,
+	alertContentDeleteAccount,
+} from '../../../../../../content/profileSettings'
 import { validateMail } from '../../../../../../utils/validateMail'
+import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { useAppSelector } from '../../../../../store/hooks'
+import {
+	ChangeEmailResponse,
+	ChangePasswordResponse,
+	DeleteAccountResponse,
+	changeEmail,
+	changePassword,
+	deleteAccount,
+} from '../../../../../services/api/profile/profile'
+import { logout, refreshToken } from '../../../../../store/auth/auth'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 
 type EmailChange = {
 	newEmail: string
@@ -46,9 +62,11 @@ const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
 const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({
 	oldPassword: string().required('Bitte geben Sie Ihr aktuelles Passwort ein.'),
 	newPassword: string()
+		.notOneOf([ref('oldPassword')], 'Bitte geben Sie ein neues Passwort ein.')
 		.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.')
 		.required('Bitte geben Sie ein neues Passwort ein.'),
 	newPasswordConfirm: string()
+		.notOneOf([ref('oldPassword')], 'Bitte geben Sie ein neues Passwort ein.')
 		.oneOf([ref('newPassword')], 'Passwörter stimmen nicht überein.')
 		.required('Bitte bestätigen Sie Ihr neues Passwort.'),
 })
@@ -57,19 +75,49 @@ const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().sh
  * Account Settings Page
  */
 const AccountSettings = () => {
-	const onSubmitEmailChange = (values: EmailChange) => {
-		console.log(values)
-	}
+	// Local State
+	const [isLoadingChangeMail, setIsLoadingChangeMail] = useState(false)
+	const [changeMailStatus, setChangeMailStatus] = useState<ChangeEmailResponse | null>(null)
 
-	const onSubmitPasswordChange = (values: PasswordChange) => {
-		console.log(values)
-	}
+	const [isLoadingChangePassword, setIsLoadingChangePassword] = useState(false)
+	const [changePasswordStatus, setChangePasswordStatus] = useState<ChangePasswordResponse | null>(null)
 
-	const onSubmitAccountDelete = (values: AccountDelete) => {
-		console.log(values)
-	}
+	const [isLoadingDeleteAccount, setIsLoadingDeleteAccount] = useState(false)
+	const [deleteAccountStatus, setDeleteAccountStatus] = useState<DeleteAccountResponse | null>(null)
 
+	// Global State
 	const email = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.email)
+	const dispatch = useAppDispatch()
+
+	const onSubmitEmailChange = async (values: EmailChange) => {
+		setIsLoadingChangeMail(true)
+		const response = await changeEmail(values.newEmail)
+		setChangeMailStatus(response)
+		if (response === 'OK') {
+			await dispatch(refreshToken({ bypassExpiryCheck: true }))
+		}
+		setIsLoadingChangeMail(false)
+	}
+
+	const onSubmitPasswordChange = async (values: PasswordChange) => {
+		setIsLoadingChangePassword(true)
+		const response = await changePassword(values.oldPassword, values.newPassword)
+		setChangePasswordStatus(response)
+		if (response === 'OK') {
+			await dispatch(refreshToken({ bypassExpiryCheck: true }))
+		}
+		setIsLoadingChangePassword(false)
+	}
+
+	const onSubmitAccountDelete = async () => {
+		setIsLoadingDeleteAccount(true)
+		const response = await deleteAccount()
+		setDeleteAccountStatus(response)
+		if (response === 'OK') {
+			dispatch(logout())
+		}
+		setIsLoadingDeleteAccount(false)
+	}
 
 	return (
 		<div>
@@ -86,7 +134,7 @@ const AccountSettings = () => {
 					onSubmit={onSubmitEmailChange}
 				>
 					{({ dirty, isValid }: FormikProps<EmailChange>) => (
-						<Form>
+						<Form className="mb-2 md:mb-4">
 							<div className="lg:w-2/3">
 								<TextInput
 									name="newEmail"
@@ -96,13 +144,21 @@ const AccountSettings = () => {
 								/>
 							</div>
 							<div className="flex justify-end">
-								<Button type="submit" kind="secondary" disabled={!(dirty && isValid)}>
-									E-Mail senden
+								<Button
+									datacy="change-email-button"
+									type="submit"
+									kind="secondary"
+									icon="mail"
+									loading={isLoadingChangeMail}
+									disabled={!(dirty && isValid)}
+								>
+									E-Mail ändern
 								</Button>
 							</div>
 						</Form>
 					)}
 				</Formik>
+				{changeMailStatus && <Alert {...alertContentChangeEmail[changeMailStatus]} />}
 			</div>
 
 			{/* Change password */}
@@ -115,7 +171,7 @@ const AccountSettings = () => {
 					onSubmit={onSubmitPasswordChange}
 				>
 					{({ dirty, isValid }: FormikProps<PasswordChange>) => (
-						<Form>
+						<Form className="mb-2 md:mb-4">
 							<div className="lg:w-2/3">
 								<PasswordInput
 									name="oldPassword"
@@ -130,13 +186,21 @@ const AccountSettings = () => {
 								/>
 							</div>
 							<div className="flex justify-end">
-								<Button type="submit" kind="secondary" disabled={!(dirty && isValid)}>
+								<Button
+									datacy="change-password-button"
+									type="submit"
+									icon="lock_reset"
+									loading={isLoadingChangePassword}
+									kind="secondary"
+									disabled={!(dirty && isValid)}
+								>
 									Passwort ändern
 								</Button>
 							</div>
 						</Form>
 					)}
 				</Formik>
+				{changePasswordStatus && <Alert {...alertContentChangePassword[changePasswordStatus]} />}
 			</div>
 
 			{/* Delete Account */}
@@ -150,7 +214,7 @@ const AccountSettings = () => {
 
 				<Formik initialValues={initalAccountDeleteValues} onSubmit={onSubmitAccountDelete}>
 					{({ dirty, isValid }: FormikProps<AccountDelete>) => (
-						<Form>
+						<Form className="mb-2 md:mb-4">
 							<Checkbox
 								name="delete"
 								options={[
@@ -161,13 +225,21 @@ const AccountSettings = () => {
 								]}
 							/>
 							<div className="flex justify-end">
-								<Button type="submit" kind="secondary" disabled={!(dirty && isValid)}>
+								<Button
+									datacy="delete-account-button"
+									type="submit"
+									icon="delete"
+									loading={isLoadingDeleteAccount}
+									kind="secondary"
+									disabled={!(dirty && isValid)}
+								>
 									Account löschen
 								</Button>
 							</div>
 						</Form>
 					)}
 				</Formik>
+				{deleteAccountStatus && <Alert {...alertContentDeleteAccount[deleteAccountStatus]} />}
 			</div>
 		</div>
 	)

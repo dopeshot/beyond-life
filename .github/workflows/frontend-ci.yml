@@ -96,7 +96,7 @@ jobs:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
     # Dont run this when merging into stable 
-    if: ${{ github.ref != 'refs/heads/main' }}
+    if: github.ref != 'refs/heads/stable' || github.base_ref != 'refs/heads/stable'
     with:
       context: frontend
     secrets:
