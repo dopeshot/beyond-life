@@ -196,7 +196,6 @@ const Succession = () => {
 													key={item.id}
 													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 													onClick={() => {
-														if (selectedHeirIndex === undefined) return
 														let heirs = values.heirs
 
 														const newItemIds = heirs[selectedHeirIndex].itemIds.filter((itemId) => itemId !== item.id)
@@ -224,7 +223,6 @@ const Succession = () => {
 													key={item.id}
 													className="group -ml-2 flex justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 													onClick={() => {
-														if (selectedHeirIndex === undefined) return
 														let heirs = values.heirs
 
 														const newItemIds = heirs[selectedHeirIndex].itemIds.concat(item.id)
