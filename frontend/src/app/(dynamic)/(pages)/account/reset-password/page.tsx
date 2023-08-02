@@ -7,7 +7,7 @@ import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { forgotPassword } from '../../../../../services/api/resetPassword'
+import { forgotPassword } from '../../../../../services/api/auth/resetPassword'
 
 type ResetPasswordFormValues = {
 	email: string
