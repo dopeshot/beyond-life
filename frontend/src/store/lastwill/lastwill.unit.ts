@@ -324,6 +324,22 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs).to.have.lengthOf(1)
 				expect(newState.data.heirs[0]).to.deep.include({ id: 'person_1', name: 'Updated Person A' })
 			})
+			it('should perform PATCH and keep heirs fields which are not included in the payload', () => {
+				// First, add a person heir to the state
+				let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+
+				// Then, update this heir
+				const action = updatePersonHeir({
+					id: 'person_1',
+					type: 'child',
+					name: 'Updated Person A',
+				})
+				newState = lastWillReducer(newState, action)
+
+				// Assert that the heir has been updated
+				expect(newState.data.heirs[0]).to.deep.include({ birthPlace: expectedPersonHeir.birthPlace })
+				expect(newState.data.heirs[0]).to.deep.equal({ ...expectedPersonHeir, name: 'Updated Person A' })
+			})
 		})
 
 		it('should remove an heir', () => {

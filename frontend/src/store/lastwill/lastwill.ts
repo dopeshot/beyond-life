@@ -255,6 +255,29 @@ export const createPerson = (personPayload: PersonFormPayload): Person => {
 	}
 }
 
+export const patchPerson = (person: Person, personPayload: Partial<PersonFormPayload>): Person => {
+	const newPerson = {
+		...person,
+		id: personPayload.id || person.id,
+		type: personPayload.type || person.type,
+		name: personPayload.name || person.name,
+		gender: personPayload.gender || person.gender,
+		birthDate: personPayload.birthDate || person.birthDate,
+		birthPlace: personPayload.birthPlace || person.birthPlace,
+		isHandicapped: personPayload.moreInfos ? personPayload.moreInfos.includes('isHandicapped') : person.isHandicapped,
+		isInsolvent: personPayload.moreInfos ? personPayload.moreInfos.includes('isInsolvent') : person.isInsolvent,
+		address: {
+			...person.address,
+			street: personPayload.street || person.address?.street,
+			houseNumber: personPayload.houseNumber || person.address?.houseNumber,
+			zipCode: personPayload.zipCode || person.address?.zipCode,
+			city: personPayload.city || person.address?.city,
+		},
+	}
+
+	return newPerson
+}
+
 export const createOrganisation = (organisationPayload: OrganisationFormPayload): Organisation => {
 	return {
 		id: organisationPayload.id,
@@ -315,8 +338,9 @@ const lastWillSlice = createSlice({
 		},
 		updatePersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
-			const person = createPerson(action.payload)
-			state.data.heirs[heirIndex] = person
+			const oldPerson = state.data.heirs[heirIndex] as Person
+			const patchedPerson = patchPerson(oldPerson, action.payload)
+			state.data.heirs[heirIndex] = patchedPerson
 		},
 		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const organisation = createOrganisation(action.payload)
