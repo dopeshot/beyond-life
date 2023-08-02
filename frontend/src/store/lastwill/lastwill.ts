@@ -217,23 +217,10 @@ export const createTestator = (testatorPayload: TestatorFormPayload): Testator =
 }
 
 export const createMarriage = (marriagePayload: MarriageFormPayload): Person => {
-	return {
+	return createPerson({
+		...(marriagePayload as PersonFormPayload),
 		type: 'partner',
-		id: nanoid(),
-		name: marriagePayload.name,
-		gender: marriagePayload.gender,
-		birthDate: marriagePayload.birthDate,
-		birthPlace: marriagePayload.birthPlace,
-		isHandicapped: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isHandicapped') : false,
-		isInsolvent: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isInsolvent') : false,
-
-		address: {
-			street: marriagePayload.street,
-			houseNumber: marriagePayload.houseNumber,
-			zipCode: marriagePayload.zipCode,
-			city: marriagePayload.city,
-		},
-	}
+	})
 }
 
 export const createPerson = (personPayload: PersonFormPayload): Person => {
