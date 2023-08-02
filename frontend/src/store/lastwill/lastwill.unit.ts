@@ -1,7 +1,6 @@
-import { MarriageFormPayload, Organisation, Person } from '../../types/lastWill'
+import { LastWillState, MarriageFormPayload, Organisation, Person } from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import {
-	LastWillState,
 	addOrganisationHeir,
 	addPersonHeir,
 	createTestator,
