@@ -1,4 +1,3 @@
-import { nanoid } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export type LastWillProfileResponse = {
@@ -15,24 +14,8 @@ export type LastWillProfileResponse = {
  */
 export const getLastWills = async (): Promise<LastWillProfileResponse[]> => {
 	try {
-		await axios.get<LastWillProfileResponse[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill`)
-		// TODO: remove mock
-		return [
-			{
-				_id: nanoid(),
-				progressKeys: ['testator', 'heirs', 'final'],
-				testator: 'Lisa Müller',
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-			{
-				_id: nanoid(),
-				progressKeys: ['testator', 'marriage', 'heirs', 'inheritance', 'succession', 'final'],
-				testator: 'Lisa Müller',
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			},
-		]
+		const response = await axios.get<LastWillProfileResponse[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill`)
+		return response.data
 	} catch (error) {
 		console.error(error)
 		return []

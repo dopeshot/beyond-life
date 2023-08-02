@@ -20,8 +20,8 @@ export const prepareLastWills = (lastWills: LastWillProfileResponse[]): LastWill
 		return {
 			id: lastWill._id,
 			title: lastWill.testator !== '' ? lastWill.testator : 'Testament',
-			createdAt: lastWill.createdAt,
-			updatedAt: lastWill.updatedAt,
+			createdAt: new Date(lastWill.createdAt),
+			updatedAt: new Date(lastWill.updatedAt),
 			steps: steps,
 		}
 	})

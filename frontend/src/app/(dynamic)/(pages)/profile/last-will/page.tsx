@@ -47,10 +47,15 @@ const MyLastWills = () => {
 	return (
 		<div>
 			{lastWills.length === 0 ? (
-				<div className="mb-10 mt-10 flex flex-col items-center justify-center md:mb-0 md:mt-20">
+				<div
+					datacy="last-will-empty-state"
+					className="mb-10 mt-10 flex flex-col items-center justify-center md:mb-0 md:mt-20"
+				>
 					<Headline level={3}>Erstellen Sie ein neues Testament</Headline>
 					<p className="mb-2 text-gray-500 md:mb-4">Später können Sie hier ihr erstelltes Testament bearbeiten.</p>
-					<Route href={routes.lastWill.start}>Neues Testament erstellen</Route>
+					<Route datacy="create-new-last-will-button" href={routes.lastWill.start}>
+						Neues Testament erstellen
+					</Route>
 				</div>
 			) : (
 				<>
@@ -61,6 +66,7 @@ const MyLastWills = () => {
 					{/* Last Will List */}
 					{lastWills.map((lastWill) => (
 						<div
+							datacy="last-will-element"
 							onClick={() => router.push(routes.lastWill.testator(lastWill.id))}
 							key={lastWill.id}
 							className="mb-2 cursor-pointer rounded-2xl border-2 border-gray-200 px-6 py-5 md:mb-4"
@@ -76,6 +82,7 @@ const MyLastWills = () => {
 								{/* Actions */}
 								<div className="flex gap-2">
 									<IconButton
+										datacy="last-will-copy"
 										onClick={(event) => {
 											event.stopPropagation()
 											router.push(routes.lastWill.final(lastWill.id))
@@ -84,6 +91,7 @@ const MyLastWills = () => {
 									/>
 									<IconButton icon="edit" />
 									<IconButton
+										datacy="last-will-delete"
 										onClick={(event) => {
 											event.stopPropagation()
 											setSelectedLastWill(lastWill)
@@ -132,6 +140,7 @@ const MyLastWills = () => {
 			{/* Delete Modal */}
 			{isDeleteModalOpen && (
 				<Modal
+					datacy="last-will-delete-modal"
 					open={isDeleteModalOpen}
 					headline={`Testament löschen?`}
 					onClose={() => {
