@@ -14,6 +14,7 @@ import {
 	createTestator,
 	initialState,
 	lastWillReducer,
+	patchPerson,
 	removeHeir,
 	setInheritance,
 	setMarriage,
@@ -324,21 +325,56 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs).to.have.lengthOf(1)
 				expect(newState.data.heirs[0]).to.deep.include({ id: 'person_1', name: 'Updated Person A' })
 			})
-			it('should perform PATCH and keep heirs fields which are not included in the payload', () => {
-				// First, add a person heir to the state
-				let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
 
-				// Then, update this heir
-				const action = updatePersonHeir({
-					id: 'person_1',
-					type: 'child',
-					name: 'Updated Person A',
+			describe('patch person', () => {
+				it('should patch person with new fields (reducer)', () => {
+					// First, add a person heir to the state
+					let newState = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+
+					// Then, update this heir
+					const action = updatePersonHeir({
+						id: 'person_1',
+						type: 'child',
+						name: 'Updated Person A',
+					})
+					newState = lastWillReducer(newState, action)
+
+					// Assert that the heir has been updated
+					expect(newState.data.heirs[0]).to.deep.include({ birthPlace: expectedPersonHeir.birthPlace })
+					expect(newState.data.heirs[0]).to.deep.equal({ ...expectedPersonHeir, name: 'Updated Person A' })
 				})
-				newState = lastWillReducer(newState, action)
 
-				// Assert that the heir has been updated
-				expect(newState.data.heirs[0]).to.deep.include({ birthPlace: expectedPersonHeir.birthPlace })
-				expect(newState.data.heirs[0]).to.deep.equal({ ...expectedPersonHeir, name: 'Updated Person A' })
+				it('should patch person with new fields (service)', () => {
+					const payload: Partial<PersonFormPayload> = {
+						type: 'father',
+						name: 'Updated Person A',
+						moreInfos: ['isHandicapped'],
+						street: 'Side Street',
+						houseNumber: '20',
+					}
+
+					const patchedPerson = patchPerson(expectedPersonHeir, payload)
+					expect(patchedPerson).to.deep.equal({
+						...expectedPersonHeir,
+						type: 'father',
+						name: 'Updated Person A',
+						address: {
+							...expectedPersonHeir.address,
+							street: 'Side Street',
+							houseNumber: '20',
+						},
+						isHandicapped: true,
+					})
+				})
+
+				it('should not patch person id (service)', () => {
+					const payload: Partial<PersonFormPayload> = {
+						id: 'person_2',
+					}
+
+					const patchedPerson = patchPerson(expectedPersonHeir, payload)
+					expect(patchedPerson).to.deep.equal(expectedPersonHeir)
+				})
 			})
 		})
 
