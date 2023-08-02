@@ -16,6 +16,12 @@ type ChangePasswordFormValues = {
 	newPasswordConfirm: string
 }
 
+// Formik
+const initalFormValues: ChangePasswordFormValues = {
+	newPassword: '',
+	newPasswordConfirm: '',
+}
+
 /**
  * Change Password Page.
  */
@@ -30,12 +36,6 @@ const ChangePassword = () => {
 	// Render 404 if no token is provided
 	if (!token) {
 		return notFound()
-	}
-
-	// Formik
-	const initalFormValues: ChangePasswordFormValues = {
-		newPassword: '',
-		newPasswordConfirm: '',
 	}
 
 	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({

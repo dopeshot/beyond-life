@@ -13,6 +13,11 @@ type ResetPasswordFormValues = {
 	email: string
 }
 
+// Formik
+const initalFormValues: ResetPasswordFormValues = {
+	email: '',
+}
+
 /**
  * Reset Password Page with enter email Form.
  */
@@ -20,11 +25,6 @@ const ResetPassword = () => {
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
 	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
-
-	// Formik
-	const initalFormValues: ResetPasswordFormValues = {
-		email: '',
-	}
 
 	const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
 		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
