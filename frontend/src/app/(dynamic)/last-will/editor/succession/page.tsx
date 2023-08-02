@@ -15,51 +15,6 @@ import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { HeirSuccesion, HeirsTypes, SuccessionFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-const initialHeirs: HeirSuccesion[] = [
-	{
-		id: '1',
-		type: 'father',
-		name: 'Max Mustermann',
-		percentage: 20,
-		itemIds: [],
-	},
-	{
-		id: '2',
-		name: 'Anna Mustermann',
-		type: 'mother',
-		percentage: 20,
-		itemIds: [],
-	},
-	{
-		id: '3',
-		name: 'Max Mustermann',
-		type: 'father',
-		percentage: 20,
-		itemIds: [],
-	},
-	{
-		id: '4',
-		name: 'Anna Mustermann',
-		type: 'mother',
-		percentage: 20,
-		itemIds: [],
-	},
-	{
-		id: '5',
-		name: 'Max Mustermann',
-		type: 'father',
-		percentage: 80,
-		itemIds: [],
-	},
-	{
-		id: '6',
-		name: 'Anna Mustermann',
-		type: 'mother',
-		percentage: 20,
-		itemIds: [],
-	},
-]
-
 /**
  * Succession Page
  */
@@ -71,7 +26,7 @@ const Succession = () => {
 
 	// Global State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
-	//const heirs = useAppSelector((state) => state.lastWill.data.heirs)
+	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
@@ -83,7 +38,19 @@ const Succession = () => {
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
-		heirs: initialHeirs,
+		heirs: heirs.map((heir) => {
+			const heirWithoutPercentage = heirs.filter((heir) => !heir.percentage)
+			const sumOfPercantege = heirs.reduce((acc, curr) => acc + (curr.percentage || 0), 0)
+			const percentageLeftPerHeir = Math.floor((100 - sumOfPercantege) / (heirWithoutPercentage.length || 1))
+
+			return {
+				id: heir.id,
+				type: heir.type,
+				name: heir.name ?? '',
+				percentage: heir.percentage ?? percentageLeftPerHeir,
+				itemIds: heir.itemIds ?? [],
+			}
+		}),
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
