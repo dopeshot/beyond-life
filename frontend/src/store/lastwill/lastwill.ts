@@ -1,43 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import {
-	FinancialAsset,
 	InheritanceFormPayload,
-	Item,
+	LastWillState,
 	MarriageFormPayload,
-	MatrimonialProperty,
 	Organisation,
 	OrganisationFormPayload,
 	Person,
 	PersonFormPayload,
+	SuccessionFormPayload,
 	Testator,
 	TestatorFormPayload,
 } from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import { RootState } from '../store'
-
-export type LastWillState = {
-	// DO NOT SYNC THIS WITH BACKEND
-	isLoading: boolean
-	isInitialized: boolean
-
-	// SYNC THIS WITH BACKEND
-	data: {
-		_id: string
-		common: {
-			isBerlinWill?: boolean
-			isPartnerGermanCitizenship?: boolean
-			matrimonialProperty?: MatrimonialProperty
-		}
-		progressKeys: SidebarPages[]
-
-		// parts
-		// TODO: ensure types are correct
-		testator: Testator
-		heirs: (Person | Organisation)[]
-		financialAssets: FinancialAsset[]
-		items: Item[]
-	}
-}
 
 export const initialState: LastWillState = {
 	isLoading: false,
@@ -355,6 +330,9 @@ const lastWillSlice = createSlice({
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
 			state.data.heirs.splice(heirIndex, 1)
+		},
+		setSuccession: (state, action: PayloadAction<SuccessionFormPayload>) => {
+			console.log('Global State TODO: ', action.payload)
 		},
 		resetLastWill: (state) => {
 			state.isLoading = false

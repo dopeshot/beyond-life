@@ -11,21 +11,7 @@ import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppSelector } from '../../../../../store/hooks'
-import { HeirsTypes } from '../../../../../types/lastWill'
-
-type HeirSuccesion = {
-	id: string
-	type: HeirsTypes
-	name: string
-
-	// Succession
-	percentage: number
-	itemIds: string[]
-}
-
-type SuccessionFormPayload = {
-	heirs: HeirSuccesion[]
-}
+import { HeirSuccesion, HeirsTypes, SuccessionFormPayload } from '../../../../../types/lastWill'
 
 const initialHeirs: HeirSuccesion[] = [
 	{

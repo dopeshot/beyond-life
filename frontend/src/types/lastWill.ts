@@ -1,5 +1,7 @@
 // Form types
 
+import { SidebarPages } from './sidebar'
+
 type BasicPersonPayload = {
 	name?: string
 	gender?: Gender
@@ -32,30 +34,15 @@ export type OrganisationFormPayload = {
 	name?: string
 } & Address
 
-// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
+export type HeirSuccesion = {
+	id: string
+	type: HeirsTypes
+	name: string
+} & Succession
+
 export type SuccessionFormPayload = {
-	persons: SuccessionPerson[]
-	organisations: SuccessionOrganisation[]
-	partner: SuccessionPartner
+	heirs: HeirSuccesion[]
 }
-
-export type SuccessionPerson = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionPartner = {
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionOrganisation = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
-// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
 
 export type InheritanceFormPayload = {
 	financialAssets: FinancialAsset[]
@@ -63,6 +50,30 @@ export type InheritanceFormPayload = {
 }
 
 // Store
+export type LastWillState = {
+	// DO NOT SYNC THIS WITH BACKEND
+	isLoading: boolean
+	isInitialized: boolean
+
+	// SYNC THIS WITH BACKEND
+	data: {
+		_id: string
+		common: {
+			isBerlinWill?: boolean
+			isPartnerGermanCitizenship?: boolean
+			matrimonialProperty?: MatrimonialProperty
+		}
+		progressKeys: SidebarPages[]
+
+		// parts
+		// TODO: ensure types are correct
+		testator: Testator
+		heirs: (Person | Organisation)[]
+		financialAssets: FinancialAsset[]
+		items: Item[]
+	}
+}
+
 export type Testator = {
 	relationshipStatus?: RelationshipStatus
 } & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'child'>
@@ -117,6 +128,11 @@ type Address = {
 	houseNumber?: string
 	zipCode?: string
 	city?: string
+}
+
+type Succession = {
+	percentage: number
+	itemIds: string[]
 }
 
 export type HeirsTypes = PersonType | OrganisationType
