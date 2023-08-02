@@ -1,12 +1,15 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
+import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
-import { getLastWills } from '../../../../../services/api/profile/lastWill'
+import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { deleteLastWillById, getLastWills } from '../../../../../services/api/profile/lastWill'
 import { prepareLastWills } from '../../../../../services/profile/prepareLastWills'
 import { routes } from '../../../../../services/routes/routes'
 
@@ -27,15 +30,19 @@ export type LastWillProfile = {
 const MyLastWills = () => {
 	const router = useRouter()
 	const [lastWills, setLastWills] = useState<LastWillProfile[]>([])
+	const [isLoadingDelete, setIsLoadingDelete] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [selectedLastWill, setSelectedLastWill] = useState<LastWillProfile | null>(null)
+	const [deleteError, setDeleteError] = useState<AlertProps | null>(null)
+
+	const fetchLastWills = useCallback(async () => {
+		const lastWills = await getLastWills()
+		setLastWills(prepareLastWills(lastWills))
+	}, [])
 
 	useEffect(() => {
-		const fetchLastWills = async () => {
-			const lastWills = await getLastWills()
-			setLastWills(prepareLastWills(lastWills))
-		}
 		fetchLastWills()
-	}, [])
+	}, [fetchLastWills])
 
 	return (
 		<div>
@@ -79,6 +86,7 @@ const MyLastWills = () => {
 									<IconButton
 										onClick={(event) => {
 											event.stopPropagation()
+											setSelectedLastWill(lastWill)
 											setIsDeleteModalOpen(true)
 										}}
 										icon="delete"
@@ -119,6 +127,64 @@ const MyLastWills = () => {
 						</div>
 					))}
 				</>
+			)}
+
+			{/* Delete Modal */}
+			{isDeleteModalOpen && (
+				<Modal
+					open={isDeleteModalOpen}
+					headline={`Testament löschen?`}
+					onClose={() => {
+						setSelectedLastWill(null)
+						setIsDeleteModalOpen(false)
+					}}
+				>
+					<p className="mb-2 md:mb-4">
+						Wenn Sie jetzt löschen klicken wird das Testament von {selectedLastWill?.title} für immer gelöscht.
+					</p>
+
+					{deleteError && <Alert {...deleteError} />}
+
+					{/* Buttons */}
+					<div className="mt-5 flex flex-col items-center justify-between md:flex-row">
+						{/* Cancel Button */}
+						<Button
+							datacy="button-cancel"
+							type="button"
+							onClick={() => setIsDeleteModalOpen(false)}
+							className="order-1 md:order-none"
+							kind="tertiary"
+						>
+							Abbrechen
+						</Button>
+
+						{/* Submit Button */}
+						<Button
+							datacy="button-delete"
+							onClick={async () => {
+								setIsLoadingDelete(true)
+								const response = await deleteLastWillById(selectedLastWill?.id || '')
+								if (response === 'ERROR') {
+									setDeleteError({
+										color: 'red',
+										icon: 'error',
+										headline: 'Fehler beim Löschen',
+										description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+									})
+								} else if (response === 'OK') {
+									await fetchLastWills()
+									setIsDeleteModalOpen(false)
+								}
+								setIsLoadingDelete(false)
+							}}
+							loading={isLoadingDelete}
+							className="mb-4 md:mb-0"
+							icon="delete"
+						>
+							Löschen
+						</Button>
+					</div>
+				</Modal>
 			)}
 		</div>
 	)
