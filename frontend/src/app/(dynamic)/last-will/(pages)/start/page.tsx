@@ -17,16 +17,16 @@ type StartLegal = {
 	germanRightOfInheritance?: boolean
 }
 
+const initialFormValues: StartLegal = {
+	germanCitizenship: undefined,
+	germanRightOfInheritance: undefined,
+}
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
-
-	const initalFormValues: StartLegal = {
-		germanCitizenship: undefined,
-		germanRightOfInheritance: undefined,
-	}
 
 	const validationSchema: ObjectSchema<StartLegal> = object().shape({
 		germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
@@ -56,7 +56,7 @@ const Start = () => {
 			{/* Left Image with Text end */}
 
 			{/* Form Fields */}
-			<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
 					<Form className="flex h-full flex-col lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}

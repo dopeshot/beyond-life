@@ -14,7 +14,7 @@ type ResetPasswordFormValues = {
 }
 
 // Formik
-const initalFormValues: ResetPasswordFormValues = {
+const initialFormValues: ResetPasswordFormValues = {
 	email: '',
 }
 
@@ -66,7 +66,7 @@ const ResetPassword = () => {
 			</header>
 
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
-				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+				<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
 						<Form className="mb-4">
 							<TextInput name="email" labelText="E-Mail" placeholder="Geben Sie Ihre E-Mail Adresse ein." />
