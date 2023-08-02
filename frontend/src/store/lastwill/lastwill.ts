@@ -279,6 +279,27 @@ export const createOrganisation = (organisationPayload: OrganisationFormPayload)
 	}
 }
 
+export const patchOrganisation = (
+	organisation: Organisation,
+	organisationPayload: Partial<OrganisationFormPayload>
+): Organisation => {
+	const newOrganisation: Organisation = {
+		...organisation,
+		id: organisation.id,
+		type: 'organisation',
+		name: organisationPayload.name || organisation.name,
+		address: {
+			...organisation.address,
+			street: organisationPayload.street || organisation.address?.street,
+			houseNumber: organisationPayload.houseNumber || organisation.address?.houseNumber,
+			zipCode: organisationPayload.zipCode || organisation.address?.zipCode,
+			city: organisationPayload.city || organisation.address?.city,
+		},
+	}
+
+	return newOrganisation
+}
+
 const lastWillSlice = createSlice({
 	name: 'lastWill',
 	initialState,
@@ -335,8 +356,9 @@ const lastWillSlice = createSlice({
 		},
 		updateOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
-			const organisation = createOrganisation(action.payload)
-			state.data.heirs[heirIndex] = organisation
+			const oldOrganisation = state.data.heirs[heirIndex] as Organisation
+			const patchedOrganisation = patchOrganisation(oldOrganisation, action.payload)
+			state.data.heirs[heirIndex] = patchedOrganisation
 		},
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
