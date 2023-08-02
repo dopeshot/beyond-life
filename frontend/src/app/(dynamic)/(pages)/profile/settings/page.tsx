@@ -128,7 +128,7 @@ const AccountSettings = () => {
 		const response = await changeEmail(values.newEmail)
 		setChangeMailStatus(response)
 		if (response === 'OK') {
-			await dispatch(refreshToken({ shouldCheckExpired: false }))
+			await dispatch(refreshToken({ bypassExpiryCheck: true }))
 		}
 		setIsLoadingChangeMail(false)
 	}
@@ -138,7 +138,7 @@ const AccountSettings = () => {
 		const response = await changePassword(values.oldPassword, values.newPassword)
 		setChangePasswordStatus(response)
 		if (response === 'OK') {
-			await dispatch(refreshToken({ shouldCheckExpired: false }))
+			await dispatch(refreshToken({ bypassExpiryCheck: true }))
 		}
 		setIsLoadingChangePassword(false)
 	}
