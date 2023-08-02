@@ -97,94 +97,104 @@ const Testator = () => {
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, routes.lastWill.marriage('1'))}
 			>
-				{({ values, dirty }: FormikProps<TestatorFormPayload>) => (
-					<Form className="flex flex-1 flex-col md:mb-0">
-						<div className="flex w-full flex-1 flex-col">
-							<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
-								{/*Personal Data*/}
-								<Headline level={3} size="md:text-base" className="">
-									Persönliche Daten
-								</Headline>
+				{({ values, dirty }: FormikProps<TestatorFormPayload>) => {
+					// This blocks the user to leave the page but not the internal navigation
+					addEventListener('beforeunload', (event) => {
+						if (dirty) {
+							event.preventDefault()
+							event.returnValue = ''
+						}
+					})
 
-								<div className="2xl:w-2/3">
-									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
-										{/* Name */}
-										<div className="col-span-2">
-											<TextInput
-												name="name"
-												inputRequired
-												labelText="Vor- und Nachname"
-												placeholder="Vor- und Nachname"
-												autoComplete="name"
-											/>
-										</div>
+					return (
+						<Form className="flex flex-1 flex-col md:mb-0">
+							<div className="flex w-full flex-1 flex-col">
+								<div className="rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-4">
+									{/*Personal Data*/}
+									<Headline level={3} size="md:text-base" className="">
+										Persönliche Daten
+									</Headline>
 
-										{/* Gender and Birth */}
-										<div className="grid gap-x-3 md:grid-cols-2">
-											<FormDropdown
-												name="gender"
-												labelText="Geschlecht"
-												placeholder="Geschlecht"
-												hasMargin
-												options={genderOptions}
-											/>
-											<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
+									<div className="2xl:w-2/3">
+										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
+											{/* Name */}
+											<div className="col-span-2">
+												<TextInput
+													name="name"
+													inputRequired
+													labelText="Vor- und Nachname"
+													placeholder="Vor- und Nachname"
+													autoComplete="name"
+												/>
+											</div>
+
+											{/* Gender and Birth */}
+											<div className="grid gap-x-3 md:grid-cols-2">
+												<FormDropdown
+													name="gender"
+													labelText="Geschlecht"
+													placeholder="Geschlecht"
+													hasMargin
+													options={genderOptions}
+												/>
+												<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
+											</div>
+											<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 										</div>
-										<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
-									</div>
-									{/* Adress */}
-									<div className="grid gap-x-3 md:grid-cols-4">
-										<div className="md:col-start-1 md:col-end-3">
-											<TextInput
-												name="street"
-												inputRequired
-												labelText="Straße"
-												placeholder="Straße"
-												autoComplete="street-address"
-											/>
-										</div>
-										<div className="md:col-start-3 md:col-end-4">
-											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
-										</div>
-										<div className="md:col-start-1 md:col-end-2">
-											<TextInput
-												name="zipCode"
-												inputRequired
-												labelText="Postleitzahl"
-												placeholder="Postleitzahl"
-												autoComplete="postal-code"
-											/>
-										</div>
-										<div className="md:col-start-2 md:col-end-4">
-											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+										{/* Adress */}
+										<div className="grid gap-x-3 md:grid-cols-4">
+											<div className="md:col-start-1 md:col-end-3">
+												<TextInput
+													name="street"
+													inputRequired
+													labelText="Straße"
+													placeholder="Straße"
+													autoComplete="street-address"
+												/>
+											</div>
+											<div className="md:col-start-3 md:col-end-4">
+												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+											</div>
+											<div className="md:col-start-1 md:col-end-2">
+												<TextInput
+													name="zipCode"
+													inputRequired
+													labelText="Postleitzahl"
+													placeholder="Postleitzahl"
+													autoComplete="postal-code"
+												/>
+											</div>
+											<div className="md:col-start-2 md:col-end-4">
+												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+											</div>
 										</div>
 									</div>
 								</div>
+
+								{/* More Infos */}
+								<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
+									<Checkbox
+										name="moreInfos"
+										labelText="Weitere relevante Infos"
+										inputRequired
+										helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
+										options={testatorMoreInfosOptions}
+									/>
+								</div>
+								{/* Personal Data end */}
 							</div>
 
-							{/* More Infos */}
-							<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
-								<Checkbox
-									name="moreInfos"
-									labelText="Weitere relevante Infos"
-									inputRequired
-									helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
-									options={testatorMoreInfosOptions}
-								/>
-							</div>
-							{/* Personal Data end */}
-						</div>
-
-						{/* Form Steps Buttons */}
-						<FormStepsButtons
-							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
-							loading={isLoading}
-							dirty={dirty}
-							previousHref={PREVIOUS_LINK}
-							nextHref={NEXT_LINK}
-						/>
-					</Form>
-				)}
+							{/* Form Steps Buttons */}
+							<FormStepsButtons
+								previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
+								loading={isLoading}
+								dirty={dirty}
+								previousHref={PREVIOUS_LINK}
+								nextHref={NEXT_LINK}
+							/>
+						</Form>
+					)
+				}}
 			</Formik>
 		</div>
 	)
