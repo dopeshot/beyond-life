@@ -3,18 +3,21 @@ import { useEffect } from 'react'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { LastWill } from '../../../../../components/LastWill/LastWill'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
+import { useAppDispatch } from '../../../../../store/hooks'
+import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 /**
  * Final Page for copy last will.
  */
 const Final = () => {
-	const { services } = useLastWillContext()
+	// Global State
+	const dispatch = useAppDispatch()
 
+	// Use to handle sidebar display state and progress
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.FINAL })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.FINAL))
+	}, [dispatch])
 
 	return (
 		<div className="container mb-12 mt-5 flex flex-1 flex-col">

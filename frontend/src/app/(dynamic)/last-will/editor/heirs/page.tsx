@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { getPersonAddHeirsOptions, heirsTypes } from '../../../../../../content/dropdownOptions'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -9,9 +8,11 @@ import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { determineHeirRelationship, getPersonAddHeirsOptions } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { HeirsTypes, Organisation, Person } from '../../../../../store/last-will/heirs/state'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { removeHeir, sendLastWillState, setProgressKeys } from '../../../../../store/lastwill/lastwill'
+import { HeirsTypes, Organisation, Person, PersonType } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 /**
@@ -19,10 +20,14 @@ import { SidebarPages } from '../../../../../types/sidebar'
  */
 const Heirs = () => {
 	// Global State
-	const { lastWill, services } = useLastWillContext()
+	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 
-	const PREVIOUS_LINK = routes.lastWill.marriage(lastWill.common.id)
-	const NEXT_LINK = routes.lastWill.inheritance(lastWill.common.id)
+	const dispatch = useAppDispatch()
+
+	const PREVIOUS_LINK = routes.lastWill.marriage(_id)
+	const NEXT_LINK = routes.lastWill.inheritance(_id)
 
 	// Local State
 	const [isPersonModalOpen, setIsPersonModalOpen] = useState(false)
@@ -34,8 +39,8 @@ const Heirs = () => {
 
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.HEIRS })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.HEIRS))
+	}, [dispatch])
 
 	// Functions
 	const setDropdownOption = (type: HeirsTypes) => {
@@ -48,11 +53,15 @@ const Heirs = () => {
 	const personAddHeirsOptions = getPersonAddHeirsOptions(setDropdownOption)
 
 	const deleteHeirs = async () => {
-		if (selectedPerson !== null) {
-			await services.deletePerson(selectedPerson)
-		} else if (selectedOrganisation !== null) {
-			await services.deleteOrganisation(selectedOrganisation)
-		}
+		const isPerson = selectedPerson !== null
+		const isOrganisation = selectedOrganisation !== null
+
+		const id = isPerson ? selectedPerson.id : isOrganisation ? selectedOrganisation.id : null
+
+		if (id === null) return
+
+		dispatch(removeHeir(id))
+		await dispatch(sendLastWillState())
 
 		setIsDeleteModalOpen(false)
 	}
@@ -62,84 +71,64 @@ const Heirs = () => {
 			<Headline className="hidden lg:block">Erben</Headline>
 
 			{/* Overview all heirs */}
-			{lastWill.heirs.persons.length === 0 && lastWill.heirs.organisations.length === 0 ? (
+			{heirs.length === 0 ? (
 				<p className="mb-2 text-gray-600 md:mb-4">
 					Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
 				</p>
 			) : (
 				<table className="mb-4 mt-2 w-full table-fixed border-collapse md:mt-8">
 					<thead>
+						{/* Table Header */}
 						<tr>
-							{/* Table Header */}
-							<th className="w-auto pr-4 text-left">Name</th>
-							<th className="w-22 truncate px-4 text-left sm:w-48">Wer/Was</th>
-							<th className="w-28 px-4 text-left">Actions</th>
+							<th className="w-10/12"></th>
+							<th className="w-2/12"></th>
 						</tr>
 					</thead>
 					<tbody>
 						{/* Persons and Organisations */}
-						{lastWill.heirs.persons.map((person) => (
-							<tr datacy={`persons-row-${person.firstName}`} key={person.id} className="border-b border-gray-300">
-								<td className="table-cell pr-4">
-									<div className="flex md:flex-row">
-										<p className="mr-1 whitespace-normal">{`${person.firstName} ${person.lastName}`}</p>
-									</div>
-								</td>
-								<td className="truncate p-4">{heirsTypes[person.heirsType].displayType}</td>
-								<td className="p-4">
-									<div className="flex">
-										<IconButton
-											datacy={`persons-editbutton-${person.firstName}`}
-											onClick={() => {
-												setSelectedPerson(person)
-												setIsPersonModalOpen(true)
-											}}
-											icon="edit"
-										/>
-										<IconButton
-											datacy={`persons-deletebutton-${person.firstName}`}
-											onClick={() => {
-												setSelectedPerson(person)
-												setIsDeleteModalOpen(true)
-											}}
-											icon="delete"
-										/>
-									</div>
-								</td>
-							</tr>
-						))}
-						{lastWill.heirs.organisations.map((organisation) => (
-							<tr
-								datacy={`organisations-row-${organisation.name}`}
-								key={organisation.id}
-								className="border-b border-gray-300"
-							>
-								<td className="pr-4">
-									<p className="mr-1 truncate">{organisation.name}</p>
-								</td>
-								<td className="truncate p-4">Organisation</td>
-								<td className="p-4">
-									<div className="flex">
-										<IconButton
-											datacy={`organisations-editbutton-${organisation.name}`}
-											onClick={() => {
-												setSelectedOrganisation(organisation)
-												setIsOrganisationModalOpen(true)
-											}}
-											icon="edit"
-										/>
-										<IconButton
-											datacy={`organisations-deletebutton-${organisation.name}`}
-											onClick={() => {
-												setSelectedOrganisation(organisation)
-												setIsDeleteModalOpen(true)
-											}}
-											icon="delete"
-										/>
-									</div>
-								</td>
-							</tr>
-						))}
+						{heirs.map((heir) => {
+							const isOrganisation = heir.type === 'organisation'
+							const isPerson = heir.type !== 'organisation'
+							const colType = isOrganisation ? 'organisations' : 'persons'
+
+							return (
+								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
+									<td className="pr-4" title={heir.name}>
+										<p className="truncate font-bold">{heir.name}</p>
+										<p>{determineHeirRelationship(heir)}</p>
+									</td>
+									<td className="p-4">
+										<div className="flex justify-end">
+											<IconButton
+												datacy={`${colType}-editbutton-${heir.name}`}
+												onClick={() => {
+													if (isPerson) {
+														setSelectedPerson(heir)
+														setIsPersonModalOpen(true)
+													} else if (isOrganisation) {
+														setSelectedOrganisation(heir)
+														setIsOrganisationModalOpen(true)
+													}
+												}}
+												icon="edit"
+											/>
+											<IconButton
+												datacy={`${colType}-deletebutton-${heir.name}`}
+												onClick={() => {
+													if (isPerson) {
+														setSelectedPerson(heir)
+													} else if (isOrganisation) {
+														setSelectedOrganisation(heir)
+													}
+													setIsDeleteModalOpen(true)
+												}}
+												icon="delete"
+											/>
+										</div>
+									</td>
+								</tr>
+							)
+						})}
 					</tbody>
 				</table>
 			)}
@@ -153,7 +142,7 @@ const Heirs = () => {
 						setIsPersonModalOpen(false)
 					}}
 					editPerson={selectedPerson}
-					heirsType={heirsType}
+					type={heirsType as PersonType}
 				/>
 			)}
 			{isOrganisationModalOpen && (
@@ -170,7 +159,7 @@ const Heirs = () => {
 				open={isDeleteModalOpen}
 				headline={`${
 					selectedPerson !== null
-						? selectedPerson.firstName ?? '' + selectedPerson.lastName ?? ''
+						? selectedPerson.name ?? ''
 						: selectedOrganisation !== null
 						? selectedOrganisation.name
 						: ''
@@ -200,7 +189,7 @@ const Heirs = () => {
 					<Button
 						datacy="button-delete"
 						onClick={deleteHeirs}
-						loading={lastWill.common.isLoading}
+						loading={isLoading}
 						className="mb-4 md:mb-0"
 						icon="delete"
 					>
@@ -222,13 +211,7 @@ const Heirs = () => {
 			</DropdownButton>
 
 			{/* Form Steps Buttons */}
-			<FormStepsButtons
-				loading={lastWill.common.isLoading}
-				dirty={false}
-				previousOnClick={async () => console.log('TODO')}
-				previousHref={PREVIOUS_LINK}
-				nextHref={NEXT_LINK}
-			/>
+			<FormStepsButtons dirty={false} previousHref={PREVIOUS_LINK} nextHref={NEXT_LINK} />
 		</div>
 	)
 }

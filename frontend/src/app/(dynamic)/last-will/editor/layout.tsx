@@ -7,8 +7,7 @@ import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
 import { MobileSidebar } from '../../../../components/Navbar/Sidebar/MobileSidebar/MobileSidebar'
 import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { LastWillContextProvider } from '../../../../store/last-will/LastWillContext'
-import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill'
+import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()
@@ -32,23 +31,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<>
 			{!isInitialized ? (
-				<p>init...</p>
+				// TODO: Add loading screen
+				<p>Laden...</p>
 			) : (
-				<LastWillContextProvider>
-					<div className={`flex h-screen min-h-screen w-full overflow-y-scroll sm:flex-col lg:flex-row`}>
-						<Sidebar path={path} />
-						<div className="flex h-fit min-h-screen flex-grow flex-col">
-							<Navbar background={false}>
-								<div className="mr-5 lg:hidden">
-									<NavbarLogo />
-								</div>
-							</Navbar>
-							<MobileSidebar path={path} />
-							{children}
-							<GlobalFooter />
-						</div>
+				<div className={`flex h-screen min-h-screen w-full overflow-y-scroll sm:flex-col lg:flex-row`}>
+					<Sidebar path={path} />
+					<div className="flex h-fit min-h-screen flex-grow flex-col">
+						<Navbar background={false}>
+							<div className="mr-5 lg:hidden">
+								<NavbarLogo />
+							</div>
+						</Navbar>
+						<MobileSidebar path={path} />
+						{children}
+						<GlobalFooter />
 					</div>
-				</LastWillContextProvider>
+				</div>
 			)}
 		</>
 	)

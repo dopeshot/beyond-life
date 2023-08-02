@@ -19,19 +19,11 @@ jobs:
       context: backend
 
   audit:
-    runs-on: ubuntu-latest
-    # Only run on PRs against stable and on stable itself
-    if: github.ref == 'stable' || github.base_ref == 'stable'
-    defaults:
-      run:
-        shell: bash
-        working-directory: backend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable'
+    uses: ./.github/workflows/audit.template.yml
+    with:
+      context: backend
 
-      - name: audit
-        run: npm audit --omit=dev
 
   tests:
     runs-on: ubuntu-latest
@@ -74,7 +66,7 @@ jobs:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
     # Dont run this when merging into stable => Bot cannot commit to main
-    if: github.ref != 'stable' || github.base_ref != 'stable'
+    if: github.ref != 'refs/heads/stable' || github.base_ref != 'refs/heads/stable'
     with:
       context: backend
     secrets:
@@ -87,3 +79,15 @@ jobs:
     uses: ./.github/workflows/docker-build-and-push.template.yml
     with:
       context: backend
+
+  redeploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/stable'
+    needs: [docker-build-and-push, audit]
+    runs-on: ubuntu-latest
+    env:
+      deploy_secret: ${{ secrets.BACKEND_REDEPLOY_WEBHOOK_SECRET }}
+      webhook: ${{ secrets.BACKEND_REDEPLOY_WEBHOOK }}
+    steps:
+      - name: trigger redeploy
+        run: |
+          curl -X GET -H "x-deploy-secret: $deploy_secret" $webhook

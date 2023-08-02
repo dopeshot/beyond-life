@@ -1,5 +1,5 @@
 import axios, { isAxiosError } from 'axios'
-import { ApiErrorResponse } from '../../types/api'
+import { ApiErrorResponse } from '../../../types/api'
 
 /**
  * Verify email request.
@@ -19,6 +19,20 @@ export const verifyMail = async (token: string) => {
 		) {
 			return 'ALREADY_VERIFIED'
 		}
+		return 'ERROR'
+	}
+}
+
+/**
+ * Request a new verify mail.
+ * @returns ok or error
+ */
+export const requestVerifyMail = async () => {
+	try {
+		await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/request-verify-email`)
+
+		return 'OK'
+	} catch (error) {
 		return 'ERROR'
 	}
 }

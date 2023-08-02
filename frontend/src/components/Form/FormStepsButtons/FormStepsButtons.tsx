@@ -3,7 +3,7 @@ import { Route } from '../../ButtonsAndLinks/Route/Route'
 
 export type FormStepsButtonsProps = {
 	/** Called when click back button. Do the same as submit. */
-	previousOnClick: () => Promise<void>
+	previousOnClick?: () => Promise<void>
 	/** Page link to before current page. */
 	previousHref: string
 	/** Page link to after current page. */
