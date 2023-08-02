@@ -127,3 +127,24 @@ type Gender = 'male' | 'female' | 'divers'
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
+
+// Final Last Will
+
+export type GeneratedLastWill = {
+	testatorHeader: TestatorHeader
+	locationHeader: string
+	title: string
+	initialText: string
+	paragraphs: LastWillParagraph[]
+}
+
+export type TestatorHeader = {
+	fullName: string
+	AddressStreet: string
+	AddressCity: string
+}
+
+export type LastWillParagraph = {
+	title: string
+	contents: string[]
+}
