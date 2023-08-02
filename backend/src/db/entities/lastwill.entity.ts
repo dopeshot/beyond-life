@@ -126,7 +126,14 @@ const swaggerExampleObject: LastWill = {
     { id: '33333333', where: 'PayPal', amount: 420.69, currency: 'EUR' },
     { id: '44444444', where: 'Bank', amount: 1234.56, currency: 'USD' },
   ],
-  progressKeys: [SidebarPages.TESTATOR, SidebarPages.HEIRS, SidebarPages.FINAL],
+  progressKeys: [
+    SidebarPages.TESTATOR,
+    SidebarPages.MARRIAGE,
+    SidebarPages.HEIRS,
+    SidebarPages.INHERITANCE,
+    SidebarPages.SUCCESSION,
+    SidebarPages.FINAL,
+  ],
 }
 
 // This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
