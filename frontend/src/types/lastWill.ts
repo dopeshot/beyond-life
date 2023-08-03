@@ -64,9 +64,6 @@ export type LastWillState = {
 			matrimonialProperty?: MatrimonialProperty
 		}
 		progressKeys: SidebarPages[]
-
-		// parts
-		// TODO: ensure types are correct
 		testator: Testator
 		heirs: (Person | Organisation)[]
 		financialAssets: FinancialAsset[]
