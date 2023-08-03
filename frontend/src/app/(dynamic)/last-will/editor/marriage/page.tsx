@@ -56,7 +56,7 @@ const Marriage = () => {
 		isHandicapped: false,
 		isInsolvent: false,
 	}
-	const initalFormValues: MarriageFormPayload = {
+	const initialFormValues: MarriageFormPayload = {
 		...formPartner,
 		...address,
 		moreInfos: [
@@ -110,7 +110,7 @@ const Marriage = () => {
 			<Headline className="hidden lg:block">Familienstand</Headline>
 
 			<Formik
-				initialValues={initalFormValues}
+				initialValues={initialFormValues}
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>

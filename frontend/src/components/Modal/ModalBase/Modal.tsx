@@ -11,12 +11,14 @@ export type ModalProps = {
 	headline: string
 	/** Modal Content. */
 	children: React.ReactNode
+	/** For testing. */
+	datacy?: string
 }
 
 /**
  * Creates a modal with headline and "x-button".
  */
-export const Modal: React.FC<ModalProps> = ({ open, onClose, headline, children }) => {
+export const Modal: React.FC<ModalProps> = ({ datacy, open, onClose, headline, children }) => {
 	const modalRef = useRef<HTMLDialogElement>(null)
 
 	// Open/Close Modal
@@ -37,13 +39,13 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, headline, children 
 	)
 
 	return (
-		<dialog className="rounded-lg" ref={modalRef} onClick={onClick} onClose={onClose}>
+		<dialog datacy={datacy} className="rounded-lg" ref={modalRef} onClick={onClick} onClose={onClose}>
 			<div className="px-3 pb-2 pt-1 md:px-6 md:pb-4 md:pt-2">
 				<div className="flex items-center justify-between">
 					<Headline level={3} hasMargin={false} className="mr-2 py-3 md:mr-4">
 						{headline}
 					</Headline>
-					<IconButton icon="close" onClick={onClose} className="-mr-3" />
+					<IconButton datacy="modal-close-button" icon="close" onClick={onClose} className="-mr-3" />
 				</div>
 				{children}
 			</div>

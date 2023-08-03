@@ -7,6 +7,15 @@ import {
 	alertContentChangePassword,
 	alertContentDeleteAccount,
 } from '../../../../../../content/profileSettings'
+import {
+	EMAIL_REQUIRED_ERROR,
+	PASSWORD_ACTUAL_INSERT_ERROR,
+	PASSWORD_CONFIRM_REQUIRED_ERROR,
+	PASSWORD_MATCH_ERROR,
+	PASSWORD_MIN_LENGTH_ERROR,
+	PASSWORD_NOT_OLD_ERROR,
+	PASSWORD_REQUIRED_ERROR,
+} from '../../../../../../content/validation'
 import { validateMail } from '../../../../../../utils/validateMail'
 import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
@@ -39,7 +48,7 @@ type AccountDelete = {
 	delete: [boolean?]
 }
 
-const initalEmailChangeValues: EmailChange = {
+const initialEmailChangeValues: EmailChange = {
 	newEmail: '',
 }
 
@@ -49,26 +58,26 @@ const initialPasswordChangeValues: PasswordChange = {
 	newPasswordConfirm: '',
 }
 
-const initalAccountDeleteValues: AccountDelete = {
+const initialAccountDeleteValues: AccountDelete = {
 	delete: [],
 }
 
 const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
 	newEmail: string()
 		.matches(validateMail.regex, validateMail.message)
-		.required('Bitte geben Sie eine E-Mail Adresse ein.'),
+		.required(EMAIL_REQUIRED_ERROR),
 })
 
 const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({
-	oldPassword: string().required('Bitte geben Sie Ihr aktuelles Passwort ein.'),
+	oldPassword: string().required(PASSWORD_ACTUAL_INSERT_ERROR),
 	newPassword: string()
-		.notOneOf([ref('oldPassword')], 'Bitte geben Sie ein neues Passwort ein.')
-		.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.')
-		.required('Bitte geben Sie ein neues Passwort ein.'),
+		.notOneOf([ref('oldPassword')], PASSWORD_NOT_OLD_ERROR)
+		.min(8, PASSWORD_MIN_LENGTH_ERROR)
+		.required(PASSWORD_REQUIRED_ERROR),
 	newPasswordConfirm: string()
-		.notOneOf([ref('oldPassword')], 'Bitte geben Sie ein neues Passwort ein.')
-		.oneOf([ref('newPassword')], 'Passwörter stimmen nicht überein.')
-		.required('Bitte bestätigen Sie Ihr neues Passwort.'),
+		.notOneOf([ref('oldPassword')], PASSWORD_NOT_OLD_ERROR)
+		.oneOf([ref('newPassword')], PASSWORD_MATCH_ERROR)
+		.required(PASSWORD_CONFIRM_REQUIRED_ERROR),
 })
 
 /**
@@ -129,7 +138,7 @@ const AccountSettings = () => {
 				</p>
 
 				<Formik
-					initialValues={initalEmailChangeValues}
+					initialValues={initialEmailChangeValues}
 					validationSchema={validationSchemaEmailChange}
 					onSubmit={onSubmitEmailChange}
 				>
@@ -212,7 +221,7 @@ const AccountSettings = () => {
 					unwiderruflich gelöscht.
 				</p>
 
-				<Formik initialValues={initalAccountDeleteValues} onSubmit={onSubmitAccountDelete}>
+				<Formik initialValues={initialAccountDeleteValues} onSubmit={onSubmitAccountDelete}>
 					{({ dirty, isValid }: FormikProps<AccountDelete>) => (
 						<Form className="mb-2 md:mb-4">
 							<Checkbox
