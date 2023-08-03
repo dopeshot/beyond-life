@@ -1,19 +1,19 @@
+import { LastWillState } from './lastWill'
+
 export type ApiErrorResponse = {
 	error: string
 	message: string
 	statusCode: number
 }
 
-export type ApiCreateResponse = {
+export type ApiCreateLastWillResponse = {
 	createdAt: string
 	updatedAt: string
-	_id: string
 	accountId: string
-	testator: {
-		name: string
-	}
-	heirs: []
-	items: []
-	financialAssets: []
-	progressKeys: []
-}
+} & LastWillState['data']
+
+export type ApiGetLastWillResponse = {
+	createdAt: string
+	updatedAt: string
+	accountId: string
+} & LastWillState['data']

@@ -1,4 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
+import { getLastWillById } from '../../services/api/lastwill/getLastWillById'
 import {
 	InheritanceFormPayload,
 	LastWillState,
@@ -57,151 +58,12 @@ export const sendLastWillState = createAsyncThunk<LastWillState['data'], undefin
 export const fetchLastWillState = createAsyncThunk<LastWillState['data'], { lastWillId: string }>(
 	'lastWill/fetchLastWillState',
 	async ({ lastWillId }) => {
-		const data = await new Promise<LastWillState['data']>((resolve) =>
-			setTimeout(() => {
-				const mockedData: LastWillState['data'] = {
-					_id: lastWillId,
-					common: {},
-					testator: {
-						name: 'GL_STORE_TESTATOR_EXAMPLE_NAME',
-						gender: 'male',
-						birthDate: '1999-01-01',
-						birthPlace: 'STUTTGART',
-						isHandicapped: false,
-						isInsolvent: true,
-						address: {
-							city: 'GL_STORE_TESTATOR_CITY',
-							houseNumber: 'GL_STORE_TESTATOR_HOUSENUMBER',
-							zipCode: 'GL_STORE_TESTATOR_ZIPCODE',
-							street: 'GL_STORE_TESTATOR_STREET',
-						},
-						relationshipStatus: 'married',
-					},
-					progressKeys: [],
-					financialAssets: [
-						{
-							id: nanoid(),
-							where: 'Meine Bank',
-							amount: 100,
-							currency: '€',
-						},
-						{
-							id: nanoid(),
-							where: 'Clash of Clans',
-							amount: 500,
-							currency: 'COINS',
-						},
-					],
-					items: [
-						{
-							id: nanoid(),
-							name: 'Mein Fahrrad',
-							description: 'Bitte damit fahren!',
-						},
-						{
-							id: nanoid(),
-							name: 'Mein geerbtes Kunstwerk',
-							description: '',
-						},
-					],
-					heirs: [
-						{
-							type: 'partner',
-							id: nanoid(),
-							name: 'GL_STORE_PARTNER_EXAMPLE_NAME',
-							gender: 'male',
-							birthDate: '1999-01-01',
-							birthPlace: 'STUTTGART',
-							isHandicapped: true,
-							isInsolvent: true,
-							address: {
-								city: 'GL_STORE_PARTNER_CITY',
-								houseNumber: 'GL_STORE_PARTNER_HOUSENUMBER',
-								zipCode: 'GL_STORE_PARTNER_ZIPCODE',
-								street: 'GL_STORE_PARTNER_STREET',
-							},
-						},
-						{
-							type: 'mother',
-							id: nanoid(),
-							name: 'GL_STORE_MOTHER_EXAMPLE_NAME',
-							gender: 'female',
-							birthDate: '1999-01-01',
-							birthPlace: 'STUTTGART',
-							isHandicapped: false,
-							isInsolvent: false,
-							address: {
-								city: 'GL_STORE_MOTHER_CITY',
-								houseNumber: 'GL_STORE_MOTHER_HOUSENUMBER',
-								zipCode: 'GL_STORE_MOTHER_ZIPCODE',
-								street: 'GL_STORE_MOTHER_STREET',
-							},
-						},
-						{
-							type: 'father',
-							id: nanoid(),
-							name: 'GL_STORE_FATHER_EXAMPLE_NAME',
-							gender: 'male',
-							birthDate: '1999-01-01',
-							birthPlace: 'STUTTGART',
-							isHandicapped: false,
-							isInsolvent: false,
-							address: {
-								city: 'GL_STORE_FATHER_CITY',
-								houseNumber: 'GL_STORE_FATHER_HOUSENUMBER',
-								zipCode: 'GL_STORE_FATHER_ZIPCODE',
-								street: 'GL_STORE_FATHER_STREET',
-							},
-						},
-						{
-							type: 'child',
-							id: nanoid(),
-							name: 'GL_STORE_CHILD_EXAMPLE_NAME',
-							gender: 'male',
-							birthDate: '1999-01-01',
-							birthPlace: 'STUTTGART',
-							isHandicapped: false,
-							isInsolvent: false,
-							address: {
-								city: 'GL_STORE_CHILD_CITY',
-								houseNumber: 'GL_STORE_CHILD_HOUSENUMBER',
-								zipCode: 'GL_STORE_CHILD_ZIPCODE',
-								street: 'GL_STORE_CHILD_STREET',
-							},
-						},
-						{
-							type: 'siblings',
-							id: nanoid(),
-							name: 'GL_STORE_SIBLINGS_EXAMPLE_NAME',
-							gender: 'male',
-							birthDate: '1999-01-01',
-							birthPlace: 'STUTTGART',
-							isHandicapped: false,
-							isInsolvent: false,
-							address: {
-								city: 'GL_STORE_SIBLINGS_CITY',
-								houseNumber: 'GL_STORE_SIBLINGS_HOUSENUMBER',
-								zipCode: 'GL_STORE_SIBLINGS_ZIPCODE',
-								street: 'GL_STORE_SIBLINGS_STREET',
-							},
-						},
-						{
-							type: 'organisation',
-							id: nanoid(),
-							name: 'GL_STORE_ORGANISATION_EXAMPLE_NAME',
-							address: {
-								city: 'GL_STORE_ORGANISATION_CITY',
-								houseNumber: 'GL_STORE_ORGANISATION_HOUSENUMBER',
-								zipCode: 'GL_STORE_ORGANISATION_ZIPCODE',
-								street: 'GL_STORE_ORGANISATION_STREET',
-							},
-						},
-					],
-				}
-				return resolve(mockedData)
-			}, 10)
-		)
-		return data
+		const apiLastWillResponse = await getLastWillById(lastWillId)
+		if (!apiLastWillResponse) {
+			throw new Error('Could not fetch last will')
+		}
+		const { createdAt, updatedAt, accountId, ...lastWill } = apiLastWillResponse
+		return lastWill
 	}
 )
 
