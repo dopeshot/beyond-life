@@ -31,10 +31,21 @@ const Plans = () => {
 
 				{/* Buttons */}
 				<div className="flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:justify-between">
-					<Route icon="login" href={routes.account.login({ funnel: true })} kind="tertiary" className="w-auto">
-						Login
+					<Route
+						datacy="login-route"
+						icon="login"
+						href={routes.account.login({ funnel: true })}
+						kind="tertiary"
+						className="w-auto"
+					>
+						Einloggen
 					</Route>
-					<Route icon="arrow_forward" href={routes.account.register({ funnel: true })} className="sm:w-max">
+					<Route
+						datacy="register-route"
+						icon="arrow_forward"
+						href={routes.account.register({ funnel: true })}
+						className="sm:w-max"
+					>
 						Account erstellen
 					</Route>
 				</div>
