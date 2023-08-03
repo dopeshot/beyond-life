@@ -50,9 +50,10 @@ export const Step: React.FC<StepProps> = ({ title, description, image, currentSt
 					<IconButton
 						disabled={currentStep === 1}
 						dimOpacityWhenDisabled
-						onClick={() =>
-							setCurrentStep((currentStep) => (currentStep > 1 ? (currentStep = currentStep - 1) : currentStep))
-						}
+						onClick={() => {
+							const nextStep = currentStep > 1 ? (currentStep = currentStep - 1) : currentStep
+							setCurrentStep(nextStep)
+						}}
 						icon="chevron_left"
 						color="black"
 						backgroundColor="yellow"
@@ -63,11 +64,10 @@ export const Step: React.FC<StepProps> = ({ title, description, image, currentSt
 					<IconButton
 						disabled={currentStep > stepsCount}
 						dimOpacityWhenDisabled
-						onClick={() =>
-							setCurrentStep((currentStep) =>
-								currentStep <= stepsCount ? (currentStep = currentStep + 1) : currentStep
-							)
-						}
+						onClick={() => {
+							const nextStep = currentStep <= stepsCount ? (currentStep = currentStep + 1) : currentStep
+							setCurrentStep(nextStep)
+						}}
 						icon="chevron_right"
 						color="black"
 						backgroundColor="yellow"
