@@ -32,6 +32,7 @@ describe('ProfileSideBarLink', () => {
 					Profile
 				</ProfileSideBarLink>
 			)
+			cy.datacy('profile-sidebar-link').click()
 			cy.datacy('profile-sidebar-link').should('have.attr', 'href', '')
 		})
 	})

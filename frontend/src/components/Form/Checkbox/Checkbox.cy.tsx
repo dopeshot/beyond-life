@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik'
 import 'material-symbols'
-import 'tailwindcss/tailwind.css'
+import '../../../app/globals.css'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const data: CheckboxProps = {
