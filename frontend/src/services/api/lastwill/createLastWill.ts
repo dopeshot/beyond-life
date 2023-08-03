@@ -5,7 +5,7 @@ export const createLastWill = async () => {
 	try {
 		const response = await axios.post<ApiCreateLastWillResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill`, {
 			testator: {
-				name: 'ISSUE',
+				name: '',
 			},
 			common: {},
 			progressKeys: [],
