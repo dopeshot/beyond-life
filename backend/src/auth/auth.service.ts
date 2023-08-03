@@ -170,10 +170,12 @@ export class AuthService {
     const user = await this.userService.findOneByEmail(mail)
 
     if (!user) {
+      this.logger.warn('Verify for user that does not exist was attempted')
       throw new NotFoundException('No user with that email address exists')
     }
 
     if (user.hasVerifiedEmail) {
+      this.logger.debug('Skipped verify as users email is already verified')
       throw new ConflictException('This user already verified their email')
     }
 
@@ -201,12 +203,14 @@ export class AuthService {
 
     // Dont do anything here, throwing an error is more confusing than helpful
     if (user.hasVerifiedEmail) {
+      this.logger.debug('Verify mail was not send as user is already verified')
       return
     }
 
     try {
       await this.sendEmailVerify(user)
     } catch (error) {
+      this.logger.error(`An error ocured while sending the email ${error}`)
       throw new ServiceUnavailableException(
         'Mail could not be send as of now. Please try again later',
       )
@@ -265,6 +269,9 @@ export class AuthService {
     const user = await this.userService.findOneById(id)
     // This SHOULD never happen => Therefore internal server error
     if (!user) {
+      this.logger.warn(
+        `Password update was attempted for user that does not exist`,
+      )
       throw new InternalServerErrorException(
         'This user does not seem to exist anymore',
       )

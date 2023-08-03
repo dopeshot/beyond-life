@@ -33,9 +33,12 @@ export class PaymentsService {
         'This user does not exist and cannot make a purchase', // How unfortunate, we always want money
       )
 
-    if (plan === user.paymentPlan)
+    if (plan === user.paymentPlan) {
+      this.logger.log(`Attempt for rebuy of current plan`)
       throw new ForbiddenException('You cannot rebuy a plan') // Actually I would love to allow it if it means more money
+    }
     if (paymentPlans[plan] < paymentPlans[user.paymentPlan]) {
+      this.logger.log(`Attempt for downgrad plan seen! Thats illegal!!!`)
       throw new ForbiddenException('You cannot downgrade your plan') // Actually I would love to allow it if it means more money
     }
 
@@ -51,6 +54,7 @@ export class PaymentsService {
 
     let customer = user.stripeCustomerId
     if (!customer) {
+      this.logger.log(`Creating stripe customer for user`)
       customer = (await this.stripeService.customer_create(user.email)).id
       await this.userService.updateUserStripeCustomerId(
         user._id.toString(),

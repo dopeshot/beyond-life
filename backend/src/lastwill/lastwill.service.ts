@@ -52,10 +52,12 @@ export class LastWillService {
     const plan = user.paymentPlan
     const allowedWills = Math.abs(paymentPlans[plan])
 
-    if (lastWillCount >= allowedWills)
+    if (lastWillCount >= allowedWills) {
+      this.logger.log(`Last will creation exceeding plan limits was attempted`)
       throw new ForbiddenException(
         `Exceeding allowed last wills: ${allowedWills}`,
       )
+    }
 
     return await this.lastwillDbService.createOne(createLastWillDto, userId)
   }
