@@ -40,10 +40,10 @@ const Marriage = () => {
 		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
 	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
-	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common.isBerlinWill) ?? false
+	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common?.isBerlinWill) ?? false
 	const isPartnerGermanCitizenship =
-		useAppSelector((state) => state.lastWill.data.common.isPartnerGermanCitizenship) ?? false
-	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common.matrimonialProperty)
+		useAppSelector((state) => state.lastWill.data.common?.isPartnerGermanCitizenship) ?? false
+	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common?.matrimonialProperty)
 	const relationshipStatus = useAppSelector((state) => state.lastWill.data.testator.relationshipStatus)
 
 	const dispatch = useAppDispatch()
@@ -52,13 +52,20 @@ const Marriage = () => {
 	const NEXT_LINK = routes.lastWill.heirs(_id)
 
 	// Formik
-	const { isHandicapped, isInsolvent, address, ...formPartner } = partner ?? {
+	const { isHandicapped, isInsolvent, address, name, gender, birthDate, birthPlace } = partner ?? {
 		isHandicapped: false,
 		isInsolvent: false,
 	}
+
 	const initialFormValues: MarriageFormPayload = {
-		...formPartner,
-		...address,
+		name: name ?? '',
+		gender: gender ?? undefined,
+		birthDate: birthDate ?? '',
+		birthPlace: birthPlace ?? '',
+		street: address ? address.street ?? '' : '',
+		houseNumber: address ? address.houseNumber ?? '' : '',
+		zipCode: address ? address.zipCode ?? '' : '',
+		city: address ? address.city ?? '' : '',
 		moreInfos: [
 			...(isHandicapped ? ['isHandicapped'] : []),
 			...(isInsolvent ? ['isInsolvent'] : []),
@@ -91,8 +98,11 @@ const Marriage = () => {
 			// Update marriage global state only if values have changed
 			dispatch(setMarriage(values))
 
-			await dispatch(sendLastWillState())
-
+			const response = await dispatch(sendLastWillState())
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
 			// Redirect to previous or next page
 			router.push(href)
 		} catch (error) {
@@ -181,7 +191,7 @@ const Marriage = () => {
 
 									<div className="2xl:w-2/3">
 										{/* Name */}
-										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
+										<div className="mb-2 grid gap-x-3 md:mb-4 md:grid-cols-2">
 											<TextInput
 												name="name"
 												inputRequired
@@ -206,7 +216,7 @@ const Marriage = () => {
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
-											<div className="w-2/3 md:w-3/4">
+											<div className="mb-2 w-2/3 md:mb-4 md:w-3/4">
 												<TextInput
 													name="street"
 													inputRequired
@@ -215,13 +225,13 @@ const Marriage = () => {
 													autoComplete="street-address"
 												/>
 											</div>
-											<div className="w-1/3 md:w-1/4">
+											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
 												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
 										<div className="flex gap-x-3">
-											<div className="w-1/3 md:w-1/4">
+											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
 												<TextInput
 													name="zipCode"
 													inputRequired

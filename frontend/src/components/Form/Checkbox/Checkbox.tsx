@@ -61,7 +61,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 				>
 					<Field type="checkbox" className="mr-2" name={name} value={`${option.value}`} />
 					{option.icon && <Icon icon={option.icon} />}
-					<span>{option.label}</span>
+					<span className="mr-4">{option.label}</span>
 					{option.helperText && (
 						<div className="flex">
 							<IconButton

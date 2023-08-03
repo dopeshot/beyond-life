@@ -1,13 +1,14 @@
 describe('Last Will Testator Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/testator')
+		cy.mockGetLastWillById()
+		cy.login({
+			route: '/last-will/editor/testator?id=1',
+		})
+		cy.wait('@mockGetLastWillById')
 	})
 
 	describe('Basic Flow', () => {
 		it('shoud fill out testator data and redirect to /last-will/editor/marriage after submit', () => {
-			// TODO: Remove when find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			// Personal Data
 			cy.datacy('textinput-name-input').type('Name')
 
@@ -29,7 +30,9 @@ describe('Last Will Testator Page', () => {
 			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
 
 			// Submit
+			cy.mockUpdateLastWill()
 			cy.datacy('button-next-submit').click()
+			cy.wait('@mockUpdateLastWill')
 			cy.url().should('include', 'last-will/editor/marriage?id=1')
 		})
 	})
