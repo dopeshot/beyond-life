@@ -1,23 +1,23 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { getConnectionToken } from '@m8a/nestjs-typegoose'
 import {
   INestApplication,
   ServiceUnavailableException,
   ValidationPipe,
 } from '@nestjs/common'
-import { MockConfigService } from './helpers/config-service.helper'
-import { MailScheduleService } from '../src/mail/services/scheduler.service'
-import { NodemailerMock } from 'nodemailer-mock'
-import * as nodemailer from 'nodemailer'
-import { MailData, MailEvent } from '../src/db/entities/mail-event.entity'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { Test, TestingModule } from '@nestjs/testing'
 import { Connection, Model } from 'mongoose'
-import { getConnectionToken } from '@m8a/nestjs-typegoose'
+import * as nodemailer from 'nodemailer'
+import { NodemailerMock } from 'nodemailer-mock'
+import { MailData, MailEvent } from '../src/db/entities/mail-event.entity'
+import { MailModule } from '../src/mail/mail.module'
+import { MailScheduleService } from '../src/mail/services/scheduler.service'
+import { MockConfigService } from './helpers/config-service.helper'
 import {
   closeInMongodConnection,
   rootTypegooseTestModule,
 } from './helpers/mongo.helper'
-import { MailModule } from '../src/mail/mail.module'
-const { mock } = nodemailer as unknown as NodemailerMock
+const mailer = nodemailer as unknown as NodemailerMock
 
 describe('MailModule', () => {
   let app: INestApplication
@@ -25,7 +25,7 @@ describe('MailModule', () => {
   let mailEventModel: Model<MailEvent>
   let mailScheduleService: MailScheduleService
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -38,7 +38,13 @@ describe('MailModule', () => {
       .compile()
 
     app = await moduleFixture.createNestApplication()
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
 
     mailScheduleService = app.get<MailScheduleService>(MailScheduleService)
     connection = await app.get(getConnectionToken())
@@ -47,10 +53,14 @@ describe('MailModule', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    mock.reset()
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
+    await app.close()
+  })
+
+  beforeEach(async () => {
+    mailer.mock.reset()
+    await mailEventModel.deleteMany({})
   })
 
   describe('Schedule mail', () => {
@@ -96,13 +106,13 @@ describe('MailModule', () => {
         // ACT
         await mailScheduleService.scheduleMailNow(mailData)
         // ASSERT
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
       })
     })
     describe('Negative Tests', () => {
       it('should throw ServiceUnavailable if mail not sendable', async () => {
         // ARRANGE
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         const mailData: MailData = {
           recipient: {
             recipient: 'test@test.test',
@@ -143,7 +153,7 @@ describe('MailModule', () => {
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
       })
       it('should mark mails as sent', async () => {
         // ARRANGE
@@ -166,7 +176,7 @@ describe('MailModule', () => {
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
         const alteredMailEvent = (await mailEventModel.find())[0]
         expect(alteredMailEvent.hasBeenSent).toEqual(true)
       })
@@ -190,7 +200,7 @@ describe('MailModule', () => {
           hasBeenSent: false,
         }
         await mailEventModel.create(mailEventEntityData)
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         // ACT
         await mailScheduleService.sendScheduledMails()
         // ASSERT
