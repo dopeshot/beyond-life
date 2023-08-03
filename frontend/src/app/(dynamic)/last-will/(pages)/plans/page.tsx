@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
@@ -67,4 +68,4 @@ const Plans = () => {
 	)
 }
 
-export default Plans
+export default isAuth(Plans, 'guest')
