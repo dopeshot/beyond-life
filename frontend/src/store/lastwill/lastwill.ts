@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import { getLastWillById } from '../../services/api/lastwill/getLastWillById'
+import { updateLastWillById } from '../../services/api/lastwill/updateLastWillById'
 import {
 	InheritanceFormPayload,
 	LastWillState,
@@ -50,7 +51,10 @@ export const sendLastWillState = createAsyncThunk<LastWillState['data'], undefin
 
 		const lastWillData = state.lastWill.data
 
-		const response = await new Promise<LastWillState['data']>((resolve) => setTimeout(() => resolve(lastWillData), 100))
+		const response = await updateLastWillById(lastWillData._id, lastWillData)
+		if (!response) {
+			throw new Error('Could not update last will')
+		}
 		return response
 	}
 )
