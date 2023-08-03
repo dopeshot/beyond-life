@@ -166,7 +166,7 @@ export class AuthService {
   /**
    * @description Verify users email
    */
-  async verifyUserMail(mail: string) {
+  async verifyUserMail(mail: string): Promise<void> {
     const user = await this.userService.findOneByEmail(mail)
 
     if (!user) {
@@ -181,6 +181,7 @@ export class AuthService {
       this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)
     } catch (error) {
+      this.logger.error(`User update failed due to an error ${error}`)
       throw new InternalServerErrorException('Update could not be made')
     }
 
@@ -191,7 +192,7 @@ export class AuthService {
   /**
    * @description Request that verification email is send to users email address
    */
-  async requestUserVerifyMail(id: ObjectId) {
+  async requestUserVerifyMail(id: ObjectId): Promise<void> {
     const user = await this.userService.findOneById(id)
     // This should never happen, however it is a valid failsave
     if (!user) {
@@ -202,6 +203,7 @@ export class AuthService {
     if (user.hasVerifiedEmail) {
       return
     }
+
     try {
       await this.sendEmailVerify(user)
     } catch (error) {
@@ -214,7 +216,7 @@ export class AuthService {
   /**
    * @description Send password reset email
    */
-  async startForgottenPasswordFlow(email: string) {
+  async startForgottenPasswordFlow(email: string): Promise<void> {
     const user = await this.userService.findOneByEmail(email)
 
     // No error to prevent mail checking
@@ -259,7 +261,7 @@ export class AuthService {
   /**
    * @description Reset user password
    */
-  async setNewUserPassword(id: ObjectId, newPassword: string) {
+  async setNewUserPassword(id: ObjectId, newPassword: string): Promise<void> {
     const user = await this.userService.findOneById(id)
     // This SHOULD never happen => Therefore internal server error
     if (!user) {
@@ -272,7 +274,7 @@ export class AuthService {
       // No tests for db failure
       /* istanbul ignore next */
     } catch (error) {
-      this.logger.warn(
+      this.logger.error(
         `Could not update a user password due to an error ${error}`,
       )
       throw new ServiceUnavailableException(

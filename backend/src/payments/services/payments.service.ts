@@ -23,7 +23,10 @@ export class PaymentsService {
     private readonly userService: UserDBService,
   ) {}
 
-  async createCheckoutSession(plan: string, userId: Schema.Types.ObjectId) {
+  async createCheckoutSession(
+    plan: string,
+    userId: Schema.Types.ObjectId,
+  ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
     const user = await this.userService.findOneById(userId)
     if (!user)
       throw new UnauthorizedException(
@@ -74,7 +77,7 @@ export class PaymentsService {
   }
 
   // Make sure Stripe is configured to only send the relevant events, in our case checkout.session.completed
-  async handleWebhook(req: RawBodyRequest<Request>) {
+  async handleWebhook(req: RawBodyRequest<Request>): Promise<void> {
     const signature = req.headers['stripe-signature']
     const event = await this.stripeService.webhook_constructEvent(
       req.body,

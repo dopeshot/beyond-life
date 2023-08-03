@@ -24,7 +24,11 @@ export class ProfileService {
     private readonly lastwillDbService: LastWillDBService,
   ) {}
 
-  async updatePassword(id: ObjectId, oldPassword: string, newPassword: string) {
+  async updatePassword(
+    id: ObjectId,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<void> {
     // Verify that old password is right
     const user = await this.userService.findOneById(id)
 
@@ -36,7 +40,7 @@ export class ProfileService {
     await this.userService.updateUserPassword(id, newPassword)
   }
 
-  async updateUserEmail(id: ObjectId, newEmail: string) {
+  async updateUserEmail(id: ObjectId, newEmail: string): Promise<void> {
     const user = await this.userService.findOneById(id)
     if (!user) {
       throw new UnauthorizedException()
@@ -73,7 +77,7 @@ export class ProfileService {
     }
   }
 
-  async deleteProfile(id: ObjectId) {
+  async deleteProfile(id: ObjectId): Promise<void> {
     const user = await this.userService.findOneById(id)
 
     if (!user) {
