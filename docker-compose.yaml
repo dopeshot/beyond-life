@@ -48,8 +48,9 @@ services:
     restart: "always"
     ports:
       - 3000:3000
-    links:
-      - backend:backend
+    env: 
+      - NEXT_PUBLIC_API_BASE_URL=${FRONTEND_NEXT_PUBLIC_API_BASE_URL:-http://localhost:3001}
+
 
   smtp:
     image: rnwood/smtp4dev:v3
