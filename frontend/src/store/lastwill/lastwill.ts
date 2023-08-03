@@ -191,6 +191,13 @@ const lastWillSlice = createSlice({
 			}
 		},
 		setInheritance: (state, action: PayloadAction<InheritanceFormPayload>) => {
+			// Remove itemIds from heir if the item was removed
+			state.data.heirs.forEach((heir) => {
+				heir.itemIds = heir.itemIds
+					? heir.itemIds.filter((itemId) => action.payload.items.find((item) => item.id === itemId))
+					: []
+			})
+
 			state.data.financialAssets = action.payload.financialAssets
 			state.data.items = action.payload.items
 		},
