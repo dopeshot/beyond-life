@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { LastWill } from '../../../../../components/LastWill/LastWill'
@@ -39,4 +40,4 @@ const Final = () => {
 	)
 }
 
-export default Final
+export default isAuth(Final, 'protected')
