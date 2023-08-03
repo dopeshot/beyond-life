@@ -22,6 +22,7 @@ import {
   VerifyMailData,
 } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
+import { StripeService } from '../payments/services/stripe.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
 import { LoginDTO } from './dtos/login.dto'
 import { RegisterDTO } from './dtos/register.dto'
@@ -38,6 +39,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly mailService: MailScheduleService,
+    private readonly stripeService: StripeService,
   ) {}
 
   /**
@@ -181,6 +183,9 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException('Update could not be made')
     }
+
+    if (!user.stripeCustomerId) return
+    await this.stripeService.customer_update(user.stripeCustomerId, mail)
   }
 
   /**
