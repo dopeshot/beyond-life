@@ -17,8 +17,8 @@ import { routes } from '../../../../../services/routes/routes'
 const Buy = () => {
 	const router = useRouter()
 
-	const handlePlanSubmit = async (plan?: PaymentPlanType) => {
-		if (!plan) return
+	const handlePlanSubmit = async (plan: PaymentPlanType) => {
+		if (plan === 'free') return
 		const response = await createCheckoutSession(plan)
 		router.push(response)
 	}

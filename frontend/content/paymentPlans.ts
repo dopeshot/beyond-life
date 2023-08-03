@@ -2,6 +2,7 @@ import { PaymentPlanProps } from '../src/components/PaymentPlan/PaymentPlan'
 
 export const FreePlan: PaymentPlanProps = {
 	title: 'Free',
+	type: 'free',
 	price: '0€',
 	descriptionItems: [
 		{ text: 'Testament abschreiben', icon: 'close', iconColor: 'text-gray-500' },
@@ -12,7 +13,7 @@ export const FreePlan: PaymentPlanProps = {
 
 export const PaymentPlans: PaymentPlanProps[] = [
 	{
-		title: 'Basic',
+		title: 'Single',
 		type: 'single',
 		price: '49€',
 		descriptionItems: [
@@ -22,7 +23,7 @@ export const PaymentPlans: PaymentPlanProps[] = [
 		],
 	},
 	{
-		title: 'Premium',
+		title: 'Family',
 		type: 'family',
 		price: '149€',
 		descriptionItems: [

@@ -11,7 +11,7 @@ describe('Last Will Buy Page', () => {
 	it('should display buy page', () => {
 		cy.contains('Ihr Testament ist bereit, um abgeschrieben zu werden').should('be.visible')
 
-		cy.datacy('paymentPlan-Basic-button').click()
+		cy.datacy('paymentPlan-Single-button').click()
 		cy.wait('@mockCreateCheckoutSession')
 
 		cy.url().should('contains', checkoutSession.url)
