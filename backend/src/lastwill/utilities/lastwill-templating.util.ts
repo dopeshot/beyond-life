@@ -68,7 +68,7 @@ export function generateInitialText(
   birthPlace: string,
 ): string {
   return `Ich, ${testatorName || PLACEHOLDERS.PERSON_NAME}, geboren am ${
-    birthdate || PLACEHOLDERS.BIRTH_DATE
+    getDateorPlaceholder(birthdate) || PLACEHOLDERS.BIRTH_DATE
   } in ${
     birthPlace || PLACEHOLDERS.BIRTH_PLACE
   }, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:`
@@ -94,10 +94,28 @@ export function generateInheritanceForPerson(person: Person) {
   return `${correctPossessivePronouns}, ${
     person.name || PLACEHOLDERS.PERSON_NAME
   } geboren am ${
-    person.birthDate || PLACEHOLDERS.BIRTH_DATE
+    getDateorPlaceholder(person.birthDate) || PLACEHOLDERS.BIRTH_DATE
   } mit einem Anteil von ${
     person.percentage || PLACEHOLDERS.PERCENTAGE
   } Prozent meines Vermögens.`
+}
+
+export function getOptionalDescription(text: string): string {
+  if (!text || text === '') {
+    return ''
+  }
+  return `( ${text} )`
+}
+
+export function getDateorPlaceholder(dateString: string): string | undefined {
+  if (!dateString || dateString === '') return
+  return new Date(dateString).toLocaleDateString('de-de')
+}
+
+export function getFormattedCurrencyValues(value: number, currency: string) {
+  console.log(value, currency)
+  if (!value || !currency) return ''
+  return `(${value.toString()} ${currency})`
 }
 
 export function generateFinancialInheritancePragraphs(
@@ -109,13 +127,17 @@ export function generateFinancialInheritancePragraphs(
     contents: [],
   }
 
-  const financialAssetLocations = financialAssets.map(
-    (asset) => asset.where || PLACEHOLDERS.FINANCIAL_ASSET_LOCATION,
-  )
+  const financialAssetList = financialAssets.map((asset) => {
+    const assetLocation = asset.where || PLACEHOLDERS.FINANCIAL_ASSET_LOCATION
+    return `${assetLocation} ${getFormattedCurrencyValues(
+      asset.amount,
+      asset.currency,
+    )}`
+  })
 
   mainParagraph.contents.push(
     `Als Erbe meines Vermögens, aufgeteilt auf ${joinStringArrayForSentence(
-      financialAssetLocations,
+      financialAssetList,
     )}, setze ich folgende Personen ein:`,
   )
 
@@ -157,9 +179,13 @@ export function generateItemInheritanceParagraph(
   }
 
   for (const heir of heirs) {
-    const itemNames = heir.itemIds.map(
-      (id) => itemMap.get(id).name || PLACEHOLDERS.ITEM_NAME,
-    )
+    const itemNames = heir.itemIds.map((id) => {
+      const itemName = itemMap.get(id)?.name || PLACEHOLDERS.ITEM_NAME
+      return `${itemName} ${getOptionalDescription(
+        itemMap.get(id)?.description,
+      )}`
+    })
+
     if (heir.type === PersonType.ORGANISATION) {
       paragraph.contents.push(
         `Ich vermache dem Unternehmen ${
@@ -172,7 +198,7 @@ export function generateItemInheritanceParagraph(
       // Add birthdate
       paragraph.contents.push(
         `Ich vermache ${heir.name || PLACEHOLDERS.PERSON_NAME}, geboren am ${
-          heir.birthDate || PLACEHOLDERS.BIRTH_DATE
+          getDateorPlaceholder(heir.birthDate) || PLACEHOLDERS.BIRTH_DATE
         } , die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: ${joinStringArrayForSentence(
           itemNames,
         )}`,
