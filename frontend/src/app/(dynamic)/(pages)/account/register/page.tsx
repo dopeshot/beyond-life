@@ -4,7 +4,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 
 export const metadata = {
-	title: 'Register | Siebtes Leben',
+	title: 'Registrieren',
 }
 
 /**

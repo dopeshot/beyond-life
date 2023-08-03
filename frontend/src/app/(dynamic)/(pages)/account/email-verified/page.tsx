@@ -4,7 +4,7 @@ import { Icon } from '../../../../../components/Icon/Icon'
 import { routes } from '../../../../../services/routes/routes'
 
 export const metadata = {
-	title: 'Email verified | Siebtes Leben',
+	title: 'Email verifiziert',
 }
 
 /**

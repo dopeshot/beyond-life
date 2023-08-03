@@ -2,11 +2,6 @@ import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFoot
 import { Navbar } from '../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../components/Navbar/NavbarLogo/NavbarLogo'
 
-export const metadata = {
-	title: 'Siebtes Leben',
-	description: '',
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
