@@ -203,10 +203,17 @@ const lastWillSlice = createSlice({
 			const hasPartner = oldPartner !== undefined
 
 			// Set state
-			if (hasPartner) {
+			if (
+				hasPartner &&
+				action.payload.relationshipStatus !== undefined &&
+				action.payload.relationshipStatus === 'married'
+			) {
 				const partner = patchMarriage(oldPartner, action.payload)
 				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
 				state.data.heirs[oldPartnerIndex] = partner
+			} else if (hasPartner) {
+				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
+				state.data.heirs.splice(oldPartnerIndex, 1)
 			} else {
 				const partner = createMarriage(action.payload)
 				state.data.heirs.push(partner)
