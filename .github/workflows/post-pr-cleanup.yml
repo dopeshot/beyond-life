@@ -19,12 +19,6 @@ jobs:
           token: ${{ secrets.BOT_PAT }}
           ref: main
 
-      - name: debug
-        run: echo '${{ toJSON(github) }}'
-
-      - name: cancel
-        run: exit 1
-
       - name: Extract branch name
         run: |
           [[ $GITHUB_REF = /refs/pull* ]] && echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')" || echo "##[set-output name=branch;]$(echo  refs_pull_${{ github.event.number }}_merge)"
