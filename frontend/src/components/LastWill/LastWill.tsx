@@ -64,7 +64,7 @@ export const LastWill = () => {
 			</section>
 			<section className="mb-8 flex">
 				<div>
-					<p className="mb-4">[IHRE UNTERSCHRIFT]</p>
+					<p className="mb-4">[Ihre Unterschrift]</p>
 					<hr className="border-t-1 mb-4 border-black" />
 					<p>{lastWill.testatorHeader.fullName}</p>
 				</div>
