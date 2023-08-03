@@ -22,11 +22,23 @@ export class StripeService {
     }
   }
 
+  async customer_update(customerId: string, email: string) {
+    try {
+      await this.stripe.customers.update(customerId, { email })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Could not update Customer @Stripe')
+    }
+  }
+
   async checkout_session_create(
     plan: string,
     price_id: string,
     customer: string,
   ) {
+    const url =
+      this.configService.get('FRONTEND_DOMAIN') +
+      this.configService.get('STRIPE_REDIRECT_ROUTE')
     try {
       const stripeSession = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
@@ -38,14 +50,8 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: `${this.configService.get(
-          'FRONTEND_DOMAIN',
-        )}${this.configService.get(
-          'STRIPE_REDIRECT_ROUTE',
-        )}?success=1&plan=${plan}`,
-        cancel_url: `${this.configService.get(
-          'FRONTEND_DOMAIN',
-        )}${this.configService.get('STRIPE_REDIRECT_ROUTE')}?success=0`,
+        success_url: `${url}?success=1&plan=${plan}`,
+        cancel_url: `${url}?success=0`,
         customer,
       })
       return stripeSession

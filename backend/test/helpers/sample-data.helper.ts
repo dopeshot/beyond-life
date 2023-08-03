@@ -5,7 +5,6 @@ import { hash } from 'bcrypt'
 export const SAMPLE_USER = {
   password: 'StarWarsIsAVeryNiceMovie',
   email: 'r2d2@jedi.temple',
-  createdAt: new Date(Date.now()),
   paymentPlan: 'free',
   stripeCustomerId: 'cus_test',
   checkoutInformation: { status: 'free', lastInformationTime: 0 },

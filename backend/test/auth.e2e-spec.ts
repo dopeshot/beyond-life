@@ -16,8 +16,11 @@ import { DbModule } from '../src/db/db.module'
 import { User } from '../src/db/entities/users.entity'
 import { MailTemplates } from '../src/mail/interfaces/mail.interface'
 import { MailModule } from '../src/mail/mail.module'
+import { PaymentsModule } from '../src/payments/payments.module'
+import { StripeService } from '../src/payments/services/stripe.service'
 import { JWTPayload } from '../src/shared/interfaces/jwt-payload.interface'
 import { SharedModule } from '../src/shared/shared.module'
+import { MockStripeService } from './__mocks__/stripeservice'
 import { MockConfigService } from './helpers/config-service.helper'
 import { comparePassword } from './helpers/general.helper'
 import { getMailUsedTemplate, getTokenFromMail } from './helpers/mail.helper'
@@ -45,10 +48,13 @@ describe('AuthController (e2e)', () => {
         rootTypegooseTestModule(),
         MailModule.forRoot({ transport: {} as any, defaultSender: '' }),
         AuthModule,
+        PaymentsModule,
       ],
     })
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
+      .overrideProvider(StripeService)
+      .useClass(MockStripeService)
       .compile()
 
     app = await moduleFixture.createNestApplication()
@@ -338,6 +344,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_VERIFY_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should verify user email with valid token', async () => {
         // ACT
@@ -351,7 +358,27 @@ describe('AuthController (e2e)', () => {
         const user = await userModel.findOne({ email: SAMPLE_USER.email })
         expect(user.hasVerifiedEmail).toEqual(true)
       })
+
+      it('should update stripe customer if already customer', async () => {
+        // ARRANGE
+        await userModel.updateOne({}, { stripeCustomerId: 'cus_test' })
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'customer_update')
+          .mockReturnValueOnce(null)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/auth/verify-email`)
+          .query({
+            token,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(spy).toHaveBeenCalledTimes(1)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(user.hasVerifiedEmail).toEqual(true)
+      })
     })
+
     describe('Negative Tests', () => {
       it('should fail for invalid token', async () => {
         // ACT
