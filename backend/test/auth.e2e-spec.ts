@@ -38,8 +38,7 @@ describe('AuthController (e2e)', () => {
   let userModel: Model<User>
   let configService: ConfigService
 
-  beforeEach(async () => {
-    // test
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         DbModule,
@@ -69,9 +68,13 @@ describe('AuthController (e2e)', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
+    await app.close()
+  })
+
+  beforeEach(async () => {
+    await userModel.deleteMany()
     mailer.mock.reset()
   })
 
