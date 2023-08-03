@@ -97,9 +97,22 @@ export class ProfileService {
 
     try {
       await this.mailService.scheduleMailNow(mailData)
+      return
     } catch (error) {
       this.logger.error(
         `Could not send email regarding account deletion. Deletion will continue anyway.`,
+      )
+    }
+
+    // If we get here the mail could not be send as of now => Fallback to just scheduling it
+    const newSendDate = new Date()
+    // Reschedule 5 hours later by default
+    newSendDate.setHours(newSendDate.getHours() + 5)
+    try {
+      await this.mailService.scheduleMailAtDate(newSendDate, mailData)
+    } catch (error) {
+      this.logger.warn(
+        `Mail could not be scheduled due to an error. Account deletion continues anyways ${error}`,
       )
     }
   }

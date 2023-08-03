@@ -13,6 +13,7 @@ import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.in
 import { VerifyJWTPayload } from '../src/auth/interfaces/verify-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { LastWill } from '../src/db/entities/lastwill.entity'
+import { MailEvent } from '../src/db/entities/mail-event.entity'
 import { User } from '../src/db/entities/users.entity'
 import { MailModule } from '../src/mail/mail.module'
 import { ProfileModule } from '../src/profile/profile.module'
@@ -37,6 +38,7 @@ describe('ProfileController (e2e)', () => {
   let connection: Connection
   let userModel: Model<User>
   let lastWillModel: Model<LastWill>
+  let mailEventModel: Model<MailEvent>
   let configService: ConfigService
 
   beforeEach(async () => {
@@ -64,6 +66,7 @@ describe('ProfileController (e2e)', () => {
     configService = app.get<ConfigService>(ConfigService)
     userModel = connection.model<User>('User')
     lastWillModel = connection.model<LastWill>('LastWill')
+    mailEventModel = connection.model<MailEvent>('MailEvent')
 
     await app.init()
   })
@@ -427,6 +430,20 @@ describe('ProfileController (e2e)', () => {
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
+      })
+
+      it('should schedule mail if it cannot be send as of now', async () => {
+        // ARRANGE
+        mock.setShouldFail(true)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .delete('/profile')
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(await mailEventModel.count()).toEqual(1)
       })
 
       it('should not send mail if user`s mail is not verified', async () => {
