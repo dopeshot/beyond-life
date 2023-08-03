@@ -1,5 +1,6 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
+import { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
@@ -13,7 +14,7 @@ import { deleteLastWillById, getLastWills } from '../../../../../services/api/pr
 import { prepareLastWills } from '../../../../../services/profile/prepareLastWills'
 import { routes } from '../../../../../services/routes/routes'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Profil',
 }
 

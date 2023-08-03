@@ -1,4 +1,5 @@
 'use client'
+import { Metadata } from 'next'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
@@ -9,9 +10,11 @@ import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Testament erstellen',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

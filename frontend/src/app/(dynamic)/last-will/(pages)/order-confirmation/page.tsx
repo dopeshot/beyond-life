@@ -1,4 +1,5 @@
 'use client'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import { tableData } from '../../../../../../content/order-confirmation'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'
@@ -7,7 +8,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { PaymentSummaryTable } from '../../../../../components/PaymentSummaryTable/PaymentSummaryTable'
 import { routes } from '../../../../../services/routes/routes'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Kaufbestätigung',
 }
 

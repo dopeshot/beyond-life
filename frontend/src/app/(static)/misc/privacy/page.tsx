@@ -1,11 +1,14 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Privacy',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 const Privacy = () => {

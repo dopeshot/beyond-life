@@ -1,5 +1,6 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
+import { Metadata } from 'next'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
@@ -12,9 +13,11 @@ import { refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch } from '../../../../../store/hooks'
 import { Color } from '../../../../../types/color'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Email verifiziert',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 /**

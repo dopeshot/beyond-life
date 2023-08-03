@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik } from 'formik'
+import { Metadata } from 'next'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { EMAIL_REQUIRED_ERROR } from '../../../../../../content/validation'
@@ -10,9 +11,11 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { forgotPassword } from '../../../../../services/api/auth/resetPassword'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Passwort zurücksetzen',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 type ResetPasswordFormValues = {

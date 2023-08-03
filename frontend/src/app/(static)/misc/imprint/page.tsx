@@ -1,10 +1,13 @@
+import { Metadata } from 'next'
 import Image from 'next/image'
 import emailImage from '../../../../assets/images/email/email.png'
 import { Headline } from '../../../../components/Headline/Headline'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Imprint',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 const Imprint = () => {

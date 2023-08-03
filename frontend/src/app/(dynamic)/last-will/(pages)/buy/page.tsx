@@ -1,4 +1,5 @@
 'use client'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
@@ -11,7 +12,7 @@ import { PaymentPlan, PaymentPlanType } from '../../../../../components/PaymentP
 import { createCheckoutSession } from '../../../../../services/api/payment/payment'
 import { routes } from '../../../../../services/routes/routes'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Kaufen',
 }
 

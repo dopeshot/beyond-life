@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
+import { Metadata } from 'next'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import {
@@ -34,9 +35,11 @@ import {
 import { logout, refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Einstellungen',
-	noIndex: true,
+	robots: {
+		index: false,
+	},
 }
 
 type EmailChange = {

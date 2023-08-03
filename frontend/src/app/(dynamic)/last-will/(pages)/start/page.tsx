@@ -1,5 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ObjectSchema, boolean, object } from 'yup'
@@ -12,7 +13,7 @@ import { Label } from '../../../../../components/Form/Label/Label'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: 'Testament erstellen',
 }
 
