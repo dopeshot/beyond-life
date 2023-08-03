@@ -1,6 +1,7 @@
 'use client'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import isAuth from '../../../../components/Auth/isAuth'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
@@ -9,7 +10,7 @@ import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	const path = usePathname()
 	const searchParams = useSearchParams()
 	const isInitialized = useAppSelector((state) => state.lastWill.isInitialized)
@@ -57,3 +58,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		</>
 	)
 }
+
+export default isAuth(Rootlayout, 'protected')
