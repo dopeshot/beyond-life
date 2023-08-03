@@ -41,7 +41,7 @@ describe('ProfileController (e2e)', () => {
   let mailEventModel: Model<MailEvent>
   let configService: ConfigService
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         DbModule,
@@ -71,9 +71,14 @@ describe('ProfileController (e2e)', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
+    await app.close()
+  })
+
+  beforeEach(async () => {
+    await userModel.deleteMany()
+    await lastWillModel.deleteMany()
     mock.reset()
   })
 
