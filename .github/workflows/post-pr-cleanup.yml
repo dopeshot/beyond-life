@@ -20,7 +20,7 @@ jobs:
           ref: main
 
       - name: debug
-        run: echo "$GITHUB_CONTEXT"
+        run: echo $GITHUB_CONTEXT
 
       - name: cancel
         run: exit 1
