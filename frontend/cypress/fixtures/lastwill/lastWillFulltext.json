@@ -1,0 +1,48 @@
+{
+	"testatorHeader": {
+		"fullName": "Mary Testator",
+		"AddressStreet": "[Straßenname] [Hausnummer]",
+		"AddressCity": "[PLZ] [Stadt]"
+	},
+	"locationHeader": "[Stadt], den 3.8.2023",
+	"title": "Mein letzter Wille",
+	"initialText": "Ich, Mary Testator, geboren am 1990-01-01 in Berlin, widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit Folgendes:",
+	"paragraphs": [
+		{
+			"title": "Erbeinsetzung",
+			"contents": [
+				"Als Erbe meines Vermögens, aufgeteilt auf PayPal und Bank, setze ich folgende Personen ein:",
+				"Mein Kind, Heir Name geboren am 1995-03-15 mit einem Anteil von 50 Prozent meines Vermögens.",
+				"Das Unternehmen, Strongpong e.V., aus 12345 Berlin, mit einem Anteil in Höhe von 50 Prozent meines Vermögens"
+			]
+		},
+		{
+			"title": "Ersatzerbe",
+			"contents": [
+				"Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem Verhältnis der von mir vorgegebenen Erbanteile."
+			]
+		},
+		{
+			"title": "Vermächtnisse",
+			"contents": [
+				"Ich vermache Heir Name, geboren am 1995-03-15 , die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: Item 1 und Item 2",
+				"Ich vermache dem Unternehmen Strongpong e.V. die folgenden Erbgegenstände ohne Anrechnung auf den Erbanteil: Item 1 und Item 2",
+				"Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.",
+				"Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.",
+				"Ersatzvermächtnisnehmer sind nicht bestimmt. Das jeweilige Vermächtnis entfällt ersatzlos, wenn der/die Vermächtnisnehmer/-in vor oder nach dem Erbfall, gleich aus welchem Grunde, wegfällt."
+			]
+		},
+		{
+			"title": "Rechtswahl",
+			"contents": [
+				"Auf meinen gesamten Nachlass sowie für Fragen, die die Wirksamkeit dieses Testaments betreffen, soll deutsches Erbrecht anwendbar sein. Diese Rechtswahl soll auch dann weiterhin Gültigkeit haben, wenn ich meinen letzten gewöhnlichen Aufenthalt im Ausland habe."
+			]
+		},
+		{
+			"title": "Salvatorische Klausel",
+			"contents": [
+				"Sollte eine der in diesem Testament enthaltenen Anordnungen unwirksam sein, so behalten dennoch alle anderen Anordnungen ihre Wirkung."
+			]
+		}
+	]
+}
