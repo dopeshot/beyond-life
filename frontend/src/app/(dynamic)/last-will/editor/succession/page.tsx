@@ -20,13 +20,14 @@ import { SidebarPages } from '../../../../../types/sidebar'
  * Succession Page
  */
 const Succession = () => {
+	const router = useRouter()
+
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selectedHeirIndex, setSelectedHeirIndex] = useState<number>()
 
-	const router = useRouter()
-
 	// Global State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
@@ -35,7 +36,7 @@ const Succession = () => {
 
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
-	const NEXT_LINK = routes.lastWill.final(_id)
+	const NEXT_LINK = isAuthenticated ? routes.lastWill.final(_id) : routes.lastWill.plans(_id) // TODO checken, ob für Testament schon bezahlt wurde
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
