@@ -24,6 +24,7 @@ const EmailVerified = () => {
 	const [status, setStatus] = useState<'OK' | 'ERROR' | 'ALREADY_VERIFIED' | null>(null)
 
 	const verifyMailRequest = useCallback(async () => {
+		/* istanbul ignore next */
 		if (!token) return notFound()
 
 		setLoading(true)

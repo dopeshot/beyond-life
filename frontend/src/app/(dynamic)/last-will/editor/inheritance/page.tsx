@@ -35,7 +35,7 @@ const Inheritance = () => {
 	const NEXT_LINK = routes.lastWill.succession(_id)
 
 	// Formik
-	const initalFormValues: InheritanceFormPayload = {
+	const initialFormValues: InheritanceFormPayload = {
 		financialAssets,
 		items,
 	}
@@ -86,7 +86,7 @@ const Inheritance = () => {
 			<Headline className="hidden lg:block">Erbschaft</Headline>
 
 			<Formik
-				initialValues={initalFormValues}
+				initialValues={initialFormValues}
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>

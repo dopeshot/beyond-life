@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Severity, prop } from '@typegoose/typegoose'
+import { ModelOptions, Severity, prop } from '@typegoose/typegoose'
 import { Expose, Transform, Type, plainToClass } from 'class-transformer'
 import {
   Equals,
@@ -103,6 +103,8 @@ const swaggerExampleOrgaHeir: Organisation = {
 const swaggerExampleObject: LastWill = {
   _id: '6175f1906be245001e352a0e',
   accountId: 'aaaaaaaaaaaaaaaaaaaaaaaa',
+  createdAt: new Date(),
+  updatedAt: new Date(),
   common: {
     isBerlinWill: false,
     isPartnerGermanCitizenship: false,
@@ -126,7 +128,14 @@ const swaggerExampleObject: LastWill = {
     { id: '33333333', where: 'PayPal', amount: 420.69, currency: 'EUR' },
     { id: '44444444', where: 'Bank', amount: 1234.56, currency: 'USD' },
   ],
-  progressKeys: [SidebarPages.TESTATOR, SidebarPages.HEIRS, SidebarPages.FINAL],
+  progressKeys: [
+    SidebarPages.TESTATOR,
+    SidebarPages.MARRIAGE,
+    SidebarPages.HEIRS,
+    SidebarPages.INHERITANCE,
+    SidebarPages.SUCCESSION,
+    SidebarPages.FINAL,
+  ],
 }
 
 // This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
@@ -517,7 +526,21 @@ export class FinancialAsset {
   currency?: string
 }
 
-export class LastWill {
+export class MongooseBaseEntity {
+  @Expose()
+  @ApiPropertyOptional({
+    description: 'Creation date of user',
+    example: swaggerExampleObject.createdAt,
+  })
+  createdAt: Date
+
+  @Expose()
+  @ApiPropertyOptional({
+    description: 'Last Update date of user',
+    example: swaggerExampleObject.updatedAt,
+  })
+  updatedAt: Date
+
   @ApiProperty({
     description: 'Id',
     example: swaggerExampleObject._id,
@@ -525,7 +548,10 @@ export class LastWill {
   @Type(() => String)
   @Expose()
   _id: ObjectId | string
+}
 
+@ModelOptions({ schemaOptions: { timestamps: true } })
+export class LastWill extends MongooseBaseEntity {
   @prop({
     required: true,
     type: String,
@@ -653,12 +679,13 @@ export class LastWill {
   progressKeys: SidebarPages[]
 
   constructor(partial: Partial<LastWill>) {
+    super()
     Object.assign(this, partial)
   }
 }
 
 // PickTypes don't work with class-transformer, so we have to create a new class
-export class LastWillMetadata {
+export class LastWillMetadata extends MongooseBaseEntity {
   @ApiProperty({
     description: 'Progress keys',
     example: swaggerExampleObject.progressKeys,
@@ -678,6 +705,7 @@ export class LastWillMetadata {
   testator: string
 
   constructor(partial: Partial<LastWillMetadata>) {
+    super()
     Object.assign(this, partial)
   }
 }

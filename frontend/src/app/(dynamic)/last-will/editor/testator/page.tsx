@@ -19,6 +19,18 @@ import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
+// TODO: Ensure all schemas are equal from the strength
+const validationSchema: ObjectSchema<TestatorFormPayload> = object({
+	name: string(),
+	gender: string<Gender>(),
+	birthDate: string(),
+	birthPlace: string(),
+	houseNumber: string(),
+	zipCode: string(),
+	city: string(),
+	street: string(),
+	moreInfos: array(),
+})
 /**
  * Testator Page
  */
@@ -46,19 +58,6 @@ const Testator = () => {
 		...address,
 		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
 	}
-
-	// TODO: Ensure all schemas are equal from the strength
-	const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-		name: string(),
-		gender: string<Gender>(),
-		birthDate: string(),
-		birthPlace: string(),
-		houseNumber: string(),
-		zipCode: string(),
-		city: string(),
-		street: string(),
-		moreInfos: array(),
-	})
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
 		// This functions only gets called if values have changed

@@ -47,12 +47,38 @@ describe('IconButton', () => {
 			cy.mount(<IconButton datacy="icon-button" icon="home" to="/home" disabled dimOpacityWhenDisabled={false} />)
 			cy.datacy('icon-button-inner-icon').should('not.have.class', 'text-opacity-50')
 		})
+
+		it('should do nothing when click disabled link', () => {
+			cy.mount(<IconButton datacy="icon-button" icon="home" to="/home" disabled dimOpacityWhenDisabled />)
+			cy.datacy('icon-button').click()
+			cy.location('pathname').should('not.eq', '/home')
+		})
 	})
 
 	describe('Color Prop', () => {
 		it('renders a button with specified color', () => {
 			cy.mount(<IconButton datacy="icon-button" icon="home" to="/home" color="blue" />)
 			cy.datacy('icon-button-inner-icon').should('have.class', 'text-blue-600')
+		})
+
+		it('should set custom background color', () => {
+			cy.mount(<IconButton datacy="icon-button" icon="home" to="/home" color="blue" backgroundColor="red" />)
+			cy.datacy('icon-button').should('have.class', 'bg-red-500')
+		})
+
+		it('should set custom background color when disabled', () => {
+			cy.mount(
+				<IconButton
+					datacy="icon-button"
+					icon="home"
+					to="/home"
+					color="blue"
+					backgroundColor="red"
+					disabled
+					dimOpacityWhenDisabled
+				/>
+			)
+			cy.datacy('icon-button').should('have.class', 'bg-red-500')
 		})
 	})
 })

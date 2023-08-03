@@ -35,7 +35,9 @@ export const DynamicNavbarLinks: React.FC = () => {
 				</NavbarLink>
 			</li>
 			<li>
-				<NavbarLink onClick={() => dispatch(logout())}>Ausloggen</NavbarLink>
+				<NavbarLink datacy="logout-link" onClick={() => dispatch(logout())}>
+					Ausloggen
+				</NavbarLink>
 			</li>
 		</>
 	) : (
