@@ -24,14 +24,7 @@ const Plans = () => {
 				<div className="mb-4 flex w-full flex-col gap-4">
 					<div className="flex flex-col gap-4 md:flex-row">
 						{[FreePlan, ...PaymentPlans].map((plan) => (
-							<PaymentPlan
-								key={plan.title}
-								title={plan.title}
-								price={plan.price}
-								hasButton={false}
-								size="md"
-								descriptionItems={plan.descriptionItems}
-							/>
+							<PaymentPlan key={plan.type} {...plan} hasButton={false} size="md" />
 						))}
 					</div>
 				</div>
@@ -39,14 +32,16 @@ const Plans = () => {
 				{/* Buttons */}
 				<div className="flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:justify-between">
 					<Route
+						datacy="login-route"
 						icon="login"
 						href={routes.account.login({ callbackUrl: routes.lastWill.buy() })}
 						kind="tertiary"
 						className="w-auto"
 					>
-						Login
+						Einloggen
 					</Route>
 					<Route
+						datacy="register-route"
 						icon="arrow_forward"
 						href={routes.account.register({ callbackUrl: routes.lastWill.buy() })}
 						className="sm:w-max"
@@ -59,7 +54,12 @@ const Plans = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center xl:order-2 xl:w-1/3">
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:rounded-3xl xl:h-full xl:w-auto">
-					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image
+						priority
+						className=" h-full w-auto object-cover object-top blur-[2px]"
+						src={image}
+						alt="Testament Preview"
+					/>
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] xl:text-[200px]" />
 			</div>

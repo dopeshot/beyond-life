@@ -104,5 +104,13 @@ describe('Auth', () => {
 
 			cy.url().should('include', '/account/login')
 		})
+
+		it('should logout successfully when click logout in navbar', () => {
+			cy.login({ route: '/profile/last-will' })
+
+			cy.datacy('logout-link').click()
+
+			cy.url().should('include', '/account/login')
+		})
 	})
 })

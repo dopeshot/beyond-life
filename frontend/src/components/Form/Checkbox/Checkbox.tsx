@@ -64,6 +64,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 					{option.helperText && (
 						<div className="flex">
 							<IconButton
+								datacy={`checkbox-${option.value}-info-icon`}
 								icon="info"
 								iconClassName="text-base"
 								className="h-5 w-5 text-gray-500 hover:bg-opacity-10"

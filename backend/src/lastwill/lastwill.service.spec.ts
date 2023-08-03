@@ -2,6 +2,8 @@ import { LastWill, PersonType } from '../db/entities/lastwill.entity'
 import { LastWillService } from './lastwill.service'
 
 const SAMPLE_LAST_WILL: LastWill = {
+  createdAt: new Date(),
+  updatedAt: new Date(),
   _id: 'aaaaaaaaaaaaaaaa',
   accountId: 'aaaaaaaaaaaaaab',
   common: {

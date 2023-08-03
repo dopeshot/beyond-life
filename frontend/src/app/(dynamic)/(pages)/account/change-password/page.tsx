@@ -10,6 +10,7 @@ import { PasswordInput } from '../../../../../components/Form/PasswordInput/Pass
 import { Headline } from '../../../../../components/Headline/Headline'
 import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
+import { PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 
 type ChangePasswordFormValues = {
 	newPassword: string
@@ -41,7 +42,7 @@ const ChangePassword = () => {
 	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
 		newPassword: string()
 			.required('Bitte geben Sie ein neues Passwort ein.')
-			.min(8, 'Passwort muss mindestens 8 Zeichen lang sein.'),
+			.min(8, PASSWORD_MIN_LENGTH_ERROR),
 		newPasswordConfirm: string()
 			.required('Bitte geben Sie ihr neues Passwort erneut ein.')
 			.oneOf([ref('newPassword')], 'Passwörter müssen übereinstimmen.'),

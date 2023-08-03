@@ -58,6 +58,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 										datacy="resend-mail-button"
 										className="text-red-500 hover:text-red-600"
 										onClick={() => {
+											/* istanbul ignore next */ // It's not possible to check for a non call of the interceptor
 											if (hasRequestedEmail) return
 											setHasRequestedEmail(true)
 											requestVerifyMail()

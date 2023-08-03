@@ -170,6 +170,13 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockCreateCheckoutSession', () => {
+	cy.intercept('POST', `${apiUrl}/payments/checkout`, {
+		statusCode: 201,
+		fixture: '/payment/checkoutSession.json',
+	}).as('mockCreateCheckoutSession')
+})
+
 Cypress.Commands.add('mockChangeEmail', (response = 'OK') => {
 	cy.intercept('PATCH', `${apiUrl}/profile/change-email`, changeEmailResponse[response]).as('mockChangeEmail')
 })
