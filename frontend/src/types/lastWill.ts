@@ -86,10 +86,6 @@ export type Person = {
 	birthPlace?: string
 	isHandicapped?: boolean
 	isInsolvent?: boolean
-
-	// Succession
-	percentage?: number
-	itemIds?: number[]
 } & { address?: Address } & Succession &
 	ChildInfo &
 	Id
