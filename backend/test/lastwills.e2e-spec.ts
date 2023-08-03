@@ -95,11 +95,6 @@ describe('LastWillController (e2e)', () => {
           .expect(HttpStatus.CREATED)
 
         expect(res.body).toBeDefined()
-        expect(res.body).toHaveProperty('_id')
-        expect(res.body.accountId).toEqual(user._id.toString())
-        expect(res.body).toHaveProperty('createdAt')
-        expect(res.body).toHaveProperty('updatedAt')
-
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
       })
@@ -120,6 +115,26 @@ describe('LastWillController (e2e)', () => {
 
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(2)
+      })
+
+      it('should allow the minimal requirements', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/lastwill')
+          .set('Authorization', `Bearer ${token}`)
+          .send({ testator: {}, common: {}, progressKeys: [] })
+          .expect(HttpStatus.CREATED)
+
+        expect(res.body).toBeDefined()
+        expect(res.body).toHaveProperty('_id')
+        expect(res.body.accountId).toEqual(user._id.toString())
+        expect(res.body).toHaveProperty('createdAt')
+        expect(res.body).toHaveProperty('updatedAt')
+        expect(res.body).toHaveProperty('common')
+        expect(res.body).toHaveProperty('testator')
+        expect(res.body).toHaveProperty('progressKeys')
+
+        const createdLastWill = await lastWillModel.count()
+        expect(createdLastWill).toBe(1)
       })
     })
 
