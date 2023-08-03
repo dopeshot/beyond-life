@@ -32,6 +32,11 @@ describe('Profile Last Wills', () => {
 			cy.datacy('last-will-copy').first().click()
 			cy.url().should('include', `last-will/editor/final?id=${lastWills[0]._id}`)
 		})
+
+		it('should redirect to last will start page when click on create last will', () => {
+			cy.datacy('create-new-last-will-button').click()
+			cy.url().should('include', 'last-will/start')
+		})
 	})
 
 	describe('Delete Last Will', () => {
