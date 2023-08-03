@@ -9,6 +9,13 @@ export const metadata: Metadata = {
 	},
 	description: 'Erstellen Sie Ihr rechtsgültiges Testament in nur wenigen Schritten, ganz ohne Notar',
 	keywords: ['Testament', 'Notar', 'Schnell und Einfach'],
+	openGraph: {
+		title: 'Siebtes Leben - das eigene Testament in wenigen Schritten',
+		description: 'Erstellen Sie Ihr rechtsgültiges Testament in nur wenigen Schritten, ganz ohne Notar',
+		siteName: 'Siebtes Leben',
+		type: 'website',
+		url: '/',
+	},
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
