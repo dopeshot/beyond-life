@@ -195,6 +195,13 @@ Cypress.Commands.add('mockProfileLastWills', (response = 'OK') => {
 	cy.intercept('GET', `${apiUrl}/lastwill`, profileLastWillResponse[response]).as('mockProfileLastWills')
 })
 
+Cypress.Commands.add('mockCreateCheckoutSession', () => {
+	cy.intercept('POST', `${apiUrl}/payments/checkout`, {
+		statusCode: 201,
+		fixture: '/payment/checkoutSession.json',
+	}).as('mockCreateCheckoutSession')
+})
+
 Cypress.Commands.add('mockChangeEmail', (response = 'OK') => {
 	cy.intercept('PATCH', `${apiUrl}/profile/change-email`, changeEmailResponse[response]).as('mockChangeEmail')
 })

@@ -13,7 +13,7 @@ export type SessionData = {
 		iat: number
 		exp: number
 		hasVerifiedEmail: boolean
-		// TODO: Adds plans
+		paymentPlan: 'family' | 'single' | 'free'
 	}
 	refreshToken: string
 }

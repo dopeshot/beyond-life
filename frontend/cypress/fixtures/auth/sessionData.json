@@ -1,11 +1,12 @@
 {
-	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzdiYjIyMjk5MWJlYzg2ZjExY2Q5MSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJoYXNWZXJpZmllZEVtYWlsIjpmYWxzZSwiaWF0IjoxNjkwODExODA2LCJleHAiOjE2OTA4MTU0MDZ9.Xkp_3n4EUokfM_j_mcVZPw4XXTkgoUA8BddZkxiitoo",
-	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzdiYjIyMjk5MWJlYzg2ZjExY2Q5MSIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE2OTA4MTE4MDYsImV4cCI6MTY5MTY3NTgwNn0.iaNelfdRe_AjQupw25qYRwjaosogKeDxbSS7l_3yeYA",
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjpmYWxzZSwicGF5bWVudFBsYW4iOiJmcmVlIiwiaWF0IjoxNjkxMDQ3MDYyLCJleHAiOjE2OTEwNTA2NjJ9.tOqkBw5JcVuvaTaL9VDsd4gls9vb3w-J0IFwiCuAc2E",
+	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTEwNDcwNjIsImV4cCI6MTY5MTkxMTA2Mn0.kWvy3_Q_JFia-bgyA5KvJJC4txipjT7GlbB5_e95MGM",
 	"decodedAccessToken": {
-		"id": "64c7bb222991bec86f11cd91",
-		"email": "test@gmail.com",
+		"id": "64cad37c6550813b2137ebe9",
+		"email": "test@test.test",
 		"hasVerifiedEmail": false,
-		"iat": 1690811806,
-		"exp": 1690815406
+		"paymentPlan": "free",
+		"iat": 1691047062,
+		"exp": 1691050662
 	}
 }

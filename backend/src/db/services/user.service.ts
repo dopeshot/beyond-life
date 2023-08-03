@@ -51,11 +51,7 @@ export class UserDBService {
   async insertUser(userData: Partial<User>): Promise<User> {
     try {
       userData.password = await this.hashPassword(userData.password)
-      const user: User = await this.userModel.create({
-        ...userData,
-        createdAt: new Date(), // TODO: this could go into the model as default value
-      })
-
+      const user: User = await this.userModel.create(userData)
       return user
     } catch (error) {
       this.logger.error(error)

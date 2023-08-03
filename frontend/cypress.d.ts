@@ -28,6 +28,10 @@ declare global {
 			 */
 			mockProfileLastWills(response?: 'OK' | 'EMPTY' | 'NETWORK_ERROR'): Chainable<void>
 			/**
+			 * Mock the create checkout session endpoint.
+			 */
+			mockCreateCheckoutSession(): Chainable<void>
+			/**
 			 * Mock the change email endpoint.
 			 * @param response the response type we want to mock.
 			 * @example cy.mockChangeEmail('OK')
