@@ -29,6 +29,7 @@ export type LastWillProfile = {
  */
 const MyLastWills = () => {
 	const router = useRouter()
+
 	const [lastWills, setLastWills] = useState<LastWillProfile[]>([])
 	const [isLoadingDelete, setIsLoadingDelete] = useState(false)
 	const [selectedLastWill, setSelectedLastWill] = useState<LastWillProfile | null>(null)
@@ -60,9 +61,15 @@ const MyLastWills = () => {
 				</div>
 			) : (
 				<>
-					<Headline level={3}>
-						Meine Testamente <span className="ml-2 text-base text-gray-600">({lastWills.length})</span>
-					</Headline>
+					<div className="mb-2 flex items-center justify-between md:mb-4">
+						<Headline level={3} hasMargin={false}>
+							Meine Testamente <span className="ml-2 text-base text-gray-600">({lastWills.length})</span>
+						</Headline>
+
+						<Route datacy="create-new-last-will-button" href={routes.lastWill.start}>
+							Neues Testament erstellen
+						</Route>
+					</div>
 
 					{/* Last Will List */}
 					{lastWills.map((lastWill) => (
