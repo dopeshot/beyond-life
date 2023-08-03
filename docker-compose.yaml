@@ -70,9 +70,9 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PW:-admin}
-      - MONGO_INITDB_DATABASE:=${MONGO_DB:-siebtesleben}
+      - MONGO_INITDB_DATABASE=${MONGO_DB:-siebtesleben}
     volumes:
-      - ./docker/mongo-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./.docker/mongodb-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
       interval: 10s
