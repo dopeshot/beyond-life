@@ -17,9 +17,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
+		const id = searchParams.get('id')
+		if (!id) {
+			console.warn("Can't fetch last will state because id is not defined")
+
+			return
+		}
 		dispatch(
 			fetchLastWillState({
-				lastWillId: searchParams.get('id')!,
+				lastWillId: id,
 			})
 		)
 

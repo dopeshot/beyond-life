@@ -35,7 +35,7 @@ const Start = () => {
 
 	const onSubmit = () => {
 		// Redirect to Testator Page
-		router.push(routes.lastWill.testator('demo'))
+		router.push(routes.lastWill.testator())
 	}
 
 	return (
