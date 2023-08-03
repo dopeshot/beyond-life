@@ -514,10 +514,46 @@ describe('lastWillSlice', () => {
 				expect(newState.data.heirs[0].itemIds).to.deep.equal(['1', '2', '3'])
 			})
 
-			it(`should set all succession's heirs when ${setSuccession} is called`, () => {
-				// // Add 2 heir
-				// const action = addPersonHeir(personFormPayload)
-				// let newState = lastWillReducer(initialStateTesting, action)
+			it(`should set two succession's heirs when ${setSuccession} is called`, () => {
+				// Add two heirs
+				let state = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+				state = lastWillReducer(state, addOrganisationHeir(organisationFormPayload))
+
+				// Assert that the new heirs have been added to the heirs list
+				expect(state.data.heirs).to.have.lengthOf(2)
+				expect(state.data.heirs[0]).to.deep.equal(expectedPersonHeir)
+				expect(state.data.heirs[1]).to.deep.equal(expectedOrganisationHeir)
+
+				// Add succession
+				const formPayload: SuccessionFormPayload = {
+					heirs: [
+						{
+							id: 'person_1',
+							name: 'Person A',
+							type: 'child',
+							itemIds: ['1', '2', '3'],
+							percentage: 42,
+						},
+						{
+							id: 'org_1',
+							name: 'Organisation A',
+							type: 'organisation',
+							itemIds: ['4', '5', '6'],
+							percentage: 58,
+						},
+					],
+				}
+
+				const successionAction = setSuccession(formPayload)
+				state = lastWillReducer(state, successionAction)
+
+				// Assert that the succession has been added to the state
+				expect(state.data.heirs[0].percentage).to.equal(42)
+				expect(state.data.heirs[0].itemIds).to.have.lengthOf(3)
+				expect(state.data.heirs[0].itemIds).to.deep.equal(['1', '2', '3'])
+				expect(state.data.heirs[1].percentage).to.equal(58)
+				expect(state.data.heirs[1].itemIds).to.have.lengthOf(3)
+				expect(state.data.heirs[1].itemIds).to.deep.equal(['4', '5', '6'])
 			})
 		})
 	})
