@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ObjectSchema, boolean, object } from 'yup'
-import image from '../../../../../assets/images/layout/headerBackground.jpg'
+import image from '../../../../../assets/images/layout/family2.jpg'
 import { Alert } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
@@ -17,21 +17,21 @@ type StartLegal = {
 	germanRightOfInheritance?: boolean
 }
 
+const initialFormValues: StartLegal = {
+	germanCitizenship: undefined,
+	germanRightOfInheritance: undefined,
+}
+
+const validationSchema: ObjectSchema<StartLegal> = object().shape({
+	germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+	germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+})
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
-
-	const initalFormValues: StartLegal = {
-		germanCitizenship: undefined,
-		germanRightOfInheritance: undefined,
-	}
-
-	const validationSchema: ObjectSchema<StartLegal> = object().shape({
-		germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-		germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-	})
 
 	const onSubmit = () => {
 		// Redirect to Testator Page
@@ -56,7 +56,7 @@ const Start = () => {
 			{/* Left Image with Text end */}
 
 			{/* Form Fields */}
-			<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
 					<Form className="flex h-full flex-col lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}

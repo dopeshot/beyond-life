@@ -1,21 +1,27 @@
 export const routes = {
 	index: '/',
 	account: {
-		register: (options?: { funnel: boolean }) => {
+		register: (options?: { callbackUrl?: string; funnel?: boolean }) => {
 			if (!options) return '/account/register'
 
-			const queryString = new URLSearchParams(`funnel=${options.funnel}`).toString()
+			const queryString = new URLSearchParams({
+				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+				...(options.funnel != null && { funnel: String(options.funnel) }),
+				//TODO: remove funnel and use callbackUrl
+			}).toString()
 
 			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		login: (options?: { funnel: boolean }) => {
+		login: (options?: { callbackUrl?: string; funnel?: boolean }) => {
 			if (!options) return '/account/login'
 
-			const queryString = new URLSearchParams(`funnel=${options.funnel}`).toString()
+			const queryString = new URLSearchParams({
+				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
+				...(options.funnel != null && { funnel: String(options.funnel) }),
+			}).toString()
 
 			return `/account/login${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		profile: '/account/profile',
 		resetPassword: '/account/reset-password',
 	},
 	profile: {
@@ -55,6 +61,6 @@ export const routes = {
 			single: (slug: string) => `/misc/faq/${slug}`,
 		},
 		imprint: '/misc/imprint',
-		privacy: '/misc/privacy-policy',
+		privacy: '/misc/privacy',
 	},
 }

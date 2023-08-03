@@ -5,8 +5,7 @@
 	"scripts": {
 		"dev": "npx next dev",
 		"build": "npx next build",
-		"start": "npx next start",
-		"serve": "npx serve@latest out",
+		"start": "npx serve@latest out",
 		"lint": "npx next lint",
 		"test": "npx cypress open",
 		"tc:cli": "npx cypress run --component",
@@ -20,6 +19,7 @@
 		"@types/react": "^18.2.0",
 		"@types/react-dom": "^18.2.1",
 		"autoprefixer": "10.4.14",
+		"axios": "^1.4.0",
 		"eslint-config-next": "^13.3.1",
 		"formik": "^2.2.9",
 		"material-symbols": "^0.8.1",
@@ -58,6 +58,8 @@
 		"excludeAfterRemap": true,
 		"include": "src/**/*.{ts,tsx}",
 		"exclude": [
+			"src/app/*.{ts,tsx}",
+			"src/app/(static)/**",
 			"cypress/**/*.{ts,tsx}",
 			"src/**/*.{unit,cy,stories}.{ts,tsx}",
 			"src/types/**/*"

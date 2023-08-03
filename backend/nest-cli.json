@@ -4,6 +4,10 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["**/*.template.ejs"]
+    "assets": [
+      {
+        "include": "mail/templates/*.ejs"
+      }
+    ]
   }
 }

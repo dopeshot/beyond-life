@@ -12,14 +12,10 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
-import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill'
-import { FinancialAsset, Item } from '../../../../../types/lastWill'
+import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill/lastwill'
+import { FinancialAsset, InheritanceFormPayload, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-export type InheritanceFormPayload = {
-	financialAssets: FinancialAsset[]
-	items: Item[]
-}
 /**
  * Inheritance Page
  */
@@ -39,7 +35,7 @@ const Inheritance = () => {
 	const NEXT_LINK = routes.lastWill.succession(_id)
 
 	// Formik
-	const initalFormValues: InheritanceFormPayload = {
+	const initialFormValues: InheritanceFormPayload = {
 		financialAssets,
 		items,
 	}
@@ -48,7 +44,7 @@ const Inheritance = () => {
 		try {
 			// Update inheritance global state only if values have changed
 			dispatch(setInheritance(values))
-			// TODO: not sure if we actually can call two dispatches at the same time
+
 			await dispatch(sendLastWillState())
 
 			// Redirect to previous or next page
@@ -90,7 +86,7 @@ const Inheritance = () => {
 			<Headline className="hidden lg:block">Erbschaft</Headline>
 
 			<Formik
-				initialValues={initalFormValues}
+				initialValues={initialFormValues}
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>

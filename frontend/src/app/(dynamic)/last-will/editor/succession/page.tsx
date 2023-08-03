@@ -1,300 +1,218 @@
 'use client'
-import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
+import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { heirsTypes } from '../../../../../../content/dropdownOptions'
-import { DropdownButton } from '../../../../../components/ButtonsAndLinks/DropdownButton/DropdownButton'
+import { useEffect, useState } from 'react'
+import { ObjectSchema, array, number, object, string } from 'yup'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
-import { IconButton } from '../../../../../components/IconButton/IconButton'
+import { Icon } from '../../../../../components/Icon/Icon'
+import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
+import { getPercentageLeftPerHeir } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { SuccessionFormPayload } from '../../../../../store/last-will/succession/actions'
-import { DropdownButtonOptions } from '../../../../../types/form'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { sendLastWillState, setProgressKeys, setSuccession } from '../../../../../store/lastwill/lastwill'
+import { HeirSuccesion, HeirsTypes, SuccessionFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-
-const PREVIOUS_LINK = routes.lastWill.inheritance('1')
-const NEXT_LINK = routes.lastWill.final('1')
 
 /**
  * Succession Page
  */
 const Succession = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [selectedHeirIndex, setSelectedHeirIndex] = useState<number>()
+
 	const router = useRouter()
 
 	// Global State
-	const { lastWill, services } = useLastWillContext()
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
+	const items = useAppSelector((state) => state.lastWill.data.items)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+
+	const dispatch = useAppDispatch()
+
+	// Prepare links
+	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
+	const NEXT_LINK = routes.lastWill.final(_id)
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
-		persons: lastWill.heirs.persons.map((person) => ({
-			id: person.id,
-			percentage: person.percentage ?? 0,
-			itemIds: person.itemIds ?? [],
-		})),
-		organisations: lastWill.heirs.organisations.map((organisation) => ({
-			id: organisation.id,
-			percentage: organisation.percentage ?? 0,
-			itemIds: organisation.itemIds ?? [],
-		})),
-		partner: {
-			percentage: lastWill.marriage.percentage ?? 0,
-			itemIds: lastWill.marriage.itemIds ?? [],
-		},
+		heirs: heirs.map((heir) => {
+			const percentageLeftPerHeir = getPercentageLeftPerHeir(heirs)
+
+			return {
+				id: heir.id,
+				type: heir.type,
+				name: heir.name ?? '',
+				percentage: heir.percentage ?? percentageLeftPerHeir,
+				itemIds: heir.itemIds ?? [],
+			}
+		}),
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
-		console.log(values)
 		try {
-			// Update succession global store
-			await services.submitSuccession(values)
-
+			// Update store
+			dispatch(setSuccession(values))
+			await dispatch(sendLastWillState())
 			router.push(href)
 		} catch (error) {
 			console.error('An error occured while submitting the form: ', error)
 		}
 	}
 
+	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({
+		heirs: array()
+			.of(
+				object<HeirSuccesion>()
+					.shape({
+						id: string().required(),
+						type: string<HeirsTypes>().required(),
+						name: string().required(),
+						percentage: number().min(0).max(100).required(),
+						itemIds: array().of(string().required()).required(),
+					})
+					.required()
+			)
+			.required(),
+	})
+
+	// Use to handle sidebar display state and progress
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.SUCCESSION })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
+	}, [dispatch])
 
 	return (
-		<div className="container mt-5 flex flex-1 flex-col">
+		<div className="container my-5 flex flex-1 flex-col">
 			<Headline className="hidden lg:block">Erbfolge</Headline>
-			<Formik initialValues={initialFormValues} onSubmit={(values) => onSubmit(values, NEXT_LINK)}>
-				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
+			<Formik
+				initialValues={initialFormValues}
+				validationSchema={validationSchema}
+				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
+			>
+				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
-						{/* Content */}
-						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
-							{/* Partner */}
-							{lastWill.marriage.relationshipStatus === 'married' && (
-								<div className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4">
-									{/* Partner Information */}
-									<Headline level={2} hasMargin={false} size="text-xl">
-										{lastWill.marriage.partnerFirstName} {lastWill.marriage.partnerLastName}
-									</Headline>
-									<p className="text-gray-500">Partner</p>
-									<div className="w-full">
-										<TextInput name="partner.percentage" labelText="Prozentualer Anteil des Erbes" />
-									</div>
-
-									{/* Organisation Items */}
-									<div className="mb-2 w-full md:mb-4">
-										{values.partner.itemIds.length !== 0 && <span>Gegenstände</span>}
-										{values.partner.itemIds.map((item) => (
-											<div
-												key={item}
-												className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
-											>
-												{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)?.name ?? ''}
-												<IconButton
-													icon="delete"
-													onClick={() => {
-														const newItems = values.partner.itemIds.filter((itemId) => itemId !== item)
-														setFieldValue('partner.itemIds', newItems)
-													}}
-												/>
-											</div>
-										))}
-									</div>
-
-									{/* Add Item Button */}
-									<DropdownButton
-										buttonProps={{
-											kind: 'secondary',
-										}}
-										options={(function getDropdownOptions(): DropdownButtonOptions[] {
-											const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
-												const alreadyUsedIds = [
-													...values.partner.itemIds,
-													...values.persons.map((person) => person.itemIds).flat(),
-													...values.organisations.map((orga) => orga.itemIds).flat(),
-												]
-												return alreadyUsedIds.includes(item.id) === false
-											})
-
-											return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
-												onClick: () => {
-													const newItems = [...values.partner.itemIds, inheritanceItem.id]
-													setFieldValue('partner.itemIds', newItems)
-												},
-												label: inheritanceItem.name ?? '',
-											}))
-										})()}
-									>
-										Gegenstand auswählen
-									</DropdownButton>
-								</div>
-							)}
-
-							{/* Persons */}
-							<FieldArray name="persons">
-								{(arrayHelpers: ArrayHelpers) =>
-									// Person
-									values.persons.map((person, index) => {
-										const currentPerson = lastWill.heirs.persons.find((heirsPerson) => heirsPerson.id === person.id)
-										return (
-											<div
-												key={person.id}
-												className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4"
-											>
-												{/* Person Information */}
-												<Headline level={2} hasMargin={false} size="text-xl">
-													{currentPerson?.firstName} {currentPerson?.lastName}
-												</Headline>
-												<p className="text-gray-500">{heirsTypes[currentPerson?.heirsType ?? 'other'].displayType}</p>
-												<div className="w-full">
-													<TextInput name={`persons.${index}.percentage`} labelText="Prozentualer Anteil des Erbes" />
-												</div>
-
-												{/* Person Items */}
-												<div className="mb-2 w-full md:mb-4">
-													{person.itemIds.length !== 0 && <span>Gegenstände</span>}
-													{person.itemIds.map((item) => (
-														<div
-															key={item}
-															className="mb-2 flex w-full items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
-														>
-															{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)
-																?.name ?? ''}
-															<IconButton
-																icon="delete"
-																onClick={() => {
-																	arrayHelpers.replace(index, {
-																		...person,
-																		itemIds: person.itemIds.filter((itemId) => itemId !== item),
-																	})
-																}}
-															/>
-														</div>
-													))}
-												</div>
-
-												{/* Add Item Button */}
-												<DropdownButton
-													buttonProps={{
-														kind: 'secondary',
-													}}
-													options={(function getDropdownOptions(): DropdownButtonOptions[] {
-														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
-															const alreadyUsedIds = [
-																...values.partner.itemIds,
-																...values.persons.map((person) => person.itemIds).flat(),
-																...values.organisations.map((orga) => orga.itemIds).flat(),
-															]
-															return alreadyUsedIds.includes(item.id) === false
-														})
-
-														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
-															onClick: () =>
-																arrayHelpers.replace(index, {
-																	...person,
-																	itemIds: [...person.itemIds, inheritanceItem.id],
-																}),
-															label: inheritanceItem.name ?? '',
-														}))
-													})()}
-												>
-													Gegenstand auswählen
-												</DropdownButton>
-											</div>
-										)
-									})
-								}
-							</FieldArray>
-
-							{/* Organisations */}
-							<FieldArray name="organisations">
-								{(arrayHelpers: ArrayHelpers) =>
-									// Person
-									values.organisations.map((organisation, index) => {
-										const currentOrganisation = lastWill.heirs.organisations.find(
-											(heirsOrganisation) => heirsOrganisation.id === organisation.id
-										)
-										return (
-											<div
-												key={organisation.id}
-												className="flex flex-col items-center rounded-xl border-2 border-gray-100 p-4"
-											>
-												{/* Organisation Information */}
-												<Headline level={2} hasMargin={false} size="text-xl">
-													{currentOrganisation?.name}
-												</Headline>
-												<p className="text-gray-500">{heirsTypes['organisation'].displayType}</p>
-												<div className="w-full">
-													<TextInput
-														name={`organisations.${index}.percentage`}
-														labelText="Prozentualer Anteil des Erbes"
-													/>
-												</div>
-
-												{/* Organisation Items */}
-												<div className="mb-2 w-full md:mb-4">
-													{organisation.itemIds.length !== 0 && <span>Gegenstände</span>}
-													{organisation.itemIds.map((item) => (
-														<div
-															key={item}
-															className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 px-4 py-1"
-														>
-															{lastWill.inheritance.items.find((inheritanceItem) => inheritanceItem.id === item)
-																?.name ?? ''}
-															<IconButton
-																icon="delete"
-																onClick={() => {
-																	arrayHelpers.replace(index, {
-																		...organisation,
-																		itemIds: organisation.itemIds.filter((itemId) => itemId !== item),
-																	})
-																}}
-															/>
-														</div>
-													))}
-												</div>
-
-												{/* Add Item Button */}
-												<DropdownButton
-													buttonProps={{
-														kind: 'secondary',
-													}}
-													options={(function getDropdownOptions(): DropdownButtonOptions[] {
-														const lastWillWithoutItemsAlreadyUsed = lastWill.inheritance.items.filter((item) => {
-															const alreadyUsedIds = [
-																...values.partner.itemIds,
-																...values.persons.map((person) => person.itemIds).flat(),
-																...values.organisations.map((orga) => orga.itemIds).flat(),
-															]
-															return alreadyUsedIds.includes(item.id) === false
-														})
-
-														return lastWillWithoutItemsAlreadyUsed.map((inheritanceItem) => ({
-															onClick: () =>
-																arrayHelpers.replace(index, {
-																	...organisation,
-																	itemIds: [...organisation.itemIds, inheritanceItem.id],
-																}),
-															label: inheritanceItem.name ?? '',
-														}))
-													})()}
-												>
-													Gegenstand auswählen
-												</DropdownButton>
-											</div>
-										)
-									})
-								}
-							</FieldArray>
+						{/* heirs */}
+						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
+							{values.heirs.map((heir, index) => (
+								<SuccessionHeir
+									key={`heir-${heir.id}`}
+									name={heir.name}
+									inputFieldName={`heirs.${index}.percentage`}
+									items={items.filter((item) => heir.itemIds?.includes(item.id))}
+									onClick={() => {
+										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
+										setIsModalOpen(true)
+									}}
+								/>
+							))}
 						</div>
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							loading={lastWill.common.isLoading}
+							loading={isLoading}
 							dirty={dirty}
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							previousHref={PREVIOUS_LINK}
 							nextHref={NEXT_LINK}
 						/>
+
+						{/* Active Heir Modal to select Items */}
+						{selectedHeirIndex !== undefined && (
+							<Modal
+								open={isModalOpen}
+								headline={values.heirs[selectedHeirIndex].name}
+								onClose={() => setIsModalOpen(false)}
+							>
+								<div className="mt-4 w-44 md:w-96">
+									{/* Percentage */}
+									<div className="mb-6 flex items-center justify-between">
+										<Headline level={5} hasMargin={false}>
+											Anteil
+										</Headline>
+										<div className="flex items-center">
+											<TextInput
+												className="pr-6 text-right"
+												type="number"
+												min={0}
+												max={100}
+												width="w-24"
+												hasBottomMargin={false}
+												name={`heirs.${selectedHeirIndex}.percentage`}
+											/>
+											<p className="z-10 -ml-6">%</p>
+										</div>
+									</div>
+
+									<FieldArray
+										name={`heirs.${selectedHeirIndex}.itemIds`}
+										render={(arrayHelpers) => (
+											<>
+												{/* Assigned Items List */}
+												<Headline className="mb-2" level={5} hasMargin={false}>
+													Gegenstände
+												</Headline>
+												<div className="mb-6">
+													{items
+														.filter((item) =>
+															values.heirs
+																.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
+																?.itemIds?.includes(item.id)
+														)
+														.map((item, index) => (
+															<div
+																key={item.id}
+																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																onClick={() => {
+																	arrayHelpers.remove(index)
+																}}
+															>
+																<p className="truncate text-gray-500">{item.name}</p>
+																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_more" />
+															</div>
+														))}
+												</div>
+
+												<hr className="my-2" />
+
+												{/* Unassigned Items List */}
+												{items.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+													.length !== 0 ? (
+													<>
+														<Headline className="" level={5} hasMargin={false}>
+															Noch nicht zugeordnete Gegenstände:
+														</Headline>
+														<p className="mb-2">(durch Anklicken der Person zuweisen)</p>{' '}
+													</>
+												) : (
+													<Headline className=" font-normal" level={5} hasMargin={false}>
+														Alle Gegenstände zugeordnet
+													</Headline>
+												)}
+												<div>
+													{items
+														.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
+														.map((item) => (
+															<div
+																key={item.id}
+																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
+																onClick={() => {
+																	arrayHelpers.push(item.id)
+																}}
+															>
+																<p className="truncate text-gray-500">{item.name}</p>
+																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_less" />
+															</div>
+														))}
+												</div>
+											</>
+										)}
+									/>
+								</div>
+							</Modal>
+						)}
 					</Form>
 				)}
 			</Formik>

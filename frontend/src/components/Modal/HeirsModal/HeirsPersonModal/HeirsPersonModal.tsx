@@ -1,11 +1,13 @@
+import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, array, mixed, number, object, string } from 'yup'
+import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
-import { childRelationshipOptions, genderOptions, heirsTypes } from '../../../../../content/dropdownOptions'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { PersonFormPayload } from '../../../../store/last-will/heirs/actions'
-import { ChildRelationShip, HeirsTypes, Person, PersonMoreInfos } from '../../../../store/last-will/heirs/state'
+import { childRelationshipOptions, genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
+import { heirsTypes } from '../../../../services/heirs'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill/lastwill'
 import { Gender } from '../../../../types/gender'
+import { ChildRelationShip, Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../Form/FormDatepicker/FormDatepicker'
@@ -22,62 +24,71 @@ type HeirsPersonModalProps = {
 	/** When defined we are in edit mode. */
 	editPerson: Person | null
 	/** The type of person. */
-	heirsType: HeirsTypes
+	type: PersonType
 }
 
 /**
  * Modal to add/edit a heirs person.
  */
-export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, heirsType }) => {
-	const { lastWill, services } = useLastWillContext()
+export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal, onClose, editPerson, type }) => {
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+	const dispatch = useAppDispatch()
 
 	const initialFormValues: PersonFormPayload = {
-		id: editPerson?.id ?? null,
-		firstName: editPerson?.firstName ?? '',
-		lastName: editPerson?.lastName ?? '',
+		id: editPerson?.id ?? nanoid(),
+		name: editPerson?.name ?? '',
 		gender: editPerson?.gender ?? undefined,
-		dateOfBirth: editPerson?.dateOfBirth ?? '',
-		placeOfBirth: editPerson?.placeOfBirth ?? '',
-		street: editPerson?.street ?? '',
-		houseNumber: editPerson?.houseNumber ?? '',
-		zipCode: editPerson?.zipCode ?? '',
-		city: editPerson?.city ?? '',
-		childRelationShip: editPerson?.childRelationShip ?? undefined,
-		ownChild: editPerson?.ownChild ?? [],
-		moreInfos: editPerson?.moreInfos ?? [],
-		heirsType: editPerson?.heirsType ?? heirsType,
+		birthDate: editPerson?.birthDate ?? '',
+		birthPlace: editPerson?.birthPlace ?? '',
+
+		street: editPerson?.address?.street ?? '',
+		houseNumber: editPerson?.address?.houseNumber ?? '',
+		zipCode: editPerson?.address?.zipCode ?? '',
+		city: editPerson?.address?.city ?? '',
+
+		moreInfos: [
+			...(editPerson?.isHandicapped ? ['isHandicapped'] : []),
+			...(editPerson?.isInsolvent ? ['isInsolvent'] : []),
+		],
+		type: editPerson?.type ?? type,
+
+		childRelationShip: editPerson?.child?.relationship ?? undefined,
+		ownChild: editPerson?.child?.type === 'natural' ? ['ownChild'] : undefined,
 	}
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
-		id: number().required().nullable(),
-		firstName: string(),
-		lastName: string(),
+		id: string().required(),
+		name: string(),
 		gender: string<Gender>(),
-		dateOfBirth: string(),
-		placeOfBirth: string(),
+		birthDate: string(),
+		birthPlace: string(),
+
 		street: string(),
 		houseNumber: string(),
-		zipCode: string().min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
+		zipCode: string(),
 		city: string(),
+
 		childRelationShip: string<ChildRelationShip>(),
 		ownChild: array(),
-		moreInfos: mixed<PersonMoreInfos[]>(),
-		heirsType: string<HeirsTypes>().required(),
+		moreInfos: mixed<('isHandicapped' | 'isInsolvent')[]>(),
+		type: string<PersonType>().required(),
 	})
 
-	const onSubmit = async (values: Person) => {
+	const onSubmit = async (values: PersonFormPayload) => {
 		if (editPerson) {
-			await services.updatePerson(values)
+			dispatch(updatePersonHeir(values))
 		} else {
-			await services.addPerson(values)
+			dispatch(addPersonHeir(values))
 		}
+
+		await dispatch(sendLastWillState())
 
 		// Close and reset Modal
 		onClose()
 	}
 
 	return (
-		<Modal open={isOpenModal} headline={`${heirsTypes[heirsType].label}`} onClose={onClose}>
+		<Modal open={isOpenModal} headline={`${heirsTypes[editPerson?.type ?? type]}`} onClose={onClose}>
 			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				<Form className="mt-2 md:mt-3">
 					{/* Persönliche Daten */}
@@ -89,18 +100,18 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						{/* Name */}
 						<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 							<TextInput
-								name="firstName"
+								name="name"
 								inputRequired
-								labelText="Vorname"
-								placeholder="Vorname"
-								autoComplete="given-name"
+								labelText="Vor- und Nachname"
+								placeholder="Vor- und Nachname"
+								autoComplete="name"
 							/>
-							<TextInput
-								name="lastName"
-								inputRequired
-								labelText="Nachname"
-								placeholder="Nachname"
-								autoComplete="family-name"
+							<FormDropdown
+								name="type"
+								labelText="Beziehung zum Erblasser"
+								placeholder="Beziehung zum Erblasser"
+								hasMargin
+								options={heirsPersonType}
 							/>
 						</div>
 
@@ -113,8 +124,8 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 								hasMargin
 								options={genderOptions}
 							/>
-							<FormDatepicker name="dateOfBirth" labelText="Geburtstag" autoComplete="bday" />
-							<TextInput name="placeOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+							<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
+							<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 						</div>
 
 						{/* Adress */}
@@ -193,13 +204,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						</Button>
 
 						{/* Submit Button */}
-						<Button
-							datacy="button-submit"
-							type="submit"
-							loading={lastWill.common.isLoading}
-							className="mb-4 md:mb-0"
-							icon="check"
-						>
+						<Button datacy="button-submit" type="submit" loading={isLoading} className="mb-4 md:mb-0" icon="check">
 							Speichern
 						</Button>
 					</div>

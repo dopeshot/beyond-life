@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiInternalServerErrorResponse,
@@ -22,11 +23,11 @@ import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.i
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { ChangeEmailDTO } from './dtos/change-email.dto'
 import { ChangePasswordDto } from './dtos/change-password.dto'
-import { DeleteMeDTO } from './dtos/delete-me.dto'
 import { ProfileService } from './profile.service'
 
 @Controller('profile')
 @ApiTags('profile')
+@ApiBearerAuth('access_token')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
@@ -35,7 +36,7 @@ export class ProfileController {
   // OK because 201 would be kind of out of place
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    description: 'Change password',
+    summary: 'Change password',
   })
   @ApiBody({
     type: ChangePasswordDto,
@@ -47,7 +48,9 @@ export class ProfileController {
     description:
       'Either jwt was invalid, old password was wrong or user does not exist anymore',
   })
-  @ApiBearerAuth('access_token')
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
+  })
   async updatePassword(
     @Req() { user }: RequestWithJWTPayload,
     @Body() { oldPassword, password }: ChangePasswordDto,
@@ -59,17 +62,19 @@ export class ProfileController {
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    description:
+    summary:
       'Change a users email address and therefore also send a new verify mail',
   })
   @ApiBody({ type: ChangeEmailDTO })
-  @ApiBearerAuth('access_token')
   @ApiOkResponse({ description: 'Email has been updated.' })
   @ApiUnauthorizedResponse({
     description: 'Jwt invalid or user does not exist',
   })
   @ApiInternalServerErrorResponse({
     description: 'Db write could not performed or other internal error',
+  })
+  @ApiBadRequestResponse({
+    description: 'Provided body did not comply to specs of DTO',
   })
   async updateUserEmail(
     @Req() { user }: RequestWithJWTPayload,
@@ -80,10 +85,16 @@ export class ProfileController {
 
   @Delete()
   @UseGuards(JwtGuard)
-  async deleteUser(
-    @Req() { user }: RequestWithJWTPayload,
-    @Body() { password }: DeleteMeDTO,
-  ) {
-    await this.profileService.deleteProfile(user.id, password)
+  @ApiOperation({
+    summary: 'Delete the users account and related last wills',
+  })
+  @ApiOkResponse({
+    description: 'Account was deleted',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid or expired JWT',
+  })
+  async deleteUser(@Req() { user }: RequestWithJWTPayload) {
+    await this.profileService.deleteProfile(user.id)
   }
 }

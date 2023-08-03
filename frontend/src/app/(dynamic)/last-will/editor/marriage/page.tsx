@@ -15,14 +15,16 @@ import { Label } from '../../../../../components/Form/Label/Label'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-import { useLastWillContext } from '../../../../../store/last-will/LastWillContext'
-import { MarriageFormPayload } from '../../../../../store/last-will/marriage/actions'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
+import { sendLastWillState, setMarriage, setProgressKeys } from '../../../../../store/lastwill/lastwill'
+import { Gender } from '../../../../../types/gender'
 import {
+	MarriageFormPayload,
 	MatrimonialProperty,
 	PartnerMoreInfos,
+	Person,
 	RelationshipStatus,
-} from '../../../../../store/last-will/marriage/state'
-import { Gender } from '../../../../../types/gender'
+} from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
 /**
@@ -33,40 +35,63 @@ const Marriage = () => {
 	const router = useRouter()
 
 	// Gloabl State
-	const { lastWill, services } = useLastWillContext()
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const partner = useAppSelector((state) =>
+		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+	)
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common.isBerlinWill) ?? false
+	const isPartnerGermanCitizenship =
+		useAppSelector((state) => state.lastWill.data.common.isPartnerGermanCitizenship) ?? false
+	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common.matrimonialProperty)
+	const relationshipStatus = useAppSelector((state) => state.lastWill.data.testator.relationshipStatus)
 
-	const PREVIOUS_LINK = routes.lastWill.testator(lastWill.common.id)
-	const NEXT_LINK = routes.lastWill.heirs(lastWill.common.id)
+	const dispatch = useAppDispatch()
+
+	const PREVIOUS_LINK = routes.lastWill.testator(_id)
+	const NEXT_LINK = routes.lastWill.heirs(_id)
 
 	// Formik
-	const initalFormValues: MarriageFormPayload = {
-		...lastWill.marriage,
-		partnerGermanCitizenship: lastWill.marriage.partnerGermanCitizenship ? ['partnerGermanCitizenship'] : [],
+	const { isHandicapped, isInsolvent, address, ...formPartner } = partner ?? {
+		isHandicapped: false,
+		isInsolvent: false,
+	}
+	const initialFormValues: MarriageFormPayload = {
+		...formPartner,
+		...address,
+		moreInfos: [
+			...(isHandicapped ? ['isHandicapped'] : []),
+			...(isInsolvent ? ['isInsolvent'] : []),
+			...(isBerlinWill ? ['isBerlinWill'] : []),
+		],
+		isPartnerGermanCitizenship: isPartnerGermanCitizenship ? ['isPartnerGermanCitizenship'] : [],
+		relationshipStatus: relationshipStatus ?? undefined,
+		matrimonialProperty,
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
+		name: string(),
+		gender: string<Gender>(),
+		birthDate: string(),
+		birthPlace: string(),
+
+		street: string(),
+		houseNumber: string(),
+		zipCode: string(),
+		city: string(),
+
 		relationshipStatus: string<RelationshipStatus>(),
-		partnerGermanCitizenship: array<string[]>(),
-		partnerFirstName: string(),
-		partnerLastName: string(),
-		partnerGender: string<Gender>(),
-		partnerDateOfBirth: string(),
-		partnerPlaceOfBirth: string(),
-		partnerStreet: string(),
-		partnerHouseNumber: string(),
-		partnerZipCode: string().when('relationshipStatus', {
-			is: 'married',
-			then: (schema) => schema.min(5, 'Postleitzahl muss 5 Ziffern haben').max(5, 'Postleitzahl muss 5 Ziffern haben.'),
-		}),
-		partnerCity: string(),
-		partnerMoreInfos: array<PartnerMoreInfos[]>(),
+		isPartnerGermanCitizenship: array<string[]>(),
+		moreInfos: array<PartnerMoreInfos[]>(),
 		matrimonialProperty: string<MatrimonialProperty>(),
 	})
 
 	const onSubmit = async (values: MarriageFormPayload, href: string) => {
 		try {
 			// Update marriage global state only if values have changed
-			await services.submitMarriage(values)
+			dispatch(setMarriage(values))
+
+			await dispatch(sendLastWillState())
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -75,17 +100,17 @@ const Marriage = () => {
 		}
 	}
 
-	// Use to handle save current page
+	// Use to handle sidebar display state and progress
 	useEffect(() => {
-		services.setProgressKey({ progressKey: SidebarPages.MARRIAGE })
-	}, [services])
+		dispatch(setProgressKeys(SidebarPages.MARRIAGE))
+	}, [dispatch])
 
 	return (
 		<div className="container mt-5">
 			<Headline className="hidden lg:block">Familienstand</Headline>
 
 			<Formik
-				initialValues={initalFormValues}
+				initialValues={initialFormValues}
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>
@@ -139,10 +164,10 @@ const Marriage = () => {
 							<div datacy="partner-fields">
 								{/* Checkbox German Citizenship */}
 								<Checkbox
-									name="partnerGermanCitizenship"
+									name="isPartnerGermanCitizenship"
 									options={[
 										{
-											value: 'partnerGermanCitizenship',
+											value: 'isPartnerGermanCitizenship',
 											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
 										},
 									]}
@@ -158,39 +183,32 @@ const Marriage = () => {
 										{/* Name */}
 										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 											<TextInput
-												name="partnerFirstName"
+												name="name"
 												inputRequired
-												labelText="Vorname"
-												placeholder="Vorname"
-												autoComplete="given-name"
-											/>
-											<TextInput
-												name="partnerLastName"
-												inputRequired
-												labelText="Nachname"
-												placeholder="Nachname"
-												autoComplete="family-name"
+												labelText="Vor- und Nachname"
+												placeholder="Vor- und Nachname"
+												autoComplete="name"
 											/>
 										</div>
 
 										{/* Gender and Birth */}
 										<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-3">
 											<FormDropdown
-												name="partnerGender"
+												name="gender"
 												labelText="Geschlecht"
 												placeholder="Geschlecht"
 												hasMargin
 												options={genderOptions}
 											/>
-											<FormDatepicker name="partnerDateOfBirth" labelText="Geburtstag" autoComplete="bday" />
-											<TextInput name="partnerPlaceOfBirth" labelText="Geburtsort" placeholder="Geburtsort" />
+											<FormDatepicker name="birthDate" labelText="Geburtstag" autoComplete="bday" />
+											<TextInput name="birthPlace" labelText="Geburtsort" placeholder="Geburtsort" />
 										</div>
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
 											<div className="w-2/3 md:w-3/4">
 												<TextInput
-													name="partnerStreet"
+													name="street"
 													inputRequired
 													labelText="Straße"
 													placeholder="Straße"
@@ -198,19 +216,14 @@ const Marriage = () => {
 												/>
 											</div>
 											<div className="w-1/3 md:w-1/4">
-												<TextInput
-													name="partnerHouseNumber"
-													inputRequired
-													labelText="Hausnummer"
-													placeholder="Hausnummer"
-												/>
+												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
 										<div className="flex gap-x-3">
 											<div className="w-1/3 md:w-1/4">
 												<TextInput
-													name="partnerZipCode"
+													name="zipCode"
 													inputRequired
 													labelText="Postleitzahl"
 													placeholder="Postleitzahl"
@@ -218,7 +231,7 @@ const Marriage = () => {
 												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="partnerCity" inputRequired labelText="Stadt" placeholder="Stadt" />
+												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
 											</div>
 										</div>
 									</div>
@@ -228,7 +241,7 @@ const Marriage = () => {
 								{/* More Infos */}
 								<div className="mt-5 rounded-xl border-2 border-gray-100 px-4 py-3 md:mt-8 md:px-8 md:py-6">
 									<Checkbox
-										name="partnerMoreInfos"
+										name="moreInfos"
 										labelText="Weitere relevante Infos"
 										inputRequired
 										helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
@@ -268,7 +281,7 @@ const Marriage = () => {
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons
-							loading={lastWill.common.isLoading}
+							loading={isLoading}
 							dirty={dirty}
 							previousOnClick={() => onSubmit(values, PREVIOUS_LINK)}
 							previousHref={PREVIOUS_LINK}

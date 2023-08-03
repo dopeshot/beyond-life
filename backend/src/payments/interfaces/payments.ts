@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Expose } from 'class-transformer'
 import { IsEnum } from 'class-validator'
 
 export class PaymentDTO {
@@ -26,27 +25,7 @@ type Plans = {
 
 // Level of cost, used to determine if a user wants to falsly downgrade (yes could be an Enum but we don't want those due to TS shenanigans)
 export const paymentPlans: Plans = {
-  free: 0,
+  free: -1,
   single: 1,
-  family: 2,
-}
-
-export class PaymentResponse {
-  @ApiProperty({
-    description: 'Payment status',
-    example: 'succeeded',
-  })
-  @Expose()
-  status: string
-
-  @ApiProperty({
-    description: 'Amount received',
-    example: 4900,
-  })
-  @Expose()
-  amount_received: number
-
-  constructor(partial: Partial<PaymentResponse>) {
-    Object.assign(this, partial)
-  }
+  family: 5,
 }

@@ -1,3 +1,4 @@
+'use client'
 import { GlobalFooter } from '../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../components/Navbar/NavbarLogo/NavbarLogo'

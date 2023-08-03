@@ -1,49 +1,89 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { notFound, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
+import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 
 type ChangePasswordFormValues = {
 	newPassword: string
 	newPasswordConfirm: string
 }
 
+// Formik
+const initialFormValues: ChangePasswordFormValues = {
+	newPassword: '',
+	newPasswordConfirm: '',
+}
+
+const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
+	newPassword: string()
+		.required('Bitte geben Sie ein neues Passwort ein.')
+		.min(8, PASSWORD_MIN_LENGTH_ERROR),
+	newPasswordConfirm: string()
+		.required('Bitte geben Sie ihr neues Passwort erneut ein.')
+		.oneOf([ref('newPassword')], PASSWORD_MATCH_ERROR),
+})
+
+const alertContent: { [key: string]: AlertProps } = {
+	OK: {
+		icon: 'check_circle',
+		color: 'green',
+		headline: 'Erfolgreich!',
+		description: (
+			<>
+				<p>
+					Passwort wurde erfolgreich geändert. Klicken Sie{' '}
+					<Link className="inline font-semibold text-green-600 hover:text-green-700" href={routes.account.login()}>
+						hier{' '}
+					</Link>
+					um sich einzuloggen.
+				</p>
+			</>
+		),
+	},
+	TOKEN_INVALID: {
+		icon: 'warning',
+		color: 'red',
+		headline: 'Ungültiger Link',
+		description: 'Der Link ist ungültig. Bitte fordern Sie einen neuen Link an.',
+	},
+	ERROR: {
+		icon: 'warning',
+		color: 'red',
+		headline: 'Fehler!',
+		description: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+	},
+}
+
 /**
  * Change Password Page.
  */
 const ChangePassword = () => {
-	const router = useRouter()
+	const searchParams = useSearchParams()
+	const token = searchParams.get('token')
 
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
+	const [status, setStatus] = useState<ChangePasswordResponse | null>(null)
 
-	// Formik
-	const initalFormValues: ChangePasswordFormValues = {
-		newPassword: '',
-		newPasswordConfirm: '',
+	// Render 404 if no token is provided
+	if (!token) {
+		return notFound()
 	}
 
-	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-		newPassword: string().required('Bitte geben Sie ein neues Password ein.'),
-		newPasswordConfirm: string()
-			.required('Bitte geben Sie ihr neues Password erneut ein.')
-			.oneOf([ref('newPassword')], 'Passwörter müssen übereinstimmen.'),
-	})
-
 	const onSubmit = async (values: ChangePasswordFormValues) => {
-		console.log(values)
-
-		// Simulate request
 		setIsLoading(true)
-		await new Promise((resolve) => setTimeout(resolve, 1000))
+		const response = await changePassword(values.newPassword, token)
+		setStatus(response)
 		setIsLoading(false)
-
-		router.push(routes.account.login())
 	}
 
 	return (
@@ -54,9 +94,9 @@ const ChangePassword = () => {
 			</header>
 
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
-				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+				<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
-						<Form>
+						<Form className="mb-4">
 							<PasswordInput
 								name="newPassword"
 								labelText="Neues Passwort"
@@ -80,6 +120,8 @@ const ChangePassword = () => {
 						</Form>
 					)}
 				</Formik>
+
+				{status && <Alert {...alertContent[status]} />}
 			</main>
 		</div>
 	)

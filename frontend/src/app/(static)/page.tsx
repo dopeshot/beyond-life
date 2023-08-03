@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { cardContent, clientCards, tutorialSteps } from '../../../content/lastWill'
 import { FreePlan, PaymentPlans } from '../../../content/paymentPlans'
-import headerBackground from '../../assets/images/layout/headerBackground.jpg'
+import headerBackground from '../../assets/images/layout/family3.jpg'
 import { Route } from '../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../components/Headline/Headline'
 import { Banner } from '../../components/Layout/Banner/Banner'
@@ -12,7 +12,7 @@ import { Step } from '../../components/Layout/Step/Step'
 import { PaymentPlan } from '../../components/PaymentPlan/PaymentPlan'
 import { routes } from '../../services/routes/routes'
 
-/**s
+/**
  * Index Page
  */
 const Home: React.FC = () => {
@@ -137,14 +137,7 @@ const Home: React.FC = () => {
 						<div className="flex w-full flex-col gap-4">
 							<div className="mb-6 flex flex-col gap-4 md:flex-row">
 								{[FreePlan, ...PaymentPlans].map((plan) => (
-									<PaymentPlan
-										key={plan.title}
-										title={plan.title}
-										price={plan.price}
-										hasButton={false}
-										size="md"
-										descriptionItems={plan.descriptionItems}
-									/>
+									<PaymentPlan key={plan.title} {...plan} hasButton={false} size="md" />
 								))}
 							</div>
 						</div>

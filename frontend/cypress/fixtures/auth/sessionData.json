@@ -1,0 +1,12 @@
+{
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjpmYWxzZSwicGF5bWVudFBsYW4iOiJmcmVlIiwiaWF0IjoxNjkxMDQ3MDYyLCJleHAiOjE2OTEwNTA2NjJ9.tOqkBw5JcVuvaTaL9VDsd4gls9vb3w-J0IFwiCuAc2E",
+	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTEwNDcwNjIsImV4cCI6MTY5MTkxMTA2Mn0.kWvy3_Q_JFia-bgyA5KvJJC4txipjT7GlbB5_e95MGM",
+	"decodedAccessToken": {
+		"id": "64cad37c6550813b2137ebe9",
+		"email": "test@test.test",
+		"hasVerifiedEmail": false,
+		"paymentPlan": "free",
+		"iat": 1691047062,
+		"exp": 1691050662
+	}
+}

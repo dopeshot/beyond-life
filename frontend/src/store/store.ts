@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { lastWillReducer } from './lastwill'
+import { authReducer } from './auth/auth'
+import { lastWillReducer } from './lastwill/lastwill'
 
 export const store = configureStore({
 	reducer: {
 		lastWill: lastWillReducer,
+		auth: authReducer,
 	},
 })
 

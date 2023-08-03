@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
@@ -23,24 +24,28 @@ const Plans = () => {
 				<div className="mb-4 flex w-full flex-col gap-4">
 					<div className="flex flex-col gap-4 md:flex-row">
 						{[FreePlan, ...PaymentPlans].map((plan) => (
-							<PaymentPlan
-								key={plan.title}
-								title={plan.title}
-								price={plan.price}
-								hasButton={false}
-								size="md"
-								descriptionItems={plan.descriptionItems}
-							/>
+							<PaymentPlan key={plan.type} {...plan} hasButton={false} size="md" />
 						))}
 					</div>
 				</div>
 
 				{/* Buttons */}
 				<div className="flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:justify-between">
-					<Route icon="login" href={routes.account.login({ funnel: true })} kind="tertiary" className="w-auto">
-						Login
+					<Route
+						datacy="login-route"
+						icon="login"
+						href={routes.account.login({ funnel: true })}
+						kind="tertiary"
+						className="w-auto"
+					>
+						Einloggen
 					</Route>
-					<Route icon="arrow_forward" href={routes.account.register({ funnel: true })} className="sm:w-max">
+					<Route
+						datacy="register-route"
+						icon="arrow_forward"
+						href={routes.account.register({ funnel: true })}
+						className="sm:w-max"
+					>
 						Account erstellen
 					</Route>
 				</div>
@@ -49,7 +54,12 @@ const Plans = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center xl:order-2 xl:w-1/3">
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:h-2/3 lg:rounded-3xl xl:h-full xl:w-auto">
-					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image
+						priority
+						className=" h-full w-auto object-cover object-top blur-[2px]"
+						src={image}
+						alt="Testament Preview"
+					/>
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] xl:text-[200px]" />
 			</div>

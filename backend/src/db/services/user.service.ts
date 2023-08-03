@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { hash as bhash } from 'bcrypt'
-import { ObjectId, Schema } from 'mongoose'
+import { ObjectId } from 'mongoose'
 import {
   CheckoutInformation,
   PaymentOptions,
@@ -16,8 +16,8 @@ import {
 import { User } from '../entities/users.entity'
 
 @Injectable()
-export class UserService {
-  private readonly logger = new Logger(UserService.name)
+export class UserDBService {
+  private readonly logger = new Logger(UserDBService.name)
 
   constructor(
     @InjectModel(User)
@@ -34,7 +34,7 @@ export class UserService {
   /**
    * @description Fetch one user based on id
    */
-  async findOneById(id: Schema.Types.ObjectId): Promise<User> {
+  async findOneById(id: ObjectId): Promise<User> {
     return await this.userModel.findOne({ _id: id }).lean()
   }
 
@@ -42,12 +42,7 @@ export class UserService {
    * @description Set user last login time to current time (based on db system time)
    */
   async setLoginTimestamp(id: ObjectId): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: id },
-      {
-        lastLogin: new Date(),
-      },
-    )
+    await this.userModel.updateOne({ _id: id }, { lastLogin: new Date() })
   }
 
   /**
@@ -56,17 +51,14 @@ export class UserService {
   async insertUser(userData: Partial<User>): Promise<User> {
     try {
       userData.password = await this.hashPassword(userData.password)
-      const user: User = await this.userModel.create({
-        ...userData,
-        createdAt: new Date(),
-      })
-
+      const user: User = await this.userModel.create(userData)
       return user
     } catch (error) {
       this.logger.error(error)
       if (error.code === 11000 && error.keyPattern.email)
         throw new ConflictException('Email is already taken.')
-      else if (error instanceof ServiceUnavailableException) throw error
+      /* istanbul ignore next */
+      throw new ServiceUnavailableException()
     }
   }
 
@@ -79,9 +71,7 @@ export class UserService {
     }
     await this.userModel.updateOne(
       { email },
-      {
-        hasVerifiedEmail: newVerifyValue,
-      },
+      { hasVerifiedEmail: newVerifyValue },
     )
   }
 
@@ -111,18 +101,6 @@ export class UserService {
     await this.userModel.deleteOne({ _id })
   }
 
-  // TODO: Implement
-  async updateUserPaymentInformations(
-    id: ObjectId,
-    userData: Partial<User>,
-  ) /*: Promise<User>*/ {
-    return null
-  }
-
-  async updateUserStripeCustomer(_id: ObjectId, stripeCustomerId: string) {
-    await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
-  }
-
   async updateUserPaymentPlan(
     stripeCustomerId: string,
     paymentPlan: PaymentOptions,
@@ -133,6 +111,7 @@ export class UserService {
         { paymentPlan },
       )
     } catch (error) {
+      /* istanbul ignore next */
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Could not update payment plan of the provided customer from Stripe',
@@ -162,6 +141,7 @@ export class UserService {
         { new: true },
       )
     } catch (error) {
+      /* istanbul ignore next */
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Something went wrong, please try again later!',

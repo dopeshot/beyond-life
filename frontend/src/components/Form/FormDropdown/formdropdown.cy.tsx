@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik'
 import 'material-symbols'
 import React from 'react'
 import '../../../app/globals.css'
-import { ComponentOptions } from '../../../types/form'
+import { DropdownOptions } from '../../../types/form'
 import { FormDropdown } from './FormDropdown'
 
 const initialValues = {
@@ -25,7 +25,7 @@ const data = {
 	options: [
 		{ value: '1', label: 'Männlich', icon: 'person' },
 		{ value: '2', label: 'Weiblich', icon: 'person' },
-	] as ComponentOptions[],
+	] as DropdownOptions[],
 }
 
 describe('Dropdown', () => {

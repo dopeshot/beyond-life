@@ -1,8 +1,9 @@
+import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, number, object, string } from 'yup'
-import { useLastWillContext } from '../../../../store/last-will/LastWillContext'
-import { OrganisationFormPayload } from '../../../../store/last-will/heirs/actions'
-import { Organisation } from '../../../../store/last-will/heirs/state'
+import { ObjectSchema, object, string } from 'yup'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { addOrganisationHeir, sendLastWillState, updateOrganisationHeir } from '../../../../store/lastwill/lastwill'
+import { Organisation, OrganisationFormPayload } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
@@ -22,32 +23,35 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 	onClose,
 	editOrganisation,
 }) => {
-	const { lastWill, services } = useLastWillContext()
+	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
+	const dispatch = useAppDispatch()
 
 	const initialFormValues: OrganisationFormPayload = {
-		id: editOrganisation?.id ?? null,
+		id: editOrganisation?.id ?? nanoid(),
 		name: editOrganisation?.name ?? '',
-		street: editOrganisation?.street ?? '',
-		houseNumber: editOrganisation?.houseNumber ?? '',
-		zipCode: editOrganisation?.zipCode ?? '',
-		city: editOrganisation?.city ?? '',
+		street: editOrganisation?.address?.street ?? '',
+		houseNumber: editOrganisation?.address?.houseNumber ?? '',
+		zipCode: editOrganisation?.address?.zipCode ?? '',
+		city: editOrganisation?.address?.city ?? '',
 	}
 
 	const validationSchema: ObjectSchema<OrganisationFormPayload> = object({
-		id: number().required().nullable(),
+		id: string().required(),
 		name: string(),
+
 		street: string(),
 		houseNumber: string(),
 		zipCode: string(),
 		city: string(),
 	})
 
-	const onSubmit = async (values: Organisation) => {
+	const onSubmit = async (values: OrganisationFormPayload) => {
 		if (editOrganisation) {
-			await services.updateOrganisation(values)
+			dispatch(updateOrganisationHeir(values))
 		} else {
-			await services.addOrganisation(values)
+			dispatch(addOrganisationHeir(values))
 		}
+		await dispatch(sendLastWillState())
 
 		// Close and reset Modal
 		onClose()
@@ -114,13 +118,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 						</Button>
 
 						{/* Submit Button */}
-						<Button
-							datacy="button-submit"
-							type="submit"
-							loading={lastWill.common.isLoading}
-							className="mb-4 md:mb-0"
-							icon="check"
-						>
+						<Button datacy="button-submit" type="submit" loading={isLoading} className="mb-4 md:mb-0" icon="check">
 							Speichern
 						</Button>
 					</div>

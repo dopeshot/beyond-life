@@ -19,19 +19,10 @@ jobs:
       context: frontend
 
   audit:
-    runs-on: ubuntu-latest
-    # Only run on PRs against stable and on stable itself
-    if: github.ref == 'stable' || github.base_ref == 'stable'
-    defaults:
-      run:
-        shell: bash
-        working-directory: frontend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: audit
-        run: npm audit --omit=dev
+    if: github.ref == 'refs/heads/stable' || github.base_ref == 'refs/heads/stable'
+    uses: ./.github/workflows/audit.template.yml
+    with:
+      context: frontend
 
   tests:
     runs-on: ubuntu-latest
@@ -68,7 +59,7 @@ jobs:
         with:
           working-directory: ./frontend
           build: npm run build
-          start: npm run serve
+          start: npm run start
           command: npm run ${{ matrix.command }}
 
       - uses: actions/upload-artifact@v3
@@ -89,11 +80,23 @@ jobs:
           name: coverage-report
           path: frontend/coverage/coverage-final-${{ hashFiles('frontend/coverage/coverage-final.json') }}.json
 
+
+  trigger-cloudflare-deploy:
+    needs: [tests, audit]
+    runs-on: ubuntu-latest
+    # TODO
+    if: github.event_name == 'push' && github.ref == 'refs/heads/stable'
+    steps:
+      
+      - name: trigger webhook
+        run: curl -X POST ${{ secrets.CFP_DEPLOY_WEBHOOK }}
+
+
   generate-codecov-badge:
     needs: tests
     uses: ./.github/workflows/codecov.template.yml
-    # Dont run this when merging into stable => Bot cannot commit to main
-    if: github.ref != 'stable' || github.base_ref != 'stable'
+    # Dont run this when merging into stable 
+    if: github.ref != 'refs/heads/stable' || github.base_ref != 'refs/heads/stable'
     with:
       context: frontend
     secrets:

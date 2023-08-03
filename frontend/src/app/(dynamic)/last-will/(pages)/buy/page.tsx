@@ -1,33 +1,27 @@
 'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
-import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
+import { PaymentPlan, PaymentPlanType } from '../../../../../components/PaymentPlan/PaymentPlan'
+import { createCheckoutSession } from '../../../../../services/api/payment/payment'
 import { routes } from '../../../../../services/routes/routes'
 
 /**
  * Paywall Page
  */
 const Buy = () => {
-	const handleSubmit = async (plan: 'single' | 'family') => {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_API_CHECKOUT}`, {
-			method: 'POST',
+	const router = useRouter()
 
-			body: JSON.stringify({
-				plan,
-			}),
-			credentials: 'include',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
-			},
-		})
-		const data = await res.json()
-		console.log(data.url)
-		window.location.href = data.url
+	const handlePlanSubmit = async (plan: PaymentPlanType) => {
+		/* istanbul ignore next */ // fallback for typescript should not happen
+		if (plan === 'free') return
+		const response = await createCheckoutSession(plan)
+		router.push(response)
 	}
 
 	return (
@@ -41,13 +35,7 @@ const Buy = () => {
 				{/* Price Plans */}
 				<div className="mb-4 flex w-full flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					{PaymentPlans.map((plan) => (
-						<PaymentPlan
-							key={plan.title}
-							title={plan.title}
-							price={plan.price}
-							descriptionItems={plan.descriptionItems}
-							handleSubmit={() => handleSubmit(plan.title === 'Basic' ? 'single' : 'family')}
-						/>
+						<PaymentPlan key={plan.type} {...plan} handleSubmit={() => handlePlanSubmit(plan.type)} />
 					))}
 				</div>
 
@@ -61,7 +49,12 @@ const Buy = () => {
 			{/* Image */}
 			<div className="order-1 flex w-full items-center justify-center lg:order-2 lg:w-1/2">
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
-					<Image className=" h-full w-auto object-cover object-top blur-[2px]" src={image} alt="Testament Preview" />
+					<Image
+						priority
+						className=" h-full w-auto object-cover object-top blur-[2px]"
+						src={image}
+						alt="Testament Preview"
+					/>
 				</div>
 				<Icon icon="lock" className="absolute text-[80px] lg:text-[200px]" />
 			</div>
@@ -69,4 +62,4 @@ const Buy = () => {
 	)
 }
 
-export default Buy
+export default isAuth(Buy, 'protected')

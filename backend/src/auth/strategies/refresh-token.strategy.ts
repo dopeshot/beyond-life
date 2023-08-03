@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
+import { UserDBService } from '../../db/services/user.service'
 import { RefreshJWTPayload } from '../interfaces/refresh-jwt-payload.interface'
-import { UserService } from '../../db/services/user.service'
 
 /**
  * @description Strategy for validating long living refresh tokens
@@ -15,7 +15,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
 ) {
   constructor(
     private readonly configService: ConfigService,
-    private readonly userService: UserService,
+    private readonly userService: UserDBService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
