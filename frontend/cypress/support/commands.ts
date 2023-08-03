@@ -195,6 +195,29 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockGetLastWillById', (shouldHaveSampleData = false) => {
+	const fixture = shouldHaveSampleData ? 'lastwill/singleLastWillData.json' : 'lastwill/singleLastWill.json'
+
+	cy.intercept('GET', `${apiUrl}/lastwill/*`, {
+		statusCode: 200,
+		fixture,
+	}).as('mockGetLastWillById')
+})
+
+Cypress.Commands.add('mockCreateLastWill', () => {
+	cy.intercept('POST', `${apiUrl}/lastwill`, {
+		statusCode: 201,
+		fixture: 'lastwill/singleLastWill.json',
+	}).as('mockCreateLastWill')
+})
+
+Cypress.Commands.add('mockUpdateLastWill', () => {
+	cy.intercept('PUT', `${apiUrl}/lastwill/*`, {
+		statusCode: 200,
+		fixture: 'lastwill/singleLastWill.json',
+	}).as('mockUpdateLastWill')
+})
+
 Cypress.Commands.add('mockGetLastWillFulltext', (response = 'OK') => {
 	cy.intercept('GET', `${apiUrl}/lastwill/*/fulltext`, getLastWillFulltextResponse[response]).as(
 		'mockGetLastWillFulltext'

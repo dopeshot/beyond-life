@@ -45,7 +45,12 @@ const Inheritance = () => {
 			// Update inheritance global state only if values have changed
 			dispatch(setInheritance(values))
 
-			await dispatch(sendLastWillState())
+			const response = await dispatch(sendLastWillState())
+
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
 
 			// Redirect to previous or next page
 			router.push(href)

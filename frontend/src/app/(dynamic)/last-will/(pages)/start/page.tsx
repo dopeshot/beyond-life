@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
 import { Alert } from '../../../../../components/Alert/Alert'
@@ -10,6 +11,7 @@ import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../../components/Form/Label/Label'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { createLastWill } from '../../../../../services/api/lastwill/createLastWill'
 import { routes } from '../../../../../services/routes/routes'
 
 type StartLegal = {
@@ -32,10 +34,17 @@ const validationSchema: ObjectSchema<StartLegal> = object().shape({
  */
 const Start = () => {
 	const router = useRouter()
+	const [isLoading, setIsLoading] = useState(false)
 
-	const onSubmit = () => {
-		// Redirect to Testator Page
-		router.push(routes.lastWill.testator('demo'))
+	const onSubmit = async () => {
+		setIsLoading(true)
+		const response = await createLastWill()
+
+		if (response !== null) {
+			// Redirect to Testator Page
+			router.push(routes.lastWill.testator(response._id))
+		}
+		setIsLoading(false)
 	}
 
 	return (
@@ -138,6 +147,7 @@ const Start = () => {
 							icon="arrow_forward"
 							disabled={values.germanCitizenship === false || values.germanRightOfInheritance === false}
 							className="ml-auto mt-auto"
+							loading={isLoading}
 						>
 							Nächster Schritt
 						</Button>
