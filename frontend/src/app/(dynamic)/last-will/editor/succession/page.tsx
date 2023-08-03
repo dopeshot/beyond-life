@@ -103,6 +103,7 @@ const Succession = () => {
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
 							{values.heirs.map((heir, index) => (
 								<SuccessionHeir
+									datacy={`heir-${heir.id}`}
 									key={`heir-${heir.id}`}
 									name={heir.name}
 									inputFieldName={`heirs.${index}.percentage`}
@@ -139,6 +140,7 @@ const Succession = () => {
 										</Headline>
 										<div className="flex items-center">
 											<TextInput
+												datacy={`textinput-modal-${selectedHeirIndex}`}
 												className="pr-6 text-right"
 												type="number"
 												min={0}
@@ -168,6 +170,7 @@ const Succession = () => {
 														)
 														.map((item, index) => (
 															<div
+																datacy={`assigned-item-${item.id}`}
 																key={item.id}
 																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {
@@ -201,6 +204,7 @@ const Succession = () => {
 														.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
 														.map((item) => (
 															<div
+																datacy={`unassigned-item-${item.id}`}
 																key={item.id}
 																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {

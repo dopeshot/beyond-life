@@ -1,5 +1,5 @@
 'use client'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { notFound, usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import isAuth from '../../../../components/Auth/isAuth'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
@@ -13,12 +13,12 @@ import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/la
 const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	const path = usePathname()
 	const searchParams = useSearchParams()
+	const id = searchParams.get('id')
 	const isInitialized = useAppSelector((state) => state.lastWill.isInitialized)
 
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		const id = searchParams.get('id')
 		if (!id) {
 			console.warn("Can't fetch last will state because id is not defined")
 
@@ -35,6 +35,9 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 		}
 		// This has to be empty to work because it will retrigger when dispatch is defined new
 	}, []) // eslint-disable-line
+
+	if (!id) return notFound()
+
 	return (
 		<>
 			{!isInitialized ? (

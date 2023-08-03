@@ -20,7 +20,7 @@ declare global {
 			/**
 			 * Mocks the get last will by id endpoint.
 			 */
-			mockGetLastWillById(): Chainable<void>
+			mockGetLastWillById(shouldHaveSampleData?: boolean): Chainable<void>
 			/**
 			 * Mocks the create last will endpoint.
 			 */
