@@ -267,6 +267,10 @@ const lastWillSlice = createSlice({
 
 			state.data = action.payload
 		})
+		builder.addCase(fetchLastWillState.rejected, (state) => {
+			state.isLoading = false
+			throw new Error('Could not fetch last will')
+		})
 
 		builder.addCase(sendLastWillState.pending, (state) => {
 			state.isLoading = true
@@ -274,6 +278,11 @@ const lastWillSlice = createSlice({
 
 		builder.addCase(sendLastWillState.fulfilled, (state) => {
 			state.isLoading = false
+		})
+
+		builder.addCase(sendLastWillState.rejected, (state) => {
+			state.isLoading = false
+			throw new Error('Could not send last will')
 		})
 	},
 })
