@@ -39,15 +39,7 @@ export const routes = {
 
 			return `/last-will/auth${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		testator: (id?: string) => {
-			if (!id) return '/last-will/editor/testator'
-
-			const queryString = new URLSearchParams({
-				...(id && { id }),
-			}).toString()
-
-			return `/last-will/editor/testator${queryString !== '' ? `?${queryString}` : ''}`
-		},
+		testator: (id: string) => `/last-will/editor/testator?id=${id}`,
 		marriage: (id: string) => `/last-will/editor/marriage?id=${id}`,
 		heirs: (id: string) => `/last-will/editor/heirs?id=${id}`,
 		inheritance: (id: string) => `/last-will/editor/inheritance?id=${id}`,
