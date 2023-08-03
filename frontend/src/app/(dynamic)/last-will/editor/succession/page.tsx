@@ -9,6 +9,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
 import { SuccessionHeir } from '../../../../../components/SuccessionHeir/SuccessionHeir'
+import { getPercentageLeftPerHeir } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setProgressKeys, setSuccession } from '../../../../../store/lastwill/lastwill'
@@ -39,9 +40,7 @@ const Succession = () => {
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
 		heirs: heirs.map((heir) => {
-			const heirWithoutPercentage = heirs.filter((heir) => !heir.percentage)
-			const sumOfPercantege = heirs.reduce((acc, curr) => acc + (curr.percentage || 0), 0)
-			const percentageLeftPerHeir = Math.floor((100 - sumOfPercantege) / (heirWithoutPercentage.length || 1))
+			const percentageLeftPerHeir = getPercentageLeftPerHeir(heirs)
 
 			return {
 				id: heir.id,

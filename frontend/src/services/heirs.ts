@@ -32,3 +32,18 @@ export const getPersonAddHeirsOptions = (setDropdownOption: SetDropdownOptionFun
 	}))
 
 export type SetDropdownOptionFunction = (type: HeirsTypes) => void
+
+export const getHeirsWithoutPercentage = (heirs: (Person | Organisation)[]): (Person | Organisation)[] => {
+	return heirs.filter((heir) => !heir.percentage)
+}
+
+export const getSumOfPercentage = (heirs: (Person | Organisation)[]): number => {
+	return heirs.reduce((acc, curr) => acc + (curr.percentage || 0), 0)
+}
+
+export const getPercentageLeftPerHeir = (heirs: (Person | Organisation)[]): number => {
+	const heirWithoutPercentage = getHeirsWithoutPercentage(heirs)
+	const sumOfPercantege = getSumOfPercentage(heirs)
+
+	return Math.floor((100 - sumOfPercantege) / (heirWithoutPercentage.length || 1))
+}
