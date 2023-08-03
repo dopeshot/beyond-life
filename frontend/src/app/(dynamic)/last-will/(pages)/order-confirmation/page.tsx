@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -29,7 +30,8 @@ const textsPaymentFailed = {
 const OrderConfirmation = () => {
 	const searchParams = useSearchParams()
 	const paymentSucceeded = searchParams.get('success')
-	const boughtPlan = searchParams.get('plan')
+	const boughtPlanParam = searchParams.get('plan')
+	const boughtPlan = PaymentPlans.find((plan) => plan.type === boughtPlanParam)
 
 	const texts = paymentSucceeded == '1' ? textsPaymentSucceeded : textsPaymentFailed
 
@@ -59,17 +61,23 @@ const OrderConfirmation = () => {
 						<div className="ml-4 h-0.5 w-full rounded bg-gray-200" />
 					</div>
 					{boughtPlan && (
-						<div datacy={`plan-${boughtPlan}`} className="flex justify-between gap-2">
-							<p>Produkt</p>
-							<p className="flex items-center gap-1 text-end">{boughtPlan}</p>
-						</div>
+						<>
+							<div datacy={`plan-${boughtPlan}`} className="flex justify-between gap-2">
+								<p>Produkt</p>
+								<p className="flex items-center gap-1 text-end">{boughtPlan.title}</p>
+							</div>
+							<div className="flex justify-between gap-2">
+								<p>Preis</p>
+								<p className="flex items-center gap-1 text-end">{boughtPlan.price}</p>
+							</div>
+						</>
 					)}
 					<div className="flex justify-between gap-2">
 						<p>Zahlungsstatus</p>
 						<p className="flex items-center gap-1 text-end">
 							<Icon
 								icon={paymentSucceeded == '1' ? 'check_circle' : 'cancel'}
-								className={`text-base ${paymentSucceeded == '1' ? 'text-yellow-400' : 'text-red-400'}`}
+								className={`text-base ${paymentSucceeded == '1' ? 'text-green-500' : 'text-red-500'}`}
 							/>
 							{texts.paymentStatus}
 						</p>

@@ -11,7 +11,7 @@ describe('Last Will Order Confirmation Page', () => {
 		})
 
 		it('Should correctly show deny page', () => {
-			cy.visit('/last-will/order-confirmation?success=0')
+			cy.visit('/last-will/order-confirmation?success=0&plan=single')
 
 			cy.datacy('paymentSucceeded-0').should('be.visible')
 			cy.datacy('paymentSucceeded-1').should('not.exist')
