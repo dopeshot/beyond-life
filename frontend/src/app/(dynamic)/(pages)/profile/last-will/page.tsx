@@ -61,8 +61,7 @@ const MyLastWills = () => {
 			) : (
 				<>
 					<Headline level={3}>
-						Meine Testamente
-						{lastWills.length > 0 && <span className="ml-2 text-base text-gray-600">({lastWills.length})</span>}
+						Meine Testamente <span className="ml-2 text-base text-gray-600">({lastWills.length})</span>
 					</Headline>
 
 					{/* Last Will List */}
