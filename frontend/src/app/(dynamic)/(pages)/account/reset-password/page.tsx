@@ -8,6 +8,7 @@ import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { forgotPassword } from '../../../../../services/api/auth/resetPassword'
+import { EMAIL_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 type ResetPasswordFormValues = {
 	email: string
@@ -27,7 +28,7 @@ const ResetPassword = () => {
 	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
 
 	const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
-		email: string().matches(validateMail.regex, validateMail.message).required('E-Mail Adresse ist erforderlich.'),
+		email: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
 	})
 
 	const onSubmit = async (values: ResetPasswordFormValues) => {

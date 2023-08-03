@@ -1,4 +1,5 @@
 import { AlertProps } from '../src/components/Alert/Alert'
+import { PASSWORD_IS_WRONG_ERROR } from './validation'
 
 export const alertContentChangeEmail: { [key: string]: AlertProps } = {
 	MAIL_CONFLICT: {
@@ -27,7 +28,7 @@ export const alertContentChangePassword: { [key: string]: AlertProps } = {
 		icon: 'warning',
 		color: 'red',
 		headline: 'Passwort falsch',
-		description: 'Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.',
+		description: PASSWORD_IS_WRONG_ERROR,
 	},
 	ERROR: {
 		icon: 'warning',
