@@ -28,6 +28,114 @@ import {
 	updatePersonHeir,
 } from './lastwill'
 
+const testatorFormPayload: TestatorFormPayload = {
+	name: 'Max Mustermann',
+	birthDate: '2000-01-01',
+	birthPlace: 'Musterstadt',
+	zipCode: '12345',
+	city: 'Musterstadt',
+	street: 'Musterstraße',
+	houseNumber: '1',
+	moreInfos: ['isInsolvent'],
+}
+
+const testator: Testator = {
+	name: 'Max Mustermann',
+	birthDate: '2000-01-01',
+	birthPlace: 'Musterstadt',
+	address: {
+		zipCode: '12345',
+		city: 'Musterstadt',
+		street: 'Musterstraße',
+		houseNumber: '1',
+	},
+	isHandicapped: false,
+	isInsolvent: true,
+}
+
+const personFormPayload: PersonFormPayload = {
+	id: 'person_1',
+	type: 'child',
+	name: 'Person A',
+	gender: 'male',
+	birthDate: '2000-01-01',
+	birthPlace: 'Place A',
+	street: 'Street A',
+	houseNumber: '1',
+	zipCode: '12345',
+	city: 'City A',
+	moreInfos: [],
+	childRelationShip: 'childTogether',
+	ownChild: [],
+}
+
+const person: Person = {
+	id: 'person_1',
+	type: 'child',
+	name: 'Person A',
+	gender: 'male',
+	birthDate: '2000-01-01',
+	birthPlace: 'Place A',
+	address: {
+		street: 'Street A',
+		houseNumber: '1',
+		zipCode: '12345',
+		city: 'City A',
+	},
+	isHandicapped: false,
+	isInsolvent: false,
+}
+const marriageFormPayload: MarriageFormPayload = {
+	name: 'John Doe',
+	gender: 'male',
+	birthDate: '1990-01-01',
+	birthPlace: 'New York',
+	moreInfos: ['isHandicapped', 'isBerlinWill'],
+	street: 'Main St.',
+	houseNumber: '123',
+	zipCode: '12345',
+	city: 'New York',
+	isPartnerGermanCitizenship: ['isPartnerGermanCitizenship'],
+	matrimonialProperty: 'communityOfGain',
+	relationshipStatus: 'married',
+}
+
+const marriagePerson: Omit<Person, 'id'> = {
+	type: 'partner',
+	name: 'John Doe',
+	gender: 'male',
+	birthDate: '1990-01-01',
+	birthPlace: 'New York',
+	isHandicapped: true,
+	isInsolvent: false,
+	address: {
+		street: 'Main St.',
+		houseNumber: '123',
+		zipCode: '12345',
+		city: 'New York',
+	},
+}
+const organisationFormPayload: OrganisationFormPayload = {
+	id: 'org_1',
+	name: 'Organisation A',
+	street: 'Street A',
+	houseNumber: '1',
+	zipCode: '12345',
+	city: 'City A',
+}
+
+const organisation: Organisation = {
+	id: 'org_1',
+	type: 'organisation',
+	name: 'Organisation A',
+	address: {
+		street: 'Street A',
+		houseNumber: '1',
+		zipCode: '12345',
+		city: 'City A',
+	},
+}
+
 describe('lastWillSlice', () => {
 	const initialStateTesting: LastWillState = initialState
 
@@ -68,37 +176,42 @@ describe('lastWillSlice', () => {
 			expect(state.data.items).to.have.lengthOf(1)
 			expect(state.data.items[0]).to.be.deep.equal(item)
 		})
+
+		it('should remove itemsIds from heirs when item is removed', () => {
+			// Add heir
+			let state = lastWillReducer(initialStateTesting, addPersonHeir(personFormPayload))
+
+			// Add item
+			state = lastWillReducer(state, setInheritance({ financialAssets: [], items: [item] }))
+
+			// Assign item to heir
+			state = lastWillReducer(
+				state,
+				setSuccession({
+					heirs: [
+						{
+							id: state.data.heirs[0].id,
+							type: 'child',
+							name: 'Person A',
+							itemIds: [state.data.items[0].id],
+							percentage: 100,
+						},
+					],
+				})
+			)
+
+			// Remove item
+			state = lastWillReducer(state, setInheritance({ financialAssets: [], items: [] }))
+
+			// Check if item is removed from heir
+			expect(state.data.heirs[0].itemIds).to.have.lengthOf(0)
+		})
 	})
 
 	describe('testator', () => {
-		const payload: TestatorFormPayload = {
-			name: 'Max Mustermann',
-			birthDate: '2000-01-01',
-			birthPlace: 'Musterstadt',
-			zipCode: '12345',
-			city: 'Musterstadt',
-			street: 'Musterstraße',
-			houseNumber: '1',
-			moreInfos: ['isInsolvent'],
-		}
-
-		const testator: Testator = {
-			name: 'Max Mustermann',
-			birthDate: '2000-01-01',
-			birthPlace: 'Musterstadt',
-			address: {
-				zipCode: '12345',
-				city: 'Musterstadt',
-				street: 'Musterstraße',
-				houseNumber: '1',
-			},
-			isHandicapped: false,
-			isInsolvent: true,
-		}
-
 		it("should convert the testator's moreInfos to booleans", () => {
 			const action = setTestator({
-				...payload,
+				...testatorFormPayload,
 				moreInfos: ['isHandicapped', 'isInsolvent'],
 			})
 			const state = lastWillReducer(initialStateTesting, action)
@@ -108,60 +221,29 @@ describe('lastWillSlice', () => {
 		})
 
 		it("should convert testator's payload to testator (service)", () => {
-			expect(createTestator(payload)).to.deep.equal(testator)
+			expect(createTestator(testatorFormPayload)).to.deep.equal(testator)
 		})
 		it('should set testator (reducer)', () => {
-			const state = lastWillReducer(initialStateTesting, setTestator(payload))
+			const state = lastWillReducer(initialStateTesting, setTestator(testatorFormPayload))
 			expect(state.data.testator).to.deep.equal(testator)
 		})
 	})
 
 	describe('marriage', () => {
-		const action: MarriageFormPayload = {
-			name: 'John Doe',
-			gender: 'male',
-			birthDate: '1990-01-01',
-			birthPlace: 'New York',
-			moreInfos: ['isHandicapped', 'isBerlinWill'],
-			street: 'Main St.',
-			houseNumber: '123',
-			zipCode: '12345',
-			city: 'New York',
-			isPartnerGermanCitizenship: ['isPartnerGermanCitizenship'],
-			matrimonialProperty: 'communityOfGain',
-			relationshipStatus: 'married',
-		}
-
-		const expectedPartnerObject = {
-			type: 'partner',
-			name: 'John Doe',
-			gender: 'male',
-			birthDate: '1990-01-01',
-			birthPlace: 'New York',
-			isHandicapped: true,
-			isInsolvent: false,
-			address: {
-				street: 'Main St.',
-				houseNumber: '123',
-				zipCode: '12345',
-				city: 'New York',
-			},
-		}
-
 		beforeEach(() => {
 			// Ensure that the initial state is empty
 			expect(initialStateTesting.data.heirs).to.have.lengthOf(0)
 		})
 
 		it(`it should set partner data when ${setMarriage} is called`, () => {
-			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
+			const newState = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 
 			const partnerWithoutId = Cypress._.omit(newState.data.heirs[0], 'id')
-			expect(partnerWithoutId).to.be.deep.equal(expectedPartnerObject)
+			expect(partnerWithoutId).to.be.deep.equal(marriagePerson)
 		})
 
 		it(`should patch partner data when ${setMarriage} is called`, () => {
-			let state = lastWillReducer(initialStateTesting, setMarriage(action))
+			let state = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 			state = lastWillReducer(
 				state,
 				setSuccession({
@@ -180,7 +262,7 @@ describe('lastWillSlice', () => {
 			state = lastWillReducer(
 				state,
 				setMarriage({
-					...action,
+					...marriageFormPayload,
 					name: 'Jane Doe',
 				})
 			)
@@ -188,7 +270,7 @@ describe('lastWillSlice', () => {
 			const partnerWithoutId = Cypress._.omit(state.data.heirs[0], 'id')
 
 			expect(partnerWithoutId).to.deep.equal({
-				...expectedPartnerObject,
+				...marriagePerson,
 				name: 'Jane Doe',
 				percentage: 42,
 				itemIds: ['1', '2', '3'],
@@ -196,22 +278,22 @@ describe('lastWillSlice', () => {
 		})
 
 		it('should set relationshipStatus to married when setMarriage is called', () => {
-			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
+			const newState = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 			expect(newState.data.testator.relationshipStatus).to.equal('married')
 		})
 
 		it('should set isBerlinWill to true when setMarriage is called with isBerlinWill in moreInfos', () => {
-			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
+			const newState = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 			expect(newState.data.common.isBerlinWill).to.be.true
 		})
 
 		it('should set isPartnerGermanCitizenship to true when setMarriage is called with isPartnerGermanCitizenship', () => {
-			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
+			const newState = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 			expect(newState.data.common.isPartnerGermanCitizenship).to.be.true
 		})
 
 		it('should set matrimonialProperty to communityOfGain when setMarriage is called with matrimonialProperty as communityOfGain', () => {
-			const newState = lastWillReducer(initialStateTesting, setMarriage(action))
+			const newState = lastWillReducer(initialStateTesting, setMarriage(marriageFormPayload))
 			expect(newState.data.common.matrimonialProperty).to.equal('communityOfGain')
 		})
 	})
@@ -242,60 +324,6 @@ describe('lastWillSlice', () => {
 	})
 
 	describe('heirs', () => {
-		const personFormPayload: PersonFormPayload = {
-			id: 'person_1',
-			type: 'child',
-			name: 'Person A',
-			gender: 'male',
-			birthDate: '2000-01-01',
-			birthPlace: 'Place A',
-			street: 'Street A',
-			houseNumber: '1',
-			zipCode: '12345',
-			city: 'City A',
-			moreInfos: [],
-			childRelationShip: 'childTogether',
-			ownChild: [],
-		}
-
-		const expectedPersonHeir: Person = {
-			id: 'person_1',
-			type: 'child',
-			name: 'Person A',
-			gender: 'male',
-			birthDate: '2000-01-01',
-			birthPlace: 'Place A',
-			address: {
-				street: 'Street A',
-				houseNumber: '1',
-				zipCode: '12345',
-				city: 'City A',
-			},
-			isHandicapped: false,
-			isInsolvent: false,
-		}
-
-		const organisationFormPayload: OrganisationFormPayload = {
-			id: 'org_1',
-			name: 'Organisation A',
-			street: 'Street A',
-			houseNumber: '1',
-			zipCode: '12345',
-			city: 'City A',
-		}
-
-		const expectedOrganisationHeir: Organisation = {
-			id: 'org_1',
-			type: 'organisation',
-			name: 'Organisation A',
-			address: {
-				street: 'Street A',
-				houseNumber: '1',
-				zipCode: '12345',
-				city: 'City A',
-			},
-		}
-
 		describe('organisations', () => {
 			it('should add an organisation heir', () => {
 				const action = addOrganisationHeir(organisationFormPayload)
@@ -303,7 +331,7 @@ describe('lastWillSlice', () => {
 				const newState = lastWillReducer(initialStateTesting, action)
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				expect(newState.data.heirs[0]).to.deep.equal(expectedOrganisationHeir)
+				expect(newState.data.heirs[0]).to.deep.equal(organisation)
 			})
 
 			describe('patch organisation', () => {
@@ -335,7 +363,7 @@ describe('lastWillSlice', () => {
 					newState = lastWillReducer(newState, action)
 
 					// Assert that the heir has been updated
-					expect(newState.data.heirs[0]).to.deep.equal({ ...expectedOrganisationHeir, name: 'Updated Organisation A' })
+					expect(newState.data.heirs[0]).to.deep.equal({ ...organisation, name: 'Updated Organisation A' })
 				})
 
 				it('should patch organisation with new fields (service)', () => {
@@ -346,12 +374,12 @@ describe('lastWillSlice', () => {
 						houseNumber: '2',
 					}
 
-					const patchedOrganisation = patchOrganisation(expectedOrganisationHeir, payload)
+					const patchedOrganisation = patchOrganisation(organisation, payload)
 					expect(patchedOrganisation).to.deep.equal({
-						...expectedOrganisationHeir,
+						...organisation,
 						name: 'Updated Organisation A',
 						address: {
-							...expectedOrganisationHeir.address,
+							...organisation.address,
 							city: 'Updated City A',
 							houseNumber: '2',
 						},
@@ -363,8 +391,8 @@ describe('lastWillSlice', () => {
 						id: 'org_2',
 					}
 
-					const patchedOrganisation = patchOrganisation(expectedOrganisationHeir, payload)
-					expect(patchedOrganisation).to.deep.equal(expectedOrganisationHeir)
+					const patchedOrganisation = patchOrganisation(organisation, payload)
+					expect(patchedOrganisation).to.deep.equal(organisation)
 				})
 			})
 		})
@@ -376,7 +404,7 @@ describe('lastWillSlice', () => {
 
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
+				expect(newState.data.heirs[0]).to.deep.equal(person)
 			})
 
 			describe('patch person', () => {
@@ -410,7 +438,7 @@ describe('lastWillSlice', () => {
 					newState = lastWillReducer(newState, action)
 
 					// Assert that the heir has been updated
-					expect(newState.data.heirs[0]).to.deep.equal({ ...expectedPersonHeir, name: 'Updated Person A' })
+					expect(newState.data.heirs[0]).to.deep.equal({ ...person, name: 'Updated Person A' })
 				})
 
 				it('should patch person with new fields (service)', () => {
@@ -422,13 +450,13 @@ describe('lastWillSlice', () => {
 						houseNumber: '20',
 					}
 
-					const patchedPerson = patchPerson(expectedPersonHeir, payload)
+					const patchedPerson = patchPerson(person, payload)
 					expect(patchedPerson).to.deep.equal({
-						...expectedPersonHeir,
+						...person,
 						type: 'father',
 						name: 'Updated Person A',
 						address: {
-							...expectedPersonHeir.address,
+							...person.address,
 							street: 'Side Street',
 							houseNumber: '20',
 						},
@@ -441,8 +469,8 @@ describe('lastWillSlice', () => {
 						id: 'person_2',
 					}
 
-					const patchedPerson = patchPerson(expectedPersonHeir, payload)
-					expect(patchedPerson).to.deep.equal(expectedPersonHeir)
+					const patchedPerson = patchPerson(person, payload)
+					expect(patchedPerson).to.deep.equal(person)
 				})
 			})
 		})
@@ -469,7 +497,7 @@ describe('lastWillSlice', () => {
 
 				// Assert that the new heir has been added to the heirs list
 				expect(newState.data.heirs).to.have.lengthOf(1)
-				expect(newState.data.heirs[0]).to.deep.equal(expectedPersonHeir)
+				expect(newState.data.heirs[0]).to.deep.equal(person)
 
 				// Add succession
 				const formPayload: SuccessionFormPayload = {
@@ -499,8 +527,8 @@ describe('lastWillSlice', () => {
 
 				// Assert that the new heirs have been added to the heirs list
 				expect(state.data.heirs).to.have.lengthOf(2)
-				expect(state.data.heirs[0]).to.deep.equal(expectedPersonHeir)
-				expect(state.data.heirs[1]).to.deep.equal(expectedOrganisationHeir)
+				expect(state.data.heirs[0]).to.deep.equal(person)
+				expect(state.data.heirs[1]).to.deep.equal(organisation)
 
 				// Add succession
 				const formPayload: SuccessionFormPayload = {
