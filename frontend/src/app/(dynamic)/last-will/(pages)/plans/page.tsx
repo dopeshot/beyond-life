@@ -24,14 +24,7 @@ const Plans = () => {
 				<div className="mb-4 flex w-full flex-col gap-4">
 					<div className="flex flex-col gap-4 md:flex-row">
 						{[FreePlan, ...PaymentPlans].map((plan) => (
-							<PaymentPlan
-								key={plan.title}
-								title={plan.title}
-								price={plan.price}
-								hasButton={false}
-								size="md"
-								descriptionItems={plan.descriptionItems}
-							/>
+							<PaymentPlan key={plan.type} {...plan} hasButton={false} size="md" />
 						))}
 					</div>
 				</div>

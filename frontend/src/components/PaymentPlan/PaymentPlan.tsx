@@ -10,17 +10,18 @@ export type PaymentPlanDescriptionItem = {
 
 export type PaymentPlanProps = {
 	title: string
-	type?: PaymentPlanType
+	type: PaymentPlanType
 	price?: string
 	hasButton?: boolean
 	descriptionItems?: PaymentPlanDescriptionItem[]
 	handleSubmit?: (plan: PaymentPlanType) => void
 	size?: 'md' | 'lg'
 }
-export type PaymentPlanType = 'single' | 'family'
+export type PaymentPlanType = 'single' | 'family' | 'free'
 
 export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 	title,
+	type,
 	price = '',
 	hasButton = true,
 	descriptionItems = [],
@@ -29,7 +30,7 @@ export const PaymentPlan: React.FC<PaymentPlanProps> = ({
 }) => {
 	return (
 		<div
-			datacy={`paymentPlan-${title}`}
+			datacy={`paymentPlan-${type}`}
 			className={`flex w-full flex-col gap-5 rounded-xl border-2 px-6 py-3 ${
 				size === 'lg' ?? 'xl:gap-6 xl:px-10 xl:py-6'
 			}`}
