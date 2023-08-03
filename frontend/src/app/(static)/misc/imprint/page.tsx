@@ -3,7 +3,7 @@ import emailImage from '../../../../assets/images/email/email.png'
 import { Headline } from '../../../../components/Headline/Headline'
 
 export const metadata = {
-	title: 'Imprint | Siebtes Leben',
+	title: 'Imprint',
 	noIndex: true,
 }
 

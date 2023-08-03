@@ -13,6 +13,10 @@ import { deleteLastWillById, getLastWills } from '../../../../../services/api/pr
 import { prepareLastWills } from '../../../../../services/profile/prepareLastWills'
 import { routes } from '../../../../../services/routes/routes'
 
+export const metadata = {
+	title: 'Profil',
+}
+
 export type LastWillProfile = {
 	id: string
 	title: string

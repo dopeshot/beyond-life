@@ -11,6 +11,10 @@ import { PaymentPlan, PaymentPlanType } from '../../../../../components/PaymentP
 import { createCheckoutSession } from '../../../../../services/api/payment/payment'
 import { routes } from '../../../../../services/routes/routes'
 
+export const metadata = {
+	title: 'Kaufen',
+}
+
 /**
  * Paywall Page
  */

@@ -8,6 +8,10 @@ import { Icon } from '../../../../../components/Icon/Icon'
 import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
 import { routes } from '../../../../../services/routes/routes'
 
+export const metadata = {
+	title: 'Produktpläne',
+}
+
 /**
  * Login/Register Page with ads for last will.
  */

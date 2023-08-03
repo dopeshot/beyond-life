@@ -7,6 +7,10 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { PaymentSummaryTable } from '../../../../../components/PaymentSummaryTable/PaymentSummaryTable'
 import { routes } from '../../../../../services/routes/routes'
 
+export const metadata = {
+	title: 'Kaufbestätigung',
+}
+
 /**
  * Return page after payment with stripe
  */

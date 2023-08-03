@@ -10,6 +10,11 @@ import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { forgotPassword } from '../../../../../services/api/auth/resetPassword'
 
+export const metadata = {
+	title: 'Passwort zurücksetzen',
+	noIndex: true,
+}
+
 type ResetPasswordFormValues = {
 	email: string
 }

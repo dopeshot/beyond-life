@@ -4,7 +4,8 @@ import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 
 export const metadata = {
-	title: 'Privacy | Siebtes Leben',
+	title: 'Privacy',
+	noIndex: true,
 }
 
 const Privacy = () => {
@@ -46,7 +47,7 @@ const Privacy = () => {
 								<p className="mb-2">
 									Wenn Sie unsere Dienstleistungen nutzen, können wir folgende Informationen sammeln:
 								</p>
-								<ul className="mb-2 list-disc ml-8">
+								<ul className="mb-2 ml-8 list-disc">
 									<li className="mb-2">
 										Persönliche Informationen: einschließlich, aber nicht beschränkt auf Ihren Namen, Ihre Adresse, Ihre
 										E-Mail-Adresse, Ihr Geburtsdatum und andere Kontaktinformationen, die Sie uns zur Verfügung stellen.
@@ -68,7 +69,7 @@ const Privacy = () => {
 									Verwendung der Informationen
 								</Headline>
 								<p className="mb-2">Die von uns gesammelten Informationen verwenden wir für folgende Zwecke:</p>
-								<ul className="mb-2 list-disc ml-8">
+								<ul className="mb-2 ml-8 list-disc">
 									<li className="mb-2">Um Ihnen die angeforderten Dienstleistungen bereitzustellen.</li>
 									<li className="mb-2">
 										Um mit Ihnen zu kommunizieren und auf Ihre Anfragen und Anliegen zu reagieren.
@@ -89,7 +90,7 @@ const Privacy = () => {
 									Weitergabe von Informationen
 								</Headline>
 								<p className="mb-2">Wir geben Ihre persönlichen Daten nur unter folgenden Umständen weiter:</p>
-								<ul className="mb-2 list-disc ml-8">
+								<ul className="mb-2 ml-8 list-disc">
 									<li className="mb-2">
 										An Dritte, die Dienstleistungen für uns erbringen, einschließlich Datenanalyse,
 										Hosting-Dienstleistungen und Kundendienst.
@@ -154,25 +155,25 @@ const Privacy = () => {
 									relevante Inhalte bereitzustellen. Diese können Tracking-Informationen über Sie enthalten. Die
 									Drittanbieter-Cookies, die wir verwenden, sind:
 								</p>
-								<ul className="mb-2 list-disc ml-8">
-								<li className="mb-2">
+								<ul className="mb-2 ml-8 list-disc">
+									<li className="mb-2">
 										<Headline level={4} size="text-base md:text-lg">
-											Google Analytics 
+											Google Analytics
 										</Headline>
 										Wir verwenden Google Analytics, um die Nutzung unserer Website zu analysieren. Die
 										Datenschutzrichtlinie von Google Analytics können Sie{' '}
-										<Link href="https://marketingplatform.google.com/about/analytics/" className='font-bold underline'>
+										<Link href="https://marketingplatform.google.com/about/analytics/" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.
 									</li>
 									<li className="mb-2">
 										<Headline level={4} size="text-base md:text-lg">
-											Google Fonts 
+											Google Fonts
 										</Headline>
 										Wir nutzen Google Fonts für die Anzeige von Schriftarten auf unserer Website. Die
 										Datenschutzrichtlinie von Google Fonts können Sie{' '}
-										<Link href="https://fonts.google.com/" className='font-bold underline'>
+										<Link href="https://fonts.google.com/" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.
@@ -181,9 +182,9 @@ const Privacy = () => {
 										<Headline level={4} size="text-base md:text-lg">
 											Material Symbols
 										</Headline>
-										Wir verwenden Material Symbols für Icons auf unserer Website. Die
-										Datenschutzrichtlinie von Google, der Firma, die Material Symbols bereitstellt, können Sie {' '}
-										<Link href="https://fonts.google.com/icons" className='font-bold underline'>
+										Wir verwenden Material Symbols für Icons auf unserer Website. Die Datenschutzrichtlinie von Google,
+										der Firma, die Material Symbols bereitstellt, können Sie{' '}
+										<Link href="https://fonts.google.com/icons" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.

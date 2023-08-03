@@ -14,6 +14,7 @@ import { Color } from '../../../../../types/color'
 
 export const metadata = {
 	title: 'Email verifiziert',
+	noIndex: true,
 }
 
 /**

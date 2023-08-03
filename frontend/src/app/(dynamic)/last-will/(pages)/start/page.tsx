@@ -12,6 +12,10 @@ import { Label } from '../../../../../components/Form/Label/Label'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
 
+export const metadata = {
+	title: 'Testament erstellen',
+}
+
 type StartLegal = {
 	germanCitizenship?: boolean
 	germanRightOfInheritance?: boolean
