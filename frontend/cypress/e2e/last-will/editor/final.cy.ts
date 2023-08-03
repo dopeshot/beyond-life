@@ -1,4 +1,4 @@
-import lastwill from '../../../fixtures/lastwill/lastWillFulltext.json'
+import lastwill from '../../../fixtures/lastWill/lastWillFulltext.json'
 
 describe('Last Will Editor Final', () => {
 	it('should render the lastwill', () => {
