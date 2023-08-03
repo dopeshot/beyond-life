@@ -22,7 +22,7 @@ const Final = () => {
 
 	return (
 		<div className="container mb-12 mt-5 flex flex-1 flex-col">
-			<Headline className="hidden md:mb-8 lg:block">Zusammenfassung</Headline>
+			<Headline className="hidden md:mb-8 lg:block">Abschreiben</Headline>
 
 			<div className="flex">
 				<Icon icon="edit" className="mr-2" />
