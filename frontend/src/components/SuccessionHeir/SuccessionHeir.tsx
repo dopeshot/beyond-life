@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 import { Item } from '../../types/lastWill'
 import { TextInput } from '../Form/TextInput/TextInput'
 import { Headline } from '../Headline/Headline'
@@ -13,10 +13,6 @@ export type SuccessionHeirProps = {
 	items: Item[]
 	/** Click Handler for the edit icon */
 	onClick: () => void
-	/** Change handler for the input field  */
-	onChangeInput: (e: ChangeEvent<HTMLInputElement>) => void
-	/** Blur Handler for input field */
-	onBlurInput: (e: React.FocusEvent<HTMLInputElement, Element>) => void
 	/** Custom datacy for testing. */
 	datacy?: string
 }
@@ -24,15 +20,7 @@ export type SuccessionHeirProps = {
 /**
  * SuccessionHeir component
  */
-export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
-	name,
-	inputFieldName,
-	items,
-	onClick,
-	onChangeInput,
-	onBlurInput,
-	datacy,
-}) => {
+export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputFieldName, items, onClick, datacy }) => {
 	return (
 		<div datacy={datacy} className="flex w-auto max-w-xl flex-col rounded-xl border-2 border-gray-100 px-8 py-6">
 			<div className="mb-4 flex items-center justify-between">
@@ -47,8 +35,8 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({
 						width="w-24"
 						hasBottomMargin={false}
 						name={inputFieldName}
-						onChange={onChangeInput}
-						onBlur={onBlurInput}
+						min={0}
+						max={100}
 					/>
 					<p className="z-10 -ml-6">%</p>
 				</div>

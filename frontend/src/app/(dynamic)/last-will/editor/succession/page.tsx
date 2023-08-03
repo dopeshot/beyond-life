@@ -92,7 +92,7 @@ const Succession = () => {
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>
-				{({ values, dirty, setFieldValue }: FormikProps<SuccessionFormPayload>) => (
+				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						{/* heirs */}
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
@@ -105,20 +105,6 @@ const Succession = () => {
 									onClick={() => {
 										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
 										setIsModalOpen(true)
-									}}
-									onChangeInput={(e) => {
-										e.preventDefault()
-										const value = e.target.value
-										const regex = /^[1-9][0-9]?$|^100$|^$/
-										if (regex.test(value.toString())) {
-											setFieldValue(`heirs.${index}.percentage`, value)
-										}
-									}}
-									onBlurInput={(e) => {
-										const value = e.target.value
-										if (value === '') {
-											setFieldValue(`heirs.${selectedHeirIndex}.percentage`, '0')
-										}
 									}}
 								/>
 							))}
@@ -150,24 +136,11 @@ const Succession = () => {
 											<TextInput
 												className="pr-6 text-right"
 												type="number"
+												min={0}
+												max={100}
 												width="w-24"
 												hasBottomMargin={false}
 												name={`heirs.${selectedHeirIndex}.percentage`}
-												onClick={(e) => e.preventDefault()}
-												onChange={(e) => {
-													e.preventDefault()
-													const value = e.target.value
-													const regex = /^[1-9][0-9]?$|^0$|^100$|^$/
-													if (regex.test(value.toString())) {
-														setFieldValue(`heirs.${selectedHeirIndex}.percentage`, value)
-													}
-												}}
-												onBlur={(e) => {
-													const value = e.target.value
-													if (value === '') {
-														setFieldValue(`heirs.${selectedHeirIndex}.percentage`, '0')
-													}
-												}}
 											/>
 											<p className="z-10 -ml-6">%</p>
 										</div>
