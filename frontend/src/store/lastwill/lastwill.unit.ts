@@ -71,76 +71,48 @@ describe('lastWillSlice', () => {
 	})
 
 	describe('testator', () => {
-		it("should convert the testator's moreInfos to booleans", () => {
-			const action = setTestator({
-				name: 'Max Mustermann',
-				birthDate: '2000-01-01',
-				birthPlace: 'Musterstadt',
-				zipCode: '12345',
-				city: 'Musterstadt',
-				street: 'Musterstraße 1',
-				moreInfos: ['isHandicapped', 'isInsolvent'],
-			})
-			const newState = lastWillReducer(initialStateTesting, action)
+		const payload: TestatorFormPayload = {
+			name: 'Max Mustermann',
+			birthDate: '2000-01-01',
+			birthPlace: 'Musterstadt',
+			zipCode: '12345',
+			city: 'Musterstadt',
+			street: 'Musterstraße',
+			houseNumber: '1',
+			moreInfos: ['isInsolvent'],
+		}
 
-			expect(newState.data.testator.isHandicapped).to.equal(true)
-			expect(newState.data.testator.isInsolvent).to.equal(true)
-		})
-
-		it("should convert testator's payload to testator", () => {
-			const payload: TestatorFormPayload = {
-				name: 'Max Mustermann',
-				birthDate: '2000-01-01',
-				birthPlace: 'Musterstadt',
+		const testator: Testator = {
+			name: 'Max Mustermann',
+			birthDate: '2000-01-01',
+			birthPlace: 'Musterstadt',
+			address: {
 				zipCode: '12345',
 				city: 'Musterstadt',
 				street: 'Musterstraße',
 				houseNumber: '1',
-				moreInfos: ['isInsolvent'],
-			}
+			},
+			isHandicapped: false,
+			isInsolvent: true,
+		}
 
-			const testator: Testator = {
-				name: 'Max Mustermann',
-				birthDate: '2000-01-01',
-				birthPlace: 'Musterstadt',
-				address: {
-					zipCode: '12345',
-					city: 'Musterstadt',
-					street: 'Musterstraße',
-					houseNumber: '1',
-				},
-				isHandicapped: false,
-				isInsolvent: true,
-			}
+		it("should convert the testator's moreInfos to booleans", () => {
+			const action = setTestator({
+				...payload,
+				moreInfos: ['isHandicapped', 'isInsolvent'],
+			})
+			const state = lastWillReducer(initialStateTesting, action)
 
+			expect(state.data.testator.isHandicapped).to.equal(true)
+			expect(state.data.testator.isInsolvent).to.equal(true)
+		})
+
+		it("should convert testator's payload to testator (service)", () => {
 			expect(createTestator(payload)).to.deep.equal(testator)
 		})
-		it('should set testator', () => {
-			const action = setTestator({
-				name: 'Max Mustermann',
-				birthDate: '2000-01-01',
-				birthPlace: 'Musterstadt',
-
-				zipCode: '12345',
-				city: 'Musterstadt',
-				street: 'Musterstraße 1',
-				moreInfos: ['isHandicapped'],
-			})
-			const newState = lastWillReducer(initialStateTesting, action)
-
-			const testator = {
-				name: 'Max Mustermann',
-				birthDate: '2000-01-01',
-				birthPlace: 'Musterstadt',
-
-				zipCode: '12345',
-				city: 'Musterstadt',
-				street: 'Musterstraße 1',
-				isHandicapped: true,
-				isInsolvent: false,
-			}
-
-			expect(newState.data.testator).to.deep.equal(testator)
+		it('should set testator (reducer)', () => {
+			const state = lastWillReducer(initialStateTesting, setTestator(payload))
+			expect(state.data.testator).to.deep.equal(testator)
 		})
 	})
 
