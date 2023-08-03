@@ -1,4 +1,5 @@
 'use client'
+import { notFound } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { getLastWillFulltext } from '../../services/api/lastwill/lastWillFulltext'
 import { useAppSelector } from '../../store/hooks'
@@ -20,7 +21,7 @@ export const LastWill = () => {
 		getGeneratedLastWill()
 	}, [_id])
 
-	if (!lastWill) return null
+	if (!lastWill) return notFound()
 
 	return (
 		<main className="w-100 bg-red-0 my-2 flex-1 rounded-xl border-2 border-gray-200 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
