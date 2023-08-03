@@ -58,6 +58,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 										datacy="resend-mail-button"
 										className="text-red-500 hover:text-red-600"
 										onClick={() => {
+											/* istanbul ignore next */ // Not testable
 											if (hasRequestedEmail) return
 											setHasRequestedEmail(true)
 											requestVerifyMail()

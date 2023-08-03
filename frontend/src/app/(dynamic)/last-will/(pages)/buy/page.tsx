@@ -18,6 +18,7 @@ const Buy = () => {
 	const router = useRouter()
 
 	const handlePlanSubmit = async (plan: PaymentPlanType) => {
+		/* istanbul ignore next */ // fallback for typescript should not happen
 		if (plan === 'free') return
 		const response = await createCheckoutSession(plan)
 		router.push(response)
