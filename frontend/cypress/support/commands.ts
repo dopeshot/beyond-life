@@ -43,6 +43,31 @@ const networkErrorResponse = {
 }
 
 /***** Responses ****/
+const getLastWillFulltextResponse = {
+	OK: {
+		statusCode: 200,
+		fixture: 'lastwill/lastWillFulltext.json',
+	},
+	...networkErrorResponse,
+}
+
+const profileLastWillResponse = {
+	OK: {
+		statusCode: 200,
+		fixture: 'profile/lastWills.json',
+	},
+	EMPTY: {
+		statusCode: 200,
+		body: [],
+	},
+	...networkErrorResponse,
+}
+
+const profileLastWillDeleteResponse = {
+	...okResponse,
+	...networkErrorResponse,
+}
+
 const changeEmailResponse = {
 	...okResponse,
 	...emailConflictResponse,
@@ -170,6 +195,20 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockGetLastWillFulltext', (response = 'OK') => {
+	cy.intercept('GET', `${apiUrl}/lastwill/*/fulltext`, getLastWillFulltextResponse[response]).as(
+		'mockGetLastWillFulltext'
+	)
+})
+
+Cypress.Commands.add('mockLastWillDelete', (response = 'OK') => {
+	cy.intercept('DELETE', `${apiUrl}/lastwill/*`, profileLastWillDeleteResponse[response]).as('mockLastWillDelete')
+})
+
+Cypress.Commands.add('mockProfileLastWills', (response = 'OK') => {
+	cy.intercept('GET', `${apiUrl}/lastwill`, profileLastWillResponse[response]).as('mockProfileLastWills')
+})
+
 Cypress.Commands.add('mockCreateCheckoutSession', () => {
 	cy.intercept('POST', `${apiUrl}/payments/checkout`, {
 		statusCode: 201,

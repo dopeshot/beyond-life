@@ -101,7 +101,7 @@ describe('Checkbox', () => {
 		})
 
 		it('should close modal when close button is clicked', () => {
-			cy.datacy('modal-close').click({ force: true })
+			cy.datacy('modal-close-button').click({ force: true })
 			cy.datacy('modal').should('not.be.visible')
 		})
 	})

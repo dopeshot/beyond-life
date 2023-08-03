@@ -1,5 +1,10 @@
 import { Organisation, Person, PersonType } from '../types/lastWill'
-import { determineHeirRelationship } from './heirs'
+import {
+	determineHeirRelationship,
+	getHeirsWithoutPercentage,
+	getPercentageLeftPerHeir,
+	getSumOfPercentage,
+} from './heirs'
 
 describe('determineHeirRelationship', function () {
 	it('should return Bruder for male siblings', function () {
@@ -49,5 +54,57 @@ describe('determineHeirRelationship', function () {
 		}
 		const result = determineHeirRelationship(unknown)
 		expect(result).to.equal(undefined)
+	})
+
+	describe('Heir percentage functions', function () {
+		const heirs: (Person | Organisation)[] = [
+			{
+				id: '1',
+				type: 'child',
+				name: 'John',
+				percentage: 20,
+			},
+			{
+				id: '2',
+				type: 'partner',
+				name: 'Jane',
+				percentage: undefined,
+			},
+			{
+				id: '3',
+				type: 'organisation',
+				name: 'Org',
+				percentage: 30,
+			},
+			{
+				id: '4',
+				type: 'father',
+				name: 'Bob',
+				percentage: undefined,
+			},
+		]
+
+		describe('getHeirsWithoutPercentage', function () {
+			it('should return heirs without percentage', function () {
+				const result = getHeirsWithoutPercentage(heirs)
+				expect(result).to.have.lengthOf(2)
+				expect(result[0].name).to.equal('Jane')
+				expect(result[1].name).to.equal('Bob')
+			})
+		})
+
+		describe('getSumOfPercentage', function () {
+			it('should return sum of heirs percentages', function () {
+				const result = getSumOfPercentage(heirs)
+				expect(result).to.equal(50)
+			})
+		})
+
+		describe('getPercentageLeftPerHeir', function () {
+			it('should return percentage left per heir', function () {
+				const result = getPercentageLeftPerHeir(heirs)
+				expect(result).to.equal(25)
+			})
+		})
 	})
 })

@@ -37,6 +37,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 	return (
 		<>
 			<Modal
+				datacy="modal"
 				open={isCheckboxModalOpen}
 				onClose={() => setIsCheckboxModalOpen(false)}
 				headline={modalHeadline ?? 'Information:'}

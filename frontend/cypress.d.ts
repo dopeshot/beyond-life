@@ -18,6 +18,21 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mocks the get last will fulltext endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockGetLastWillFulltext(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mocks delete last will endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockLastWillDelete(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the get last wills endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockProfileLastWills(response?: 'OK' | 'EMPTY' | 'NETWORK_ERROR'): Chainable<void>
+			/**
 			 * Mock the create checkout session endpoint.
 			 */
 			mockCreateCheckoutSession(): Chainable<void>

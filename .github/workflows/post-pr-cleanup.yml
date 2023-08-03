@@ -7,8 +7,7 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
-
-
+    
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -21,7 +20,8 @@ jobs:
           ref: main
 
       - name: Extract branch name
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
+        run: |
+          [[ $GITHUB_REF = /refs/pull* ]] && echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')" || echo "##[set-output name=branch;]$(echo  refs_pull_${{ github.event.number }}_merge)"
         id: extract_branch
 
       - name: cleanup html reports
@@ -36,8 +36,6 @@ jobs:
 
       - name: Push
         run: git push
-
-
 
   update-pr-comment:
     runs-on: ubuntu-latest

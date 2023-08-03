@@ -20,6 +20,14 @@ The frontend also needs the public secret
 
 The docker compose setup exposes a Mailserver for testing. The [web interface](http://localhost:5001/) of said server can be used to verify the mail functionality.
 
+
+When starting up an initial user is automatically created:
+
+```
+email: devops@totally.rocks
+password: WeAllLoveDevOps
+```
+
 ## Start for devs
 
 When developing having all components up and running is mostly unnecessary.
