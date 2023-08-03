@@ -52,13 +52,20 @@ const Marriage = () => {
 	const NEXT_LINK = routes.lastWill.heirs(_id)
 
 	// Formik
-	const { isHandicapped, isInsolvent, address, ...formPartner } = partner ?? {
+	const { isHandicapped, isInsolvent, address, name, gender, birthDate, birthPlace } = partner ?? {
 		isHandicapped: false,
 		isInsolvent: false,
 	}
+
 	const initialFormValues: MarriageFormPayload = {
-		...formPartner,
-		...address,
+		name: name ?? '',
+		gender: gender ?? undefined,
+		birthDate: birthDate ?? '',
+		birthPlace: birthPlace ?? '',
+		street: address ? address.street ?? '' : '',
+		houseNumber: address ? address.houseNumber ?? '' : '',
+		zipCode: address ? address.zipCode ?? '' : '',
+		city: address ? address.city ?? '' : '',
 		moreInfos: [
 			...(isHandicapped ? ['isHandicapped'] : []),
 			...(isInsolvent ? ['isInsolvent'] : []),

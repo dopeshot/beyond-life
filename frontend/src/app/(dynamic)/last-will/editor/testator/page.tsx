@@ -54,8 +54,14 @@ const Testator = () => {
 
 	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
-		...formTestator,
-		...address,
+		name: formTestator.name ?? '',
+		gender: formTestator.gender ?? undefined,
+		birthDate: formTestator.birthDate ?? '',
+		birthPlace: formTestator.birthPlace ?? '',
+		street: address ? address.street ?? '' : '',
+		houseNumber: address ? address.houseNumber ?? '' : '',
+		zipCode: address ? address.zipCode ?? '' : '',
+		city: address ? address.city ?? '' : '',
 		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
 	}
 

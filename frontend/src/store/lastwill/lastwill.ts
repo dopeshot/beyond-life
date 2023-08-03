@@ -66,6 +66,7 @@ export const fetchLastWillState = createAsyncThunk<LastWillState['data'], { last
 		if (!apiLastWillResponse) {
 			throw new Error('Could not fetch last will')
 		}
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { createdAt, updatedAt, accountId, ...lastWill } = apiLastWillResponse
 		return lastWill
 	}
