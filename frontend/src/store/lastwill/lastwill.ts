@@ -72,11 +72,16 @@ export const fetchLastWillState = createAsyncThunk<LastWillState['data'], { last
 )
 
 export const createTestator = (testatorPayload: TestatorFormPayload): Testator => {
-	// Extract moreInfos from payload
-	const { moreInfos, ...formTestator } = testatorPayload
+	const { moreInfos, city, street, houseNumber, zipCode, ...formTestator } = testatorPayload
 
 	return {
 		...formTestator,
+		address: {
+			city,
+			street,
+			houseNumber,
+			zipCode,
+		},
 		isHandicapped: moreInfos ? moreInfos.includes('isHandicapped') : false,
 		isInsolvent: moreInfos ? moreInfos.includes('isInsolvent') : false,
 	}
