@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
@@ -34,7 +35,7 @@ const Plans = () => {
 					<Route
 						datacy="login-route"
 						icon="login"
-						href={routes.account.login({ funnel: true })}
+						href={routes.account.login({ callbackUrl: routes.lastWill.buy() })}
 						kind="tertiary"
 						className="w-auto"
 					>
@@ -43,7 +44,7 @@ const Plans = () => {
 					<Route
 						datacy="register-route"
 						icon="arrow_forward"
-						href={routes.account.register({ funnel: true })}
+						href={routes.account.register({ callbackUrl: routes.lastWill.buy() })}
 						className="sm:w-max"
 					>
 						Account erstellen
@@ -67,4 +68,4 @@ const Plans = () => {
 	)
 }
 
-export default Plans
+export default isAuth(Plans, 'guest')

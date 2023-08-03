@@ -5,6 +5,8 @@ export function getPossessivePronouns(
   gender: Gender,
 ): string {
   switch (type) {
+    case PersonType.PARTNER:
+      return 'Mein Partner'
     case PersonType.CHILD:
       return 'Mein Kind'
     case PersonType.FATHER:

@@ -25,7 +25,7 @@ export const PaymentPlans: PaymentPlanProps[] = [
 	{
 		title: 'Family',
 		type: 'family',
-		price: '149€',
+		price: '79€',
 		descriptionItems: [
 			{ text: '5 Testamente', icon: 'check' },
 			{ text: 'Immer anpassbar', icon: 'check' },
