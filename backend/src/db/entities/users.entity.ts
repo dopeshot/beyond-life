@@ -84,8 +84,3 @@ export class User {
 
   */
 }
-function MongooseModel(arg0: {
-  schemaOptions: { collection: string }
-}): (target: typeof User) => void | typeof User {
-  throw new Error('Function not implemented.')
-}
