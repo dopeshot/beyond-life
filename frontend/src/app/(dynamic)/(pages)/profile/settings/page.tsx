@@ -48,7 +48,7 @@ type AccountDelete = {
 	delete: [boolean?]
 }
 
-const initalEmailChangeValues: EmailChange = {
+const initialEmailChangeValues: EmailChange = {
 	newEmail: '',
 }
 
@@ -58,7 +58,7 @@ const initialPasswordChangeValues: PasswordChange = {
 	newPasswordConfirm: '',
 }
 
-const initalAccountDeleteValues: AccountDelete = {
+const initialAccountDeleteValues: AccountDelete = {
 	delete: [],
 }
 
@@ -138,7 +138,7 @@ const AccountSettings = () => {
 				</p>
 
 				<Formik
-					initialValues={initalEmailChangeValues}
+					initialValues={initialEmailChangeValues}
 					validationSchema={validationSchemaEmailChange}
 					onSubmit={onSubmitEmailChange}
 				>
@@ -221,7 +221,7 @@ const AccountSettings = () => {
 					unwiderruflich gelöscht.
 				</p>
 
-				<Formik initialValues={initalAccountDeleteValues} onSubmit={onSubmitAccountDelete}>
+				<Formik initialValues={initialAccountDeleteValues} onSubmit={onSubmitAccountDelete}>
 					{({ dirty, isValid }: FormikProps<AccountDelete>) => (
 						<Form className="mb-2 md:mb-4">
 							<Checkbox

@@ -10,11 +10,57 @@ import { PasswordInput } from '../../../../../components/Form/PasswordInput/Pass
 import { Headline } from '../../../../../components/Headline/Headline'
 import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
-import { PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
+import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 
 type ChangePasswordFormValues = {
 	newPassword: string
 	newPasswordConfirm: string
+}
+
+// Formik
+const initialFormValues: ChangePasswordFormValues = {
+	newPassword: '',
+	newPasswordConfirm: '',
+}
+
+const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
+	newPassword: string()
+		.required('Bitte geben Sie ein neues Passwort ein.')
+		.min(8, PASSWORD_MIN_LENGTH_ERROR),
+	newPasswordConfirm: string()
+		.required('Bitte geben Sie ihr neues Passwort erneut ein.')
+		.oneOf([ref('newPassword')], PASSWORD_MATCH_ERROR),
+})
+
+const alertContent: { [key: string]: AlertProps } = {
+	OK: {
+		icon: 'check_circle',
+		color: 'green',
+		headline: 'Erfolgreich!',
+		description: (
+			<>
+				<p>
+					Passwort wurde erfolgreich geändert. Klicken Sie{' '}
+					<Link className="inline font-semibold text-green-600 hover:text-green-700" href={routes.account.login()}>
+						hier{' '}
+					</Link>
+					um sich einzuloggen.
+				</p>
+			</>
+		),
+	},
+	TOKEN_INVALID: {
+		icon: 'warning',
+		color: 'red',
+		headline: 'Ungültiger Link',
+		description: 'Der Link ist ungültig. Bitte fordern Sie einen neuen Link an.',
+	},
+	ERROR: {
+		icon: 'warning',
+		color: 'red',
+		headline: 'Fehler!',
+		description: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+	},
 }
 
 /**
@@ -33,57 +79,11 @@ const ChangePassword = () => {
 		return notFound()
 	}
 
-	// Formik
-	const initalFormValues: ChangePasswordFormValues = {
-		newPassword: '',
-		newPasswordConfirm: '',
-	}
-
-	const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-		newPassword: string()
-			.required('Bitte geben Sie ein neues Passwort ein.')
-			.min(8, PASSWORD_MIN_LENGTH_ERROR),
-		newPasswordConfirm: string()
-			.required('Bitte geben Sie ihr neues Passwort erneut ein.')
-			.oneOf([ref('newPassword')], 'Passwörter müssen übereinstimmen.'),
-	})
-
 	const onSubmit = async (values: ChangePasswordFormValues) => {
 		setIsLoading(true)
 		const response = await changePassword(values.newPassword, token)
 		setStatus(response)
 		setIsLoading(false)
-	}
-
-	const alertContent: { [key: string]: AlertProps } = {
-		OK: {
-			icon: 'check_circle',
-			color: 'green',
-			headline: 'Erfolgreich!',
-			description: (
-				<>
-					<p>
-						Passwort wurde erfolgreich geändert. Klicken Sie{' '}
-						<Link className="inline font-semibold text-green-600 hover:text-green-700" href={routes.account.login()}>
-							hier{' '}
-						</Link>
-						um sich einzuloggen.
-					</p>
-				</>
-			),
-		},
-		TOKEN_INVALID: {
-			icon: 'warning',
-			color: 'red',
-			headline: 'Ungültiger Link',
-			description: 'Der Link ist ungültig. Bitte fordern Sie einen neuen Link an.',
-		},
-		ERROR: {
-			icon: 'warning',
-			color: 'red',
-			headline: 'Fehler!',
-			description: 'Beim Ändern des Passworts ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
-		},
 	}
 
 	return (
@@ -94,7 +94,7 @@ const ChangePassword = () => {
 			</header>
 
 			<main className="rounded-xl border border-gray-200 p-4 md:p-6 lg:w-2/3 xl:w-1/2">
-				<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+				<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 					{({ dirty, isValid }) => (
 						<Form className="mb-4">
 							<PasswordInput

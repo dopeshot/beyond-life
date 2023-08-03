@@ -22,6 +22,12 @@ type AccountDto = {
 	password: string
 }
 
+// Formik
+const initialFormValues: AccountDto = {
+	email: '',
+	password: '',
+}
+
 export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const router = useRouter()
 	const searchparams = useSearchParams()
@@ -30,12 +36,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({ type }) => {
 	const dispatch = useAppDispatch()
 	const registerError = useAppSelector((state) => state.auth.registerError)
 	const loginError = useAppSelector((state) => state.auth.loginError)
-
-	// Formik
-	const initialFormValues: AccountDto = {
-		email: '',
-		password: '',
-	}
 
 	const accountValidationSchema: ObjectSchema<AccountDto> = object({
 		email: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
