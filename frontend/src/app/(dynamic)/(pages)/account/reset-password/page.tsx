@@ -2,13 +2,13 @@
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
+import { EMAIL_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { validateMail } from '../../../../../../utils/validateMail'
 import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { forgotPassword } from '../../../../../services/api/auth/resetPassword'
-import { EMAIL_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 type ResetPasswordFormValues = {
 	email: string
@@ -19,6 +19,25 @@ const initialFormValues: ResetPasswordFormValues = {
 	email: '',
 }
 
+const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
+	email: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
+})
+
+const alertContent: { [key: string]: AlertProps } = {
+	OK: {
+		icon: 'check_circle',
+		color: 'green',
+		headline: 'Erfolgreich',
+		description: 'Wir haben Ihnen einen Link zum Passwort zurücksetzen gesendet.',
+	},
+	ERROR: {
+		icon: 'warning',
+		color: 'red',
+		headline: 'Fehler',
+		description: 'Beim Senden der E-Mail ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
+	},
+}
+
 /**
  * Reset Password Page with enter email Form.
  */
@@ -27,30 +46,11 @@ const ResetPassword = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
 
-	const validationSchema: ObjectSchema<ResetPasswordFormValues> = object({
-		email: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
-	})
-
 	const onSubmit = async (values: ResetPasswordFormValues) => {
 		setIsLoading(true)
 		const response = await forgotPassword(values.email)
 		setStatus(response)
 		setIsLoading(false)
-	}
-
-	const alertContent: { [key: string]: AlertProps } = {
-		OK: {
-			icon: 'check_circle',
-			color: 'green',
-			headline: 'Erfolgreich',
-			description: 'Wir haben Ihnen einen Link zum Passwort zurücksetzen gesendet.',
-		},
-		ERROR: {
-			icon: 'warning',
-			color: 'red',
-			headline: 'Fehler',
-			description: 'Beim Senden der E-Mail ist etwas schief gelaufen. Bitte versuchen Sie es später erneut.',
-		},
 	}
 
 	return (
