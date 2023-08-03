@@ -1,43 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit'
 import {
-	FinancialAsset,
 	InheritanceFormPayload,
-	Item,
+	LastWillState,
 	MarriageFormPayload,
-	MatrimonialProperty,
 	Organisation,
 	OrganisationFormPayload,
 	Person,
 	PersonFormPayload,
+	SuccessionFormPayload,
 	Testator,
 	TestatorFormPayload,
 } from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import { RootState } from '../store'
-
-export type LastWillState = {
-	// DO NOT SYNC THIS WITH BACKEND
-	isLoading: boolean
-	isInitialized: boolean
-
-	// SYNC THIS WITH BACKEND
-	data: {
-		_id: string
-		common: {
-			isBerlinWill?: boolean
-			isPartnerGermanCitizenship?: boolean
-			matrimonialProperty?: MatrimonialProperty
-		}
-		progressKeys: SidebarPages[]
-
-		// parts
-		// TODO: ensure types are correct
-		testator: Testator
-		heirs: (Person | Organisation)[]
-		financialAssets: FinancialAsset[]
-		items: Item[]
-	}
-}
 
 export const initialState: LastWillState = {
 	isLoading: false,
@@ -242,23 +217,19 @@ export const createTestator = (testatorPayload: TestatorFormPayload): Testator =
 }
 
 export const createMarriage = (marriagePayload: MarriageFormPayload): Person => {
-	return {
-		type: 'partner',
+	return createPerson({
+		...(marriagePayload as PersonFormPayload),
 		id: nanoid(),
-		name: marriagePayload.name,
-		gender: marriagePayload.gender,
-		birthDate: marriagePayload.birthDate,
-		birthPlace: marriagePayload.birthPlace,
-		isHandicapped: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isHandicapped') : false,
-		isInsolvent: marriagePayload.moreInfos ? marriagePayload.moreInfos.includes('isInsolvent') : false,
+		type: 'partner',
+	})
+}
 
-		address: {
-			street: marriagePayload.street,
-			houseNumber: marriagePayload.houseNumber,
-			zipCode: marriagePayload.zipCode,
-			city: marriagePayload.city,
-		},
-	}
+export const patchMarriage = (marriage: Person, marriagePayload: Partial<MarriageFormPayload>): Person => {
+	return patchPerson(marriage, {
+		...marriagePayload,
+		type: 'partner',
+		id: marriage.id,
+	})
 }
 
 export const createPerson = (personPayload: PersonFormPayload): Person => {
@@ -280,6 +251,29 @@ export const createPerson = (personPayload: PersonFormPayload): Person => {
 	}
 }
 
+export const patchPerson = (person: Person, personPayload: Partial<PersonFormPayload>): Person => {
+	const newPerson: Person = {
+		...person,
+		id: person.id,
+		type: personPayload.type || person.type,
+		name: personPayload.name || person.name,
+		gender: personPayload.gender || person.gender,
+		birthDate: personPayload.birthDate || person.birthDate,
+		birthPlace: personPayload.birthPlace || person.birthPlace,
+		isHandicapped: personPayload.moreInfos ? personPayload.moreInfos.includes('isHandicapped') : person.isHandicapped,
+		isInsolvent: personPayload.moreInfos ? personPayload.moreInfos.includes('isInsolvent') : person.isInsolvent,
+		address: {
+			...person.address,
+			street: personPayload.street || person.address?.street,
+			houseNumber: personPayload.houseNumber || person.address?.houseNumber,
+			zipCode: personPayload.zipCode || person.address?.zipCode,
+			city: personPayload.city || person.address?.city,
+		},
+	}
+
+	return newPerson
+}
+
 export const createOrganisation = (organisationPayload: OrganisationFormPayload): Organisation => {
 	return {
 		id: organisationPayload.id,
@@ -292,6 +286,27 @@ export const createOrganisation = (organisationPayload: OrganisationFormPayload)
 			street: organisationPayload.street,
 		},
 	}
+}
+
+export const patchOrganisation = (
+	organisation: Organisation,
+	organisationPayload: Partial<OrganisationFormPayload>
+): Organisation => {
+	const newOrganisation: Organisation = {
+		...organisation,
+		id: organisation.id,
+		type: 'organisation',
+		name: organisationPayload.name || organisation.name,
+		address: {
+			...organisation.address,
+			street: organisationPayload.street || organisation.address?.street,
+			houseNumber: organisationPayload.houseNumber || organisation.address?.houseNumber,
+			zipCode: organisationPayload.zipCode || organisation.address?.zipCode,
+			city: organisationPayload.city || organisation.address?.city,
+		},
+	}
+
+	return newOrganisation
 }
 
 const lastWillSlice = createSlice({
@@ -315,14 +330,13 @@ const lastWillSlice = createSlice({
 			const oldPartner = state.data.heirs.find((heir): heir is Person => heir.type === 'partner')
 			const hasPartner = oldPartner !== undefined
 
-			const partner = createMarriage(action.payload)
-
 			// Set state
 			if (hasPartner) {
-				partner.id = oldPartner.id
+				const partner = patchMarriage(oldPartner, action.payload)
 				const oldPartnerIndex = state.data.heirs.findIndex((heir): heir is Person => heir.type === 'partner')
 				state.data.heirs[oldPartnerIndex] = partner
 			} else {
+				const partner = createMarriage(action.payload)
 				state.data.heirs.push(partner)
 			}
 
@@ -340,8 +354,9 @@ const lastWillSlice = createSlice({
 		},
 		updatePersonHeir: (state, action: PayloadAction<PersonFormPayload>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
-			const person = createPerson(action.payload)
-			state.data.heirs[heirIndex] = person
+			const oldPerson = state.data.heirs[heirIndex] as Person
+			const patchedPerson = patchPerson(oldPerson, action.payload)
+			state.data.heirs[heirIndex] = patchedPerson
 		},
 		addOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const organisation = createOrganisation(action.payload)
@@ -349,12 +364,20 @@ const lastWillSlice = createSlice({
 		},
 		updateOrganisationHeir: (state, action: PayloadAction<OrganisationFormPayload>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload.id)
-			const organisation = createOrganisation(action.payload)
-			state.data.heirs[heirIndex] = organisation
+			const oldOrganisation = state.data.heirs[heirIndex] as Organisation
+			const patchedOrganisation = patchOrganisation(oldOrganisation, action.payload)
+			state.data.heirs[heirIndex] = patchedOrganisation
 		},
 		removeHeir: (state, action: PayloadAction<string>) => {
 			const heirIndex = state.data.heirs.findIndex((heir) => heir.id === action.payload)
 			state.data.heirs.splice(heirIndex, 1)
+		},
+		setSuccession: (state, action: PayloadAction<SuccessionFormPayload>) => {
+			action.payload.heirs.forEach((heir) => {
+				const stateHeir = state.data.heirs.find((stateHeir) => stateHeir.id === heir.id)!
+				stateHeir.percentage = heir.percentage
+				stateHeir.itemIds = heir.itemIds
+			})
 		},
 		resetLastWill: (state) => {
 			state.isLoading = false
@@ -395,5 +418,6 @@ export const {
 	updatePersonHeir,
 	addOrganisationHeir,
 	updateOrganisationHeir,
+	setSuccession,
 	removeHeir,
 } = lastWillSlice.actions
