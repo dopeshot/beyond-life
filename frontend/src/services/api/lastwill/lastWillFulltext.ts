@@ -6,7 +6,7 @@ import { GeneratedLastWill } from '../../../types/lastWill'
  * @param id the id of the last will
  * @returns the last will fulltext
  */
-export const getLastWillFulltext = async (id: string): Promise<GeneratedLastWill> => {
+export const getLastWillFulltext = async (id: string): Promise<GeneratedLastWill | null> => {
 	try {
 		const response = await axios.get<GeneratedLastWill>(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill/${id}/fulltext`
@@ -14,6 +14,6 @@ export const getLastWillFulltext = async (id: string): Promise<GeneratedLastWill
 		return response.data
 	} catch (error) {
 		console.error(error)
-		throw new Error("Couldn't get last will fulltext")
+		return null
 	}
 }
