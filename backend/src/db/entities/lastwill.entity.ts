@@ -10,6 +10,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  ValidateIf,
   ValidateNested,
 } from 'class-validator'
 import { ObjectId } from 'mongoose'
@@ -22,6 +23,7 @@ export enum PersonType {
   SIBLING = 'siblings',
   OTHER = 'other',
   ORGANISATION = 'organisation',
+  PARTNER = 'partner',
 }
 
 export enum Gender {
@@ -272,6 +274,7 @@ class PersonBase {
     type: String,
   })
   @IsOptional()
+  @ValidateIf((e) => e.birthDate !== '')
   @IsString()
   @IsISO8601()
   birthDate?: string
@@ -628,14 +631,13 @@ export class LastWill extends MongooseBaseEntity {
     keepDiscriminatorProperty: true,
   })
   @Expose()
-  @Transform(
-    ({ value }) =>
-      value?.map((object: Person | Organisation) => {
-        if (object.type === PersonType.ORGANISATION) {
-          return plainToClass(Organisation, object)
-        }
-        return plainToClass(Person, object)
-      }),
+  @Transform(({ value }) =>
+    value?.map((object: Person | Organisation) => {
+      if (object.type === PersonType.ORGANISATION) {
+        return plainToClass(Organisation, object)
+      }
+      return plainToClass(Person, object)
+    }),
   )
   heirs: (Person | Organisation)[]
 
