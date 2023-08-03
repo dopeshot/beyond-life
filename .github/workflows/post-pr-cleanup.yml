@@ -20,7 +20,7 @@ jobs:
           ref: main
 
       - name: debug
-        run: echo $GITHUB_CONTEXT
+        run: echo '${{ toJSON(github) }}'
 
       - name: cancel
         run: exit 1
