@@ -161,7 +161,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 							name="moreInfos"
 							labelText="Weitere relevante Infos"
 							inputRequired
-							helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 							options={personMoreInfosOptions}
 						/>
 					</div>
