@@ -12,6 +12,7 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    if: ${{ github.ref_name != 'main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,7 +25,7 @@ jobs:
         run: echo $GITHUB_REF_NAME  && echo $GITHUB_REF
 
       - name: Extract branch name
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
+        run: echo "##[set-output name=branch;]$(echo $GITHUB_REF_NAME | tr '/' '_')"
         id: extract_branch
 
       - name: cleanup html reports
