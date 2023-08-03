@@ -7,11 +7,11 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
-
-
+    
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    if: ${{ github.ref_name != 'main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,6 +19,9 @@ jobs:
           repository: dopeshot/beyond-life-codecov
           token: ${{ secrets.BOT_PAT }}
           ref: main
+
+      - name: debug
+        run: echo $GITHUB_REF_NAME  && echo $GITHUB_REF
 
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
