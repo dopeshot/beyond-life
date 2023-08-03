@@ -18,6 +18,11 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mocks the get last will fulltext endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockGetLastWillFulltext(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
 			 * Mocks delete last will endpoint.
 			 * @param response the response type we want to mock.
 			 */

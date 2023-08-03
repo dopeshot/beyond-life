@@ -11,6 +11,7 @@ export const getLastWillFulltext = async (id: string): Promise<GeneratedLastWill
 		const response = await axios.get<GeneratedLastWill>(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill/${id}/fulltext`
 		)
+		console.log(response.data)
 		return response.data
 	} catch (error) {
 		console.error(error)

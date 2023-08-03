@@ -11,17 +11,26 @@ import { Headline } from '../Headline/Headline'
  */
 export const LastWill = () => {
 	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [lastWill, setLastWill] = useState<GeneratedLastWill | null>(null)
 
 	useEffect(() => {
 		const getGeneratedLastWill = async () => {
+			setIsLoading(true)
 			const response = await getLastWillFulltext(_id)
 			setLastWill(response)
+			setIsLoading(false)
 		}
 		getGeneratedLastWill()
 	}, [_id])
 
-	if (!lastWill) return notFound()
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
+
+	if (!lastWill) {
+		return notFound()
+	}
 
 	return (
 		<main className="w-100 bg-red-0 my-2 flex-1 rounded-xl border-2 border-gray-200 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
@@ -32,9 +41,7 @@ export const LastWill = () => {
 					<p>{lastWill.testatorHeader.AddressCity}</p>
 				</aside>
 				<aside className="bg-red-0">
-					<p>
-						{lastWill.locationHeader}, den {new Date().toLocaleDateString()}
-					</p>
+					<p>{lastWill.locationHeader}</p>
 				</aside>
 			</section>
 			<section className="bg-green-0 mb-8 text-center">
