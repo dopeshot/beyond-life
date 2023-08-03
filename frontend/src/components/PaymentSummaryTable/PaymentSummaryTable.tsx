@@ -34,7 +34,7 @@ export const PaymentSummaryTable: React.FC<PaymentSummaryTableProps> = ({ tableD
 						<div key={row.title} className="flex justify-between gap-2">
 							<p datacy={`paymentSummaryTable-row-${row.title}`}>{row.title}</p>
 							<p className="flex items-center gap-1 text-end">
-								{row.valueIcon && <Icon icon={row.valueIcon} className="text-base text-yellow-400" />}
+								{row.valueIcon && <Icon icon={row.valueIcon} className="text-base text-green-500" />}
 								{row.value}
 							</p>
 						</div>

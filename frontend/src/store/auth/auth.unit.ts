@@ -4,15 +4,16 @@ import { AuthState, authReducer, login, loginApi, logout, refreshToken, register
 describe('authSlice', () => {
 	const initialSessionData: SessionData = {
 		accessToken:
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzE1ZTBjYTJhMDI2MDg3ODBhOTFmNyIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjp0cnVlLCJpYXQiOjE2OTA1NzI5NTcsImV4cCI6MTY5MDU3NjU1N30.4x4xdYd-y2uDK7aDCLAbg38c19CIiThxqqdbtbOMltw',
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzdjNzUxMjk5MWJlYzg2ZjExY2RjNSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjpmYWxzZSwicGF5bWVudFBsYW4iOiJmcmVlIiwiaWF0IjoxNjkxMDA2MzA3LCJleHAiOjE2OTEwMDk5MDd9.fT9hswg-XKcYwibvc3YlO83T5djZkSJexDtGaVIBU4Y',
 		refreshToken:
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzE1ZTBjYTJhMDI2MDg3ODBhOTFmNyIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTA1NzI5NTcsImV4cCI6MTY5MTQzNjk1N30.7D3ImlEuJkk3-piMZqdrxBBtsCvjje2A20PTdmL-qsg',
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzdjNzUxMjk5MWJlYzg2ZjExY2RjNSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTEwMDYzMDcsImV4cCI6MTY5MTg3MDMwN30.I0e0XVh89PplkfaSW1R90PGJFbAMUaBD0fxxsK6_Lmk',
 		decodedAccessToken: {
-			id: '64c15e0ca2a02608780a91f7',
+			id: '64c7c7512991bec86f11cdc5',
 			email: 'test@test.test',
-			hasVerifiedEmail: true,
-			iat: 1690572957,
-			exp: 1690576557,
+			hasVerifiedEmail: false,
+			paymentPlan: 'free',
+			iat: 1691006307,
+			exp: 1691009907,
 		},
 	}
 
@@ -25,10 +26,8 @@ describe('authSlice', () => {
 	}
 
 	const tokens = {
-		access_token:
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzE1ZTBjYTJhMDI2MDg3ODBhOTFmNyIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjp0cnVlLCJpYXQiOjE2OTA1NzI5NTcsImV4cCI6MTY5MDU3NjU1N30.4x4xdYd-y2uDK7aDCLAbg38c19CIiThxqqdbtbOMltw',
-		refresh_token:
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzE1ZTBjYTJhMDI2MDg3ODBhOTFmNyIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTA1NzI5NTcsImV4cCI6MTY5MTQzNjk1N30.7D3ImlEuJkk3-piMZqdrxBBtsCvjje2A20PTdmL-qsg',
+		access_token: initialSessionData.accessToken,
+		refresh_token: initialSessionData.refreshToken,
 	}
 
 	describe('login', () => {

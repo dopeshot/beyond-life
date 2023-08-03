@@ -18,6 +18,10 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mock the create checkout session endpoint.
+			 */
+			mockCreateCheckoutSession(): Chainable<void>
+			/**
 			 * Mock the change email endpoint.
 			 * @param response the response type we want to mock.
 			 * @example cy.mockChangeEmail('OK')

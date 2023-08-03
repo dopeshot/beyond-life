@@ -137,14 +137,7 @@ const Home: React.FC = () => {
 						<div className="flex w-full flex-col gap-4">
 							<div className="mb-6 flex flex-col gap-4 md:flex-row">
 								{[FreePlan, ...PaymentPlans].map((plan) => (
-									<PaymentPlan
-										key={plan.title}
-										title={plan.title}
-										price={plan.price}
-										hasButton={false}
-										size="md"
-										descriptionItems={plan.descriptionItems}
-									/>
+									<PaymentPlan key={plan.title} {...plan} hasButton={false} size="md" />
 								))}
 							</div>
 						</div>
