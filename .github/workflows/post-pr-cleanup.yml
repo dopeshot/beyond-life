@@ -11,7 +11,6 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    if: ${{ github.ref_name != 'main' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,6 +21,9 @@ jobs:
 
       - name: debug
         run: echo "$GITHUB_CONTEXT"
+
+      - name: cancel
+        run: exit 1
 
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
