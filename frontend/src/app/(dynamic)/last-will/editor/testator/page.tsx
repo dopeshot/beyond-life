@@ -118,7 +118,7 @@ const Testator = () => {
 								<div className="2xl:w-2/3">
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
-										<div className="col-span-2">
+										<div className="col-span-2 mb-2 md:mb-4">
 											<TextInput
 												name="name"
 												inputRequired
@@ -143,7 +143,7 @@ const Testator = () => {
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
-										<div className="md:col-start-1 md:col-end-3">
+										<div className="mb-2 md:col-start-1 md:col-end-3 md:mb-4">
 											<TextInput
 												name="street"
 												inputRequired
@@ -152,10 +152,10 @@ const Testator = () => {
 												autoComplete="street-address"
 											/>
 										</div>
-										<div className="md:col-start-3 md:col-end-4">
+										<div className="mb-2 md:col-start-3 md:col-end-4 md:mb-4">
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
-										<div className="md:col-start-1 md:col-end-2">
+										<div className="mb-2 md:col-start-1 md:col-end-2 md:mb-4">
 											<TextInput
 												name="zipCode"
 												inputRequired

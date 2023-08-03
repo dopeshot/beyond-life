@@ -21,9 +21,9 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		if (!id) {
 			console.warn("Can't fetch last will state because id is not defined")
-
 			return
 		}
+
 		dispatch(
 			fetchLastWillState({
 				lastWillId: id,
