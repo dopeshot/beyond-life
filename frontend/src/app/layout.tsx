@@ -9,12 +9,6 @@ export const metadata: Metadata = {
 	},
 	description: 'Erstellen Sie Ihr rechtsgültiges Testament in nur wenigen Schritten, ganz ohne Notar',
 	keywords: ['Testament', 'Notar', 'Schnell und Einfach'],
-	robots: {
-		index: true,
-		googleBot: {
-			index: true,
-		},
-	},
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
