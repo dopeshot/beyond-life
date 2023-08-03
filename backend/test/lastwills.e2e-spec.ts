@@ -97,7 +97,8 @@ describe('LastWillController (e2e)', () => {
         expect(res.body).toBeDefined()
         expect(res.body).toHaveProperty('_id')
         expect(res.body.accountId).toEqual(user._id.toString())
-        expect(res.body).not.toHaveProperty('createdAt')
+        expect(res.body).toHaveProperty('createdAt')
+        expect(res.body).toHaveProperty('updatedAt')
 
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
@@ -237,6 +238,9 @@ describe('LastWillController (e2e)', () => {
         expect(res.body[1].testator).toEqual(sampleObject.testator.name)
         // isInstanceOf not working because response is plain Object anyway
         expect(res.body[0]).toEqual(new LastWillMetadata(res.body[0]))
+        expect(res.body[0]).toHaveProperty('createdAt')
+        expect(res.body[0]).toHaveProperty('updatedAt')
+        expect(res.body[0]).toHaveProperty('_id')
       })
 
       it('should return empty array if there are none', async () => {
@@ -435,7 +439,7 @@ describe('LastWillController (e2e)', () => {
 
       // Further tests are not really needed here. The testament generation is covered by unit tests
     })
-    
+
     describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         const lastWill = (

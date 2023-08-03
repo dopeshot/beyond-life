@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Severity, prop } from '@typegoose/typegoose'
+import { ModelOptions, Severity, prop } from '@typegoose/typegoose'
 import { Exclude, Expose } from 'class-transformer'
 import { ObjectId } from 'mongoose'
 import { CheckoutInformation } from '../../payments/interfaces/payments'
@@ -7,8 +7,10 @@ import { CheckoutInformation } from '../../payments/interfaces/payments'
 /**
  * @description Entity with all user information
  */
+@ModelOptions({ schemaOptions: { timestamps: true } })
 export class User {
   _id: ObjectId
+  updatedAt: Date
 
   @Expose({ groups: ['self'] })
   @prop({ required: true, unique: true })
@@ -31,10 +33,9 @@ export class User {
   lastLogin: Date | null
 
   @Expose()
-  @prop()
   @ApiPropertyOptional({
     description: 'Creation date of user',
-    example: Date.now(),
+    example: new Date(),
   })
   createdAt: Date
 
