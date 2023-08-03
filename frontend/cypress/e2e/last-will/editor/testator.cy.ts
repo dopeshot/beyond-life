@@ -9,9 +9,6 @@ describe('Last Will Testator Page', () => {
 
 	describe('Basic Flow', () => {
 		it('shoud fill out testator data and redirect to /last-will/editor/marriage after submit', () => {
-			// TODO: Remove when find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			// Personal Data
 			cy.datacy('textinput-name-input').type('Name')
 
