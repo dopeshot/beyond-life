@@ -31,9 +31,10 @@ const MyLastWills = () => {
 	const router = useRouter()
 	const [lastWills, setLastWills] = useState<LastWillProfile[]>([])
 	const [isLoadingDelete, setIsLoadingDelete] = useState(false)
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 	const [selectedLastWill, setSelectedLastWill] = useState<LastWillProfile | null>(null)
 	const [deleteError, setDeleteError] = useState<AlertProps | null>(null)
+
+	const isDeleteModalOpen = Boolean(selectedLastWill)
 
 	const fetchLastWills = useCallback(async () => {
 		const lastWills = await getLastWills()
@@ -95,7 +96,6 @@ const MyLastWills = () => {
 										onClick={(event) => {
 											event.stopPropagation()
 											setSelectedLastWill(lastWill)
-											setIsDeleteModalOpen(true)
 										}}
 										icon="delete"
 									/>
@@ -145,7 +145,6 @@ const MyLastWills = () => {
 					headline={`Testament löschen?`}
 					onClose={() => {
 						setSelectedLastWill(null)
-						setIsDeleteModalOpen(false)
 					}}
 				>
 					<p className="mb-2 md:mb-4">
@@ -160,7 +159,7 @@ const MyLastWills = () => {
 						<Button
 							datacy="button-cancel"
 							type="button"
-							onClick={() => setIsDeleteModalOpen(false)}
+							onClick={() => setSelectedLastWill(null)}
 							className="order-1 md:order-none"
 							kind="tertiary"
 						>
@@ -182,7 +181,7 @@ const MyLastWills = () => {
 									})
 								} else if (response === 'OK') {
 									await fetchLastWills()
-									setIsDeleteModalOpen(false)
+									setSelectedLastWill(null)
 								}
 								setIsLoadingDelete(false)
 							}}
