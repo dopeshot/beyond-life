@@ -20,6 +20,9 @@ jobs:
           token: ${{ secrets.BOT_PAT }}
           ref: main
 
+      - name: debug
+        run: echo ${{ GITHUB_REF_NAME }}  && echo ${{  GITHUB_REF }}
+
       - name: Extract branch name
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/} | tr '/' '_')"
         id: extract_branch
