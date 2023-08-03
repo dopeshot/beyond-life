@@ -57,11 +57,10 @@ export const TextInput: React.FC<TextInputProps> = ({
 								type={type}
 								autoComplete={autoComplete}
 								{...fieldProps.field}
-								{...props}
-								/** TODO MC: Bug This will always overwrite if the user creates and own classNames prop for TextInput  */
 								className={`flex w-full items-center rounded-lg border border-gray-100 bg-gray-100 p-2 px-4 placeholder:text-gray-400${
 									icon ? ' pr-12' : ''
 								}${fieldProps.meta.touched && fieldProps.meta.error ? ' border-red-500 bg-red-50' : ''} ${className}`}
+								{...props}
 							/>
 							{icon && (
 								<div className={'w-0'}>
