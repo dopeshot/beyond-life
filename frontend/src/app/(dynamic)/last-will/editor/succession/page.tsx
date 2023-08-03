@@ -56,7 +56,12 @@ const Succession = () => {
 		try {
 			// Update store
 			dispatch(setSuccession(values))
-			await dispatch(sendLastWillState())
+			const response = await dispatch(sendLastWillState())
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
+
 			router.push(href)
 		} catch (error) {
 			console.error('An error occured while submitting the form: ', error)
