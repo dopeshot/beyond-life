@@ -22,16 +22,16 @@ const initialFormValues: StartLegal = {
 	germanRightOfInheritance: undefined,
 }
 
+const validationSchema: ObjectSchema<StartLegal> = object().shape({
+	germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+	germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+})
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
-
-	const validationSchema: ObjectSchema<StartLegal> = object().shape({
-		germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-		germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-	})
 
 	const onSubmit = () => {
 		// Redirect to Testator Page
