@@ -6,6 +6,8 @@ import {
 	Person,
 	PersonFormPayload,
 	SuccessionFormPayload,
+	Testator,
+	TestatorFormPayload,
 } from '../../types/lastWill'
 import { SidebarPages } from '../../types/sidebar'
 import {
@@ -86,23 +88,27 @@ describe('lastWillSlice', () => {
 		})
 
 		it("should convert testator's payload to testator", () => {
-			const payload = {
+			const payload: TestatorFormPayload = {
 				name: 'Max Mustermann',
 				birthDate: '2000-01-01',
 				birthPlace: 'Musterstadt',
 				zipCode: '12345',
 				city: 'Musterstadt',
-				street: 'Musterstraße 1',
+				street: 'Musterstraße',
+				houseNumber: '1',
 				moreInfos: ['isInsolvent'],
 			}
 
-			const testator = {
+			const testator: Testator = {
 				name: 'Max Mustermann',
 				birthDate: '2000-01-01',
 				birthPlace: 'Musterstadt',
-				zipCode: '12345',
-				city: 'Musterstadt',
-				street: 'Musterstraße 1',
+				address: {
+					zipCode: '12345',
+					city: 'Musterstadt',
+					street: 'Musterstraße',
+					houseNumber: '1',
+				},
 				isHandicapped: false,
 				isInsolvent: true,
 			}

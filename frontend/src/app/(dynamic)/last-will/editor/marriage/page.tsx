@@ -40,10 +40,10 @@ const Marriage = () => {
 		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
 	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
-	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common.isBerlinWill) ?? false
+	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common?.isBerlinWill) ?? false
 	const isPartnerGermanCitizenship =
-		useAppSelector((state) => state.lastWill.data.common.isPartnerGermanCitizenship) ?? false
-	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common.matrimonialProperty)
+		useAppSelector((state) => state.lastWill.data.common?.isPartnerGermanCitizenship) ?? false
+	const matrimonialProperty = useAppSelector((state) => state.lastWill.data.common?.matrimonialProperty)
 	const relationshipStatus = useAppSelector((state) => state.lastWill.data.testator.relationshipStatus)
 
 	const dispatch = useAppDispatch()
