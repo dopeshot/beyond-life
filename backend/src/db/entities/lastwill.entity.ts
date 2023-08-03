@@ -99,7 +99,7 @@ const swaggerExampleOrgaHeir: Organisation = {
     city: 'Berlin',
   },
   percentage: 50,
-  itemIds: ['11111111', '22222222'],
+  itemIds: ['33333333', '44444444'],
 }
 
 const swaggerExampleObject: LastWill = {
@@ -138,12 +138,6 @@ const swaggerExampleObject: LastWill = {
     SidebarPages.SUCCESSION,
     SidebarPages.FINAL,
   ],
-}
-
-// This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
-class Discriminator {
-  @IsEnum(PersonType)
-  type: PersonType
 }
 
 @Expose()
@@ -615,29 +609,17 @@ export class LastWill extends MongooseBaseEntity {
     The Transform is performed after the Type, but in Serialization it seems the Type is not enough transformation
     This is only needed if lastwillModel returns flattenMaps (for example not on .create)
   */
-  @Type(() => Discriminator, {
-    discriminator: {
-      property: 'type',
-      subTypes: [
-        // TODO: check if name is the value which is discriminated on, do I have to have all options here?
-        { value: Person, name: PersonType.OTHER },
-        { value: Person, name: PersonType.CHILD },
-        { value: Person, name: PersonType.FATHER },
-        { value: Person, name: PersonType.MOTHER },
-        { value: Person, name: PersonType.SIBLING },
-        { value: Organisation, name: PersonType.ORGANISATION },
-      ],
-    },
-    keepDiscriminatorProperty: true,
-  })
+  @Type((value) =>
+    value.object.type === PersonType.ORGANISATION ? Organisation : Person,
+  )
   @Expose()
-  @Transform(({ value }) =>
-    value?.map((object: Person | Organisation) => {
-      if (object.type === PersonType.ORGANISATION) {
-        return plainToClass(Organisation, object)
-      }
-      return plainToClass(Person, object)
-    }),
+  @Transform(
+    ({ value }) =>
+      value?.map((object: Person | Organisation) =>
+        object.type === PersonType.ORGANISATION
+          ? plainToClass(Organisation, object)
+          : plainToClass(Person, object),
+      ),
   )
   heirs: (Person | Organisation)[]
 
