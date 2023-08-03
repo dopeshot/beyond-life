@@ -1,14 +1,9 @@
 'use client'
-import { Metadata } from 'next'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { AccountForm } from '../../../../../components/Form/AccountForm/AccountForm'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata: Metadata = {
-	title: 'Registrieren',
-}
 
 /**
  * Register Page

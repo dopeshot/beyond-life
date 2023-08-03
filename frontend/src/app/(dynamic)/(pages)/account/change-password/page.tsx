@@ -1,6 +1,5 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
@@ -12,13 +11,6 @@ import { PasswordInput } from '../../../../../components/Form/PasswordInput/Pass
 import { Headline } from '../../../../../components/Headline/Headline'
 import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata: Metadata = {
-	title: 'Passwort ändern',
-	robots: {
-		index: false,
-	},
-}
 
 type ChangePasswordFormValues = {
 	newPassword: string

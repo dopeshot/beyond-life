@@ -1,5 +1,4 @@
 'use client'
-import { Metadata } from 'next'
 import Image from 'next/image'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
@@ -8,10 +7,6 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { PaymentPlan } from '../../../../../components/PaymentPlan/PaymentPlan'
 import { routes } from '../../../../../services/routes/routes'
-
-export const metadata: Metadata = {
-	title: 'Produktpläne',
-}
 
 /**
  * Login/Register Page with ads for last will.

@@ -1,5 +1,4 @@
 'use client'
-import { Metadata } from 'next'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
@@ -9,13 +8,6 @@ import { MobileSidebar } from '../../../../components/Navbar/Sidebar/MobileSideb
 import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
-
-export const metadata: Metadata = {
-	title: 'Testament erstellen',
-	robots: {
-		index: false,
-	},
-}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const path = usePathname()
