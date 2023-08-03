@@ -244,14 +244,15 @@ class Address {
 
 @Expose()
 class PersonBase {
-  @prop({ required: true, type: String })
+  @prop({ required: false, type: String })
   @ApiProperty({
     description: 'Full name',
     example: swaggerExamplePersonHeir.name,
     type: String,
   })
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 
   @prop({ required: false, enum: Gender, type: String })
   @ApiPropertyOptional({
@@ -541,16 +542,16 @@ export class MongooseBaseEntity {
   })
   updatedAt: Date
 
+  @Expose()
   @ApiProperty({
     description: 'Id',
     example: swaggerExampleObject._id,
   })
   @Type(() => String)
-  @Expose()
   _id: ObjectId | string
 }
 
-@ModelOptions({ schemaOptions: { timestamps: true } })
+@ModelOptions({ schemaOptions: { timestamps: true, minimize: false } })
 export class LastWill extends MongooseBaseEntity {
   @prop({
     required: true,
@@ -568,7 +569,7 @@ export class LastWill extends MongooseBaseEntity {
   @Expose()
   accountId: string
 
-  @prop({ required: true, type: Common, _id: false })
+  @prop({ required: true, type: Common, _id: false, default: {} })
   @ApiProperty({
     type: Common,
     description: 'Common data for the will',
@@ -580,7 +581,7 @@ export class LastWill extends MongooseBaseEntity {
   @Expose()
   common: Common
 
-  @prop({ required: true, type: Testator, _id: false })
+  @prop({ required: true, type: Testator, _id: false, default: {} })
   @ApiProperty({
     type: Testator,
     description: 'Testator data',
@@ -627,13 +628,14 @@ export class LastWill extends MongooseBaseEntity {
     keepDiscriminatorProperty: true,
   })
   @Expose()
-  @Transform(({ value }) =>
-    value?.map((object: Person | Organisation) => {
-      if (object.type === PersonType.ORGANISATION) {
-        return plainToClass(Organisation, object)
-      }
-      return plainToClass(Person, object)
-    }),
+  @Transform(
+    ({ value }) =>
+      value?.map((object: Person | Organisation) => {
+        if (object.type === PersonType.ORGANISATION) {
+          return plainToClass(Organisation, object)
+        }
+        return plainToClass(Person, object)
+      }),
   )
   heirs: (Person | Organisation)[]
 
