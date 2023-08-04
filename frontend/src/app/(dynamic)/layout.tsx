@@ -28,7 +28,7 @@ const Auth: React.FC<AuthProps> = ({ children }) => {
 				return null
 			}
 
-			await dispatch(refreshToken({ bypassExpiryCheck: true }))
+			await dispatch(refreshToken({ ignoreExpireCheck: false }))
 		}
 		checkAuthenticated()
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps

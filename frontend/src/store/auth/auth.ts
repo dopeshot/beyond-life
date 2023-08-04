@@ -83,16 +83,16 @@ export const loginApi = createAsyncThunk<
  * Get session data from local storage and update the access token if it has expired.
  * @returns session data or null if no session data is found
  */
-export const refreshToken = createAsyncThunk<SessionData, { bypassExpiryCheck: boolean }>(
+export const refreshToken = createAsyncThunk<SessionData, { ignoreExpireCheck: boolean }>(
 	'auth/getSessionData',
-	async ({ bypassExpiryCheck }, { rejectWithValue }) => {
+	async ({ ignoreExpireCheck }, { rejectWithValue }) => {
 		const parsedSessionData = getSession()
 
 		// No session data found
 		if (!parsedSessionData) return rejectWithValue('No session data found')
 
 		// Return session data if access token is not expired
-		if (!bypassExpiryCheck) {
+		if (!ignoreExpireCheck) {
 			const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
 			if (!sessionExpired) return parsedSessionData
 		}
