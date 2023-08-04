@@ -65,8 +65,6 @@ const personFormPayload: PersonFormPayload = {
 	zipCode: '12345',
 	city: 'City A',
 	moreInfos: [],
-	childRelationShip: 'childTogether',
-	ownChild: [],
 }
 
 const person: Person = {

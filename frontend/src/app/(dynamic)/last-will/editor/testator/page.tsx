@@ -177,7 +177,6 @@ const Testator = () => {
 									name="moreInfos"
 									labelText="Weitere relevante Infos"
 									inputRequired
-									helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
 									options={testatorMoreInfosOptions}
 								/>
 							</div>
