@@ -161,7 +161,7 @@ const Privacy = () => {
 										</Headline>
 										Wir verwenden Google Analytics, um die Nutzung unserer Website zu analysieren. Die
 										Datenschutzrichtlinie von Google Analytics können Sie{' '}
-										<Link href="https://marketingplatform.google.com/about/analytics/" className='font-bold underline'>
+										<Link href="https://marketingplatform.google.com/about/analytics/" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.
@@ -172,7 +172,7 @@ const Privacy = () => {
 										</Headline>
 										Wir nutzen Google Fonts für die Anzeige von Schriftarten auf unserer Website. Die
 										Datenschutzrichtlinie von Google Fonts können Sie{' '}
-										<Link href="https://fonts.google.com/" className='font-bold underline'>
+										<Link href="https://fonts.google.com/" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.
@@ -183,7 +183,7 @@ const Privacy = () => {
 										</Headline>
 										Wir verwenden Material Symbols für Icons auf unserer Website. Die
 										Datenschutzrichtlinie von Google, der Firma, die Material Symbols bereitstellt, können Sie {' '}
-										<Link href="https://fonts.google.com/icons" className='font-bold underline'>
+										<Link href="https://fonts.google.com/icons" className="font-bold underline">
 											hier
 										</Link>{' '}
 										einsehen.
