@@ -118,8 +118,7 @@ export class UserDBService {
         { stripeCustomerId },
         { paymentPlan },
       )
-    } catch (error) {
-      /* istanbul ignore next */
+    } catch (error) /* istanbul ignore next */ {
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Could not update payment plan of the provided customer from Stripe',
@@ -149,8 +148,7 @@ export class UserDBService {
         { checkoutInformation },
         { new: true },
       )
-    } catch (error) {
-      /* istanbul ignore next */
+    } catch (error) /* istanbul ignore next */ {
       this.logger.error(error)
       throw new ServiceUnavailableException(
         'Something went wrong, please try again later!',
