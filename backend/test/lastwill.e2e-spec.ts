@@ -3,6 +3,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { Connection, Model } from 'mongoose'
 import * as request from 'supertest'
 import { DbModule } from '../src/db/db.module'
@@ -34,6 +35,7 @@ describe('LastWillController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ThrottlerModule.forRoot({}),
         DbModule,
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),

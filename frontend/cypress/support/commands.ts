@@ -43,6 +43,14 @@ const networkErrorResponse = {
 }
 
 /***** Responses ****/
+const paymentCheckoutResponse = {
+	OK: {
+		statusCode: 201,
+		fixture: 'payment/checkoutSession.json',
+	},
+	...networkErrorResponse,
+}
+
 const getLastWillFulltextResponse = {
 	OK: {
 		statusCode: 200,
@@ -232,11 +240,8 @@ Cypress.Commands.add('mockProfileLastWills', (response = 'OK') => {
 	cy.intercept('GET', `${apiUrl}/lastwill`, profileLastWillResponse[response]).as('mockProfileLastWills')
 })
 
-Cypress.Commands.add('mockCreateCheckoutSession', () => {
-	cy.intercept('POST', `${apiUrl}/payments/checkout`, {
-		statusCode: 201,
-		fixture: '/payment/checkoutSession.json',
-	}).as('mockCreateCheckoutSession')
+Cypress.Commands.add('mockCreateCheckoutSession', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/payments/checkout`, paymentCheckoutResponse[response]).as('mockCreateCheckoutSession')
 })
 
 Cypress.Commands.add('mockChangeEmail', (response = 'OK') => {

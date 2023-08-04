@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
@@ -18,7 +19,6 @@ import { sendLastWillState, setProgressKeys, setTestator } from '../../../../../
 import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 // TODO: Ensure all schemas are equal from the strength
 const validationSchema: ObjectSchema<TestatorFormPayload> = object({

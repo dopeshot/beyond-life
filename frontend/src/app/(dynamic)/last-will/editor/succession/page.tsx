@@ -3,6 +3,7 @@ import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
+import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
 import { TextInput } from '../../../../../components/Form/TextInput/TextInput'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -99,21 +100,34 @@ const Succession = () => {
 				{({ values, dirty }: FormikProps<SuccessionFormPayload>) => (
 					<Form>
 						{/* heirs */}
-						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
-							{values.heirs.map((heir, index) => (
-								<SuccessionHeir
-									datacy={`heir-${heir.id}`}
-									key={`heir-${heir.id}`}
-									name={heir.name}
-									inputFieldName={`heirs.${index}.percentage`}
-									items={items.filter((item) => heir.itemIds?.includes(item.id))}
-									onClick={() => {
-										setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
-										setIsModalOpen(true)
-									}}
-								/>
-							))}
-						</div>
+						{values.heirs.length === 0 ? (
+							<div datacy="succession-empty-state">
+								<Headline level={3}>Erstellen Sie zuerst Erben</Headline>
+
+								<p className="mb-2 text-gray-600 md:mb-4">
+									Später können Sie Ihren Erben die gewünschte Erbschaft zuordnen.
+								</p>
+								<Route kind="secondary" href={routes.lastWill.heirs(_id)}>
+									Erben anlegen
+								</Route>
+							</div>
+						) : (
+							<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
+								{values.heirs.map((heir, index) => (
+									<SuccessionHeir
+										datacy={`heir-${heir.id}`}
+										key={`heir-${heir.id}`}
+										name={heir.name}
+										inputFieldName={`heirs.${index}.percentage`}
+										items={items.filter((item) => heir.itemIds?.includes(item.id))}
+										onClick={() => {
+											setSelectedHeirIndex(values.heirs.findIndex((inner) => inner.id === heir.id))
+											setIsModalOpen(true)
+										}}
+									/>
+								))}
+							</div>
+						)}
 
 						{/* Form Steps Buttons */}
 						<FormStepsButtons

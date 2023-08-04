@@ -18,21 +18,6 @@ export const genderOptions: DropdownOptions[] = [
 	},
 ]
 
-export const childRelationshipOptions: DropdownOptions[] = [
-	{
-		value: 'childTogether',
-		label: 'Gemeinsames Kind mit Ehepartner',
-	},
-	{
-		value: 'childFromOther',
-		label: 'Kind aus vorheriger Ehe',
-	},
-	{
-		value: 'childFromPartner',
-		label: 'Kind vom Ehepartner',
-	},
-]
-
 export const heirsPersonType: DropdownOptions[] = [
 	{
 		value: 'partner',

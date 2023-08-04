@@ -35,11 +35,6 @@ describe('Last Will Heirs Page', () => {
 			cy.datacy('checkbox-moreInfos-option-isHandicapped').click()
 			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
 
-			// Children
-			cy.datacy('checkbox-ownChild-option-ownChild').click()
-			cy.datacy('childRelationShip-dropdown-button').click()
-			cy.datacy('childRelationShip-dropdown-option-childTogether').click()
-
 			cy.datacy('button-submit').click()
 			cy.wait('@mockUpdateLastWill')
 			cy.datacy('persons-row-JoyJumper').should('be.visible')

@@ -63,9 +63,7 @@ const initialAccountDeleteValues: AccountDelete = {
 }
 
 const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
-	newEmail: string()
-		.matches(validateMail.regex, validateMail.message)
-		.required(EMAIL_REQUIRED_ERROR),
+	newEmail: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
 })
 
 const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({

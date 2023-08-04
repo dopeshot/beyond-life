@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
@@ -26,7 +27,6 @@ import {
 	RelationshipStatus,
 } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 /**
  * Marriage Page

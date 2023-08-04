@@ -1,4 +1,10 @@
-import { CreateLastWillDto } from './create-lastwill.dto'
+import { OmitType } from '@nestjs/swagger'
+import { LastWill } from '../../db/entities/lastwill.entity'
 
 // It is not a partialType since we are expecting a put, so we want everything the same, we just don't update the _id and accountId
-export class UpdateLastWillDto extends CreateLastWillDto {}
+export class UpdateLastWillDto extends OmitType(LastWill, [
+  'accountId',
+  '_id',
+  'createdAt',
+  'updatedAt',
+]) {}

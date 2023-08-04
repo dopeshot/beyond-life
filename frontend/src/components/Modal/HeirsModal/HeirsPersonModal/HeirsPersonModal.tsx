@@ -1,13 +1,14 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { Form, Formik } from 'formik'
-import { ObjectSchema, array, mixed, object, string } from 'yup'
+import { ObjectSchema, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
-import { childRelationshipOptions, genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
+import { genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 import { heirsTypes } from '../../../../services/heirs'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill/lastwill'
 import { Gender } from '../../../../types/gender'
-import { ChildRelationShip, Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
+import { Person, PersonFormPayload, PersonType } from '../../../../types/lastWill'
 import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { Checkbox } from '../../../Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../Form/FormDatepicker/FormDatepicker'
@@ -15,7 +16,6 @@ import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
-import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */
@@ -52,9 +52,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 			...(editPerson?.isInsolvent ? ['isInsolvent'] : []),
 		],
 		type: editPerson?.type ?? type,
-
-		childRelationShip: editPerson?.child?.relationship ?? undefined,
-		ownChild: editPerson?.child?.type === 'natural' ? ['ownChild'] : undefined,
 	}
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
@@ -69,8 +66,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 		zipCode: string(),
 		city: string(),
 
-		childRelationShip: string<ChildRelationShip>(),
-		ownChild: array(),
 		moreInfos: mixed<('isHandicapped' | 'isInsolvent')[]>(),
 		type: string<PersonType>().required(),
 	})
@@ -161,24 +156,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 							labelText="Weitere relevante Infos"
 							helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 							options={personMoreInfosOptions}
-						/>
-					</div>
-
-					{/* Children */}
-					{/* TODO(Zoe-Bot): When married ownChild should be in childRelationShip and when not only show checkbox */}
-					<div className="mb-6 md:mb-8">
-						<div className="mb-2 md:mb-3">
-							<Checkbox
-								name="ownChild"
-								labelText="Frage zum Kind"
-								options={[{ value: 'ownChild', label: 'Ist das Kind ihr eigenes?' }]}
-							/>
-						</div>
-
-						<FormDropdown
-							name="childRelationShip"
-							placeholder="Beziehung zum Kind"
-							options={childRelationshipOptions}
 						/>
 					</div>
 

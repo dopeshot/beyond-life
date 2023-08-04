@@ -73,7 +73,7 @@ const Heirs = () => {
 			{/* Overview all heirs */}
 			{heirs.length === 0 ? (
 				<p className="mb-2 text-gray-600 md:mb-4">
-					Füge neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
+					Fügen Sie neue Erben wie die Mutter, Vater, Kinder, Geschwister, andere Personen oder Organisationen hinzu.
 				</p>
 			) : (
 				<table className="mb-4 mt-2 w-full table-fixed border-collapse md:mt-8">

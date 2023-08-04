@@ -22,6 +22,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { ThrottlerGuard } from '@nestjs/throttler'
 import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.interface'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { ChangeEmailDTO } from './dtos/change-email.dto'
@@ -32,7 +33,7 @@ import { ProfileService } from './profile.service'
 @ApiTags('profile')
 @ApiBearerAuth('access_token')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @SerializeOptions({ strategy: 'excludeAll' })
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}

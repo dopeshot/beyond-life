@@ -1,12 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail } from 'class-validator'
+import { PickType } from '@nestjs/swagger'
+import { LoginDTO } from './login.dto'
 
-export class ForgotPasswordDTO {
-  @IsEmail()
-  @ApiProperty({
-    name: 'email',
-    description: 'Email of the users account',
-    example: 'test@test.test',
-  })
-  email: string
-}
+export class ForgotPasswordDTO extends PickType(LoginDTO, ['email'] as const) {}

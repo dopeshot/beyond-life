@@ -6,6 +6,7 @@ import { IsEmail, IsString, Length } from 'class-validator'
  */
 export class LoginDTO {
   @IsEmail()
+  @Length(5, 256)
   @ApiProperty({ description: 'Email of the user', example: 'test@test.test' })
   email: string
 
