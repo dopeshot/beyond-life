@@ -3,6 +3,7 @@ import { notFound, usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import isAuth from '../../../../components/Auth/isAuth'
 import { ServerError } from '../../../../components/Errors/ServerError/ServerError'
+import { Loading } from '../../../../components/Loading/Loading'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
@@ -47,7 +48,9 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			{!isInitialized ? (
-				<p>Laden...</p>
+				<div className="container mt-5">
+					<Loading />
+				</div>
 			) : (
 				<div className={`flex h-screen min-h-screen w-full overflow-y-scroll sm:flex-col lg:flex-row`}>
 					<Sidebar path={path} />
