@@ -85,6 +85,7 @@ describe('ProfileController (e2e)', () => {
   beforeEach(async () => {
     await userModel.deleteMany()
     await lastWillModel.deleteMany()
+    await mailEventModel.deleteMany()
     mailer.mock.reset()
   })
 
@@ -445,7 +446,7 @@ describe('ProfileController (e2e)', () => {
 
       it('should schedule mail if it cannot be send as of now', async () => {
         // ARRANGE
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         // ACT
         const res = await request(app.getHttpServer())
           .delete('/profile')
