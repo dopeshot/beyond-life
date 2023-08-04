@@ -103,7 +103,7 @@ const Succession = () => {
 					<Form>
 						{/* heirs */}
 						{values.heirs.length === 0 ? (
-							<div>
+							<div datacy="emptyState">
 								<p className="mb-2 text-gray-600 md:mb-4">
 									Sie haben noch keine Erben erstellt. Kehren Sie hierfür auf die Erben-Seite zurück
 								</p>

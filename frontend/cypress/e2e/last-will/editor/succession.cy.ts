@@ -1,14 +1,29 @@
 describe('Last Will Succession Page', () => {
-	beforeEach(() => {
-		cy.mockGetLastWillById(true)
-		cy.login({
-			route: '/last-will/editor/succession?id=1',
+	describe('Empty State', () => {
+		before(() => {
+			cy.mockGetLastWillById(false)
+			cy.login({
+				route: '/last-will/editor/succession?id=1',
+			})
+
+			cy.wait('@mockGetLastWillById')
 		})
 
-		cy.wait('@mockGetLastWillById')
+		it('Should show Empty State', () => {
+			cy.datacy('emptyState')
+		})
 	})
 
 	describe('Basic Flow', () => {
+		beforeEach(() => {
+			cy.mockGetLastWillById(true)
+			cy.login({
+				route: '/last-will/editor/succession?id=1',
+			})
+
+			cy.wait('@mockGetLastWillById')
+		})
+
 		it('should change percentage when input is changed', () => {
 			cy.datacy('textinput-heir-987654321').clear()
 			cy.datacy('textinput-heir-987654321').type('30')
@@ -42,6 +57,13 @@ describe('Last Will Succession Page', () => {
 
 	describe('Heir Modal', () => {
 		beforeEach(() => {
+			cy.mockGetLastWillById(true)
+			cy.login({
+				route: '/last-will/editor/succession?id=1',
+			})
+
+			cy.wait('@mockGetLastWillById')
+
 			cy.datacy('heir-987654321-edit').click()
 		})
 
