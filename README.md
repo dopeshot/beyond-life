@@ -19,7 +19,8 @@ Daraufhin kannst du:
  - das [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard) (nicht direkt Teil des docker compose Stacks)
 
 Das Kaufen von Tarifen setzt eine Test-Karte voraus. Alle Angaben sind hier egal, bis auf die Kartennummer:
-`4242 4242 4242 4242`
+`4242424242424242` für einen erfolgreichen Kauf
+`4000000000009995` für einen fehlgeschlagenen Kauf
 
 ## Troubleshooting
 
