@@ -104,11 +104,13 @@ const Succession = () => {
 						{/* heirs */}
 						{values.heirs.length === 0 ? (
 							<div datacy="succession-empty-state">
+								<Headline level={3}>Erstellen Sie zuerst Erben</Headline>
+
 								<p className="mb-2 text-gray-600 md:mb-4">
-									Sie haben noch keine Erben erstellt. Kehren Sie hierfür auf die Erben-Seite zurück
+									Später können Sie Ihren Erben die gewünschte Erbschaft zuordnen.
 								</p>
-								<Route kind="secondary" icon="arrow_back" href={routes.lastWill.heirs(_id)}>
-									Zurückkehren
+								<Route kind="secondary" href={routes.lastWill.heirs(_id)}>
+									Erben anlegen
 								</Route>
 							</div>
 						) : (
