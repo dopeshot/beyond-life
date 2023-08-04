@@ -16,12 +16,8 @@ docker compose up -d
 Daraufhin kannst du:
  - das [Frontend](http://localhost:3000) aufrufen
  - das [SMTP Server Panel](http://localhost:5001) aufrufen
+ - das [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard) (nicht direkt Teil des docker compose Stacks)
 
-**Stripe:**
-To perform test payments (not real ones), Stripe data has to be provided in the `.env` file.
-secrets, items and price_ids can be found in the [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard).
-
-The frontend also needs the public secret
 
 ## Troubleshooting
 
