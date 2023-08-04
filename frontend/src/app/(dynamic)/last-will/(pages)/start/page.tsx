@@ -1,7 +1,7 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
@@ -67,7 +67,8 @@ const Start = () => {
 		const response = await createLastWill()
 
 		if (response === 'UNAUTHORIZED') {
-			redirect(routes.account.login({ callbackUrl: routes.lastWill.start }))
+			router.push(routes.account.login({ callbackUrl: routes.lastWill.start }))
+			return
 		}
 
 		if (response === 'PLANS_LIMIT_EXCEEDED' || response === 'ERROR') {
