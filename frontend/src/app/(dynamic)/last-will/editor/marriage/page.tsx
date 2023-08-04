@@ -78,7 +78,10 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
-		name: string().required(NAME_REQUIRED_ERROR),
+		name: string().when('relationshipStatus', {
+			is: 'married',
+			then: (schema) => schema.required(NAME_REQUIRED_ERROR),
+		}),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
