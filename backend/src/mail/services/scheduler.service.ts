@@ -55,9 +55,7 @@ export class MailScheduleService {
     ids: ObjectId[],
     newSendDate?: Date,
   ): Promise<void> {
-    if (ids.length == 0) {
-      return
-    }
+    if (ids.length == 0) return
     if (!newSendDate) {
       newSendDate = new Date()
       // Reschedule 5 hours later by default
