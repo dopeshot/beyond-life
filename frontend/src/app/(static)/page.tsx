@@ -114,7 +114,7 @@ const Home: React.FC = () => {
 				<div className="mb-16 md:mb-24">
 					<Banner
 						title="Überzeugen Sie sich selbst"
-						description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
+						description="Sie sind noch am Zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
 						button={
 							<Route icon="history_edu" href={routes.lastWill.start} kind="secondary">
 								Jetzt Testament erstellen

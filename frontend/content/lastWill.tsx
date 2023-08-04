@@ -21,7 +21,7 @@ export const cardContent: CardWithIconProps[] = [
 		title: 'Flexibel und anpassungsfähig',
 		children: (
 			<p>
-				Veränderungen im Leben sind normal, und Ihr Testament kann sich diesen Veränderungen anpassen. Mit unserer
+				Veränderungen im Leben sind normal und Ihr Testament kann sich diesen Veränderungen anpassen. Mit unserer
 				Plattform können Sie Ihr Testament jederzeit überarbeiten und aktualisieren.
 			</p>
 		),
