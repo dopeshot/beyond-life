@@ -149,7 +149,7 @@ const authSlice = createSlice({
 			.addCase(refreshToken.rejected, (state, action) => {
 				state.isInitialized = true
 				state.isAuthenticated = false
-				console.error(action.error.message, action.payload)
+				console.error(action.payload)
 			})
 			.addCase(loginApi.pending, (state) => {
 				state.isInitialized = false
@@ -190,7 +190,7 @@ const authSlice = createSlice({
 				}
 				state.isInitialized = true
 				state.isAuthenticated = false
-				console.error(action.error.message, action.payload)
+				console.error(action.payload)
 			})
 	},
 })
