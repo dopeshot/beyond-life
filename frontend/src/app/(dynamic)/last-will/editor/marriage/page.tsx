@@ -38,7 +38,7 @@ const Marriage = () => {
 	// Gloabl State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const partner = useAppSelector((state) =>
-		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner'),
 	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common?.isBerlinWill) ?? false
@@ -228,7 +228,7 @@ const Marriage = () => {
 													autoComplete="street-address"
 												/>
 											</div>
-											<div className="w-1/3  md:w-1/4">
+											<div className="w-1/3 md:w-1/4">
 												<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
