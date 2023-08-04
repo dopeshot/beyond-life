@@ -4,6 +4,7 @@ import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -15,7 +16,6 @@ import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { FinancialAsset, InheritanceFormPayload, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 /**
  * Inheritance Page
@@ -55,7 +55,9 @@ const Inheritance = () => {
 
 			// Redirect to previous or next page
 			router.push(href)
-		} catch (error) {}
+		} catch (error) {
+			console.error('An error occurred while submitting the form: ', error)
+		}
 	}
 
 	const validationSchema: ObjectSchema<InheritanceFormPayload> = object().shape({

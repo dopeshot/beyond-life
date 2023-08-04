@@ -106,7 +106,9 @@ const Marriage = () => {
 			}
 			// Redirect to previous or next page
 			router.push(href)
-		} catch (error) {}
+		} catch (error) {
+			console.error('An error occurred while submitting the form: ', error)
+		}
 	}
 
 	// Use to handle sidebar display state and progress

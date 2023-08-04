@@ -14,6 +14,7 @@ export const getLastWillFulltext = async (id: string): Promise<GeneratedLastWill
 
 		return response.data
 	} catch (error) {
+		console.error(error)
 		return null
 	}
 }

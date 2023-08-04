@@ -102,6 +102,7 @@ export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryC
 
 		// Refresh token failed
 		if (tokens === null) {
+			console.error('Session expired and refresh token failed')
 			return null
 		}
 
