@@ -252,7 +252,7 @@ class Address {
   })
   @IsOptional()
   @IsString()
-  @Length(5, 5)
+  @Length(0, 69)
   zipCode?: string
 
   @prop({ required: false, type: String })
