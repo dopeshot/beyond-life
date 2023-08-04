@@ -14,8 +14,9 @@ export const metadata: Metadata = {
 		description: 'Erstellen Sie Ihr rechtsgültiges Testament in nur wenigen Schritten, ganz ohne Notar',
 		siteName: 'Siebtes Leben',
 		type: 'website',
-		url: '/',
+		url: 'https://siebtesleben.de',
 	},
+	metadataBase: new URL('https://siebtesleben.de'),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

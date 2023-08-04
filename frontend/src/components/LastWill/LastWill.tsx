@@ -57,7 +57,9 @@ export const LastWill = () => {
 							{paragraph.title}
 						</Headline>
 						{paragraph.contents.map((content, index) => (
-							<p key={index}>{content}</p>
+							<p className="mb-4" key={index}>
+								{content}
+							</p>
 						))}
 					</div>
 				))}

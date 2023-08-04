@@ -2,7 +2,7 @@
 import { Form, Formik } from 'formik'
 import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
@@ -64,7 +64,7 @@ const alertContent: { [key: string]: AlertProps } = {
 /**
  * Change Password Page.
  */
-const ChangePassword = () => {
+const ChangePassword: React.FC = () => {
 	const searchParams = useSearchParams()
 	const token = searchParams.get('token')
 
@@ -125,4 +125,14 @@ const ChangePassword = () => {
 	)
 }
 
-export default ChangePassword
+const ChangePasswordPage = () => {
+	return (
+		<>
+			<Suspense fallback={<div>Laden...</div>}>
+				<ChangePassword />
+			</Suspense>
+		</>
+	)
+}
+
+export default ChangePasswordPage

@@ -1,7 +1,7 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
 import { notFound, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -15,7 +15,7 @@ import { Color } from '../../../../../types/color'
 /**
  * Email Verified Page.
  */
-const EmailVerified = () => {
+const EmailVerified: React.FC = () => {
 	const searchParams = useSearchParams()
 	const token = searchParams.get('token')
 	const dispatch = useAppDispatch()
@@ -124,4 +124,14 @@ const EmailVerified = () => {
 	)
 }
 
-export default EmailVerified
+const EmailVerifiedPage = () => {
+	return (
+		<>
+			<Suspense fallback={<div>Laden...</div>}>
+				<EmailVerified />
+			</Suspense>
+		</>
+	)
+}
+
+export default EmailVerifiedPage
