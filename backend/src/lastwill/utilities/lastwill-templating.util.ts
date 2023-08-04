@@ -113,7 +113,6 @@ export function getDateorPlaceholder(dateString: string): string | undefined {
 }
 
 export function getFormattedCurrencyValues(value: number, currency: string) {
-  console.log(value, currency)
   if (!value || !currency) return ''
   return `(${value.toString()} ${currency})`
 }
