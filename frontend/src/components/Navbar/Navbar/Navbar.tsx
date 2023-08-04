@@ -8,7 +8,6 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 import { DynamicNavbarLinks } from './DynamicNavbarLinks'
 import { StaticNavbarLinks } from './StaticNavbarLinks'
 
-// TODO: The api for this component is to complicated and confusing
 type NavbarProps = {
 	/** When true has a transparent background. For modules. */
 	background?: boolean

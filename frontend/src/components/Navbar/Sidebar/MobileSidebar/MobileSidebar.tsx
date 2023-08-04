@@ -23,7 +23,6 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 	const previousPageIndex = currentElementIndex > 0 ? currentElementIndex - 1 : -1
 	const nextPageIndex = currentElementIndex < sidebarElements.length - 1 ? currentElementIndex + 1 : -1
 
-	// TODO: refactor this with grids instead of opacity 0
 	return (
 		<div datacy="mobileSidebar" className="container lg:hidden ">
 			{/* Chevron Buttons */}

@@ -79,7 +79,6 @@ const Testator = () => {
 		router.push(href)
 	}
 
-	// TODO: duplicated code, can we move this to layout?
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
 		dispatch(setProgressKeys(SidebarPages.TESTATOR))

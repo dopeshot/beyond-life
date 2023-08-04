@@ -25,7 +25,7 @@ describe('Last Will Start Page', () => {
 		})
 
 		it('should display alert when form is dirty and germanCitizenship is false', () => {
-			// TODO: Could be improved with retry logic (however .click() does not support retry https://docs.cypress.io/guides/core-concepts/retry-ability#Only-queries-are-retried)
+			// .click() does not support retry https://docs.cypress.io/guides/core-concepts/retry-ability#Only-queries-are-retried
 			// In slow environments the App hydration is not finished when the test starts
 			// for this reason we need to wait a bit before we can click the button
 			cy.wait(500)
@@ -35,7 +35,7 @@ describe('Last Will Start Page', () => {
 		})
 
 		it('should display alert when form is dirty and germanRightOfInheritance is false', () => {
-			// TODO: Could be improved with retry logic (however .click() does not support retry https://docs.cypress.io/guides/core-concepts/retry-ability#Only-queries-are-retried)
+			// cy.click() does not support retry https://docs.cypress.io/guides/core-concepts/retry-ability#Only-queries-are-retried
 			// In slow environments the App hydration is not finished when the test starts
 			// for this reason we need to wait a bit before we can click the button
 			cy.wait(500)
