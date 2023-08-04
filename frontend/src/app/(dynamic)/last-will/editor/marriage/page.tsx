@@ -105,9 +105,7 @@ const Marriage = () => {
 			}
 			// Redirect to previous or next page
 			router.push(href)
-		} catch (error) {
-			
-		}
+		} catch (error) {}
 	}
 
 	// Use to handle sidebar display state and progress
@@ -219,14 +217,13 @@ const Marriage = () => {
 											<div className="mb-2 w-2/3 md:mb-4 md:w-3/4">
 												<TextInput
 													name="street"
-													inputRequired
 													labelText="Straße"
 													placeholder="Straße"
 													autoComplete="street-address"
 												/>
 											</div>
 											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
-												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+												<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
@@ -234,14 +231,13 @@ const Marriage = () => {
 											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
 												<TextInput
 													name="zipCode"
-													inputRequired
 													labelText="Postleitzahl"
 													placeholder="Postleitzahl"
 													autoComplete="postal-code"
 												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+												<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 											</div>
 										</div>
 									</div>
@@ -253,7 +249,6 @@ const Marriage = () => {
 									<Checkbox
 										name="moreInfos"
 										labelText="Weitere relevante Infos"
-										inputRequired
 										helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 										options={partnerMoreInfosOptions}
 									/>
@@ -266,7 +261,6 @@ const Marriage = () => {
 										className="mb-2 block font-semibold"
 										labelText="Güterstand"
 										isLegend
-										inputRequired
 									/>
 									<div className="mb-2 grid gap-3 md:grid-cols-2 xl:w-2/3 2xl:w-1/2">
 										<CustomSelectionButton

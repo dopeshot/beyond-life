@@ -131,16 +131,10 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						{/* Adress */}
 						<div className="flex gap-x-3">
 							<div className="w-2/3 md:w-3/4">
-								<TextInput
-									name="street"
-									inputRequired
-									labelText="Straße"
-									placeholder="Straße"
-									autoComplete="street-address"
-								/>
+								<TextInput name="street" labelText="Straße" placeholder="Straße" autoComplete="street-address" />
 							</div>
 							<div className="w-1/3 md:w-1/4">
-								<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+								<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 							</div>
 						</div>
 
@@ -148,14 +142,13 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 							<div className="w-1/3 md:w-1/4">
 								<TextInput
 									name="zipCode"
-									inputRequired
 									labelText="Postleitzahl"
 									placeholder="Postleitzahl"
 									autoComplete="postal-code"
 								/>
 							</div>
 							<div className="w-2/3 md:w-3/4">
-								<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+								<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 							</div>
 						</div>
 					</div>
@@ -165,7 +158,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						<Checkbox
 							name="moreInfos"
 							labelText="Weitere relevante Infos"
-							inputRequired
 							helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
 							options={personMoreInfosOptions}
 						/>
@@ -178,7 +170,6 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 							<Checkbox
 								name="ownChild"
 								labelText="Frage zum Kind"
-								inputRequired
 								options={[{ value: 'ownChild', label: 'Ist das Kind ihr eigenes?' }]}
 							/>
 						</div>
