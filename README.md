@@ -18,6 +18,8 @@ Daraufhin kannst du:
  - das [SMTP Server Panel](http://localhost:5001) aufrufen
  - das [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard) (nicht direkt Teil des docker compose Stacks)
 
+Das Kaufen von Tarifen setzt eine Test-Karte voraus. Alle Angaben sind hier egal, bis auf die Kartennummer:
+`4242 4242 4242 4242`
 
 ## Troubleshooting
 
