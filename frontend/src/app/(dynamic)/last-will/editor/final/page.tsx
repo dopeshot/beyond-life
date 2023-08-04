@@ -1,10 +1,12 @@
 'use client'
+import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { LastWill } from '../../../../../components/LastWill/LastWill'
-import { useAppDispatch } from '../../../../../store/hooks'
+import { routes } from '../../../../../services/routes/routes'
+import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
@@ -14,15 +16,29 @@ import { SidebarPages } from '../../../../../types/sidebar'
 const Final = () => {
 	// Global State
 	const dispatch = useAppDispatch()
+	const planType = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.paymentPlan)
+	const isInititalizedAuth = useAppSelector((state) => state.auth.isInitialized)
 
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
 		dispatch(setProgressKeys(SidebarPages.FINAL))
 	}, [dispatch])
 
+	if (!isInititalizedAuth) {
+		return (
+			<div className="container mt-5">
+				<p>Laden...</p>
+			</div>
+		)
+	}
+
+	if (planType === 'free') {
+		redirect(routes.lastWill.buy())
+	}
+
 	return (
 		<div className="container mb-12 mt-5 flex flex-1 flex-col">
-			<Headline className="hidden md:mb-8 lg:block">Zusammenfassung</Headline>
+			<Headline className="hidden md:mb-8 lg:block">Abschreiben</Headline>
 
 			<div className="flex">
 				<Icon icon="edit" className="mr-2" />

@@ -1,8 +1,10 @@
 'use client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
+import { Alert } from '../../../../../components/Alert/Alert'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
@@ -16,11 +18,18 @@ import { routes } from '../../../../../services/routes/routes'
  */
 const Buy = () => {
 	const router = useRouter()
+	const [error, setError] = useState<boolean>(false)
 
 	const handlePlanSubmit = async (plan: PaymentPlanType) => {
 		/* istanbul ignore next */ // fallback for typescript should not happen
 		if (plan === 'free') return
 		const response = await createCheckoutSession(plan)
+
+		if (response === 'ERROR') {
+			setError(true)
+			return
+		}
+
 		router.push(response)
 	}
 
@@ -38,6 +47,16 @@ const Buy = () => {
 						<PaymentPlan key={plan.type} {...plan} handleSubmit={() => handlePlanSubmit(plan.type)} />
 					))}
 				</div>
+
+				{/* Error */}
+				{error && (
+					<div className="mb-4">
+						<Alert
+							headline="Fehler"
+							description="Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+						/>
+					</div>
+				)}
 
 				<div className="flex w-full justify-end">
 					<Route icon="arrow_forward" href={routes.profile.myLastWills}>
