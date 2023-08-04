@@ -18,6 +18,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -58,6 +59,9 @@ export class LastWillController {
   })
   @ApiBadRequestResponse({
     description: 'Bad request: Invalid data provided',
+  })
+  @ApiForbiddenResponse({
+    description: 'Forbidden: User exceeds last will limit',
   })
   @ApiOperation({ summary: 'Create last will' })
   async createOne(

@@ -16,7 +16,6 @@ import { StripeService } from './stripe.service'
 @Injectable()
 export class PaymentsService {
   private logger = new Logger(PaymentsService.name)
-  private stripe: Stripe
   constructor(
     private stripeService: StripeService,
     private configService: ConfigService,
