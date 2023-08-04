@@ -17,11 +17,20 @@ const Final = () => {
 	// Global State
 	const dispatch = useAppDispatch()
 	const planType = useAppSelector((state) => state.auth.sessionData?.decodedAccessToken.paymentPlan)
+	const isInititalizedAuth = useAppSelector((state) => state.auth.isInitialized)
 
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
 		dispatch(setProgressKeys(SidebarPages.FINAL))
 	}, [dispatch])
+
+	if (!isInititalizedAuth) {
+		return (
+			<div className="container mt-5">
+				<p>Laden...</p>
+			</div>
+		)
+	}
 
 	if (planType === 'free') {
 		redirect(routes.lastWill.buy())
