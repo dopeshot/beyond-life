@@ -2,7 +2,6 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
@@ -35,7 +34,6 @@ export class LastWillService {
   ): Promise<GeneratedLastWillDTO> {
     const lastWill = await this.lastwillDbService.findFullById(id, userId)
 
-    if (!lastWill) throw new NotFoundException()
     return this.generateLastWillFullText(lastWill)
   }
 
