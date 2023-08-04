@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ScheduleModule } from '@nestjs/schedule'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { AuthModule } from './auth/auth.module'
 import { DbModule } from './db/db.module'
 import { LastWillModule } from './lastwill/lastwill.module'
@@ -21,6 +22,10 @@ import { SharedModule } from './shared/shared.module'
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 5,
     }),
     TypegooseModule.forRootAsync({
       imports: [ConfigModule],
