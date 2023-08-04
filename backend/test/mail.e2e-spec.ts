@@ -157,6 +157,7 @@ describe('MailModule', () => {
         // ASSERT
         expect(mailer.mock.getSentMail().length).toEqual(1)
       })
+
       it('should mark mails as sent', async () => {
         // ARRANGE
         const mailData: MailData = {
@@ -182,7 +183,15 @@ describe('MailModule', () => {
         const alteredMailEvent = (await mailEventModel.find())[0]
         expect(alteredMailEvent.hasBeenSent).toEqual(true)
       })
+
+      it('should return without mails', async () => {
+        // ACT
+        await mailScheduleService.sendScheduledMails()
+        // ASSERT
+        expect(mailer.mock.getSentMail().length).toEqual(0)
+      })
     })
+
     describe('Negatve Tests', () => {
       it('should reschedule mails on failure', async () => {
         // ARRANGE
