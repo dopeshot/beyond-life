@@ -19,6 +19,7 @@ import { RootState } from '../store'
 export const initialState: LastWillState = {
 	isLoading: false,
 	isInitialized: false,
+	error: null,
 
 	data: {
 		_id: '',
@@ -63,9 +64,12 @@ export const sendLastWillState = createAsyncThunk<
 
 export const fetchLastWillState = createAsyncThunk<
 	LastWillState['data'],
-	{ lastWillId: string },
+	{ lastWillId?: string },
 	{ rejectValue: 'NOT_FOUND' | 'ERROR' }
 >('lastWill/fetchLastWillState', async ({ lastWillId }, { rejectWithValue }) => {
+	if (!lastWillId) {
+		return rejectWithValue('NOT_FOUND')
+	}
 	const apiLastWillResponse = await getLastWillById(lastWillId)
 
 	if (apiLastWillResponse === 'NOT_FOUND' || apiLastWillResponse === 'ERROR') {
@@ -273,6 +277,7 @@ const lastWillSlice = createSlice({
 		resetLastWill: (state) => {
 			state.isLoading = false
 			state.isInitialized = false
+			state.error = null
 
 			state.data = initialState.data
 		},
@@ -280,6 +285,7 @@ const lastWillSlice = createSlice({
 	extraReducers(builder) {
 		builder.addCase(fetchLastWillState.pending, (state) => {
 			state.isLoading = true
+			state.error = null
 		})
 		builder.addCase(fetchLastWillState.fulfilled, (state, action) => {
 			state.isLoading = false
@@ -287,20 +293,25 @@ const lastWillSlice = createSlice({
 
 			state.data = action.payload
 		})
-		builder.addCase(fetchLastWillState.rejected, (state) => {
+		builder.addCase(fetchLastWillState.rejected, (state, action) => {
 			state.isLoading = false
+			state.error = action.payload ?? null
+			console.log(action.payload)
 		})
 
 		builder.addCase(sendLastWillState.pending, (state) => {
 			state.isLoading = true
+			state.error = null
 		})
 
 		builder.addCase(sendLastWillState.fulfilled, (state) => {
 			state.isLoading = false
 		})
 
-		builder.addCase(sendLastWillState.rejected, (state) => {
+		builder.addCase(sendLastWillState.rejected, (state, action) => {
 			state.isLoading = false
+			state.error = action.payload ?? null
+			console.log(action.payload)
 		})
 	},
 })

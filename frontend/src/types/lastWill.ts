@@ -54,6 +54,7 @@ export type LastWillState = {
 	// DO NOT SYNC THIS WITH BACKEND
 	isLoading: boolean
 	isInitialized: boolean
+	error: string | null
 
 	// SYNC THIS WITH BACKEND
 	data: {

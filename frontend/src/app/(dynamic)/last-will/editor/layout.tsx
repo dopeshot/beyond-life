@@ -1,6 +1,6 @@
 'use client'
 import { notFound, usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import isAuth from '../../../../components/Auth/isAuth'
 import { ServerError } from '../../../../components/Errors/ServerError/ServerError'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
@@ -16,32 +16,23 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	const searchParams = useSearchParams()
 	const id = searchParams.get('id')
 	const isInitialized = useAppSelector((state) => state.lastWill.isInitialized)
-
+	const error = useAppSelector((state) => state.lastWill.error)
 	const dispatch = useAppDispatch()
-
-	const [error, setError] = useState<'NOT_FOUND' | 'ERROR' | null>(null)
 
 	useEffect(() => {
 		const getLastWillState = async () => {
-			if (!id) {
-				console.warn("Can't fetch last will state because id is not defined")
-				return
-			}
-
-			const response = await dispatch(
+			await dispatch(
 				fetchLastWillState({
-					lastWillId: id,
+					lastWillId: id ? id : undefined,
 				})
 			)
-			if (response.payload === 'NOT_FOUND' || response.payload === 'ERROR') {
-				setError(response.payload)
-			}
 		}
 		getLastWillState()
 
 		return () => {
 			dispatch(resetLastWill())
 		}
+
 		// This has to be empty to work because it will retrigger when dispatch is defined new
 	}, []) // eslint-disable-line
 
