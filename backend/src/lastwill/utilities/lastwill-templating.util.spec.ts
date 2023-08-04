@@ -15,7 +15,10 @@ import {
   generateItemInheritanceParagraph,
   generateLocationHeader,
   generateTestatorHeader,
+  getDateorPlaceholder,
+  getFormattedCurrencyValues,
   getLegalClauses,
+  getOptionalDescription,
 } from './lastwill-templating.util'
 
 const SAMPLE_ORGANISATION: Organisation = {
@@ -42,7 +45,7 @@ const SAMPLE_PERSON: Person = {
     street: 'sandstreet',
     houseNumber: '5432',
   },
-  birthDate: '01.01.1970',
+  birthDate: '1.1.1970',
   birthPlace: 'Coruscant',
   itemIds: ['a', 'b', 'c'],
 }
@@ -160,10 +163,10 @@ describe('lastwill-templating.util.ts', () => {
   describe('generateInitialText', () => {
     it('should generate header', () => {
       // ACT
-      const res = generateInitialText('testName', '01.01.1970', 'coruscant')
+      const res = generateInitialText('testName', '1.1.1970', 'coruscant')
       // ASSERT
       expect(res).toContain('testName')
-      expect(res).toContain('01.01.1970')
+      expect(res).toContain('1.1.1970')
       expect(res).toContain('coruscant')
     })
 
@@ -457,6 +460,74 @@ describe('lastwill-templating.util.ts', () => {
       for (const clause of res) {
         expect(Object.values(PARAGRAPH_TITLES)).toContain(clause.title)
       }
+    })
+  })
+
+  describe('getOptionalDescription', () => {
+    describe('Positive Tests', () => {
+      it('should return formatted text', () => {
+        // ACT
+        const res = getOptionalDescription('abc')
+        // ASSERT
+        expect(res).toEqual('( abc )')
+      })
+
+      it('should return empty string on falsy input', () => {
+        // ACT
+        const res = getOptionalDescription(undefined)
+        // ASSERT
+        expect(res).toEqual('')
+      })
+    })
+  })
+
+  describe('getDateorPlaceholder', () => {
+    describe('Positive Tests', () => {
+      it('should return formatted date', () => {
+        // ACT
+        const res = getDateorPlaceholder('1970-01-01T00:00:00')
+        // ASSERT
+        expect(res).toEqual('1.1.1970')
+      })
+
+      it('should return undefined on falsy input', () => {
+        // ACT
+        const res = getDateorPlaceholder(undefined)
+        // ASSERT
+        expect(res).toEqual(undefined)
+      })
+
+      it('should return undefined on empty string input', () => {
+        // ACT
+        const res = getDateorPlaceholder('')
+        // ASSERT
+        expect(res).toEqual(undefined)
+      })
+    })
+  })
+
+  describe('getFormattedCurrencyValues', () => {
+    describe('Positive Tests', () => {
+      it('should return formatted string', () => {
+        // ACT
+        const res = getFormattedCurrencyValues(1, 'Gold')
+        // ASSERT
+        expect(res).toEqual('(1 Gold)')
+      })
+
+      it('should return empty string on no currency', () => {
+        // ACT
+        const res = getFormattedCurrencyValues(1, null)
+        // ASSERT
+        expect(res).toEqual('')
+      })
+
+      it('should return empty string on no amount', () => {
+        // ACT
+        const res = getFormattedCurrencyValues(null, 'Gold')
+        // ASSERT
+        expect(res).toEqual('')
+      })
     })
   })
 })
