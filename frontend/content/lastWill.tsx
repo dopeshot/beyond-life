@@ -3,8 +3,6 @@ import heirs from '../src/assets/images/tutorial/heirs.jpg'
 import testator from '../src/assets/images/tutorial/testator.jpg'
 import { CardWithIconProps } from '../src/components/Layout/CardWithIcon/CardWithIcon'
 
-// TODO: this content folder is a bit out of place... We should find a good solution for this.
-
 export const cardContent: CardWithIconProps[] = [
 	{
 		icon: 'history_edu',

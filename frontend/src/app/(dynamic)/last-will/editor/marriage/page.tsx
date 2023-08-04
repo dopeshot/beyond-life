@@ -98,20 +98,16 @@ const Marriage = () => {
 	})
 
 	const onSubmit = async (values: MarriageFormPayload, href: string) => {
-		try {
-			// Update marriage global state only if values have changed
-			dispatch(setMarriage(values))
+		// Update marriage global state only if values have changed
+		dispatch(setMarriage(values))
 
-			const response = await dispatch(sendLastWillState())
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-			// Redirect to previous or next page
-			router.push(href)
-		} catch (error) {
-			console.error('An error occurred while submitting the form: ', error)
+		const response = await dispatch(sendLastWillState())
+		if (response.meta.requestStatus === 'rejected') {
+			return
 		}
+
+		// Redirect to previous or next page
+		router.push(href)
 	}
 
 	// Use to handle sidebar display state and progress

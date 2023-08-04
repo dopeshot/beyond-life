@@ -6,6 +6,7 @@ import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { verifyMail } from '../../../../../services/api/auth/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
 import { refreshToken } from '../../../../../store/auth/auth'
@@ -46,7 +47,7 @@ const EmailVerified: React.FC = () => {
 	if (loading || status === null)
 		return (
 			<div className="container mt-5">
-				<p>E-Mail wird verifiziert...</p>
+				<Loading text="E-Mail wird verifiziert" />
 			</div>
 		)
 
@@ -127,7 +128,7 @@ const EmailVerified: React.FC = () => {
 const EmailVerifiedPage = () => {
 	return (
 		<>
-			<Suspense fallback={<div>Laden...</div>}>
+			<Suspense fallback={<Loading />}>
 				<EmailVerified />
 			</Suspense>
 		</>

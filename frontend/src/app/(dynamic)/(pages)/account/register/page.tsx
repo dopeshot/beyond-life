@@ -15,7 +15,7 @@ const Register = () => {
 	const callbackUrl = searchParams.get('callbackUrl')
 
 	return (
-		<div className="container mt-10 md:mt-32 md:w-1/2 2xl:w-1/3">
+		<div className="container mb-4 mt-10 md:mt-32 md:w-1/2 2xl:w-1/3">
 			<div className="mb-5 text-center md:mb-10">
 				<Headline>Jetzt loslegen!</Headline>
 				<p>Einen neuen Account anlegen.</p>

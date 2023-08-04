@@ -97,7 +97,7 @@ export class ProfileService {
 
     const mailData: MailData = {
       content: {
-        subject: 'Account gelöscht',
+        subject: 'Account erfolgreich gelöscht',
         contentTemplate: MailTemplates.ACCOUNT_DELETED,
       },
       recipient: {

@@ -5,6 +5,7 @@ import { getLastWillFulltext } from '../../services/api/lastwill/lastWillFulltex
 import { useAppSelector } from '../../store/hooks'
 import { GeneratedLastWill } from '../../types/lastWill'
 import { Headline } from '../Headline/Headline'
+import { Loading } from '../Loading/Loading'
 
 /**
  * Display Last Will.
@@ -25,7 +26,11 @@ export const LastWill = () => {
 	}, [_id])
 
 	if (isLoading) {
-		return <div>Loading...</div>
+		return (
+			<div className="mt-5">
+				<Loading />
+			</div>
+		)
 	}
 
 	if (!lastWill) {

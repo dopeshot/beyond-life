@@ -7,6 +7,7 @@ import headerBackground from '../../../../../assets/images/layout/headerBackgrou
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { routes } from '../../../../../services/routes/routes'
 import { refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch } from '../../../../../store/hooks'
@@ -107,7 +108,7 @@ const OrderConfirmation = () => {
 const OrderConfirmationPage = () => {
 	return (
 		<>
-			<Suspense fallback={<div>Laden...</div>}>
+			<Suspense fallback={<Loading />}>
 				<OrderConfirmation />
 			</Suspense>
 		</>

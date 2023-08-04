@@ -9,6 +9,7 @@ import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
 
@@ -128,7 +129,7 @@ const ChangePassword: React.FC = () => {
 const ChangePasswordPage = () => {
 	return (
 		<>
-			<Suspense fallback={<div>Laden...</div>}>
+			<Suspense fallback={<Loading />}>
 				<ChangePassword />
 			</Suspense>
 		</>
