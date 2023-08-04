@@ -22,7 +22,7 @@ const footerLinks = [
  */
 export const GlobalFooter: React.FC = () => {
 	return (
-		<footer className="mt-auto bg-yellow-400">
+		<footer className="mt-auto bg-yellow-500">
 			<div className="container my-5 flex flex-col md:flex-row">
 				<div className="mb-3 flex w-full items-center justify-between md:mb-0">
 					<span className="font-semibold">

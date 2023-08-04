@@ -34,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 	]
 
 	return (
-		<div className={`${background ? 'bg-yellow-400' : ''} py-3`}>
+		<div className={`${background ? 'bg-yellow-500' : ''} py-3`}>
 			<nav className="container md:flex">
 				<div className={`flex ${children ? 'items-center justify-between' : 'justify-end'}`}>
 					{children}
