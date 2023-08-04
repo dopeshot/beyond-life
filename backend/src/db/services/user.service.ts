@@ -28,7 +28,7 @@ export class UserDBService {
    * @description Fetch one user based on email
    */
   async findOneByEmail(email: string): Promise<User> {
-    return await this.userModel.findOne({ email: email }).lean()
+    return await this.userModel.findOne({ email }).lean()
   }
 
   /**
