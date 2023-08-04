@@ -21,13 +21,13 @@ Daraufhin kannst du:
 
 ## Troubleshooting
 
-The webhook secrets might expire or change...this leads to 503 errors for the payments webhook in the backend.
-To get the new key:
+Es kann passieren, dass das Webhook secret ausläuft und erneuert wurde. Dadurch muss die enstprechende Env variable geupdated werden.
+Um die Variable zu updaten sind die folgenden Schritte nötig:
 
-1. Get the new webhook secrets. It is in the very first logline of the stripe cli container.
+1. Das neue Webhook secret steht in den Logs des Stripe-Cli. 
 
 ```sh
 docker logs stripe-cli
 ```
 
-2. Update the `BACKEND_STRIPE_WEBHOOK_SECRET` with the new webhook secret value
+2. Das Webhook secret updaten (`BACKEND_STRIPE_WEBHOOK_SECRET` in der .env)
