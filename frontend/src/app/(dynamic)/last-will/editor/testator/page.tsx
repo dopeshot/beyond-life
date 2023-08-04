@@ -18,10 +18,11 @@ import { sendLastWillState, setProgressKeys, setTestator } from '../../../../../
 import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 // TODO: Ensure all schemas are equal from the strength
 const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-	name: string(),
+	name: string().required(NAME_REQUIRED_ERROR),
 	gender: string<Gender>(),
 	birthDate: string(),
 	birthPlace: string(),

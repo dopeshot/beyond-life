@@ -15,6 +15,7 @@ import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
+import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */
@@ -58,7 +59,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
 		id: string().required(),
-		name: string(),
+		name: string().required(NAME_REQUIRED_ERROR),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),

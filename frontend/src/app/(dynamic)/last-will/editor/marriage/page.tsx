@@ -26,6 +26,7 @@ import {
 	RelationshipStatus,
 } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 /**
  * Marriage Page
@@ -77,7 +78,7 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
-		name: string(),
+		name: string().required(NAME_REQUIRED_ERROR),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),

@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { sendLastWillState, setInheritance, setProgressKeys } from '../../../../../store/lastwill/lastwill'
 import { FinancialAsset, InheritanceFormPayload, Item } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 /**
  * Inheritance Page
@@ -62,9 +63,9 @@ const Inheritance = () => {
 			.of(
 				object().shape({
 					id: string().required(),
-					where: string(),
-					amount: number().min(1, 'Betrag muss größer als 0 sein.'),
-					currency: string(),
+					where: string().required(NAME_REQUIRED_ERROR),
+					amount: number().min(1, 'Betrag muss größer als 0 sein.').required('Bitte geben Sie einen Betrag an.'),
+					currency: string().required('Bitte geben Sie eine Währung an.'),
 				})
 			)
 			.required(),
@@ -72,7 +73,7 @@ const Inheritance = () => {
 			.of(
 				object().shape({
 					id: string().required(),
-					name: string(),
+					name: string().required(NAME_REQUIRED_ERROR),
 					description: string(),
 				})
 			)

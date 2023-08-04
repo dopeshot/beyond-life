@@ -8,6 +8,7 @@ import { Button } from '../../../ButtonsAndLinks/Button/Button'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
+import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 
 type HeirsOrganisationModalProps = {
 	/** Modal Open/Close State. */
@@ -37,7 +38,7 @@ export const HeirsOrganisationModal: React.FC<HeirsOrganisationModalProps> = ({
 
 	const validationSchema: ObjectSchema<OrganisationFormPayload> = object({
 		id: string().required(),
-		name: string(),
+		name: string().required(NAME_REQUIRED_ERROR),
 
 		street: string(),
 		houseNumber: string(),
