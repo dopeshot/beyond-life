@@ -1,11 +1,11 @@
 {
-	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJoYXNWZXJpZmllZEVtYWlsIjpmYWxzZSwicGF5bWVudFBsYW4iOiJmcmVlIiwiaWF0IjoxNjkxMDQ3MDYyLCJleHAiOjE2OTEwNTA2NjJ9.tOqkBw5JcVuvaTaL9VDsd4gls9vb3w-J0IFwiCuAc2E",
-	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2FkMzdjNjU1MDgxM2IyMTM3ZWJlOSIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJpYXQiOjE2OTEwNDcwNjIsImV4cCI6MTY5MTkxMTA2Mn0.kWvy3_Q_JFia-bgyA5KvJJC4txipjT7GlbB5_e95MGM",
+	"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2MwMDdjNDJkZWYwYmU2ZGUxNzQxZiIsImVtYWlsIjoidGVzdEB4LmNvbSIsImhhc1ZlcmlmaWVkRW1haWwiOmZhbHNlLCJwYXltZW50UGxhbiI6ImZhbWlseSIsImlhdCI6MTY5MTEzNjI0NiwiZXhwIjoxNjkxMTM5ODQ2fQ.QqPbxyzlPVF1zdj9jHSbcSkcKV0JdZg8i5XfMV4EqRI",
+	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Y2MwMDdjNDJkZWYwYmU2ZGUxNzQxZiIsImVtYWlsIjoidGVzdEB4LmNvbSIsImlhdCI6MTY5MTEzNjI0NiwiZXhwIjoxNjkyMDAwMjQ2fQ.Ye0tiGYAu1Q9b_YHmWXA61K4QoJjE97eX9aMhOXIIkI",
 	"decodedAccessToken": {
 		"id": "64cad37c6550813b2137ebe9",
 		"email": "test@test.test",
 		"hasVerifiedEmail": false,
-		"paymentPlan": "free",
+		"paymentPlan": "family",
 		"iat": 1691047062,
 		"exp": 1691050662
 	}
