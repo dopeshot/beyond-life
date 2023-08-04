@@ -182,7 +182,7 @@ export class AuthService {
     try {
       this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)
-    } catch (error) {
+    } catch (error) /* istanbul ignore next */ {
       this.logger.error(`User update failed due to an error ${error}`)
       throw new InternalServerErrorException('Update could not be made')
     }

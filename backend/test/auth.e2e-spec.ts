@@ -374,7 +374,26 @@ describe('AuthController (e2e)', () => {
 
       it('should update stripe customer if already customer', async () => {
         // ARRANGE
-        await userModel.updateOne({}, { stripeCustomerId: 'cus_test' })
+        await userModel.updateOne({})
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'customer_update')
+          .mockReturnValueOnce(null)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/auth/verify-email`)
+          .query({
+            token,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(spy).toHaveBeenCalledTimes(1)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(user.hasVerifiedEmail).toEqual(true)
+      })
+
+      it('should ignore customerId if user does not have one yet', async () => {
+        // ARRANGE
+        await userModel.updateOne({}, { stripeCustomerId: null })
         const spy = jest
           .spyOn(MockStripeService.prototype, 'customer_update')
           .mockReturnValueOnce(null)
