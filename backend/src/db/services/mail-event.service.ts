@@ -14,6 +14,7 @@ export class MailEventDBService {
   ) {}
 
   async createEvent(event: Partial<MailEvent>): Promise<MailEvent> {
+    this.logger.log('Creating mail event')
     const newEvent = await this.mailEventModel.create(event)
     return newEvent
   }

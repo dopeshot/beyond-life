@@ -13,6 +13,7 @@ import { RefreshJWTPayload } from '../src/auth/interfaces/refresh-jwt-payload.in
 import { VerifyJWTPayload } from '../src/auth/interfaces/verify-jwt-payload.interface'
 import { DbModule } from '../src/db/db.module'
 import { LastWill } from '../src/db/entities/lastwill.entity'
+import { MailEvent } from '../src/db/entities/mail-event.entity'
 import { User } from '../src/db/entities/users.entity'
 import { MailModule } from '../src/mail/mail.module'
 import { ProfileModule } from '../src/profile/profile.module'
@@ -29,7 +30,7 @@ import {
   SAMPLE_USER_PW_HASH,
   sampleObject,
 } from './helpers/sample-data.helper'
-const { mock } = nodemailer as unknown as NodemailerMock
+const mailer = nodemailer as unknown as NodemailerMock
 
 describe('ProfileController (e2e)', () => {
   let app: INestApplication
@@ -37,9 +38,10 @@ describe('ProfileController (e2e)', () => {
   let connection: Connection
   let userModel: Model<User>
   let lastWillModel: Model<LastWill>
+  let mailEventModel: Model<MailEvent>
   let configService: ConfigService
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         DbModule,
@@ -57,21 +59,34 @@ describe('ProfileController (e2e)', () => {
       .compile()
 
     app = await moduleFixture.createNestApplication()
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
 
     jwtService = app.get<JwtService>(JwtService)
     connection = await app.get(getConnectionToken())
     configService = app.get<ConfigService>(ConfigService)
     userModel = connection.model<User>('User')
     lastWillModel = connection.model<LastWill>('LastWill')
+    mailEventModel = connection.model<MailEvent>('MailEvent')
 
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
-    mock.reset()
+    await app.close()
+  })
+
+  beforeEach(async () => {
+    await userModel.deleteMany()
+    await lastWillModel.deleteMany()
+    await mailEventModel.deleteMany()
+    mailer.mock.reset()
   })
 
   describe('/profile/change-password (POST)', () => {
@@ -243,12 +258,12 @@ describe('ProfileController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
       })
 
       it('should pass if email could not be send', async () => {
         // ARRANGE
-        mock.setShouldFailOnce(true)
+        mailer.mock.setShouldFailOnce(true)
         // ACT
         const res = await request(app.getHttpServer())
           .patch('/profile/change-email')
@@ -274,7 +289,7 @@ describe('ProfileController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(0)
+        expect(mailer.mock.getSentMail().length).toEqual(0)
       })
 
       it('should include correct token in verify mail', async () => {
@@ -290,7 +305,7 @@ describe('ProfileController (e2e)', () => {
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
 
-        const sendMail = mock.getSentMail()[0]
+        const sendMail = mailer.mock.getSentMail()[0]
         const verifyToken = getTokenFromMail(sendMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
@@ -409,16 +424,16 @@ describe('ProfileController (e2e)', () => {
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
         const usedMailTemplate = getMailUsedTemplate(
-          mock.getSentMail()[0].html as string,
+          mailer.mock.getSentMail()[0].html as string,
         )
         expect(usedMailTemplate).toEqual('account_deleted')
       })
 
       it('should continue if mail could not be sent', async () => {
         // ARRANGE
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         // ACT
         const res = await request(app.getHttpServer())
           .delete('/profile')
@@ -427,6 +442,20 @@ describe('ProfileController (e2e)', () => {
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
+      })
+
+      it('should schedule mail if it cannot be send as of now', async () => {
+        // ARRANGE
+        mailer.mock.setShouldFail(true)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .delete('/profile')
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(await mailEventModel.count()).toEqual(1)
       })
 
       it('should not send mail if user`s mail is not verified', async () => {
@@ -443,7 +472,7 @@ describe('ProfileController (e2e)', () => {
           })
 
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(0)
+        expect(mailer.mock.getSentMail().length).toEqual(0)
       })
     })
 

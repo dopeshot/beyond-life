@@ -43,7 +43,13 @@ describe('PaymentsController (e2e)', () => {
       .compile()
 
     app = await moduleFixture.createNestApplication()
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
 
     jwtService = app.get<JwtService>(JwtService)
     connection = await app.get(getConnectionToken())

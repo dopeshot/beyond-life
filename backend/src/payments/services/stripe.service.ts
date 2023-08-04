@@ -13,7 +13,9 @@ export class StripeService {
     })
   }
 
-  async customer_create(email: string) {
+  async customer_create(
+    email: string,
+  ): Promise<Stripe.Response<Stripe.Customer>> {
     try {
       return await this.stripe.customers.create({ email })
     } catch (error) {
@@ -35,7 +37,7 @@ export class StripeService {
     plan: string,
     price_id: string,
     customer: string,
-  ) {
+  ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
     const url =
       this.configService.get('FRONTEND_DOMAIN') +
       this.configService.get('STRIPE_REDIRECT_ROUTE')
@@ -61,7 +63,7 @@ export class StripeService {
     }
   }
 
-  webhook_constructEvent(payload: any, signature: string) {
+  webhook_constructEvent(payload: any, signature: string): Stripe.Event {
     const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET')
     try {
       return this.stripe.webhooks.constructEvent(
