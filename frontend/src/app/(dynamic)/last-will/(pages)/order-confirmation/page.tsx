@@ -12,14 +12,14 @@ const textsPaymentSucceeded = {
 	header: 'Ihre Zahlung war erfolgreich!',
 	subheader:
 		'Vielen Dank für Ihre Zahlung. Im nächsten Schritt können Sie nun ihr generiertes Testament einsehen und abschreiben.',
-	paymentStatus: 'erfolgreich',
+	paymentStatus: 'Erfolgreich',
 	button: 'Testamente einsehen',
 }
 
 const textsPaymentFailed = {
 	header: 'Die Zahlung konnte nicht durchgeführt werden',
 	subheader: 'Bitte versuchen Sie, den Zahlungsvorgang erneut durchzuführen',
-	paymentStatus: 'fehlgeschlagen',
+	paymentStatus: 'Fehlgeschlagen',
 	button: 'Zurück zur Produktauswahl',
 }
 
