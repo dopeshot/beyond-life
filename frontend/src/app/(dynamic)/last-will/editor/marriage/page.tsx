@@ -106,7 +106,7 @@ const Marriage = () => {
 			// Redirect to previous or next page
 			router.push(href)
 		} catch (error) {
-			console.error('An error occurred while submitting the form: ', error)
+			
 		}
 	}
 

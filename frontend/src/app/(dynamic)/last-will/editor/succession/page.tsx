@@ -64,9 +64,7 @@ const Succession = () => {
 			}
 
 			router.push(href)
-		} catch (error) {
-			console.error('An error occured while submitting the form: ', error)
-		}
+		} catch (error) {}
 	}
 
 	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({

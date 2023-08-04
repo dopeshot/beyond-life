@@ -13,7 +13,6 @@ export const createLastWill = async () => {
 
 		return response.data
 	} catch (error) {
-		console.error(error)
 		// TODO: Add better error handling here
 		return null
 	}

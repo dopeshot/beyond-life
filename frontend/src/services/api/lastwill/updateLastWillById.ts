@@ -9,6 +9,5 @@ export const updateLastWillById = async (id: string, lastWill: LastWillState['da
 		})
 		return response.data
 	} catch (error) {
-		console.error(error)
 	}
 }

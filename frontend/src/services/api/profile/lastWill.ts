@@ -17,7 +17,6 @@ export const getLastWills = async (): Promise<LastWillProfileResponse[]> => {
 		const response = await axios.get<LastWillProfileResponse[]>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill`)
 		return response.data
 	} catch (error) {
-		console.error(error)
 		return []
 	}
 }
@@ -31,7 +30,6 @@ export const deleteLastWillById = async (id: string) => {
 		await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill/${id}`)
 		return 'OK'
 	} catch (error) {
-		console.error(error)
 		return 'ERROR'
 	}
 }
