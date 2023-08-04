@@ -25,7 +25,7 @@ import { SharedModule } from './shared/shared.module'
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 5,
+      limit: 10,
     }),
     TypegooseModule.forRootAsync({
       imports: [ConfigModule],

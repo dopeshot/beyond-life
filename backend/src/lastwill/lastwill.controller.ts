@@ -25,6 +25,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { ThrottlerGuard } from '@nestjs/throttler'
 import { LastWill, LastWillMetadata } from '../db/entities/lastwill.entity'
 import { LastWillDBService } from '../db/services/lastwill.service'
 import { JwtGuard } from '../shared/guards/jwt.guard'
@@ -34,7 +35,7 @@ import { GeneratedLastWillDTO } from './dto/generated-lastwill.dto'
 import { UpdateLastWillDto } from './dto/update-lastwill.dto'
 import { LastWillService } from './lastwill.service'
 
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, ThrottlerGuard)
 @ApiTags('lastwill')
 @Controller('lastwill')
 @UseInterceptors(ClassSerializerInterceptor)
