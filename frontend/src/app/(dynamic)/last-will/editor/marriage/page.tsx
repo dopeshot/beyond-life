@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
@@ -26,7 +27,6 @@ import {
 	RelationshipStatus,
 } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
-import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 
 /**
  * Marriage Page
@@ -250,7 +250,7 @@ const Marriage = () => {
 									<Checkbox
 										name="moreInfos"
 										labelText="Weitere relevante Infos"
-										helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
+										helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 										options={partnerMoreInfosOptions}
 									/>
 								</div>

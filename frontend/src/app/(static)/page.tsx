@@ -79,7 +79,7 @@ const Home: React.FC = () => {
 					{/* Header */}
 					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Mit drei einfachen Schritten zum Ziel</Headline>
-						<p>Gestalten Sie Ihr Testament in nur wenigen Klicks – Sicher, intuitiv und individuell.</p>
+						<p>Gestalten Sie Ihr Testament in nur wenigen Klicks – sicher, intuitiv und individuell.</p>
 					</div>
 
 					{/* Steps */}

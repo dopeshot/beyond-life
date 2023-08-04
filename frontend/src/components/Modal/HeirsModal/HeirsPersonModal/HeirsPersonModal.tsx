@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik'
 import { ObjectSchema, array, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { childRelationshipOptions, genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 import { heirsTypes } from '../../../../services/heirs'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill/lastwill'
@@ -15,7 +16,6 @@ import { FormDropdown } from '../../../Form/FormDropdown/FormDropdown'
 import { TextInput } from '../../../Form/TextInput/TextInput'
 import { Headline } from '../../../Headline/Headline'
 import { Modal } from '../../ModalBase/Modal'
-import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 
 type HeirsPersonModalProps = {
 	/** Modal Open/Close State. */
@@ -159,7 +159,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						<Checkbox
 							name="moreInfos"
 							labelText="Weitere relevante Infos"
-							helperText="Diese Infos sind relevant um die Verteilung besser einschätzen zu können."
+							helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 							options={personMoreInfosOptions}
 						/>
 					</div>
