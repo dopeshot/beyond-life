@@ -1,7 +1,9 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { ApiCreateLastWillResponse } from '../../../types/api'
 
-export const createLastWill = async () => {
+type CreateLastWillResponse = ApiCreateLastWillResponse | 'UNAUTHORIZED' | 'PLANS_LIMIT_EXCEEDED' | 'ERROR'
+
+export const createLastWill = async (): Promise<CreateLastWillResponse> => {
 	try {
 		const response = await axios.post<ApiCreateLastWillResponse>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lastwill`, {
 			testator: {
@@ -13,8 +15,12 @@ export const createLastWill = async () => {
 
 		return response.data
 	} catch (error) {
-		console.error(error)
-		// TODO: Add better error handling here
-		return null
+		if (isAxiosError(error) && error.response?.data.statusCode === 401) {
+			return 'UNAUTHORIZED'
+		} else if (isAxiosError(error) && error.response?.data.statusCode === 403) {
+			return 'PLANS_LIMIT_EXCEEDED'
+		} else {
+			return 'ERROR'
+		}
 	}
 }

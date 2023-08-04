@@ -19,6 +19,7 @@ import { RootState } from '../store'
 export const initialState: LastWillState = {
 	isLoading: false,
 	isInitialized: false,
+	error: null,
 
 	data: {
 		_id: '',
@@ -44,33 +45,41 @@ export const initialState: LastWillState = {
 	},
 }
 
-export const sendLastWillState = createAsyncThunk<LastWillState['data'], undefined, { state: RootState }>(
-	'lastWill/sendLastWillState',
-	async (params, { getState }) => {
-		const state = getState()
+export const sendLastWillState = createAsyncThunk<
+	LastWillState['data'],
+	undefined,
+	{ state: RootState; rejectValue: 'ERROR' }
+>('lastWill/sendLastWillState', async (params, { getState, rejectWithValue }) => {
+	const state = getState()
 
-		const lastWillData = state.lastWill.data
+	const lastWillData = state.lastWill.data
 
-		const response = await updateLastWillById(lastWillData._id, lastWillData)
-		if (!response) {
-			throw new Error('Could not update last will')
-		}
-		return response
+	const response = await updateLastWillById(lastWillData._id, lastWillData)
+	if (response === 'ERROR') {
+		return rejectWithValue(response)
 	}
-)
 
-export const fetchLastWillState = createAsyncThunk<LastWillState['data'], { lastWillId: string }>(
-	'lastWill/fetchLastWillState',
-	async ({ lastWillId }) => {
-		const apiLastWillResponse = await getLastWillById(lastWillId)
-		if (!apiLastWillResponse) {
-			throw new Error('Could not fetch last will')
-		}
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { createdAt, updatedAt, accountId, ...lastWill } = apiLastWillResponse
-		return lastWill
+	return response
+})
+
+export const fetchLastWillState = createAsyncThunk<
+	LastWillState['data'],
+	{ lastWillId?: string },
+	{ rejectValue: 'NOT_FOUND' | 'ERROR' }
+>('lastWill/fetchLastWillState', async ({ lastWillId }, { rejectWithValue }) => {
+	if (!lastWillId) {
+		return rejectWithValue('NOT_FOUND')
 	}
-)
+	const apiLastWillResponse = await getLastWillById(lastWillId)
+
+	if (apiLastWillResponse === 'NOT_FOUND' || apiLastWillResponse === 'ERROR') {
+		return rejectWithValue(apiLastWillResponse)
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { createdAt, updatedAt, accountId, ...lastWill } = apiLastWillResponse
+	return lastWill
+})
 
 export const createTestator = (testatorPayload: TestatorFormPayload): Testator => {
 	const { moreInfos, city, street, houseNumber, zipCode, ...formTestator } = testatorPayload
@@ -268,6 +277,7 @@ const lastWillSlice = createSlice({
 		resetLastWill: (state) => {
 			state.isLoading = false
 			state.isInitialized = false
+			state.error = null
 
 			state.data = initialState.data
 		},
@@ -275,6 +285,7 @@ const lastWillSlice = createSlice({
 	extraReducers(builder) {
 		builder.addCase(fetchLastWillState.pending, (state) => {
 			state.isLoading = true
+			state.error = null
 		})
 		builder.addCase(fetchLastWillState.fulfilled, (state, action) => {
 			state.isLoading = false
@@ -282,20 +293,25 @@ const lastWillSlice = createSlice({
 
 			state.data = action.payload
 		})
-		builder.addCase(fetchLastWillState.rejected, (state) => {
+		builder.addCase(fetchLastWillState.rejected, (state, action) => {
 			state.isLoading = false
+			state.error = action.payload ?? null
+			console.log(action.payload)
 		})
 
 		builder.addCase(sendLastWillState.pending, (state) => {
 			state.isLoading = true
+			state.error = null
 		})
 
 		builder.addCase(sendLastWillState.fulfilled, (state) => {
 			state.isLoading = false
 		})
 
-		builder.addCase(sendLastWillState.rejected, (state) => {
+		builder.addCase(sendLastWillState.rejected, (state, action) => {
 			state.isLoading = false
+			state.error = action.payload ?? null
+			console.log(action.payload)
 		})
 	},
 })

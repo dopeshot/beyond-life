@@ -1,7 +1,7 @@
 import { MaterialSymbol } from 'material-symbols'
 import { sidebarElements } from '../../../content/sidebar'
 import { LastWillProfile } from '../../app/(dynamic)/(pages)/profile/last-will/page'
-import { LastWillProfileResponse } from '../api/profile/lastWill'
+import { LastWillProfileResponse } from '../api/lastwill/getLastWills'
 
 /**
  * Prepare last wills for profile page.

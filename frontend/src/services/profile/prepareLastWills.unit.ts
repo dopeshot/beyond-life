@@ -1,5 +1,5 @@
 import { LastWillProfile } from '../../app/(dynamic)/(pages)/profile/last-will/page'
-import { LastWillProfileResponse } from '../api/profile/lastWill'
+import { LastWillProfileResponse } from '../api/lastwill/getLastWills'
 import { prepareLastWills } from './prepareLastWills'
 
 describe('prepareLastWills function', () => {
