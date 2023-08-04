@@ -188,7 +188,9 @@ const Succession = () => {
 																	arrayHelpers.remove(index)
 																}}
 															>
-																<p className="truncate text-gray-500">{item.name}</p>
+																<p title={item.name} className="truncate text-gray-500">
+																	{item.name}
+																</p>
 																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_more" />
 															</div>
 														))}
@@ -222,7 +224,9 @@ const Succession = () => {
 																	arrayHelpers.push(item.id)
 																}}
 															>
-																<p className="truncate text-gray-500">{item.name}</p>
+																<p title={item.name} className="truncate text-gray-500">
+																	{item.name}
+																</p>
 																<Icon className="invisible text-gray-500 group-hover:visible" icon="expand_less" />
 															</div>
 														))}

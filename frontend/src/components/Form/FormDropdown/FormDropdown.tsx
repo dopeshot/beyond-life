@@ -59,7 +59,9 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						{props.field.value !== '' && props.field.value !== undefined ? (
-							<span className="truncate">{options.find((option) => option.value === props.field.value)?.label}</span>
+							<span title={options.find((option) => option.value === props.field.value)?.label} className="truncate">
+								{options.find((option) => option.value === props.field.value)?.label}
+							</span>
 						) : (
 							<span className="text-gray-400">{placeholder}</span>
 						)}
@@ -92,7 +94,9 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
 									}`}
 								>
 									{option.icon && <Icon icon={option.icon} className="mr-2" />}
-									<span className="truncate pr-1">{option.label}</span>
+									<span title={option.label} className="truncate pr-1">
+										{option.label}
+									</span>
 								</button>
 							))}
 						</div>

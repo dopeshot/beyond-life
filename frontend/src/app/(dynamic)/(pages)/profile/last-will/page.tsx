@@ -9,6 +9,7 @@ import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { Tooltip } from '../../../../../components/Tooltip/Tooltip'
 import { deleteLastWillById } from '../../../../../services/api/lastwill/deleteLastWillById'
 import { getLastWills } from '../../../../../services/api/lastwill/getLastWills'
 import { prepareLastWills } from '../../../../../services/profile/prepareLastWills'
@@ -90,23 +91,29 @@ const MyLastWills = () => {
 
 								{/* Actions */}
 								<div className="flex gap-2">
-									<IconButton
-										datacy="last-will-copy"
-										onClick={(event) => {
-											event.stopPropagation()
-											router.push(routes.lastWill.final(lastWill.id))
-										}}
-										icon="draw"
-									/>
-									<IconButton icon="edit" />
-									<IconButton
-										datacy="last-will-delete"
-										onClick={(event) => {
-											event.stopPropagation()
-											setSelectedLastWill(lastWill)
-										}}
-										icon="delete"
-									/>
+									<Tooltip content="Abschreiben">
+										<IconButton
+											datacy="last-will-copy"
+											onClick={(event) => {
+												event.stopPropagation()
+												router.push(routes.lastWill.final(lastWill.id))
+											}}
+											icon="draw"
+										/>
+									</Tooltip>
+									<Tooltip content="Bearbeiten">
+										<IconButton icon="edit" />
+									</Tooltip>
+									<Tooltip content="Löschen">
+										<IconButton
+											datacy="last-will-delete"
+											onClick={(event) => {
+												event.stopPropagation()
+												setSelectedLastWill(lastWill)
+											}}
+											icon="delete"
+										/>
+									</Tooltip>
 								</div>
 							</div>
 
