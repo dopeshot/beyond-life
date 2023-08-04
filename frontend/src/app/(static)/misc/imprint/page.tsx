@@ -1,10 +1,13 @@
+import { Metadata } from 'next'
 import Image from 'next/image'
 import emailImage from '../../../../assets/images/email/email.png'
 import { Headline } from '../../../../components/Headline/Headline'
 
-export const metadata = {
-	title: 'Imprint | Siebtes Leben',
-	noIndex: true,
+export const metadata: Metadata = {
+	title: 'Imprint',
+	robots: {
+		index: false,
+	},
 }
 
 const Imprint = () => {
