@@ -20,6 +20,13 @@ describe('grammar.utils.ts', () => {
       expect(res).toEqual('Meine Mutter')
     })
 
+    it(`should return the correct grammar for ${PersonType.PARTNER}`, () => {
+      // ACT
+      const res = getPossessivePronouns(PersonType.PARTNER, null)
+      // ASSERT
+      expect(res).toEqual('Mein Partner')
+    })
+
     it(`should return the correct grammar for ${PersonType.CHILD}`, () => {
       // ACT
       const res = getPossessivePronouns(PersonType.CHILD, null)

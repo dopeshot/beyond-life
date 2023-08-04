@@ -645,13 +645,7 @@ export class LastWill extends MongooseBaseEntity {
     example: swaggerExampleObject.heirs,
   })
   @ValidateNested({ each: true })
-  /*We know how it works, but not why it works, the Type and Transform are both from the transformer class.
-    The Type is needed for the validation
-    The Transform is needed for the Serialization
-    But the Type also says that it transforms with the subTypes and creates instances, so we are uncertain why this doesn't fix both
-    The Transform is performed after the Type, but in Serialization it seems the Type is not enough transformation
-    This is only needed if lastwillModel returns flattenMaps (for example not on .create)
-  */
+  // There used to be a discriminator solution, but it is unknown what the difference/benefit would be since discriminator has way more issues such as not able to have the same class for multiple types
   @Type((value) =>
     value.object.type === PersonType.ORGANISATION ? Organisation : Person,
   )
