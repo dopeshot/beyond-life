@@ -65,7 +65,7 @@ export const FormDropdown: React.FC<FormDropdownProps> = ({
 						)}
 						<Icon
 							icon="expand_more"
-							className={`ml-6 transform-gpu transition-transform duration-200 ease-linear ${
+							className={`transform-gpu transition-transform duration-200 ease-linear ${
 								isOpen ? '-rotate-180' : 'rotate-0'
 							}`}
 						></Icon>
