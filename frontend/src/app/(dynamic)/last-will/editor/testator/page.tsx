@@ -169,7 +169,7 @@ const Testator = () => {
 								<Checkbox
 									name="moreInfos"
 									labelText="Weitere relevante Infos"
-									helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
+									helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 									options={testatorMoreInfosOptions}
 								/>
 							</div>
