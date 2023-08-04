@@ -34,7 +34,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					}`}
 					href={previousPageIndex != -1 ? routes.lastWill[sidebarElements[previousPageIndex].page]('1') : '#'}
 				>
-					<Icon datacy="chevron_left" icon="chevron_left" className=" text-gray-800" />
+					<Icon datacy="chevron_left" icon="chevron_left" className="text-gray-800" />
 				</Link>
 
 				<div
@@ -53,7 +53,7 @@ export const MobileSidebar: React.FC<SidebarProps> = ({ path }) => {
 					}`}
 					href={nextPageIndex != -1 ? routes.lastWill[sidebarElements[nextPageIndex].page]('1') : '#'}
 				>
-					<Icon datacy="chevron_right" icon="chevron_right" className=" text-gray-800" />
+					<Icon datacy="chevron_right" icon="chevron_right" className="text-gray-800" />
 				</Link>
 			</div>
 			{isOpen && (

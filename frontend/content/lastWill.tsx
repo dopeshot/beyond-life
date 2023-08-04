@@ -12,7 +12,7 @@ export const cardContent: CardWithIconProps[] = [
 		children: (
 			<p>
 				Unsere nutzerfreundliche Webseite führt Sie durch einen intuitiven Fragebogen, mit dem Sie Ihr Testament schnell
-				und unkompliziert selbst erstellen können. Keine juristische Vorkenntnisse notwendig!
+				und unkompliziert selbst erstellen können. Keine juristischen Vorkenntnisse notwendig!
 			</p>
 		),
 	},
@@ -21,7 +21,7 @@ export const cardContent: CardWithIconProps[] = [
 		title: 'Flexibel und anpassungsfähig',
 		children: (
 			<p>
-				Veränderungen im Leben sind normal, und Ihr Testament kann sich diesen Veränderungen anpassen. Mit unserer
+				Veränderungen im Leben sind normal und Ihr Testament kann sich diesen Veränderungen anpassen. Mit unserer
 				Plattform können Sie Ihr Testament jederzeit überarbeiten und aktualisieren.
 			</p>
 		),

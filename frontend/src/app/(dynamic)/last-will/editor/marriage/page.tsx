@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
@@ -77,7 +78,10 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
-		name: string(),
+		name: string().when('relationshipStatus', {
+			is: 'married',
+			then: (schema) => schema.required(NAME_REQUIRED_ERROR),
+		}),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
@@ -178,7 +182,7 @@ const Marriage = () => {
 									options={[
 										{
 											value: 'isPartnerGermanCitizenship',
-											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
+											label: 'Besitzt Ihr Partner die deutsche Staatsbürgerschaft?',
 										},
 									]}
 								/>
@@ -219,14 +223,13 @@ const Marriage = () => {
 											<div className="mb-2 w-2/3 md:mb-4 md:w-3/4">
 												<TextInput
 													name="street"
-													inputRequired
 													labelText="Straße"
 													placeholder="Straße"
 													autoComplete="street-address"
 												/>
 											</div>
 											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
-												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+												<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
@@ -234,14 +237,13 @@ const Marriage = () => {
 											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
 												<TextInput
 													name="zipCode"
-													inputRequired
 													labelText="Postleitzahl"
 													placeholder="Postleitzahl"
 													autoComplete="postal-code"
 												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+												<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 											</div>
 										</div>
 									</div>
@@ -253,7 +255,7 @@ const Marriage = () => {
 									<Checkbox
 										name="moreInfos"
 										labelText="Weitere relevante Infos"
-										inputRequired
+										helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 										options={partnerMoreInfosOptions}
 									/>
 								</div>
@@ -265,7 +267,6 @@ const Marriage = () => {
 										className="mb-2 block font-semibold"
 										labelText="Güterstand"
 										isLegend
-										inputRequired
 									/>
 									<div className="mb-2 grid gap-3 md:grid-cols-2 xl:w-2/3 2xl:w-1/2">
 										<CustomSelectionButton

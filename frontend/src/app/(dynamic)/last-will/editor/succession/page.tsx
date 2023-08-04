@@ -210,7 +210,7 @@ const Succession = () => {
 														<p className="mb-2">(durch Anklicken der Person zuweisen)</p>{' '}
 													</>
 												) : (
-													<Headline className=" font-normal" level={5} hasMargin={false}>
+													<Headline className="font-normal" level={5} hasMargin={false}>
 														Alle Gegenstände zugeordnet
 													</Headline>
 												)}

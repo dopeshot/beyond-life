@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
@@ -21,7 +22,7 @@ import { SidebarPages } from '../../../../../types/sidebar'
 
 // TODO: Ensure all schemas are equal from the strength
 const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-	name: string(),
+	name: string().required(NAME_REQUIRED_ERROR),
 	gender: string<Gender>(),
 	birthDate: string(),
 	birthPlace: string(),
@@ -144,28 +145,21 @@ const Testator = () => {
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
 										<div className="mb-2 md:col-start-1 md:col-end-3 md:mb-4">
-											<TextInput
-												name="street"
-												inputRequired
-												labelText="Straße"
-												placeholder="Straße"
-												autoComplete="street-address"
-											/>
+											<TextInput name="street" labelText="Straße" placeholder="Straße" autoComplete="street-address" />
 										</div>
 										<div className="mb-2 md:col-start-3 md:col-end-4 md:mb-4">
-											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+											<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
 										<div className="mb-2 md:col-start-1 md:col-end-2 md:mb-4">
 											<TextInput
 												name="zipCode"
-												inputRequired
 												labelText="Postleitzahl"
 												placeholder="Postleitzahl"
 												autoComplete="postal-code"
 											/>
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
-											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+											<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 										</div>
 									</div>
 								</div>
@@ -176,7 +170,7 @@ const Testator = () => {
 								<Checkbox
 									name="moreInfos"
 									labelText="Weitere relevante Infos"
-									inputRequired
+									helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 									options={testatorMoreInfosOptions}
 								/>
 							</div>

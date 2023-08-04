@@ -6,3 +6,7 @@ export const PASSWORD_NOT_OLD_ERROR = 'Das neue Passwort darf nicht dem alten Pa
 export const PASSWORD_IS_WRONG_ERROR = 'Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut.'
 export const PASSWORD_ACTUAL_INSERT_ERROR = 'Bitte geben Sie Ihr aktuelles Passwort ein.'
 export const EMAIL_REQUIRED_ERROR = 'Die E-Mail-Adresse ist erforderlich.'
+export const NAME_REQUIRED_ERROR = 'Der Name ist erforderlich.'
+export const VALUE_GREATER_THAN_ZERO_ERROR = 'Der Wert muss größer als 0 sein.'
+export const CURRENCY_REQUIRED_ERROR = 'Die Währung ist erforderlich.'
+export const VALUE_REQUIRED_ERROR = 'Bitte geben Sie einen Wert ein.'

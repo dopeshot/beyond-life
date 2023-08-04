@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik'
 import { ObjectSchema, mixed, object, string } from 'yup'
 import { personMoreInfosOptions } from '../../../../../content/checkboxOptions'
 import { genderOptions, heirsPersonType } from '../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../content/validation'
 import { heirsTypes } from '../../../../services/heirs'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addPersonHeir, sendLastWillState, updatePersonHeir } from '../../../../store/lastwill/lastwill'
@@ -55,7 +56,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 
 	const validationSchema: ObjectSchema<PersonFormPayload> = object().shape({
 		id: string().required(),
-		name: string(),
+		name: string().required(NAME_REQUIRED_ERROR),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
@@ -126,16 +127,10 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						{/* Adress */}
 						<div className="flex gap-x-3">
 							<div className="w-2/3 md:w-3/4">
-								<TextInput
-									name="street"
-									inputRequired
-									labelText="Straße"
-									placeholder="Straße"
-									autoComplete="street-address"
-								/>
+								<TextInput name="street" labelText="Straße" placeholder="Straße" autoComplete="street-address" />
 							</div>
 							<div className="w-1/3 md:w-1/4">
-								<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+								<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 							</div>
 						</div>
 
@@ -143,14 +138,13 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 							<div className="w-1/3 md:w-1/4">
 								<TextInput
 									name="zipCode"
-									inputRequired
 									labelText="Postleitzahl"
 									placeholder="Postleitzahl"
 									autoComplete="postal-code"
 								/>
 							</div>
 							<div className="w-2/3 md:w-3/4">
-								<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+								<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 							</div>
 						</div>
 					</div>
@@ -160,7 +154,7 @@ export const HeirsPersonModal: React.FC<HeirsPersonModalProps> = ({ isOpenModal,
 						<Checkbox
 							name="moreInfos"
 							labelText="Weitere relevante Infos"
-							inputRequired
+							helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 							options={personMoreInfosOptions}
 						/>
 					</div>

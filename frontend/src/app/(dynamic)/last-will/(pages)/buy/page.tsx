@@ -70,7 +70,7 @@ const Buy = () => {
 				<div className="h-full max-h-[480px] w-40 rounded-xl border-2 p-4 lg:w-auto lg:rounded-3xl">
 					<Image
 						priority
-						className=" h-full w-auto object-cover object-top blur-[2px]"
+						className="h-full w-auto object-cover object-top blur-[2px]"
 						src={image}
 						alt="Testament Preview"
 					/>

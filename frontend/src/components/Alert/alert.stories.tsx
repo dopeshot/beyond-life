@@ -13,6 +13,6 @@ export const Default: Story = {
 	args: {
 		headline: 'Nutzung nicht möglich',
 		description:
-			'Der Editor kann nur genutzt werden wenn man die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll.',
+			'Der Editor kann nur genutzt werden wenn man die deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll.',
 	},
 }

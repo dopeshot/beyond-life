@@ -4,6 +4,7 @@ import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
+import { CURRENCY_REQUIRED_ERROR, NAME_REQUIRED_ERROR, VALUE_GREATER_THAN_ZERO_ERROR, VALUE_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -64,9 +65,9 @@ const Inheritance = () => {
 			.of(
 				object().shape({
 					id: string().required(),
-					where: string(),
-					amount: number().min(1, 'Betrag muss größer als 0 sein.'),
-					currency: string(),
+					where: string().required(NAME_REQUIRED_ERROR),
+					amount: number().min(1, VALUE_GREATER_THAN_ZERO_ERROR).required(VALUE_REQUIRED_ERROR),
+					currency: string().required(CURRENCY_REQUIRED_ERROR),
 				})
 			)
 			.required(),
@@ -74,7 +75,7 @@ const Inheritance = () => {
 			.of(
 				object().shape({
 					id: string().required(),
-					name: string(),
+					name: string().required(NAME_REQUIRED_ERROR),
 					description: string(),
 				})
 			)
@@ -183,7 +184,7 @@ const Inheritance = () => {
 								Gegenstände
 							</Headline>
 							<p className="mb-2 text-gray-500 md:mb-4">
-								Hier erstellt man die Vermächtnisse, die dann in der{' '}
+								Hier können Sie die Vermächtnisse erstellen, die dann in der{' '}
 								<Route
 									kind="tertiary"
 									className="inline-flex text-red hover:text-red-600"
