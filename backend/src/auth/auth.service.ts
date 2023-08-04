@@ -94,7 +94,7 @@ export class AuthService {
         recipient: user.email,
       },
       content: {
-        subject: 'Email verifizieren',
+        subject: 'Verifzieren Sie hier Ihre Email - Siebtes Leben',
         templateContent: mailContent,
         contentTemplate: MailTemplates.VERIFY,
       },
@@ -250,7 +250,7 @@ export class AuthService {
 
     const mailData: MailData = {
       content: {
-        subject: 'Email reset',
+        subject: 'Erstellen Sie ein neues Passwort - Siebtes Leben',
         templateContent: mailContent,
         contentTemplate: mailTemplate,
       },
