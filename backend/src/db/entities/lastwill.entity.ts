@@ -10,6 +10,9 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  Length,
+  Max,
+  Min,
   ValidateIf,
   ValidateNested,
 } from 'class-validator'
@@ -209,6 +212,7 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 256)
   street?: string
 
   @prop({ required: false, type: String })
@@ -219,6 +223,7 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 100)
   houseNumber?: string
 
   @prop({ required: false, type: String })
@@ -229,12 +234,14 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(5, 5)
   zipCode?: string
 
   @prop({ required: false, type: String })
   @ApiPropertyOptional({ description: 'City', example: 'Berlin', type: String })
   @IsOptional()
   @IsString()
+  @Length(0, 100)
   city?: string
 }
 
@@ -248,6 +255,7 @@ class PersonBase {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 100)
   name?: string
 
   @prop({ required: false, enum: Gender, type: String })
@@ -281,6 +289,7 @@ class PersonBase {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 256)
   birthPlace?: string
 
   @prop({ required: false, type: Boolean })
@@ -324,6 +333,7 @@ export class Person extends PersonBase {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: true, enum: PersonType, type: String })
@@ -345,6 +355,8 @@ export class Person extends PersonBase {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
+  @Max(100)
   percentage?: number
 
   @prop({ required: false, type: [String], default: [] })
@@ -356,6 +368,7 @@ export class Person extends PersonBase {
   })
   @IsString({ each: true })
   @IsOptional()
+  @Length(21, 21, { each: true })
   itemIds?: string[]
 
   // Heirs
@@ -394,6 +407,7 @@ export class Organisation {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: true, enum: PersonType, type: String })
@@ -414,6 +428,7 @@ export class Organisation {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   name?: string
 
   @prop({ required: false, type: Address })
@@ -436,6 +451,8 @@ export class Organisation {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
+  @Max(100)
   percentage?: number
 
   @prop({ required: false, type: [String], default: [] })
@@ -447,6 +464,7 @@ export class Organisation {
   })
   @IsString({ each: true })
   @IsOptional()
+  @Length(21, 21, { each: true })
   itemIds?: string[]
 }
 
@@ -459,6 +477,7 @@ export class Item {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: false, type: String })
@@ -469,6 +488,7 @@ export class Item {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   name?: string
 
   @prop({ required: false, type: String })
@@ -479,6 +499,7 @@ export class Item {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 1024)
   description?: string
 }
 
@@ -491,6 +512,7 @@ export class FinancialAsset {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: false, type: String })
@@ -501,9 +523,10 @@ export class FinancialAsset {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   where?: string
 
-  @prop({ required: false, type: Number })
+  @prop({ required: false, type: Number, min: 0 })
   @ApiPropertyOptional({
     description: 'Amount',
     example: swaggerExampleObject.financialAssets[0].amount,
@@ -511,6 +534,7 @@ export class FinancialAsset {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
   amount?: number
 
   @prop({ required: false, type: String })
@@ -521,19 +545,21 @@ export class FinancialAsset {
   })
   @IsString()
   @IsOptional()
+  // @IsISO4217CurrencyCode() We decide against this to allow for custom currencies
+  @Length(0, 100)
   currency?: string
 }
 
 export class MongooseBaseEntity {
   @Expose()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Creation date of user',
     example: swaggerExampleObject.createdAt,
   })
   createdAt: Date
 
   @Expose()
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Last Update date of user',
     example: swaggerExampleObject.updatedAt,
   })
@@ -562,8 +588,6 @@ export class LastWill extends MongooseBaseEntity {
     example: swaggerExampleObject.accountId,
     type: String,
   })
-  @IsString()
-  @Expose()
   accountId: string
 
   @prop({ required: true, type: Common, _id: false, default: {} })
