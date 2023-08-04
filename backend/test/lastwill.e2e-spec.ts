@@ -204,7 +204,7 @@ describe('LastWillController (e2e)', () => {
         expect(createdLastWill).toBe(0)
       })
 
-      it('should validate the (Person | Organisation)[] based on missing type in Person ', async () => {
+      it('should validate the (Person | Organisation)[] based on missing type in Person', async () => {
         await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
