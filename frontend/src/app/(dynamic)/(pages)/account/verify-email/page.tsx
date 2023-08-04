@@ -29,7 +29,7 @@ const EmailVerified = () => {
 
 		setLoading(true)
 		const response = await verifyMail(token)
-		await dispatch(refreshToken({ bypassExpiryCheck: true }))
+		await dispatch(refreshToken({ ignoreExpireCheck: true }))
 
 		setStatus(response)
 		setLoading(false)
