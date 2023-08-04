@@ -183,7 +183,7 @@ const Inheritance = () => {
 								Gegenstände
 							</Headline>
 							<p className="mb-2 text-gray-500 md:mb-4">
-								Hier erstellt man die Vermächtnisse, die dann in der{' '}
+								Hier können Sie die Vermächtnisse erstellen, die dann in der{' '}
 								<Route
 									kind="tertiary"
 									className="inline-flex text-red hover:text-red-600"

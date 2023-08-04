@@ -178,7 +178,7 @@ const Marriage = () => {
 									options={[
 										{
 											value: 'isPartnerGermanCitizenship',
-											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
+											label: 'Besitzt Ihr Partner die deutsche Staatsbürgerschaft?',
 										},
 									]}
 								/>
