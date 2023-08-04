@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
@@ -94,4 +95,14 @@ const OrderConfirmation = () => {
 	)
 }
 
-export default OrderConfirmation
+const OrderConfirmationPage = () => {
+	return (
+		<>
+			<Suspense fallback={<div>Laden...</div>}>
+				<OrderConfirmation />
+			</Suspense>
+		</>
+	)
+}
+
+export default OrderConfirmationPage
