@@ -30,7 +30,7 @@ import {
 	changeEmail,
 	changePassword,
 	deleteAccount,
-} from '../../../../../services/api/profile/profile'
+} from '../../../../../services/api/profile/settings'
 import { logout, refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 
@@ -63,9 +63,7 @@ const initialAccountDeleteValues: AccountDelete = {
 }
 
 const validationSchemaEmailChange: ObjectSchema<EmailChange> = object().shape({
-	newEmail: string()
-		.matches(validateMail.regex, validateMail.message)
-		.required(EMAIL_REQUIRED_ERROR),
+	newEmail: string().matches(validateMail.regex, validateMail.message).required(EMAIL_REQUIRED_ERROR),
 })
 
 const validationSchemaPasswordChange: ObjectSchema<PasswordChange> = object().shape({
