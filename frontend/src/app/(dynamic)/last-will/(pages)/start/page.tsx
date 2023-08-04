@@ -1,12 +1,13 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
-import { Alert } from '../../../../../components/Alert/Alert'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../../components/Form/Label/Label'
@@ -29,22 +30,56 @@ const validationSchema: ObjectSchema<StartLegal> = object().shape({
 	germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
 })
 
+const alertContent: { [key: string]: AlertProps } = {
+	PLANS_LIMIT_EXCEEDED: {
+		headline: 'Limit erreicht',
+		description: (
+			<div>
+				<p className="mb-4">
+					Sie haben bereits die maximale Anzahl an Testamenten erstellt. Sie können ihr limit erhöhen oder bestehende
+					Testamente löschen.
+				</p>
+				<div className="flex flex-col items-center gap-3 md:flex-row">
+					<Route href={routes.lastWill.buy()}>Plan erhöhen</Route>
+					<Route kind="tertiary" href={routes.profile.myLastWills}>
+						Testamente verwalten
+					</Route>
+				</div>
+			</div>
+		),
+	},
+	ERROR: {
+		headline: 'Fehler',
+		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+	},
+}
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 
 	const onSubmit = async () => {
 		setIsLoading(true)
 		const response = await createLastWill()
 
-		if (response !== null) {
+		if (response === 'UNAUTHORIZED') {
+			redirect(routes.account.login({ callbackUrl: routes.lastWill.start }))
+		}
+
+		if (response === 'PLANS_LIMIT_EXCEEDED' || response === 'ERROR') {
+			setError(response)
+			setIsLoading(false)
+			return
+		}
+
+		if (response) {
 			// Redirect to Testator Page
 			router.push(routes.lastWill.testator(response._id))
 		}
-		setIsLoading(false)
 	}
 
 	return (
@@ -130,7 +165,7 @@ const Start = () => {
 							<FormError fieldName="germanRightOfInheritance" />
 						</div>
 
-						{/* Alert */}
+						{/* Alert editor cannot be used */}
 						{dirty && (values.germanCitizenship === false || values.germanRightOfInheritance === false) && (
 							<Alert
 								datacy="alert"
@@ -138,6 +173,13 @@ const Start = () => {
 								headline="Nutzung nicht möglich"
 								description="Der Editor kann nur genutzt werden, wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
 							/>
+						)}
+
+						{/* Error alert */}
+						{error && (
+							<div className="mb-4">
+								<Alert {...alertContent[error]} />
+							</div>
 						)}
 
 						{/* Submit Button */}
