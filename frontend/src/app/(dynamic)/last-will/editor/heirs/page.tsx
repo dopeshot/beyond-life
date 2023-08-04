@@ -42,10 +42,6 @@ const Heirs = () => {
 		dispatch(setProgressKeys(SidebarPages.HEIRS))
 	}, [dispatch])
 
-	useEffect(() => {
-		document.title = 'Testament Erben | Siebtes Leben'
-	}, [])
-
 	// Functions
 	const setDropdownOption = (type: HeirsTypes) => {
 		setHeirsType(type)

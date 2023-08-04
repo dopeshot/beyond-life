@@ -1,6 +1,5 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { AccountForm } from '../../../../../components/Form/AccountForm/AccountForm'
@@ -11,9 +10,6 @@ import { routes } from '../../../../../services/routes/routes'
  * Login Page
  */
 const Login = () => {
-	useEffect(() => {
-		document.title = 'Login | Siebtes Leben'
-	}, [])
 	// Url Params
 	const searchParams = useSearchParams()
 	const callbackUrl = searchParams.get('callbackUrl')

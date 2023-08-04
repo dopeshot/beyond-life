@@ -91,10 +91,6 @@ const Testator = () => {
 		dispatch(setProgressKeys(SidebarPages.TESTATOR))
 	}, [dispatch])
 
-	useEffect(() => {
-		document.title = 'Testament Erblasser | Siebtes Leben'
-	}, [])
-
 	return (
 		<div className="container mt-5 flex flex-1 flex-col">
 			<Head>

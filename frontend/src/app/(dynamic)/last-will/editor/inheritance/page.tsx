@@ -40,10 +40,6 @@ const Inheritance = () => {
 		items,
 	}
 
-	useEffect(() => {
-		document.title = 'Testament Erbschaft | Siebtes Leben'
-	}, [])
-
 	const onSubmit = async (values: InheritanceFormPayload, href: string) => {
 		try {
 			// Update inheritance global state only if values have changed

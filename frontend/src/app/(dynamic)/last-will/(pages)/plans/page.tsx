@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { useEffect } from 'react'
 import { FreePlan, PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
 import isAuth from '../../../../../components/Auth/isAuth'
@@ -14,10 +13,6 @@ import { routes } from '../../../../../services/routes/routes'
  * Login/Register Page with ads for last will.
  */
 const Plans = () => {
-	useEffect(() => {
-		document.title = 'Pläne | Siebtes Leben'
-	}, [])
-
 	return (
 		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-16 lg:gap-4 xl:flex-row xl:p-20">
 			<div className="order-2 flex h-full flex-col justify-center lg:p-4 lg:pb-0 xl:order-1 xl:w-2/3">

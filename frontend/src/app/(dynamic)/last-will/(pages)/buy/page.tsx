@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import image from '../../../../../assets/images/layout/testamentPreview.jpg'
 import isAuth from '../../../../../components/Auth/isAuth'
@@ -24,10 +23,6 @@ const Buy = () => {
 		const response = await createCheckoutSession(plan)
 		router.push(response)
 	}
-
-	useEffect(() => {
-		document.title = 'Plan kaufen | Siebtes Leben'
-	}, [])
 
 	return (
 		<div className="container mt-5 flex flex-col gap-8 p-8 md:px-40 lg:flex-row lg:gap-4 lg:p-8 xl:p-20">

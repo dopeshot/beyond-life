@@ -1,6 +1,6 @@
 'use client'
 import { Form, Formik, FormikProps } from 'formik'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import {
 	alertContentChangeEmail,
@@ -125,10 +125,6 @@ const AccountSettings = () => {
 		}
 		setIsLoadingDeleteAccount(false)
 	}
-
-	useEffect(() => {
-		document.title = 'Einstellungen | Siebtes Leben'
-	}, [])
 
 	return (
 		<div>

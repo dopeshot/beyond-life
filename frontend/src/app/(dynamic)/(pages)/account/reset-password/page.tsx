@@ -1,6 +1,6 @@
 'use client'
 import { Form, Formik } from 'formik'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ObjectSchema, object, string } from 'yup'
 import { EMAIL_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { validateMail } from '../../../../../../utils/validateMail'
@@ -42,10 +42,6 @@ const alertContent: { [key: string]: AlertProps } = {
  * Reset Password Page with enter email Form.
  */
 const ResetPassword = () => {
-	useEffect(() => {
-		document.title = 'Passwort zurücksetzen | Siebtes Leben'
-	}, [])
-
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
 	const [status, setStatus] = useState<'OK' | 'ERROR' | null>()
