@@ -306,6 +306,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_REFRESH_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should allow for auth with valid token', async () => {
         // ACT
@@ -331,11 +332,11 @@ describe('AuthController (e2e)', () => {
 
       it('should fail to auth for non existant user', async () => {
         // ARRANGE
-        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        await userModel.deleteOne()
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/refresh-token')
-          .set('Authorization', `Bearer ${token}a`)
+          .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
       })
