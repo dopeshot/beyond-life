@@ -33,6 +33,7 @@ export class ProfileService {
     const user = await this.userService.findOneById(id)
 
     if (!user || !(await compare(oldPassword, user.password))) {
+      this.logger.warn(`Invalid credentials for password change.`)
       throw new UnauthorizedException(
         'This is not allowed...either you do not exist or the provided password was invalid',
       )
@@ -47,6 +48,9 @@ export class ProfileService {
     }
 
     if (user.email === newEmail) {
+      this.logger.log(
+        `Skipping email update for user as new email equaled the old one`,
+      )
       // Do not throw error here
       // Throwing an error would allow for an attacker to brute force their way to the accounts email address
       return
@@ -55,6 +59,7 @@ export class ProfileService {
     try {
       await this.userService.updateUserEmail(id, newEmail)
     } catch (error) {
+      this.logger.error(`Could not update user email ${error}`)
       // If error is already httpexception => Continue throwing
       if (error instanceof HttpException) {
         throw error
