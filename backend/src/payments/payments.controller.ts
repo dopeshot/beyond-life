@@ -42,7 +42,7 @@ export class PaymentsController {
     description: 'Jwt invalid or user does not exist',
   })
   @ApiServiceUnavailableResponse({
-    description: ' Payment service is unavailable',
+    description: 'Payment service is unavailable',
   })
   @ApiBadRequestResponse({
     description: 'Malformed dto passed',

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { Connection, Model } from 'mongoose'
 import * as nodemailer from 'nodemailer'
 import { NodemailerMock } from 'nodemailer-mock'
@@ -28,6 +29,7 @@ describe('MailModule', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ThrottlerModule.forRoot({}),
         ConfigModule.forRoot({ isGlobal: true }),
         rootTypegooseTestModule(),
         MailModule.forRoot({ transport: {} as any, defaultSender: '' }),

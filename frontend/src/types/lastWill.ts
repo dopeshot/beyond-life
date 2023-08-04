@@ -25,8 +25,6 @@ export type PersonFormPayload = BasicPersonPayload & {
 	type: PersonType
 
 	moreInfos?: string[]
-	childRelationShip?: ChildRelationShip
-	ownChild?: string[]
 }
 
 export type OrganisationFormPayload = {

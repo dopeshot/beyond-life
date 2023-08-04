@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
+import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { PasswordInput } from '../../../../../components/Form/PasswordInput/PasswordInput'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { ChangePasswordResponse, changePassword } from '../../../../../services/api/auth/resetPassword'
 import { routes } from '../../../../../services/routes/routes'
-import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 
 type ChangePasswordFormValues = {
 	newPassword: string
@@ -24,9 +24,7 @@ const initialFormValues: ChangePasswordFormValues = {
 }
 
 const validationSchema: ObjectSchema<ChangePasswordFormValues> = object({
-	newPassword: string()
-		.required('Bitte geben Sie ein neues Passwort ein.')
-		.min(8, PASSWORD_MIN_LENGTH_ERROR),
+	newPassword: string().required('Bitte geben Sie ein neues Passwort ein.').min(8, PASSWORD_MIN_LENGTH_ERROR),
 	newPasswordConfirm: string()
 		.required('Bitte geben Sie ihr neues Passwort erneut ein.')
 		.oneOf([ref('newPassword')], PASSWORD_MATCH_ERROR),

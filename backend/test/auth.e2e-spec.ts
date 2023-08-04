@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { Test, TestingModule } from '@nestjs/testing'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { Connection, Model } from 'mongoose'
 import * as nodemailer from 'nodemailer'
 import { NodemailerMock } from 'nodemailer-mock'
@@ -41,6 +42,7 @@ describe('AuthController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ThrottlerModule.forRoot({}),
         DbModule,
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),
