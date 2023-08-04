@@ -9,8 +9,8 @@ describe('Last Will Succession Page', () => {
 			cy.wait('@mockGetLastWillById')
 		})
 
-		it('Should show Empty State', () => {
-			cy.datacy('emptyState')
+		it('should show empty State', () => {
+			cy.datacy('succession-empty-state').should('be.visible')
 		})
 	})
 
