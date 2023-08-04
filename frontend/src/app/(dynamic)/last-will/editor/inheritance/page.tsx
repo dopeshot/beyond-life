@@ -4,7 +4,7 @@ import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
-import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
+import { CURRENCY_REQUIRED_ERROR, NAME_REQUIRED_ERROR, VALUE_GREATER_THAN_ZERO_ERROR, VALUE_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -66,8 +66,8 @@ const Inheritance = () => {
 				object().shape({
 					id: string().required(),
 					where: string().required(NAME_REQUIRED_ERROR),
-					amount: number().min(1, 'Betrag muss größer als 0 sein.').required('Bitte geben Sie einen Betrag an.'),
-					currency: string().required('Bitte geben Sie eine Währung an.'),
+					amount: number().min(1, VALUE_GREATER_THAN_ZERO_ERROR).required(VALUE_REQUIRED_ERROR),
+					currency: string().required(CURRENCY_REQUIRED_ERROR),
 				})
 			)
 			.required(),
