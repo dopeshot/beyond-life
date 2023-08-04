@@ -24,7 +24,7 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 			await dispatch(
 				fetchLastWillState({
 					lastWillId: id ? id : undefined,
-				})
+				}),
 			)
 		}
 		getLastWillState()
@@ -47,7 +47,6 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			{!isInitialized ? (
-				// TODO: Add loading screen
 				<p>Laden...</p>
 			) : (
 				<div className={`flex h-screen min-h-screen w-full overflow-y-scroll sm:flex-col lg:flex-row`}>

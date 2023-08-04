@@ -37,7 +37,7 @@ const Succession = () => {
 
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
-	const NEXT_LINK = isAuthenticated ? routes.lastWill.final(_id) : routes.lastWill.plans(_id) // TODO checken, ob für Testament schon bezahlt wurde
+	const NEXT_LINK = isAuthenticated ? routes.lastWill.final(_id) : routes.lastWill.plans(_id)
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
@@ -55,19 +55,15 @@ const Succession = () => {
 	}
 
 	const onSubmit = async (values: SuccessionFormPayload, href: string) => {
-		try {
-			// Update store
-			dispatch(setSuccession(values))
-			const response = await dispatch(sendLastWillState())
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-
-			router.push(href)
-		} catch (error) {
-			console.error('An error occured while submitting the form: ', error)
+		// Update store
+		dispatch(setSuccession(values))
+		const response = await dispatch(sendLastWillState())
+		if (response.meta.requestStatus === 'rejected') {
+			return
+			// TODO: Add error handling here
 		}
+
+		router.push(href)
 	}
 
 	const validationSchema: ObjectSchema<SuccessionFormPayload> = object().shape({
@@ -81,7 +77,7 @@ const Succession = () => {
 						percentage: number().min(0).max(100).required(),
 						itemIds: array().of(string().required()).required(),
 					})
-					.required()
+					.required(),
 			)
 			.required(),
 	})
@@ -178,10 +174,11 @@ const Succession = () => {
 												</Headline>
 												<div className="mb-6">
 													{items
-														.filter((item) =>
-															values.heirs
-																.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
-																?.itemIds?.includes(item.id)
+														.filter(
+															(item) =>
+																values.heirs
+																	.find((heir) => heir.id === values.heirs[selectedHeirIndex].id)
+																	?.itemIds?.includes(item.id),
 														)
 														.map((item, index) => (
 															<div

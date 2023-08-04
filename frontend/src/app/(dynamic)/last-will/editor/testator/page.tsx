@@ -20,7 +20,6 @@ import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-// TODO: Ensure all schemas are equal from the strength
 const validationSchema: ObjectSchema<TestatorFormPayload> = object({
 	name: string().required(NAME_REQUIRED_ERROR),
 	gender: string<Gender>(),
@@ -32,6 +31,7 @@ const validationSchema: ObjectSchema<TestatorFormPayload> = object({
 	street: string(),
 	moreInfos: array(),
 })
+
 /**
  * Testator Page
  */
@@ -53,7 +53,6 @@ const Testator = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { isHandicapped, isInsolvent, relationshipStatus, address, ...formTestator } = testator
 
-	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
 		name: formTestator.name ?? '',
 		gender: formTestator.gender ?? undefined,
@@ -67,23 +66,17 @@ const Testator = () => {
 	}
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
-		// This functions only gets called if values have changed
-		try {
-			// Update marriage global state
-			dispatch(setTestator(values))
+		// Update marriage global state
+		dispatch(setTestator(values))
 
-			const response = await dispatch(sendLastWillState())
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-
-			// Redirect to previous or next page
-			router.push(href)
-		} catch (error) {
-			// TODO: This feedback should be visible for the user
-			console.error('An error occured while submitting the form: ', error)
+		const response = await dispatch(sendLastWillState())
+		if (response.meta.requestStatus === 'rejected') {
+			return
+			// TODO: Add error handling here
 		}
+
+		// Redirect to previous or next page
+		router.push(href)
 	}
 
 	// TODO: duplicated code, can we move this to layout?

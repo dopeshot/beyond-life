@@ -4,7 +4,12 @@ import { ArrayHelpers, FieldArray, Form, Formik, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Fragment, useEffect } from 'react'
 import { ObjectSchema, array, number, object, string } from 'yup'
-import { CURRENCY_REQUIRED_ERROR, NAME_REQUIRED_ERROR, VALUE_GREATER_THAN_ZERO_ERROR, VALUE_REQUIRED_ERROR } from '../../../../../../content/validation'
+import {
+	CURRENCY_REQUIRED_ERROR,
+	NAME_REQUIRED_ERROR,
+	VALUE_GREATER_THAN_ZERO_ERROR,
+	VALUE_REQUIRED_ERROR,
+} from '../../../../../../content/validation'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormStepsButtons } from '../../../../../components/Form/FormStepsButtons/FormStepsButtons'
@@ -42,22 +47,18 @@ const Inheritance = () => {
 	}
 
 	const onSubmit = async (values: InheritanceFormPayload, href: string) => {
-		try {
-			// Update inheritance global state only if values have changed
-			dispatch(setInheritance(values))
+		// Update inheritance global state only if values have changed
+		dispatch(setInheritance(values))
 
-			const response = await dispatch(sendLastWillState())
+		const response = await dispatch(sendLastWillState())
 
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-
-			// Redirect to previous or next page
-			router.push(href)
-		} catch (error) {
-			console.error('An error occurred while submitting the form: ', error)
+		if (response.meta.requestStatus === 'rejected') {
+			return
+			// TODO: Add error handling here
 		}
+
+		// Redirect to previous or next page
+		router.push(href)
 	}
 
 	const validationSchema: ObjectSchema<InheritanceFormPayload> = object().shape({
@@ -68,7 +69,7 @@ const Inheritance = () => {
 					where: string().required(NAME_REQUIRED_ERROR),
 					amount: number().min(1, VALUE_GREATER_THAN_ZERO_ERROR).required(VALUE_REQUIRED_ERROR),
 					currency: string().required(CURRENCY_REQUIRED_ERROR),
-				})
+				}),
 			)
 			.required(),
 		items: array()
@@ -77,7 +78,7 @@ const Inheritance = () => {
 					id: string().required(),
 					name: string().required(NAME_REQUIRED_ERROR),
 					description: string(),
-				})
+				}),
 			)
 			.required(),
 	})
