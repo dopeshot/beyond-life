@@ -69,7 +69,7 @@ enum ChildRelationShip {
 }
 
 const swaggerExamplePersonHeir: Person = {
-  id: '987654321',
+  id: '111111111111111111111',
   type: PersonType.CHILD,
   name: 'Heir Name',
   gender: Gender.MALE,
@@ -78,7 +78,7 @@ const swaggerExamplePersonHeir: Person = {
   isHandicapped: false,
   isInsolvent: false,
   percentage: 50,
-  itemIds: ['11111111', '22222222'],
+  itemIds: ['111111111111111111111', '111111111111111111112'],
   child: {
     type: ChildType.NATURAL,
     relationship: ChildRelationShip.CHILD_TOGETHER,
@@ -92,7 +92,7 @@ const swaggerExamplePersonHeir: Person = {
 }
 
 const swaggerExampleOrgaHeir: Organisation = {
-  id: 'jeffsId',
+  id: '111111111111111111112',
   type: PersonType.ORGANISATION,
   name: 'Strongpong e.V.',
   address: {
@@ -102,7 +102,7 @@ const swaggerExampleOrgaHeir: Organisation = {
     city: 'Berlin',
   },
   percentage: 50,
-  itemIds: ['33333333', '44444444'],
+  itemIds: ['111111111111111111113', '111111111111111111114'],
 }
 
 const swaggerExampleObject: LastWill = {
@@ -126,12 +126,30 @@ const swaggerExampleObject: LastWill = {
   },
   heirs: [swaggerExamplePersonHeir, swaggerExampleOrgaHeir],
   items: [
-    { id: '11111111', name: 'Item 1', description: 'Description 1' },
-    { id: '22222222', name: 'Item 2', description: 'Description 2' },
+    {
+      id: '111111111111111111111',
+      name: 'Item 1',
+      description: 'Description 1',
+    },
+    {
+      id: '111111111111111111112',
+      name: 'Item 2',
+      description: 'Description 2',
+    },
   ],
   financialAssets: [
-    { id: '33333333', where: 'PayPal', amount: 420.69, currency: 'EUR' },
-    { id: '44444444', where: 'Bank', amount: 1234.56, currency: 'USD' },
+    {
+      id: '111111111111111111113',
+      where: 'PayPal',
+      amount: 420.69,
+      currency: 'EUR',
+    },
+    {
+      id: '111111111111111111114',
+      where: 'Bank',
+      amount: 1234.56,
+      currency: 'USD',
+    },
   ],
   progressKeys: [
     SidebarPages.TESTATOR,
@@ -588,6 +606,7 @@ export class LastWill extends MongooseBaseEntity {
     example: swaggerExampleObject.accountId,
     type: String,
   })
+  @Expose()
   accountId: string
 
   @prop({ required: true, type: Common, _id: false, default: {} })
