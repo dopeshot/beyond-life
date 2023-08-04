@@ -104,6 +104,16 @@ describe('lastwill.service.ts', () => {
       ).toEqual(false)
     })
 
+    it('should return false without items in heirs', () => {
+      // ACT && ASSERT
+      expect(
+        lastWillService.includesItemInheritance({
+          ...SAMPLE_LAST_WILL,
+          heirs: [{ ...SAMPLE_LAST_WILL.heirs[0], itemIds: null }],
+        }),
+      ).toEqual(false)
+    })
+
     it('should return false without any heirs that inherit items', () => {
       // ACT && ASSERT
       expect(
