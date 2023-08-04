@@ -68,6 +68,7 @@ export class ProfileService {
       // This should only happen on DB failure...which we do not test
       /* istanbul ignore next */
       this.logger.warn(`Could not update user email due to an error ${error}`)
+      /* istanbul ignore next */
       throw new InternalServerErrorException(
         'Something went wrong, please try again later',
       )
@@ -96,7 +97,7 @@ export class ProfileService {
 
     const mailData: MailData = {
       content: {
-        subject: 'Account gelöscht',
+        subject: 'Account erfolgreich gelöscht',
         contentTemplate: MailTemplates.ACCOUNT_DELETED,
       },
       recipient: {
@@ -119,7 +120,7 @@ export class ProfileService {
     newSendDate.setHours(newSendDate.getHours() + 5)
     try {
       await this.mailService.scheduleMailAtDate(newSendDate, mailData)
-    } catch (error) {
+    } catch (error) /* istanbul ignore next */ {
       this.logger.warn(
         `Mail could not be scheduled due to an error. Account deletion continues anyways ${error}`,
       )

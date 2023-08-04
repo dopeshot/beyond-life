@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { refreshTokenApi } from '../../services/api/auth/refreshToken'
 import { LOCAL_STORAGE_KEY, createSession, getSession, setAndSaveSession } from '../../services/auth/session'
@@ -83,16 +83,16 @@ export const loginApi = createAsyncThunk<
  * Get session data from local storage and update the access token if it has expired.
  * @returns session data or null if no session data is found
  */
-export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryCheck: boolean }>(
+export const refreshToken = createAsyncThunk<SessionData, { ignoreExpireCheck: boolean }>(
 	'auth/getSessionData',
-	async ({ bypassExpiryCheck }) => {
+	async ({ ignoreExpireCheck }, { rejectWithValue }) => {
 		const parsedSessionData = getSession()
 
 		// No session data found
-		if (!parsedSessionData) return null
+		if (!parsedSessionData) return rejectWithValue('No session data found')
 
 		// Return session data if access token is not expired
-		if (!bypassExpiryCheck) {
+		if (!ignoreExpireCheck) {
 			const sessionExpired = Date.now() > parsedSessionData.decodedAccessToken.exp * 1000
 			if (!sessionExpired) return parsedSessionData
 		}
@@ -103,7 +103,7 @@ export const refreshToken = createAsyncThunk<SessionData | null, { bypassExpiryC
 		// Refresh token failed
 		if (tokens === null) {
 			console.error('Session expired and refresh token failed')
-			return null
+			return rejectWithValue('Session expired and refresh token failed')
 		}
 
 		// Update session when refresh token succeeded
@@ -118,13 +118,6 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		login: (state, action: PayloadAction<SessionData>) => {
-			state.isInitialized = true
-			state.isAuthenticated = true
-			state.sessionData = action.payload
-
-			setAndSaveSession(action.payload)
-		},
 		logout: (state) => {
 			// Clear local storage
 			localStorage.removeItem(LOCAL_STORAGE_KEY)
@@ -148,10 +141,15 @@ const authSlice = createSlice({
 				state.registerError = null
 				state.isAuthenticated = action.payload !== null
 				state.sessionData = action.payload
+
+				if (action.payload) {
+					setAndSaveSession(action.payload)
+				}
 			})
-			.addCase(refreshToken.rejected, (state) => {
+			.addCase(refreshToken.rejected, (state, action) => {
 				state.isInitialized = true
 				state.isAuthenticated = false
+				console.error(action.payload)
 			})
 			.addCase(loginApi.pending, (state) => {
 				state.isInitialized = false
@@ -192,9 +190,10 @@ const authSlice = createSlice({
 				}
 				state.isInitialized = true
 				state.isAuthenticated = false
+				console.error(action.payload)
 			})
 	},
 })
 
 export const authReducer = authSlice.reducer
-export const { logout, login } = authSlice.actions
+export const { logout } = authSlice.actions

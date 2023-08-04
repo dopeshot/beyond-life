@@ -306,6 +306,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_REFRESH_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should allow for auth with valid token', async () => {
         // ACT
@@ -331,11 +332,11 @@ describe('AuthController (e2e)', () => {
 
       it('should fail to auth for non existant user', async () => {
         // ARRANGE
-        await userModel.deleteOne({ email: SAMPLE_USER.email })
+        await userModel.deleteOne()
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/refresh-token')
-          .set('Authorization', `Bearer ${token}a`)
+          .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.UNAUTHORIZED)
       })
@@ -373,7 +374,26 @@ describe('AuthController (e2e)', () => {
 
       it('should update stripe customer if already customer', async () => {
         // ARRANGE
-        await userModel.updateOne({}, { stripeCustomerId: 'cus_test' })
+        await userModel.updateOne({})
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'customer_update')
+          .mockReturnValueOnce(null)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/auth/verify-email`)
+          .query({
+            token,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(spy).toHaveBeenCalledTimes(1)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(user.hasVerifiedEmail).toEqual(true)
+      })
+
+      it('should ignore customerId if user does not have one yet', async () => {
+        // ARRANGE
+        await userModel.updateOne({}, { stripeCustomerId: null })
         const spy = jest
           .spyOn(MockStripeService.prototype, 'customer_update')
           .mockReturnValueOnce(null)

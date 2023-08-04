@@ -8,7 +8,6 @@ import { NavbarLink } from '../NavbarLink/NavbarLink'
 import { DynamicNavbarLinks } from './DynamicNavbarLinks'
 import { StaticNavbarLinks } from './StaticNavbarLinks'
 
-// TODO: The api for this component is to complicated and confusing
 type NavbarProps = {
 	/** When true has a transparent background. For modules. */
 	background?: boolean
@@ -35,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({ background = true, isStaticPage,
 	]
 
 	return (
-		<div className={`${background ? 'bg-yellow-400' : ''} py-3`}>
+		<div className={`${background ? 'bg-yellow-500' : ''} py-3`}>
 			<nav className="container md:flex">
 				<div className={`flex ${children ? 'items-center justify-between' : 'justify-end'}`}>
 					{children}

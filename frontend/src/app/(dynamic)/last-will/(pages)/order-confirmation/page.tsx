@@ -1,25 +1,29 @@
 'use client'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import { Suspense, useEffect } from 'react'
 import { PaymentPlans } from '../../../../../../content/paymentPlans'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { routes } from '../../../../../services/routes/routes'
+import { refreshToken } from '../../../../../store/auth/auth'
+import { useAppDispatch } from '../../../../../store/hooks'
 
 const textsPaymentSucceeded = {
 	header: 'Ihre Zahlung war erfolgreich!',
 	subheader:
 		'Vielen Dank für Ihre Zahlung. Im nächsten Schritt können Sie nun ihr generiertes Testament einsehen und abschreiben.',
-	paymentStatus: 'erfolgreich',
+	paymentStatus: 'Erfolgreich',
 	button: 'Testamente einsehen',
 }
 
 const textsPaymentFailed = {
 	header: 'Die Zahlung konnte nicht durchgeführt werden',
 	subheader: 'Bitte versuchen Sie, den Zahlungsvorgang erneut durchzuführen',
-	paymentStatus: 'fehlgeschlagen',
+	paymentStatus: 'Fehlgeschlagen',
 	button: 'Zurück zur Produktauswahl',
 }
 
@@ -33,6 +37,13 @@ const OrderConfirmation = () => {
 	const boughtPlan = PaymentPlans.find((plan) => plan.type === boughtPlanParam)
 
 	const texts = paymentSucceeded == '1' ? textsPaymentSucceeded : textsPaymentFailed
+
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		dispatch(refreshToken({ ignoreExpireCheck: true }))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	return (
 		<>
@@ -94,4 +105,14 @@ const OrderConfirmation = () => {
 	)
 }
 
-export default OrderConfirmation
+const OrderConfirmationPage = () => {
+	return (
+		<>
+			<Suspense fallback={<Loading />}>
+				<OrderConfirmation />
+			</Suspense>
+		</>
+	)
+}
+
+export default OrderConfirmationPage

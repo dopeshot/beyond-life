@@ -1,3 +1,4 @@
+// Parsing error: Cannot find module 'next/babel' is not fixable yet without breaking es-lint: https://github.com/dopeshot/beyond-life/issues/379
 const { fontFamily } = require("tailwindcss/defaultTheme")
 
 /** @type {import('tailwindcss').Config} */

@@ -52,6 +52,7 @@ export type LastWillState = {
 	// DO NOT SYNC THIS WITH BACKEND
 	isLoading: boolean
 	isInitialized: boolean
+	error: string | null
 
 	// SYNC THIS WITH BACKEND
 	data: {
@@ -82,16 +83,7 @@ export type Person = {
 	isHandicapped?: boolean
 	isInsolvent?: boolean
 } & { address?: Address } & Succession &
-	ChildInfo &
 	Id
-
-type ChildInfo = {
-	child?: {
-		type?: 'natural' | 'adopted' | 'step' // TODO MC: Where is this used?
-		relationship?: ChildRelationShip
-	}
-}
-export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFromOther'
 
 export type Organisation = {
 	name?: string

@@ -43,6 +43,23 @@ const networkErrorResponse = {
 }
 
 /***** Responses ****/
+const createLastWillResponse = {
+	OK: {
+		statusCode: 201,
+		fixture: 'lastwill/singleLastWill.json',
+	},
+	PLANS_LIMIT_EXCEEDED: {
+		statusCode: 403,
+		body: {
+			message: 'Exceeding allowed last wills: 1',
+			error: 'Forbidden',
+			statusCode: 403,
+		},
+	},
+	...unauthorizedResponse,
+	...networkErrorResponse,
+}
+
 const paymentCheckoutResponse = {
 	OK: {
 		statusCode: 201,
@@ -212,11 +229,8 @@ Cypress.Commands.add('mockGetLastWillById', (shouldHaveSampleData = false) => {
 	}).as('mockGetLastWillById')
 })
 
-Cypress.Commands.add('mockCreateLastWill', () => {
-	cy.intercept('POST', `${apiUrl}/lastwill`, {
-		statusCode: 201,
-		fixture: 'lastwill/singleLastWill.json',
-	}).as('mockCreateLastWill')
+Cypress.Commands.add('mockCreateLastWill', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/lastwill`, createLastWillResponse[response]).as('mockCreateLastWill')
 })
 
 Cypress.Commands.add('mockUpdateLastWill', () => {

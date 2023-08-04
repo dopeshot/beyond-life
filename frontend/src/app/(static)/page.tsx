@@ -48,7 +48,7 @@ const Home: React.FC = () => {
 					{/* Header */}
 					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Ganz einfach und sicher Ihr Testament erstellen</Headline>
-						<p>Gestalten Sie Ihr Erbe - Wir machen es Ihnen leicht, sicher und individuell anpassbar.</p>
+						<p>Gestalten Sie Ihr Erbe – wir machen es Ihnen leicht, sicher und individuell anpassbar.</p>
 					</div>
 
 					{/* Card */}
@@ -79,7 +79,7 @@ const Home: React.FC = () => {
 					{/* Header */}
 					<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 						<Headline level={2}>Mit drei einfachen Schritten zum Ziel</Headline>
-						<p>Gestalten Sie Ihr Testament in nur wenigen Klicks - Sicher, intuitiv und individuell.</p>
+						<p>Gestalten Sie Ihr Testament in nur wenigen Klicks – sicher, intuitiv und individuell.</p>
 					</div>
 
 					{/* Steps */}
@@ -114,7 +114,7 @@ const Home: React.FC = () => {
 				<div className="mb-16 md:mb-24">
 					<Banner
 						title="Überzeugen Sie sich selbst"
-						description="Sie sind noch am zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
+						description="Sie sind noch am Zweifeln? Probieren Sie unsere einfachen Schritte aus und erleben Sie, wie intuitiv und unkompliziert die Erstellung Ihres Testaments sein kann."
 						button={
 							<Route icon="history_edu" href={routes.lastWill.start} kind="secondary">
 								Jetzt Testament erstellen
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
 						{/* Header */}
 						<div className="mb-4 flex flex-col items-center text-center md:mb-8">
 							<Headline level={2}>Einfaches Preismodell</Headline>
-							<p>Transparente Kosten, keine versteckten Gebühren - Ihr Testament zu einem fairen Preis.</p>
+							<p>Transparente Kosten, keine versteckten Gebühren – Ihr Testament zu einem fairen Preis.</p>
 						</div>
 
 						{/* Plans */}

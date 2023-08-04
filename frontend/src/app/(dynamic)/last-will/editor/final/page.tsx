@@ -5,6 +5,7 @@ import isAuth from '../../../../../components/Auth/isAuth'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
 import { LastWill } from '../../../../../components/LastWill/LastWill'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import { setProgressKeys } from '../../../../../store/lastwill/lastwill'
@@ -27,7 +28,7 @@ const Final = () => {
 	if (!isInititalizedAuth) {
 		return (
 			<div className="container mt-5">
-				<p>Laden...</p>
+				<Loading />
 			</div>
 		)
 	}
