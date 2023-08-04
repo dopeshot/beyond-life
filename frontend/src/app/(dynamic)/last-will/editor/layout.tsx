@@ -1,7 +1,8 @@
 'use client'
 import { notFound, usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import isAuth from '../../../../components/Auth/isAuth'
+import { ServerError } from '../../../../components/Errors/ServerError/ServerError'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
@@ -18,17 +19,25 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 
 	const dispatch = useAppDispatch()
 
-	useEffect(() => {
-		if (!id) {
-			console.warn("Can't fetch last will state because id is not defined")
-			return
-		}
+	const [error, setError] = useState<'NOT_FOUND' | 'ERROR' | null>(null)
 
-		dispatch(
-			fetchLastWillState({
-				lastWillId: id,
-			})
-		)
+	useEffect(() => {
+		const getLastWillState = async () => {
+			if (!id) {
+				console.warn("Can't fetch last will state because id is not defined")
+				return
+			}
+
+			const response = await dispatch(
+				fetchLastWillState({
+					lastWillId: id,
+				})
+			)
+			if (response.payload === 'NOT_FOUND' || response.payload === 'ERROR') {
+				setError(response.payload)
+			}
+		}
+		getLastWillState()
 
 		return () => {
 			dispatch(resetLastWill())
@@ -36,7 +45,13 @@ const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 		// This has to be empty to work because it will retrigger when dispatch is defined new
 	}, []) // eslint-disable-line
 
-	if (!id) return notFound()
+	if (error === 'NOT_FOUND') {
+		return notFound()
+	}
+
+	if (error === 'ERROR') {
+		return <ServerError />
+	}
 
 	return (
 		<>

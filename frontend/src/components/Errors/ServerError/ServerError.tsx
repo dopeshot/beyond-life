@@ -2,7 +2,7 @@ import { Button } from '../../ButtonsAndLinks/Button/Button'
 import { BaseError } from '../BaseError/BaseError'
 
 type ServerErrorProps = {
-	reset: () => void
+	reset?: () => void
 }
 
 /**
