@@ -5,6 +5,7 @@ import { getLastWillFulltext } from '../../services/api/lastwill/lastWillFulltex
 import { useAppSelector } from '../../store/hooks'
 import { GeneratedLastWill } from '../../types/lastWill'
 import { Headline } from '../Headline/Headline'
+import { Loading } from '../Loading/Loading'
 
 /**
  * Display Last Will.
@@ -25,7 +26,11 @@ export const LastWill = () => {
 	}, [_id])
 
 	if (isLoading) {
-		return <div>Loading...</div>
+		return (
+			<div className="mt-5">
+				<Loading />
+			</div>
+		)
 	}
 
 	if (!lastWill) {
@@ -57,7 +62,9 @@ export const LastWill = () => {
 							{paragraph.title}
 						</Headline>
 						{paragraph.contents.map((content, index) => (
-							<p key={index}>{content}</p>
+							<p className="mb-4" key={index}>
+								{content}
+							</p>
 						))}
 					</div>
 				))}

@@ -16,7 +16,7 @@ export const Default: Story = {
 		children: (
 			<p>
 				Unsere nutzerfreundliche Webseite führt Sie durch einen intuitiven Fragebogen, mit dem Sie Ihr Testament schnell
-				und unkompliziert selbst erstellen können. Keine juristische Vorkenntnisse notwendig!
+				und unkompliziert selbst erstellen können. Keine juristischen Vorkenntnisse notwendig!
 			</p>
 		),
 	},

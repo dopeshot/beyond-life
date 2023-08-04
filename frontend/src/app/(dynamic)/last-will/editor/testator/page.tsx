@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { testatorMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { FormDatepicker } from '../../../../../components/Form/FormDatepicker/FormDatepicker'
 import { FormDropdown } from '../../../../../components/Form/FormDropdown/FormDropdown'
@@ -19,9 +20,8 @@ import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
-// TODO: Ensure all schemas are equal from the strength
 const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-	name: string(),
+	name: string().required(NAME_REQUIRED_ERROR),
 	gender: string<Gender>(),
 	birthDate: string(),
 	birthPlace: string(),
@@ -31,6 +31,7 @@ const validationSchema: ObjectSchema<TestatorFormPayload> = object({
 	street: string(),
 	moreInfos: array(),
 })
+
 /**
  * Testator Page
  */
@@ -52,7 +53,6 @@ const Testator = () => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { isHandicapped, isInsolvent, relationshipStatus, address, ...formTestator } = testator
 
-	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
 		name: formTestator.name ?? '',
 		gender: formTestator.gender ?? undefined,
@@ -66,26 +66,18 @@ const Testator = () => {
 	}
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
-		// This functions only gets called if values have changed
-		try {
-			// Update marriage global state
-			dispatch(setTestator(values))
+		// Update marriage global state
+		dispatch(setTestator(values))
 
-			const response = await dispatch(sendLastWillState())
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-
-			// Redirect to previous or next page
-			router.push(href)
-		} catch (error) {
-			// TODO: This feedback should be visible for the user
-			console.error('An error occured while submitting the form: ', error)
+		const response = await dispatch(sendLastWillState())
+		if (response.meta.requestStatus === 'rejected') {
+			return
 		}
+
+		// Redirect to previous or next page
+		router.push(href)
 	}
 
-	// TODO: duplicated code, can we move this to layout?
 	// Use to handle sidebar display state and progress
 	useEffect(() => {
 		dispatch(setProgressKeys(SidebarPages.TESTATOR))
@@ -118,7 +110,7 @@ const Testator = () => {
 								<div className="2xl:w-2/3">
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
-										<div className="col-span-2 mb-2 md:mb-4">
+										<div className="col-span-2">
 											<TextInput
 												name="name"
 												inputRequired
@@ -143,29 +135,22 @@ const Testator = () => {
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
-										<div className="mb-2 md:col-start-1 md:col-end-3 md:mb-4">
-											<TextInput
-												name="street"
-												inputRequired
-												labelText="Straße"
-												placeholder="Straße"
-												autoComplete="street-address"
-											/>
+										<div className="md:col-start-1 md:col-end-3">
+											<TextInput name="street" labelText="Straße" placeholder="Straße" autoComplete="street-address" />
 										</div>
-										<div className="mb-2 md:col-start-3 md:col-end-4 md:mb-4">
-											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+										<div className="md:col-start-3 md:col-end-4">
+											<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
-										<div className="mb-2 md:col-start-1 md:col-end-2 md:mb-4">
+										<div className="md:col-start-1 md:col-end-2">
 											<TextInput
 												name="zipCode"
-												inputRequired
 												labelText="Postleitzahl"
 												placeholder="Postleitzahl"
 												autoComplete="postal-code"
 											/>
 										</div>
 										<div className="md:col-start-2 md:col-end-4">
-											<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+											<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 										</div>
 									</div>
 								</div>
@@ -176,7 +161,7 @@ const Testator = () => {
 								<Checkbox
 									name="moreInfos"
 									labelText="Weitere relevante Infos"
-									inputRequired
+									helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 									options={testatorMoreInfosOptions}
 								/>
 							</div>

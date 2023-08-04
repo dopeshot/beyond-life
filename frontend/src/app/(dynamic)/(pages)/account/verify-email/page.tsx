@@ -1,11 +1,12 @@
 'use client'
 import { MaterialSymbol } from 'material-symbols'
 import { notFound, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../../components/Headline/Headline'
 import { Icon } from '../../../../../components/Icon/Icon'
+import { Loading } from '../../../../../components/Loading/Loading'
 import { verifyMail } from '../../../../../services/api/auth/verifyMail'
 import { routes } from '../../../../../services/routes/routes'
 import { refreshToken } from '../../../../../store/auth/auth'
@@ -15,7 +16,7 @@ import { Color } from '../../../../../types/color'
 /**
  * Email Verified Page.
  */
-const EmailVerified = () => {
+const EmailVerified: React.FC = () => {
 	const searchParams = useSearchParams()
 	const token = searchParams.get('token')
 	const dispatch = useAppDispatch()
@@ -29,7 +30,7 @@ const EmailVerified = () => {
 
 		setLoading(true)
 		const response = await verifyMail(token)
-		await dispatch(refreshToken({ bypassExpiryCheck: true }))
+		await dispatch(refreshToken({ ignoreExpireCheck: true }))
 
 		setStatus(response)
 		setLoading(false)
@@ -46,7 +47,7 @@ const EmailVerified = () => {
 	if (loading || status === null)
 		return (
 			<div className="container mt-5">
-				<p>E-Mail wird verifiziert...</p>
+				<Loading text="E-Mail wird verifiziert" />
 			</div>
 		)
 
@@ -124,4 +125,14 @@ const EmailVerified = () => {
 	)
 }
 
-export default EmailVerified
+const EmailVerifiedPage = () => {
+	return (
+		<>
+			<Suspense fallback={<Loading />}>
+				<EmailVerified />
+			</Suspense>
+		</>
+	)
+}
+
+export default EmailVerifiedPage

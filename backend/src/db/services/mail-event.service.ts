@@ -42,10 +42,6 @@ export class MailEventDBService {
   }
 
   async rescheduleMails(ids: ObjectId[], newDate: Date): Promise<void> {
-    if (ids.length == 0) {
-      this.logger.log('Empty update will not be executed')
-      return
-    }
     await this.mailEventModel.updateMany(
       { _id: { $in: ids } },
       {

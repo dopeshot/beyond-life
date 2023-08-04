@@ -94,7 +94,7 @@ export class AuthService {
         recipient: user.email,
       },
       content: {
-        subject: 'Email verifizieren',
+        subject: 'Verifzieren Sie hier Ihre Email - Siebtes Leben',
         templateContent: mailContent,
         contentTemplate: MailTemplates.VERIFY,
       },
@@ -182,7 +182,7 @@ export class AuthService {
     try {
       this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)
-    } catch (error) {
+    } catch (error) /* istanbul ignore next */ {
       this.logger.error(`User update failed due to an error ${error}`)
       throw new InternalServerErrorException('Update could not be made')
     }
@@ -250,7 +250,7 @@ export class AuthService {
 
     const mailData: MailData = {
       content: {
-        subject: 'Email reset',
+        subject: 'Erstellen Sie ein neues Passwort - Siebtes Leben',
         templateContent: mailContent,
         contentTemplate: mailTemplate,
       },
@@ -278,9 +278,7 @@ export class AuthService {
     }
     try {
       await this.userService.updateUserPassword(id, newPassword)
-      // No tests for db failure
-      /* istanbul ignore next */
-    } catch (error) {
+    } catch (error) /* istanbul ignore next */ {
       this.logger.error(
         `Could not update a user password due to an error ${error}`,
       )

@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
-import { Alert } from '../../../../../components/Alert/Alert'
+import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
 import { Button } from '../../../../../components/ButtonsAndLinks/Button/Button'
+import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../../components/Form/Label/Label'
@@ -29,22 +30,57 @@ const validationSchema: ObjectSchema<StartLegal> = object().shape({
 	germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
 })
 
+const alertContent: { [key: string]: AlertProps } = {
+	PLANS_LIMIT_EXCEEDED: {
+		headline: 'Limit erreicht',
+		description: (
+			<div>
+				<p className="mb-4">
+					Sie haben bereits die maximale Anzahl an Testamenten erstellt. Sie können ihr limit erhöhen oder bestehende
+					Testamente löschen.
+				</p>
+				<div className="flex flex-col items-center gap-3 md:flex-row">
+					<Route href={routes.lastWill.buy()}>Plan erhöhen</Route>
+					<Route kind="tertiary" href={routes.profile.myLastWills}>
+						Testamente verwalten
+					</Route>
+				</div>
+			</div>
+		),
+	},
+	ERROR: {
+		headline: 'Fehler',
+		description: 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+	},
+}
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 
 	const onSubmit = async () => {
 		setIsLoading(true)
 		const response = await createLastWill()
 
-		if (response !== null) {
+		if (response === 'UNAUTHORIZED') {
+			router.push(routes.account.login({ callbackUrl: routes.lastWill.start }))
+			return
+		}
+
+		if (response === 'PLANS_LIMIT_EXCEEDED' || response === 'ERROR') {
+			setError(response)
+			setIsLoading(false)
+			return
+		}
+
+		if (response) {
 			// Redirect to Testator Page
 			router.push(routes.lastWill.testator(response._id))
 		}
-		setIsLoading(false)
 	}
 
 	return (
@@ -73,7 +109,7 @@ const Start = () => {
 							<Label
 								name="germanCitizenship"
 								className="mb-2 block font-semibold"
-								labelText="Besitzt der Erblasser die Deutsche Staatsbürgerschaft?"
+								labelText="Besitzt der Erblasser die deutsche Staatsbürgerschaft?"
 								isLegend
 								inputRequired
 							/>
@@ -84,7 +120,7 @@ const Start = () => {
 									activeColor="green"
 									onClick={() => setFieldValue('germanCitizenship', true)}
 									headline="Ja"
-									description="Der Erblasser besitzt die Deutsche Staatsbürgerschaft."
+									description="Der Erblasser besitzt die deutsche Staatsbürgerschaft."
 								/>
 								<CustomSelectionButton
 									datacy="field-germanCitizenship-false"
@@ -93,7 +129,7 @@ const Start = () => {
 									activeIcon="cancel"
 									onClick={() => setFieldValue('germanCitizenship', false)}
 									headline="Nein"
-									description="Er besitzt eine Ausländische Staatsbürgerschaft."
+									description="Er besitzt eine ausländische Staatsbürgerschaft."
 								/>
 							</div>
 							<FormError fieldName="germanCitizenship" />
@@ -104,7 +140,7 @@ const Start = () => {
 							<Label
 								name="germanRightOfInheritance"
 								className="mb-2 block font-semibold"
-								labelText="Soll das Testament nach Deutschem Erbrecht verfasst werden?"
+								labelText="Soll das Testament nach deutschem Erbrecht verfasst werden?"
 								isLegend
 								inputRequired
 							/>
@@ -130,14 +166,21 @@ const Start = () => {
 							<FormError fieldName="germanRightOfInheritance" />
 						</div>
 
-						{/* Alert */}
+						{/* Alert editor cannot be used */}
 						{dirty && (values.germanCitizenship === false || values.germanRightOfInheritance === false) && (
 							<Alert
 								datacy="alert"
 								className="mb-5"
 								headline="Nutzung nicht möglich"
-								description="Der Editor kann nur genutzt werden, wenn der Erblasser die Deutsche Staatsbürgerschaft besitzt und das Testament nach Deutschem Erbrecht verfasst werden soll."
+								description="Der Editor kann nur genutzt werden, wenn der Erblasser die deutsche Staatsbürgerschaft besitzt und das Testament nach deutschem Erbrecht verfasst werden soll."
 							/>
+						)}
+
+						{/* Error alert */}
+						{error && (
+							<div className="mb-4">
+								<Alert {...alertContent[error]} />
+							</div>
 						)}
 
 						{/* Submit Button */}

@@ -8,6 +8,7 @@ import { IconButton } from '../../../../../components/IconButton/IconButton'
 import { HeirsOrganisationModal } from '../../../../../components/Modal/HeirsModal/HeirsOrganisationModal/HeirsOrganisationModal'
 import { HeirsPersonModal } from '../../../../../components/Modal/HeirsModal/HeirsPersonModal/HeirsPersonModal'
 import { Modal } from '../../../../../components/Modal/ModalBase/Modal'
+import { Tooltip } from '../../../../../components/Tooltip/Tooltip'
 import { determineHeirRelationship, getPersonAddHeirsOptions } from '../../../../../services/heirs'
 import { routes } from '../../../../../services/routes/routes'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
@@ -94,36 +95,42 @@ const Heirs = () => {
 							return (
 								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
 									<td className="pr-4" title={heir.name}>
-										<p className="truncate font-bold">{heir.name}</p>
+										<p title={heir.name} className="truncate font-bold">
+											{heir.name}
+										</p>
 										<p>{determineHeirRelationship(heir)}</p>
 									</td>
 									<td className="p-4">
-										<div className="flex justify-end">
-											<IconButton
-												datacy={`${colType}-editbutton-${heir.name}`}
-												onClick={() => {
-													if (isPerson) {
-														setSelectedPerson(heir)
-														setIsPersonModalOpen(true)
-													} else if (isOrganisation) {
-														setSelectedOrganisation(heir)
-														setIsOrganisationModalOpen(true)
-													}
-												}}
-												icon="edit"
-											/>
-											<IconButton
-												datacy={`${colType}-deletebutton-${heir.name}`}
-												onClick={() => {
-													if (isPerson) {
-														setSelectedPerson(heir)
-													} else if (isOrganisation) {
-														setSelectedOrganisation(heir)
-													}
-													setIsDeleteModalOpen(true)
-												}}
-												icon="delete"
-											/>
+										<div className="flex justify-end gap-2">
+											<Tooltip content="Bearbeiten">
+												<IconButton
+													datacy={`${colType}-editbutton-${heir.name}`}
+													onClick={() => {
+														if (isPerson) {
+															setSelectedPerson(heir)
+															setIsPersonModalOpen(true)
+														} else if (isOrganisation) {
+															setSelectedOrganisation(heir)
+															setIsOrganisationModalOpen(true)
+														}
+													}}
+													icon="edit"
+												/>
+											</Tooltip>
+											<Tooltip content="Löschen">
+												<IconButton
+													datacy={`${colType}-deletebutton-${heir.name}`}
+													onClick={() => {
+														if (isPerson) {
+															setSelectedPerson(heir)
+														} else if (isOrganisation) {
+															setSelectedOrganisation(heir)
+														}
+														setIsDeleteModalOpen(true)
+													}}
+													icon="delete"
+												/>
+											</Tooltip>
 										</div>
 									</td>
 								</tr>

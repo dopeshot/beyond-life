@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { ObjectSchema, array, object, string } from 'yup'
 import { partnerMoreInfosOptions } from '../../../../../../content/checkboxOptions'
 import { genderOptions } from '../../../../../../content/dropdownOptions'
+import { NAME_REQUIRED_ERROR } from '../../../../../../content/validation'
 import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { Checkbox } from '../../../../../components/Form/Checkbox/Checkbox'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
@@ -37,7 +38,7 @@ const Marriage = () => {
 	// Gloabl State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
 	const partner = useAppSelector((state) =>
-		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner')
+		state.lastWill.data.heirs.find((heir): heir is Person => 'type' in heir && heir.type === 'partner'),
 	)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
 	const isBerlinWill = useAppSelector((state) => state.lastWill.data.common?.isBerlinWill) ?? false
@@ -77,7 +78,10 @@ const Marriage = () => {
 	}
 
 	const validationSchema: ObjectSchema<MarriageFormPayload> = object().shape({
-		name: string(),
+		name: string().when('relationshipStatus', {
+			is: 'married',
+			then: (schema) => schema.required(NAME_REQUIRED_ERROR),
+		}),
 		gender: string<Gender>(),
 		birthDate: string(),
 		birthPlace: string(),
@@ -94,20 +98,16 @@ const Marriage = () => {
 	})
 
 	const onSubmit = async (values: MarriageFormPayload, href: string) => {
-		try {
-			// Update marriage global state only if values have changed
-			dispatch(setMarriage(values))
+		// Update marriage global state only if values have changed
+		dispatch(setMarriage(values))
 
-			const response = await dispatch(sendLastWillState())
-			if (response.meta.requestStatus === 'rejected') {
-				return
-				// TODO: Add error handling here
-			}
-			// Redirect to previous or next page
-			router.push(href)
-		} catch (error) {
-			console.error('An error occurred while submitting the form: ', error)
+		const response = await dispatch(sendLastWillState())
+		if (response.meta.requestStatus === 'rejected') {
+			return
 		}
+
+		// Redirect to previous or next page
+		router.push(href)
 	}
 
 	// Use to handle sidebar display state and progress
@@ -178,7 +178,7 @@ const Marriage = () => {
 									options={[
 										{
 											value: 'isPartnerGermanCitizenship',
-											label: 'Besitzt ihr Partner die deutsche Staatsbürgerschaft?',
+											label: 'Besitzt Ihr Partner die deutsche Staatsbürgerschaft?',
 										},
 									]}
 								/>
@@ -191,7 +191,7 @@ const Marriage = () => {
 
 									<div className="2xl:w-2/3">
 										{/* Name */}
-										<div className="mb-2 grid gap-x-3 md:mb-4 md:grid-cols-2">
+										<div className="grid gap-x-3 md:grid-cols-2">
 											<TextInput
 												name="name"
 												inputRequired
@@ -216,32 +216,30 @@ const Marriage = () => {
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
-											<div className="mb-2 w-2/3 md:mb-4 md:w-3/4">
+											<div className="w-2/3 md:w-3/4">
 												<TextInput
 													name="street"
-													inputRequired
 													labelText="Straße"
 													placeholder="Straße"
 													autoComplete="street-address"
 												/>
 											</div>
-											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
-												<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
+											<div className="w-1/3 md:w-1/4">
+												<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
 										<div className="flex gap-x-3">
-											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
+											<div className="w-1/3 md:w-1/4">
 												<TextInput
 													name="zipCode"
-													inputRequired
 													labelText="Postleitzahl"
 													placeholder="Postleitzahl"
 													autoComplete="postal-code"
 												/>
 											</div>
 											<div className="w-2/3 md:w-3/4">
-												<TextInput name="city" inputRequired labelText="Stadt" placeholder="Stadt" />
+												<TextInput name="city" labelText="Stadt" placeholder="Stadt" />
 											</div>
 										</div>
 									</div>
@@ -253,7 +251,7 @@ const Marriage = () => {
 									<Checkbox
 										name="moreInfos"
 										labelText="Weitere relevante Infos"
-										inputRequired
+										helperText="Im Fall einer Behinderung oder einer Insolvenz gibt es zusätzliche Richtlinien zu beachten."
 										options={partnerMoreInfosOptions}
 									/>
 								</div>
@@ -265,7 +263,6 @@ const Marriage = () => {
 										className="mb-2 block font-semibold"
 										labelText="Güterstand"
 										isLegend
-										inputRequired
 									/>
 									<div className="mb-2 grid gap-3 md:grid-cols-2 xl:w-2/3 2xl:w-1/2">
 										<CustomSelectionButton

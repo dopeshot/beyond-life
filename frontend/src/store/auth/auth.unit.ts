@@ -1,5 +1,5 @@
 import { SessionData } from '../../types/auth'
-import { AuthState, authReducer, login, loginApi, logout, refreshToken, registerApi } from './auth'
+import { AuthState, authReducer, loginApi, logout, refreshToken, registerApi } from './auth'
 
 describe('authSlice', () => {
 	const initialSessionData: SessionData = {
@@ -32,29 +32,35 @@ describe('authSlice', () => {
 
 	describe('login', () => {
 		it('should set isAuthenticated to true and set sessionData when login action is dispatched', () => {
-			const action = login(initialSessionData)
-			const newState = authReducer(initialState, action)
+			const action = {
+				type: refreshToken.fulfilled.type,
+				payload: initialSessionData,
+			}
+			const state = authReducer(initialState, action)
 
-			expect(newState.isAuthenticated).to.be.true
-			expect(newState.sessionData).to.deep.equal(initialSessionData)
-			expect(newState.isInitialized).to.be.true
+			expect(state.isAuthenticated).to.be.true
+			expect(state.sessionData).to.deep.equal(initialSessionData)
+			expect(state.isInitialized).to.be.true
 		})
 	})
 
 	describe('logout', () => {
 		it('should set isAuthenticated to false and clear sessionData when logout action is dispatched', () => {
-			const loginAction = login(initialSessionData)
-			let newState = authReducer(initialState, loginAction)
+			const action = {
+				type: refreshToken.fulfilled.type,
+				payload: initialSessionData,
+			}
+			let state = authReducer(initialState, action)
 
-			expect(newState.isAuthenticated).to.be.true
-			expect(newState.sessionData).to.deep.equal(initialSessionData)
-			expect(newState.isInitialized).to.be.true
+			expect(state.isAuthenticated).to.be.true
+			expect(state.sessionData).to.deep.equal(initialSessionData)
+			expect(state.isInitialized).to.be.true
 
 			const logoutAction = logout()
-			newState = authReducer(newState, logoutAction)
+			state = authReducer(state, logoutAction)
 
-			expect(newState.isAuthenticated).to.be.false
-			expect(newState.sessionData).to.be.null
+			expect(state.isAuthenticated).to.be.false
+			expect(state.sessionData).to.be.null
 		})
 	})
 

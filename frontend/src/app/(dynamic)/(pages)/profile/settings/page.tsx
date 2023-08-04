@@ -30,7 +30,7 @@ import {
 	changeEmail,
 	changePassword,
 	deleteAccount,
-} from '../../../../../services/api/profile/profile'
+} from '../../../../../services/api/profile/settings'
 import { logout, refreshToken } from '../../../../../store/auth/auth'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 
@@ -101,7 +101,7 @@ const AccountSettings = () => {
 		const response = await changeEmail(values.newEmail)
 		setChangeMailStatus(response)
 		if (response === 'OK') {
-			await dispatch(refreshToken({ bypassExpiryCheck: true }))
+			await dispatch(refreshToken({ ignoreExpireCheck: true }))
 		}
 		setIsLoadingChangeMail(false)
 	}
@@ -111,7 +111,7 @@ const AccountSettings = () => {
 		const response = await changePassword(values.oldPassword, values.newPassword)
 		setChangePasswordStatus(response)
 		if (response === 'OK') {
-			await dispatch(refreshToken({ bypassExpiryCheck: true }))
+			await dispatch(refreshToken({ ignoreExpireCheck: true }))
 		}
 		setIsLoadingChangePassword(false)
 	}

@@ -92,5 +92,12 @@ export const sampleObject = {
       currency: 'USD',
     },
   ],
-  progressKeys: ['testator', 'marriage', 'heirs'],
+  progressKeys: [
+    'testator',
+    'marriage',
+    'heirs',
+    'inheritance',
+    'succession',
+    'final',
+  ],
 }

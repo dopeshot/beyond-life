@@ -24,7 +24,7 @@ declare global {
 			/**
 			 * Mocks the create last will endpoint.
 			 */
-			mockCreateLastWill(): Chainable<void>
+			mockCreateLastWill(response: 'OK' | 'UNAUTHORIZED' | 'PLANS_LIMIT_EXCEEDED' | 'NETWORK_ERROR'): Chainable<void>
 			/**
 			 * Mocks the update last will endpoint.
 			 */

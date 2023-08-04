@@ -204,7 +204,7 @@ describe('LastWillController (e2e)', () => {
         expect(createdLastWill).toBe(0)
       })
 
-      it('should validate the (Person | Organisation)[] based on missing type in Person ', async () => {
+      it('should validate the (Person | Organisation)[] based on missing type in Person', async () => {
         await request(app.getHttpServer())
           .post('/lastwill')
           .set('Authorization', `Bearer ${token}`)
@@ -465,6 +465,35 @@ describe('LastWillController (e2e)', () => {
       })
 
       // Further tests are not really needed here. The testament generation is covered by unit tests
+      // But we shall do em for CODE COV, nah, safety first!
+
+      it('should return last will with testator address', async () => {
+        // ARRANGE
+        const lastWill = (
+          await lastWillModel.create({
+            ...sampleObject,
+            accountId: user._id,
+            testator: {
+              ...sampleObject.testator,
+              address: {
+                street: 'Sample Street',
+                houseNumber: '1a',
+                zipCode: '12345',
+                city: 'Berlin',
+              },
+            },
+          })
+        ).toObject()
+
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/lastwill/${lastWill._id}/fulltext`)
+          .set('Authorization', `Bearer ${token}`)
+
+        // ASSERT
+        expect(res.status).toEqual(HttpStatus.OK)
+        expect(new GeneratedLastWillDTO(res.body)).toEqual(res.body)
+      })
     })
 
     describe('Negative Tests', () => {
