@@ -44,8 +44,9 @@ export class MailScheduleService {
       hasBeenRescheduled: false,
       content: mail,
     }
-    const insertedValue = await this.mailEventService.createEvent(mailEvent)
-    if (!insertedValue) {
+    try {
+      await this.mailEventService.createEvent(mailEvent)
+    } catch (error) /* istanbul ignore next */ {
       this.logger.warn(`MailEvent could not be inserted into the database`)
       throw new InternalServerErrorException('Mailevent could not be scheduled')
     }
@@ -68,7 +69,7 @@ export class MailScheduleService {
   @Cron('0 * * * *')
   async sendScheduledMails(): Promise<void> {
     const mails = await this.mailEventService.getOpenEventsBefore(new Date())
-    if (!mails) {
+    if (mails.length == 0) {
       this.logger.log(`No scheduled mails for cron`)
       return
     }
