@@ -54,7 +54,6 @@ const Inheritance = () => {
 
 		if (response.meta.requestStatus === 'rejected') {
 			return
-			// TODO: Add error handling here
 		}
 
 		// Redirect to previous or next page

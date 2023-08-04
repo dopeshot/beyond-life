@@ -60,7 +60,6 @@ const Succession = () => {
 		const response = await dispatch(sendLastWillState())
 		if (response.meta.requestStatus === 'rejected') {
 			return
-			// TODO: Add error handling here
 		}
 
 		router.push(href)

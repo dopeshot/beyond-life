@@ -104,8 +104,8 @@ const Marriage = () => {
 		const response = await dispatch(sendLastWillState())
 		if (response.meta.requestStatus === 'rejected') {
 			return
-			// TODO: Add error handling here
 		}
+
 		// Redirect to previous or next page
 		router.push(href)
 	}
