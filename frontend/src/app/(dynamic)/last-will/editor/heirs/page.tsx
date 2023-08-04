@@ -94,7 +94,9 @@ const Heirs = () => {
 							return (
 								<tr datacy={`${colType}-row-${heir.name}`} key={heir.id} className="border-b border-gray-300">
 									<td className="pr-4" title={heir.name}>
-										<p className="truncate font-bold">{heir.name}</p>
+										<p title={heir.name} className="truncate font-bold">
+											{heir.name}
+										</p>
 										<p>{determineHeirRelationship(heir)}</p>
 									</td>
 									<td className="p-4">

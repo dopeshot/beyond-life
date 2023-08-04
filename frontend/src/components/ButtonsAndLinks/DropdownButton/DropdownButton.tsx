@@ -54,7 +54,9 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({ datacy, children
 								option.onClick()
 							}}
 						>
-							<span className="truncate pr-1">{option.label}</span>
+							<span title={option.label} className="truncate pr-1">
+								{option.label}
+							</span>
 						</button>
 					))}
 				</div>

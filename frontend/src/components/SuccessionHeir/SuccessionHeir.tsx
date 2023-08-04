@@ -47,7 +47,12 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputField
 				<div className="w-5/6">
 					<p className="mb-1 w-full">{`Gegenstände${items.length > 0 ? ` (${items.length})` : ''}`}</p>
 					{items.slice(0, 2).map((item) => (
-						<p datacy={`${datacy}-item-${item.name}`} className="truncate text-gray-500" key={item.id}>
+						<p
+							title={item.name}
+							datacy={`${datacy}-item-${item.name}`}
+							className="truncate text-gray-500"
+							key={item.id}
+						>
 							{item.name}
 						</p>
 					))}
