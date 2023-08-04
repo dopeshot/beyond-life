@@ -30,7 +30,7 @@ export type TextInputProps = {
 export const TextInput: React.FC<TextInputProps> = ({
 	name,
 	type = 'text',
-	width,
+	width = '',
 	labelText,
 	inputRequired = false,
 	helperText,
@@ -38,12 +38,12 @@ export const TextInput: React.FC<TextInputProps> = ({
 	autoComplete = 'on',
 	icon,
 	iconOnClick,
-	hasBottomMargin = false,
+	hasBottomMargin = true,
 	className,
 	...props
 }) => {
 	return (
-		<div className={`${width} ${hasBottomMargin ?? 'mb-2 md:mb-4'}`}>
+		<div className={`${width} ${hasBottomMargin && 'mb-2 md:mb-4'}`}>
 			<Field type={type} name={name}>
 				{(fieldProps: FieldProps<string | number>) => (
 					<div className="relative flex flex-col justify-center gap-1">

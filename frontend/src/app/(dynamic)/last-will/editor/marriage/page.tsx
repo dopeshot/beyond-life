@@ -195,7 +195,7 @@ const Marriage = () => {
 
 									<div className="2xl:w-2/3">
 										{/* Name */}
-										<div className="mb-2 grid gap-x-3 md:mb-4 md:grid-cols-2">
+										<div className="grid gap-x-3 md:grid-cols-2">
 											<TextInput
 												name="name"
 												inputRequired
@@ -220,7 +220,7 @@ const Marriage = () => {
 
 										{/* Adress */}
 										<div className="flex gap-x-3">
-											<div className="mb-2 w-2/3 md:mb-4 md:w-3/4">
+											<div className="w-2/3 md:w-3/4">
 												<TextInput
 													name="street"
 													labelText="Straße"
@@ -228,13 +228,13 @@ const Marriage = () => {
 													autoComplete="street-address"
 												/>
 											</div>
-											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
+											<div className="w-1/3  md:w-1/4">
 												<TextInput name="houseNumber" labelText="Hausnummer" placeholder="Hausnummer" />
 											</div>
 										</div>
 
 										<div className="flex gap-x-3">
-											<div className="mb-2 w-1/3 md:mb-4 md:w-1/4">
+											<div className="w-1/3 md:w-1/4">
 												<TextInput
 													name="zipCode"
 													labelText="Postleitzahl"
