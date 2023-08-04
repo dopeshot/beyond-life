@@ -4,44 +4,24 @@
 
 ## Quick start
 
-To run the application locally simply run:
+Die meisten ENV-Variablen haben default Werte gesetzt. Die einzige Ausnahme stellt stripe dar. Die Stripe env Daten, sowie die Login Daten sollten in der Email gewesen sein.
+Sollte es hierbei Probleme geben siehe [Troubleshooting](#Troubleshooting).
+
+Sobald die .env im Repo liegt kann das docker compose setup mit folgendem Befehl gestartet werden:
 
 ```sh
 docker compose up -d
 ```
+
+Daraufhin kannst du:
+ - das [Frontend](http://localhost:3000) aufrufen
+ - das [SMTP Server Panel](http://localhost:5001) aufrufen
 
 **Stripe:**
 To perform test payments (not real ones), Stripe data has to be provided in the `.env` file.
 secrets, items and price_ids can be found in the [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard).
 
 The frontend also needs the public secret
-
-**Note:** `docker compose` is merely an alias for `docker-compose` which only exists in newer versions. Omitting the dash may not work for older docker versions.
-
-The docker compose setup exposes a Mailserver for testing. The [web interface](http://localhost:5001/) of said server can be used to verify the mail functionality.
-
-
-When starting up an initial user is automatically created:
-
-```
-email: devops@totally.rocks
-password: WeAllLoveDevOps
-```
-
-## Start for devs
-
-When developing having all components up and running is mostly unnecessary.
-To run all components BUT one simply run:
-
-```sh
-docker compose up -d --scale=<service name>=0
-```
-
-So for example:
-
-```sh
-docker compose up -d --scale=frontend=0
-```
 
 ## Troubleshooting
 
