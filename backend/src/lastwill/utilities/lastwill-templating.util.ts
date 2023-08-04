@@ -108,7 +108,7 @@ export function getOptionalDescription(text: string): string {
 }
 
 export function getDateorPlaceholder(dateString: string): string | undefined {
-  if (!dateString || dateString === '') return
+  if (!dateString) return
   return new Date(dateString).toLocaleDateString('de-de')
 }
 
