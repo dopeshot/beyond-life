@@ -2,7 +2,6 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
 import { ObjectId } from 'mongoose'
@@ -29,14 +28,20 @@ export class LastWillService {
     private readonly lastwillDbService: LastWillDBService,
   ) {}
 
-  async getFullTextLastWill(id: string, userId: ObjectId) {
+  async getFullTextLastWill(
+    id: string,
+    userId: ObjectId,
+  ): Promise<GeneratedLastWillDTO> {
     const lastWill = await this.lastwillDbService.findFullById(id, userId)
 
-    if (!lastWill) throw new NotFoundException()
     return this.generateLastWillFullText(lastWill)
   }
 
-  async createLastWill(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
+  async createLastWill(
+    createLastWillDto: CreateLastWillDto,
+    userId: ObjectId,
+  ): Promise<LastWill> {
+    this.logger.log(`Creating new Lastwill for user`)
     const lastWillCount = await this.lastwillDbService.countDocuments(userId)
 
     const user = await this.userService.findOneById(userId)
@@ -45,10 +50,12 @@ export class LastWillService {
     const plan = user.paymentPlan
     const allowedWills = Math.abs(paymentPlans[plan])
 
-    if (lastWillCount >= allowedWills)
+    if (lastWillCount >= allowedWills) {
+      this.logger.log(`Last will creation exceeding plan limits was attempted`)
       throw new ForbiddenException(
         `Exceeding allowed last wills: ${allowedWills}`,
       )
+    }
 
     return await this.lastwillDbService.createOne(createLastWillDto, userId)
   }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Severity, prop } from '@typegoose/typegoose'
+import { ModelOptions, Severity, prop } from '@typegoose/typegoose'
 import { Expose, Transform, Type, plainToClass } from 'class-transformer'
 import {
   Equals,
@@ -10,6 +10,10 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  Length,
+  Max,
+  Min,
+  ValidateIf,
   ValidateNested,
 } from 'class-validator'
 import { ObjectId } from 'mongoose'
@@ -22,6 +26,7 @@ export enum PersonType {
   SIBLING = 'siblings',
   OTHER = 'other',
   ORGANISATION = 'organisation',
+  PARTNER = 'partner',
 }
 
 export enum Gender {
@@ -64,7 +69,7 @@ enum ChildRelationShip {
 }
 
 const swaggerExamplePersonHeir: Person = {
-  id: '987654321',
+  id: '111111111111111111111',
   type: PersonType.CHILD,
   name: 'Heir Name',
   gender: Gender.MALE,
@@ -73,7 +78,7 @@ const swaggerExamplePersonHeir: Person = {
   isHandicapped: false,
   isInsolvent: false,
   percentage: 50,
-  itemIds: ['11111111', '22222222'],
+  itemIds: ['111111111111111111111', '111111111111111111112'],
   child: {
     type: ChildType.NATURAL,
     relationship: ChildRelationShip.CHILD_TOGETHER,
@@ -87,7 +92,7 @@ const swaggerExamplePersonHeir: Person = {
 }
 
 const swaggerExampleOrgaHeir: Organisation = {
-  id: 'jeffsId',
+  id: '111111111111111111112',
   type: PersonType.ORGANISATION,
   name: 'Strongpong e.V.',
   address: {
@@ -97,12 +102,14 @@ const swaggerExampleOrgaHeir: Organisation = {
     city: 'Berlin',
   },
   percentage: 50,
-  itemIds: ['11111111', '22222222'],
+  itemIds: ['111111111111111111113', '111111111111111111114'],
 }
 
 const swaggerExampleObject: LastWill = {
   _id: '6175f1906be245001e352a0e',
   accountId: 'aaaaaaaaaaaaaaaaaaaaaaaa',
+  createdAt: new Date(),
+  updatedAt: new Date(),
   common: {
     isBerlinWill: false,
     isPartnerGermanCitizenship: false,
@@ -119,20 +126,39 @@ const swaggerExampleObject: LastWill = {
   },
   heirs: [swaggerExamplePersonHeir, swaggerExampleOrgaHeir],
   items: [
-    { id: '11111111', name: 'Item 1', description: 'Description 1' },
-    { id: '22222222', name: 'Item 2', description: 'Description 2' },
+    {
+      id: '111111111111111111111',
+      name: 'Item 1',
+      description: 'Description 1',
+    },
+    {
+      id: '111111111111111111112',
+      name: 'Item 2',
+      description: 'Description 2',
+    },
   ],
   financialAssets: [
-    { id: '33333333', where: 'PayPal', amount: 420.69, currency: 'EUR' },
-    { id: '44444444', where: 'Bank', amount: 1234.56, currency: 'USD' },
+    {
+      id: '111111111111111111113',
+      where: 'PayPal',
+      amount: 420.69,
+      currency: 'EUR',
+    },
+    {
+      id: '111111111111111111114',
+      where: 'Bank',
+      amount: 1234.56,
+      currency: 'USD',
+    },
   ],
-  progressKeys: [SidebarPages.TESTATOR, SidebarPages.HEIRS, SidebarPages.FINAL],
-}
-
-// This is used as a standalone to prevent usage of mixins, Person and Organisation implement this on their own
-class Discriminator {
-  @IsEnum(PersonType)
-  type: PersonType
+  progressKeys: [
+    SidebarPages.TESTATOR,
+    SidebarPages.MARRIAGE,
+    SidebarPages.HEIRS,
+    SidebarPages.INHERITANCE,
+    SidebarPages.SUCCESSION,
+    SidebarPages.FINAL,
+  ],
 }
 
 @Expose()
@@ -204,6 +230,7 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 256)
   street?: string
 
   @prop({ required: false, type: String })
@@ -214,6 +241,7 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 100)
   houseNumber?: string
 
   @prop({ required: false, type: String })
@@ -224,25 +252,29 @@ class Address {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 69)
   zipCode?: string
 
   @prop({ required: false, type: String })
   @ApiPropertyOptional({ description: 'City', example: 'Berlin', type: String })
   @IsOptional()
   @IsString()
+  @Length(0, 100)
   city?: string
 }
 
 @Expose()
 class PersonBase {
-  @prop({ required: true, type: String })
+  @prop({ required: false, type: String })
   @ApiProperty({
     description: 'Full name',
     example: swaggerExamplePersonHeir.name,
     type: String,
   })
   @IsString()
-  name: string
+  @IsOptional()
+  @Length(0, 100)
+  name?: string
 
   @prop({ required: false, enum: Gender, type: String })
   @ApiPropertyOptional({
@@ -262,6 +294,7 @@ class PersonBase {
     type: String,
   })
   @IsOptional()
+  @ValidateIf((e) => e.birthDate !== '')
   @IsString()
   @IsISO8601()
   birthDate?: string
@@ -274,6 +307,7 @@ class PersonBase {
   })
   @IsOptional()
   @IsString()
+  @Length(0, 256)
   birthPlace?: string
 
   @prop({ required: false, type: Boolean })
@@ -317,6 +351,7 @@ export class Person extends PersonBase {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: true, enum: PersonType, type: String })
@@ -338,6 +373,8 @@ export class Person extends PersonBase {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
+  @Max(100)
   percentage?: number
 
   @prop({ required: false, type: [String], default: [] })
@@ -349,6 +386,7 @@ export class Person extends PersonBase {
   })
   @IsString({ each: true })
   @IsOptional()
+  @Length(21, 21, { each: true })
   itemIds?: string[]
 
   // Heirs
@@ -387,6 +425,7 @@ export class Organisation {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: true, enum: PersonType, type: String })
@@ -407,6 +446,7 @@ export class Organisation {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   name?: string
 
   @prop({ required: false, type: Address })
@@ -429,6 +469,8 @@ export class Organisation {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
+  @Max(100)
   percentage?: number
 
   @prop({ required: false, type: [String], default: [] })
@@ -440,6 +482,7 @@ export class Organisation {
   })
   @IsString({ each: true })
   @IsOptional()
+  @Length(21, 21, { each: true })
   itemIds?: string[]
 }
 
@@ -452,6 +495,7 @@ export class Item {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: false, type: String })
@@ -462,6 +506,7 @@ export class Item {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   name?: string
 
   @prop({ required: false, type: String })
@@ -472,6 +517,7 @@ export class Item {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 1024)
   description?: string
 }
 
@@ -484,6 +530,7 @@ export class FinancialAsset {
     type: String,
   })
   @IsString()
+  @Length(21, 21)
   id: string
 
   @prop({ required: false, type: String })
@@ -494,9 +541,10 @@ export class FinancialAsset {
   })
   @IsString()
   @IsOptional()
+  @Length(0, 256)
   where?: string
 
-  @prop({ required: false, type: Number })
+  @prop({ required: false, type: Number, min: 0 })
   @ApiPropertyOptional({
     description: 'Amount',
     example: swaggerExampleObject.financialAssets[0].amount,
@@ -504,6 +552,7 @@ export class FinancialAsset {
   })
   @IsNumber()
   @IsOptional()
+  @Min(0)
   amount?: number
 
   @prop({ required: false, type: String })
@@ -514,18 +563,37 @@ export class FinancialAsset {
   })
   @IsString()
   @IsOptional()
+  // @IsISO4217CurrencyCode() We decide against this to allow for custom currencies
+  @Length(0, 100)
   currency?: string
 }
 
-export class LastWill {
+export class MongooseBaseEntity {
+  @Expose()
+  @ApiProperty({
+    description: 'Creation date of user',
+    example: swaggerExampleObject.createdAt,
+  })
+  createdAt: Date
+
+  @Expose()
+  @ApiProperty({
+    description: 'Last Update date of user',
+    example: swaggerExampleObject.updatedAt,
+  })
+  updatedAt: Date
+
+  @Expose()
   @ApiProperty({
     description: 'Id',
     example: swaggerExampleObject._id,
   })
   @Type(() => String)
-  @Expose()
   _id: ObjectId | string
+}
 
+@ModelOptions({ schemaOptions: { timestamps: true, minimize: false } })
+export class LastWill extends MongooseBaseEntity {
   @prop({
     required: true,
     type: String,
@@ -538,11 +606,10 @@ export class LastWill {
     example: swaggerExampleObject.accountId,
     type: String,
   })
-  @IsString()
   @Expose()
   accountId: string
 
-  @prop({ required: true, type: Common, _id: false })
+  @prop({ required: true, type: Common, _id: false, default: {} })
   @ApiProperty({
     type: Common,
     description: 'Common data for the will',
@@ -554,7 +621,7 @@ export class LastWill {
   @Expose()
   common: Common
 
-  @prop({ required: true, type: Testator, _id: false })
+  @prop({ required: true, type: Testator, _id: false, default: {} })
   @ApiProperty({
     type: Testator,
     description: 'Testator data',
@@ -585,29 +652,17 @@ export class LastWill {
     The Transform is performed after the Type, but in Serialization it seems the Type is not enough transformation
     This is only needed if lastwillModel returns flattenMaps (for example not on .create)
   */
-  @Type(() => Discriminator, {
-    discriminator: {
-      property: 'type',
-      subTypes: [
-        // TODO: check if name is the value which is discriminated on, do I have to have all options here?
-        { value: Person, name: PersonType.OTHER },
-        { value: Person, name: PersonType.CHILD },
-        { value: Person, name: PersonType.FATHER },
-        { value: Person, name: PersonType.MOTHER },
-        { value: Person, name: PersonType.SIBLING },
-        { value: Organisation, name: PersonType.ORGANISATION },
-      ],
-    },
-    keepDiscriminatorProperty: true,
-  })
+  @Type((value) =>
+    value.object.type === PersonType.ORGANISATION ? Organisation : Person,
+  )
   @Expose()
-  @Transform(({ value }) =>
-    value?.map((object: Person | Organisation) => {
-      if (object.type === PersonType.ORGANISATION) {
-        return plainToClass(Organisation, object)
-      }
-      return plainToClass(Person, object)
-    }),
+  @Transform(
+    ({ value }) =>
+      value?.map((object: Person | Organisation) =>
+        object.type === PersonType.ORGANISATION
+          ? plainToClass(Organisation, object)
+          : plainToClass(Person, object),
+      ),
   )
   heirs: (Person | Organisation)[]
 
@@ -653,12 +708,13 @@ export class LastWill {
   progressKeys: SidebarPages[]
 
   constructor(partial: Partial<LastWill>) {
+    super()
     Object.assign(this, partial)
   }
 }
 
 // PickTypes don't work with class-transformer, so we have to create a new class
-export class LastWillMetadata {
+export class LastWillMetadata extends MongooseBaseEntity {
   @ApiProperty({
     description: 'Progress keys',
     example: swaggerExampleObject.progressKeys,
@@ -678,6 +734,7 @@ export class LastWillMetadata {
   testator: string
 
   constructor(partial: Partial<LastWillMetadata>) {
+    super()
     Object.assign(this, partial)
   }
 }

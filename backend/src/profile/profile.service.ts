@@ -24,11 +24,16 @@ export class ProfileService {
     private readonly lastwillDbService: LastWillDBService,
   ) {}
 
-  async updatePassword(id: ObjectId, oldPassword: string, newPassword: string) {
+  async updatePassword(
+    id: ObjectId,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<void> {
     // Verify that old password is right
     const user = await this.userService.findOneById(id)
 
     if (!user || !(await compare(oldPassword, user.password))) {
+      this.logger.warn(`Invalid credentials for password change.`)
       throw new UnauthorizedException(
         'This is not allowed...either you do not exist or the provided password was invalid',
       )
@@ -36,13 +41,16 @@ export class ProfileService {
     await this.userService.updateUserPassword(id, newPassword)
   }
 
-  async updateUserEmail(id: ObjectId, newEmail: string) {
+  async updateUserEmail(id: ObjectId, newEmail: string): Promise<void> {
     const user = await this.userService.findOneById(id)
     if (!user) {
       throw new UnauthorizedException()
     }
 
     if (user.email === newEmail) {
+      this.logger.log(
+        `Skipping email update for user as new email equaled the old one`,
+      )
       // Do not throw error here
       // Throwing an error would allow for an attacker to brute force their way to the accounts email address
       return
@@ -51,6 +59,7 @@ export class ProfileService {
     try {
       await this.userService.updateUserEmail(id, newEmail)
     } catch (error) {
+      this.logger.error(`Could not update user email ${error}`)
       // If error is already httpexception => Continue throwing
       if (error instanceof HttpException) {
         throw error
@@ -73,7 +82,7 @@ export class ProfileService {
     }
   }
 
-  async deleteProfile(id: ObjectId) {
+  async deleteProfile(id: ObjectId): Promise<void> {
     const user = await this.userService.findOneById(id)
 
     if (!user) {
@@ -97,9 +106,22 @@ export class ProfileService {
 
     try {
       await this.mailService.scheduleMailNow(mailData)
+      return
     } catch (error) {
       this.logger.error(
         `Could not send email regarding account deletion. Deletion will continue anyway.`,
+      )
+    }
+
+    // If we get here the mail could not be send as of now => Fallback to just scheduling it
+    const newSendDate = new Date()
+    // Reschedule 5 hours later by default
+    newSendDate.setHours(newSendDate.getHours() + 5)
+    try {
+      await this.mailService.scheduleMailAtDate(newSendDate, mailData)
+    } catch (error) {
+      this.logger.warn(
+        `Mail could not be scheduled due to an error. Account deletion continues anyways ${error}`,
       )
     }
   }

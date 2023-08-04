@@ -41,7 +41,12 @@ export class MockStripeService {
       },
     }
   }
+
   async customer_create(email: string) {
     return { id: 'cus_test' }
+  }
+
+  async customer_update(customerId: string, email: string) {
+    return
   }
 }

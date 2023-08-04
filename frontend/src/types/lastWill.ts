@@ -1,5 +1,7 @@
 // Form types
 
+import { SidebarPages } from './sidebar'
+
 type BasicPersonPayload = {
 	name?: string
 	gender?: Gender
@@ -23,8 +25,6 @@ export type PersonFormPayload = BasicPersonPayload & {
 	type: PersonType
 
 	moreInfos?: string[]
-	childRelationShip?: ChildRelationShip
-	ownChild?: string[]
 }
 
 export type OrganisationFormPayload = {
@@ -32,30 +32,15 @@ export type OrganisationFormPayload = {
 	name?: string
 } & Address
 
-// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
+export type HeirSuccesion = {
+	id: string
+	type: HeirsTypes
+	name: string
+} & Succession
+
 export type SuccessionFormPayload = {
-	persons: SuccessionPerson[]
-	organisations: SuccessionOrganisation[]
-	partner: SuccessionPartner
+	heirs: HeirSuccesion[]
 }
-
-export type SuccessionPerson = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionPartner = {
-	percentage: number
-	itemIds: number[]
-}
-
-export type SuccessionOrganisation = {
-	id: number | null
-	percentage: number
-	itemIds: number[]
-}
-// TODO: REFACTOR THIS AFTER ERBFOLGE IS DONE
 
 export type InheritanceFormPayload = {
 	financialAssets: FinancialAsset[]
@@ -63,6 +48,27 @@ export type InheritanceFormPayload = {
 }
 
 // Store
+export type LastWillState = {
+	// DO NOT SYNC THIS WITH BACKEND
+	isLoading: boolean
+	isInitialized: boolean
+
+	// SYNC THIS WITH BACKEND
+	data: {
+		_id: string
+		common: {
+			isBerlinWill?: boolean
+			isPartnerGermanCitizenship?: boolean
+			matrimonialProperty?: MatrimonialProperty
+		}
+		progressKeys: SidebarPages[]
+		testator: Testator
+		heirs: (Person | Organisation)[]
+		financialAssets: FinancialAsset[]
+		items: Item[]
+	}
+}
+
 export type Testator = {
 	relationshipStatus?: RelationshipStatus
 } & Omit<Person, 'type' | 'percentage' | 'itemIds' | 'id' | 'child'>
@@ -75,11 +81,8 @@ export type Person = {
 	birthPlace?: string
 	isHandicapped?: boolean
 	isInsolvent?: boolean
-
-	// Succession
-	percentage?: number
-	itemIds?: number[]
-} & { address?: Address } & ChildInfo &
+} & { address?: Address } & Succession &
+	ChildInfo &
 	Id
 
 type ChildInfo = {
@@ -93,7 +96,8 @@ export type ChildRelationShip = 'childTogether' | 'childFromPartner' | 'childFro
 export type Organisation = {
 	name?: string
 	type: OrganisationType
-} & { address?: Address } & Id
+} & { address?: Address } & Succession &
+	Id
 
 export type FinancialAsset = {
 	where?: string
@@ -119,6 +123,11 @@ type Address = {
 	city?: string
 }
 
+type Succession = {
+	percentage?: number
+	itemIds?: string[]
+}
+
 export type HeirsTypes = PersonType | OrganisationType
 export type PersonType = 'partner' | 'mother' | 'father' | 'child' | 'siblings' | 'other'
 export type OrganisationType = 'organisation'
@@ -127,3 +136,24 @@ type Gender = 'male' | 'female' | 'divers'
 export type RelationshipStatus = 'married' | 'divorced' | 'widowed' | 'unmarried'
 export type MatrimonialProperty = 'communityOfGain' | 'separationOfProperty'
 export type PartnerMoreInfos = 'partnerHandicapped' | 'partnerInsolvent' | 'partnerBerlinWill'
+
+// Final Last Will
+
+export type GeneratedLastWill = {
+	testatorHeader: TestatorHeader
+	locationHeader: string
+	title: string
+	initialText: string
+	paragraphs: LastWillParagraph[]
+}
+
+export type TestatorHeader = {
+	fullName: string
+	AddressStreet: string
+	AddressCity: string
+}
+
+export type LastWillParagraph = {
+	title: string
+	contents: string[]
+}

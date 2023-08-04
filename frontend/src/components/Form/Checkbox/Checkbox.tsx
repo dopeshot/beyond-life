@@ -37,6 +37,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 	return (
 		<>
 			<Modal
+				datacy="modal"
 				open={isCheckboxModalOpen}
 				onClose={() => setIsCheckboxModalOpen(false)}
 				headline={modalHeadline ?? 'Information:'}
@@ -60,10 +61,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({ name, labelText, helperText,
 				>
 					<Field type="checkbox" className="mr-2" name={name} value={`${option.value}`} />
 					{option.icon && <Icon icon={option.icon} />}
-					<span>{option.label}</span>
+					<span className="mr-4">{option.label}</span>
 					{option.helperText && (
 						<div className="flex">
 							<IconButton
+								datacy={`checkbox-${option.value}-info-icon`}
 								icon="info"
 								iconClassName="text-base"
 								className="h-5 w-5 text-gray-500 hover:bg-opacity-10"

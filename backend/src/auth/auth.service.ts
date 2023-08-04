@@ -22,6 +22,7 @@ import {
   VerifyMailData,
 } from '../mail/interfaces/mail.interface'
 import { MailScheduleService } from '../mail/services/scheduler.service'
+import { StripeService } from '../payments/services/stripe.service'
 import { JWTPayload } from '../shared/interfaces/jwt-payload.interface'
 import { LoginDTO } from './dtos/login.dto'
 import { RegisterDTO } from './dtos/register.dto'
@@ -38,6 +39,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly mailService: MailScheduleService,
+    private readonly stripeService: StripeService,
   ) {}
 
   /**
@@ -164,14 +166,16 @@ export class AuthService {
   /**
    * @description Verify users email
    */
-  async verifyUserMail(mail: string) {
+  async verifyUserMail(mail: string): Promise<void> {
     const user = await this.userService.findOneByEmail(mail)
 
     if (!user) {
+      this.logger.warn('Verify for user that does not exist was attempted')
       throw new NotFoundException('No user with that email address exists')
     }
 
     if (user.hasVerifiedEmail) {
+      this.logger.debug('Skipped verify as users email is already verified')
       throw new ConflictException('This user already verified their email')
     }
 
@@ -179,14 +183,18 @@ export class AuthService {
       this.logger.debug(`Verifying user mail`)
       await this.userService.updateUserEmailVerify(mail)
     } catch (error) {
+      this.logger.error(`User update failed due to an error ${error}`)
       throw new InternalServerErrorException('Update could not be made')
     }
+
+    if (!user.stripeCustomerId) return
+    await this.stripeService.customer_update(user.stripeCustomerId, mail)
   }
 
   /**
    * @description Request that verification email is send to users email address
    */
-  async requestUserVerifyMail(id: ObjectId) {
+  async requestUserVerifyMail(id: ObjectId): Promise<void> {
     const user = await this.userService.findOneById(id)
     // This should never happen, however it is a valid failsave
     if (!user) {
@@ -195,11 +203,14 @@ export class AuthService {
 
     // Dont do anything here, throwing an error is more confusing than helpful
     if (user.hasVerifiedEmail) {
+      this.logger.debug('Verify mail was not send as user is already verified')
       return
     }
+
     try {
       await this.sendEmailVerify(user)
     } catch (error) {
+      this.logger.error(`An error ocured while sending the email ${error}`)
       throw new ServiceUnavailableException(
         'Mail could not be send as of now. Please try again later',
       )
@@ -209,7 +220,7 @@ export class AuthService {
   /**
    * @description Send password reset email
    */
-  async startForgottenPasswordFlow(email: string) {
+  async startForgottenPasswordFlow(email: string): Promise<void> {
     const user = await this.userService.findOneByEmail(email)
 
     // No error to prevent mail checking
@@ -254,10 +265,13 @@ export class AuthService {
   /**
    * @description Reset user password
    */
-  async setNewUserPassword(id: ObjectId, newPassword: string) {
+  async setNewUserPassword(id: ObjectId, newPassword: string): Promise<void> {
     const user = await this.userService.findOneById(id)
     // This SHOULD never happen => Therefore internal server error
     if (!user) {
+      this.logger.warn(
+        `Password update was attempted for user that does not exist`,
+      )
       throw new InternalServerErrorException(
         'This user does not seem to exist anymore',
       )
@@ -267,7 +281,7 @@ export class AuthService {
       // No tests for db failure
       /* istanbul ignore next */
     } catch (error) {
-      this.logger.warn(
+      this.logger.error(
         `Could not update a user password due to an error ${error}`,
       )
       throw new ServiceUnavailableException(

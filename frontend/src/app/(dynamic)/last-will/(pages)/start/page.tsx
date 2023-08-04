@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
 import { Alert } from '../../../../../components/Alert/Alert'
@@ -10,6 +11,7 @@ import { FormError } from '../../../../../components/Errors/FormError/FormError'
 import { CustomSelectionButton } from '../../../../../components/Form/CustomSelectionButton/CustomSelectionButton'
 import { Label } from '../../../../../components/Form/Label/Label'
 import { Headline } from '../../../../../components/Headline/Headline'
+import { createLastWill } from '../../../../../services/api/lastwill/createLastWill'
 import { routes } from '../../../../../services/routes/routes'
 
 type StartLegal = {
@@ -17,25 +19,32 @@ type StartLegal = {
 	germanRightOfInheritance?: boolean
 }
 
+const initialFormValues: StartLegal = {
+	germanCitizenship: undefined,
+	germanRightOfInheritance: undefined,
+}
+
+const validationSchema: ObjectSchema<StartLegal> = object().shape({
+	germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+	germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
+})
+
 /**
  * Last Will Start Page for Legal.
  */
 const Start = () => {
 	const router = useRouter()
+	const [isLoading, setIsLoading] = useState(false)
 
-	const initalFormValues: StartLegal = {
-		germanCitizenship: undefined,
-		germanRightOfInheritance: undefined,
-	}
+	const onSubmit = async () => {
+		setIsLoading(true)
+		const response = await createLastWill()
 
-	const validationSchema: ObjectSchema<StartLegal> = object().shape({
-		germanCitizenship: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-		germanRightOfInheritance: boolean().required('Dieses Feld ist erforderlich. Bitte wählen Sie eine Option aus.'),
-	})
-
-	const onSubmit = () => {
-		// Redirect to Testator Page
-		router.push(routes.lastWill.testator('demo'))
+		if (response !== null) {
+			// Redirect to Testator Page
+			router.push(routes.lastWill.testator(response._id))
+		}
+		setIsLoading(false)
 	}
 
 	return (
@@ -56,7 +65,7 @@ const Start = () => {
 			{/* Left Image with Text end */}
 
 			{/* Form Fields */}
-			<Formik initialValues={initalFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+			<Formik initialValues={initialFormValues} validationSchema={validationSchema} onSubmit={onSubmit}>
 				{({ values, setFieldValue, dirty }: FormikProps<StartLegal>) => (
 					<Form className="flex h-full flex-col lg:pl-10 xl:w-1/2">
 						{/* German Citizenship Field */}
@@ -138,6 +147,7 @@ const Start = () => {
 							icon="arrow_forward"
 							disabled={values.germanCitizenship === false || values.germanRightOfInheritance === false}
 							className="ml-auto mt-auto"
+							loading={isLoading}
 						>
 							Nächster Schritt
 						</Button>

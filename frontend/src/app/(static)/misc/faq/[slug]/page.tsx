@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: FAQSinglePageProps): Promise<
 	const question = FAQContent.find((question) => question.slug === slug)
 
 	return {
-		title: (question?.question ?? 'FAQ') + ' | Siebtes Leben',
+		title: question?.question ?? 'FAQ',
 	}
 }
 

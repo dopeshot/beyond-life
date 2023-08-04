@@ -3,6 +3,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { Connection, Model } from 'mongoose'
 import * as request from 'supertest'
 import { DbModule } from '../src/db/db.module'
@@ -34,6 +35,7 @@ describe('LastWillController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ThrottlerModule.forRoot({}),
         DbModule,
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),
@@ -95,12 +97,18 @@ describe('LastWillController (e2e)', () => {
           .expect(HttpStatus.CREATED)
 
         expect(res.body).toBeDefined()
-        expect(res.body).toHaveProperty('_id')
-        expect(res.body.accountId).toEqual(user._id.toString())
-        expect(res.body).not.toHaveProperty('createdAt')
-
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
+        const extraValues = {
+          _id: null,
+          accountId: null,
+          updatedAt: null,
+          createdAt: null,
+        }
+        expect({ ...res.body, ...extraValues }).toStrictEqual({
+          ...sampleObject,
+          ...extraValues,
+        })
       })
 
       it('should allow multiple last wills', async () => {
@@ -119,6 +127,26 @@ describe('LastWillController (e2e)', () => {
 
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(2)
+      })
+
+      it('should allow the minimal requirements', async () => {
+        const res = await request(app.getHttpServer())
+          .post('/lastwill')
+          .set('Authorization', `Bearer ${token}`)
+          .send({ testator: {}, common: {}, progressKeys: [] })
+          .expect(HttpStatus.CREATED)
+
+        expect(res.body).toBeDefined()
+        expect(res.body).toHaveProperty('_id')
+        expect(res.body.accountId).toEqual(user._id.toString())
+        expect(res.body).toHaveProperty('createdAt')
+        expect(res.body).toHaveProperty('updatedAt')
+        expect(res.body).toHaveProperty('common')
+        expect(res.body).toHaveProperty('testator')
+        expect(res.body).toHaveProperty('progressKeys')
+
+        const createdLastWill = await lastWillModel.count()
+        expect(createdLastWill).toBe(1)
       })
     })
 
@@ -189,7 +217,7 @@ describe('LastWillController (e2e)', () => {
           .expect(HttpStatus.BAD_REQUEST)
       })
 
-      // Can't test missing type in Organisation because it is optional
+      // Can't test missing type in Organisation because everything is optional
 
       it('should prevent exceeding paymentPlan lastWill limit', async () => {
         await lastWillModel.create({
@@ -237,6 +265,9 @@ describe('LastWillController (e2e)', () => {
         expect(res.body[1].testator).toEqual(sampleObject.testator.name)
         // isInstanceOf not working because response is plain Object anyway
         expect(res.body[0]).toEqual(new LastWillMetadata(res.body[0]))
+        expect(res.body[0]).toHaveProperty('createdAt')
+        expect(res.body[0]).toHaveProperty('updatedAt')
+        expect(res.body[0]).toHaveProperty('_id')
       })
 
       it('should return empty array if there are none', async () => {
@@ -435,7 +466,7 @@ describe('LastWillController (e2e)', () => {
 
       // Further tests are not really needed here. The testament generation is covered by unit tests
     })
-    
+
     describe('Negative Tests', () => {
       it('should fail with invalid token', async () => {
         const lastWill = (

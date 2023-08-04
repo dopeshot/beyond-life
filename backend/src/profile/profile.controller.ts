@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   HttpCode,
@@ -7,7 +8,9 @@ import {
   Patch,
   Post,
   Req,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common'
 import {
   ApiBadRequestResponse,
@@ -19,6 +22,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { ThrottlerGuard } from '@nestjs/throttler'
 import { RequestWithJWTPayload } from 'src/shared/interfaces/request-with-user.interface'
 import { JwtGuard } from '../shared/guards/jwt.guard'
 import { ChangeEmailDTO } from './dtos/change-email.dto'
@@ -28,11 +32,13 @@ import { ProfileService } from './profile.service'
 @Controller('profile')
 @ApiTags('profile')
 @ApiBearerAuth('access_token')
+@UseInterceptors(ClassSerializerInterceptor)
+@UseGuards(JwtGuard, ThrottlerGuard)
+@SerializeOptions({ strategy: 'excludeAll' })
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Post('change-password')
-  @UseGuards(JwtGuard)
   // OK because 201 would be kind of out of place
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -59,7 +65,6 @@ export class ProfileController {
   }
 
   @Patch('change-email')
-  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary:
@@ -84,7 +89,6 @@ export class ProfileController {
   }
 
   @Delete()
-  @UseGuards(JwtGuard)
   @ApiOperation({
     summary: 'Delete the users account and related last wills',
   })

@@ -18,6 +18,55 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mocks the get last will by id endpoint.
+			 */
+			mockGetLastWillById(shouldHaveSampleData?: boolean): Chainable<void>
+			/**
+			 * Mocks the create last will endpoint.
+			 */
+			mockCreateLastWill(): Chainable<void>
+			/**
+			 * Mocks the update last will endpoint.
+			 */
+			mockUpdateLastWill(): Chainable<void>
+			/**
+			 * Mocks the get last will fulltext endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockGetLastWillFulltext(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mocks delete last will endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockLastWillDelete(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the get last wills endpoint.
+			 * @param response the response type we want to mock.
+			 */
+			mockProfileLastWills(response?: 'OK' | 'EMPTY' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the create checkout session endpoint.
+			 */
+			mockCreateCheckoutSession(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the change email endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockChangeEmail('OK')
+			 */
+			mockChangeEmail(response?: 'OK' | 'UNAUTHORIZED' | 'EMAIL_CONFLICT'): Chainable<void>
+			/**
+			 * Mock the change password endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockChangePassword('OK')
+			 */
+			mockChangePassword(response?: 'OK' | 'UNAUTHORIZED' | 'NETWORK_ERROR'): Chainable<void>
+			/**
+			 * Mock the delete account endpoint.
+			 * @param response the response type we want to mock.
+			 * @example cy.mockDeleteAccount('OK')
+			 */
+			mockDeleteAccount(response?: 'OK' | 'UNAUTHORIZED'): Chainable<void>
+			/**
 			 * Mock the forgot password endpoint.
 			 * @param response the response type we want to mock.
 			 * @example cy.mockForgotPassword('OK')

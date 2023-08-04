@@ -1,0 +1,80 @@
+{
+	"id": "cs_test_a1X1lwjayS4H6mjDIGr225rZiWF7O8OsZJTWwsGgQU9057Wjf3ZWyfSsoH",
+	"object": "checkout.session",
+	"after_expiration": null,
+	"allow_promotion_codes": null,
+	"amount_subtotal": 4900,
+	"amount_total": 4900,
+	"automatic_tax": {
+		"enabled": false,
+		"status": null
+	},
+	"billing_address_collection": null,
+	"cancel_url": "http://localhost:3000/last-will/order-confirmation?success=0",
+	"client_reference_id": null,
+	"consent": null,
+	"consent_collection": null,
+	"created": 1691011510,
+	"currency": "eur",
+	"currency_conversion": null,
+	"custom_fields": [],
+	"custom_text": {
+		"shipping_address": null,
+		"submit": null
+	},
+	"customer": "cus_ONWKIVYKlx8iTs",
+	"customer_creation": null,
+	"customer_details": {
+		"address": null,
+		"email": "test@test.test",
+		"name": null,
+		"phone": null,
+		"tax_exempt": "none",
+		"tax_ids": null
+	},
+	"customer_email": null,
+	"expires_at": 1691097910,
+	"invoice": null,
+	"invoice_creation": {
+		"enabled": false,
+		"invoice_data": {
+			"account_tax_ids": null,
+			"custom_fields": null,
+			"description": null,
+			"footer": null,
+			"metadata": {},
+			"rendering_options": null
+		}
+	},
+	"livemode": false,
+	"locale": null,
+	"metadata": {
+		"plan": "single"
+	},
+	"mode": "payment",
+	"payment_intent": null,
+	"payment_link": null,
+	"payment_method_collection": "always",
+	"payment_method_options": {},
+	"payment_method_types": ["card", "paypal", "klarna"],
+	"payment_status": "unpaid",
+	"phone_number_collection": {
+		"enabled": false
+	},
+	"recovered_from": null,
+	"setup_intent": null,
+	"shipping_address_collection": null,
+	"shipping_cost": null,
+	"shipping_details": null,
+	"shipping_options": [],
+	"status": "open",
+	"submit_type": null,
+	"subscription": null,
+	"success_url": "http://localhost:3000/last-will/order-confirmation?success=1&plan=single",
+	"total_details": {
+		"amount_discount": 0,
+		"amount_shipping": 0,
+		"amount_tax": 0
+	},
+	"url": "/last-will/order-confirmation"
+}

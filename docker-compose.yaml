@@ -35,8 +35,7 @@ services:
       - STRIPE_ITEM_SINGLE=${BACKEND_STRIPE_ITEM_SINGLE}
       - STRIPE_ITEM_FAMILY=${BACKEND_STRIPE_ITEM_FAMILY}
       - STRIPE_ITEM_SINGLE_TO_FAMILY=${BACKEND_STRIPE_ITEM_SINGLE_TO_FAMILY}
-      - STRIPE_SUCCESS_URL=${BACKEND_STRIPE_SUCCESS_URL}
-      - STRIPE_CANCEL_URL=${BACKEND_STRIPE_CANCEL_URL}
+      - STRIPE_REDIRECT_ROUTE=${BACKEND_STRIPE_REDIRECT_ROUTE:-/last-will/order-confirmation}
       # Other
       - FRONTEND_DOMAIN=${BACKEND_FRONTEND_DOMAIN:-http://localhost:3000}
       - NODE_ENV=${BACKEND_NODE_ENV:-development}
@@ -49,8 +48,9 @@ services:
     restart: "always"
     ports:
       - 3000:3000
-    links:
-      - backend:backend
+    environment: 
+      - NEXT_PUBLIC_API_BASE_URL=${FRONTEND_NEXT_PUBLIC_API_BASE_URL:-http://localhost:3001}
+
 
   smtp:
     image: rnwood/smtp4dev:v3
@@ -71,9 +71,11 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:-admin}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PW:-admin}
-      - MONGO_INITDB_DATABASE:=${MONGO_DB:-siebtesleben}
+      - MONGO_INITDB_DATABASE=${MONGO_DB:-siebtesleben}
+    volumes:
+      - ./.docker/mongodb-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27018/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5

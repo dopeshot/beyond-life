@@ -5,7 +5,6 @@ import { hash } from 'bcrypt'
 export const SAMPLE_USER = {
   password: 'StarWarsIsAVeryNiceMovie',
   email: 'r2d2@jedi.temple',
-  createdAt: new Date(Date.now()),
   paymentPlan: 'free',
   stripeCustomerId: 'cus_test',
   checkoutInformation: { status: 'free', lastInformationTime: 0 },
@@ -15,7 +14,7 @@ export const SAMPLE_USER_PW_HASH = async () =>
   await hash(SAMPLE_USER.password, 10)
 
 const sampleHumanHeir = {
-  id: '987654321',
+  id: '111111111111111111111',
   type: 'child',
   name: 'Heir Name',
   gender: 'male',
@@ -24,7 +23,7 @@ const sampleHumanHeir = {
   isHandicapped: false,
   isInsolvent: false,
   percentage: 50,
-  itemIds: ['11111111', '22222222'],
+  itemIds: ['111111111111111111111', '111111111111111111112'],
   child: {
     type: 'natural',
     relationship: 'childTogether',
@@ -38,7 +37,7 @@ const sampleHumanHeir = {
 }
 
 const sampleOrganisationHeir = {
-  id: 'jeffsId',
+  id: '111111111111111111112',
   type: 'organisation',
   name: 'Strongpong e.V.',
   address: {
@@ -68,12 +67,30 @@ export const sampleObject = {
   },
   heirs: [sampleHumanHeir, sampleOrganisationHeir],
   items: [
-    { id: '11111111', name: 'Item 1', description: 'Description 1' },
-    { id: '22222222', name: 'Item 2', description: 'Description 2' },
+    {
+      id: '111111111111111111111',
+      name: 'Item 1',
+      description: 'Description 1',
+    },
+    {
+      id: '111111111111111111112',
+      name: 'Item 2',
+      description: 'Description 2',
+    },
   ],
   financialAssets: [
-    { id: '33333333', where: 'PayPal', amount: 420.69, currency: 'EUR' },
-    { id: '44444444', where: 'Bank', amount: 1234.56, currency: 'USD' },
+    {
+      id: '111111111111111111113',
+      where: 'PayPal',
+      amount: 420.69,
+      currency: 'EUR',
+    },
+    {
+      id: '111111111111111111114',
+      where: 'Bank',
+      amount: 1234.56,
+      currency: 'USD',
+    },
   ],
   progressKeys: ['testator', 'marriage', 'heirs'],
 }

@@ -1,0 +1,84 @@
+{
+	"createdAt": "2023-08-03T17:21:33.886Z",
+	"updatedAt": "2023-08-03T17:21:33.886Z",
+	"_id": "64cbe21db4897e6ff52f3db5",
+	"accountId": "64cad37c6550813b2137ebe9",
+	"common": {
+		"isBerlinWill": false,
+		"isPartnerGermanCitizenship": false,
+		"matrimonialProperty": "communityOfGain"
+	},
+	"testator": {
+		"name": "Mary Testator",
+		"gender": "female",
+		"birthDate": "1990-01-01",
+		"birthPlace": "Berlin",
+		"isHandicapped": false,
+		"isInsolvent": false,
+		"relationshipStatus": "married"
+	},
+	"heirs": [
+		{
+			"id": "987654321",
+			"type": "other",
+			"name": "Heir Name",
+			"gender": "male",
+			"birthDate": "1995-03-15",
+			"birthPlace": "City",
+			"isHandicapped": false,
+			"isInsolvent": false,
+			"percentage": 50,
+			"itemIds": [],
+			"child": {
+				"type": "natural",
+				"relationship": "childTogether"
+			},
+			"address": {
+				"street": "Sample Street",
+				"houseNumber": "1a",
+				"zipCode": "12345",
+				"city": "Berlin"
+			}
+		},
+		{
+			"id": "jeffsId",
+			"type": "organisation",
+			"name": "Strongpong e.V.",
+			"address": {
+				"street": "Sample Street",
+				"houseNumber": "1a",
+				"zipCode": "12345",
+				"city": "Berlin"
+			},
+			"percentage": 50,
+			"itemIds": []
+		}
+	],
+	"items": [
+		{
+			"id": "11111111",
+			"name": "Item 1",
+			"description": "Description 1"
+		},
+		{
+			"id": "22222222",
+			"name": "Item 2",
+			"description": "Description 2"
+		}
+	],
+	"financialAssets": [
+		{
+			"id": "33333333",
+			"where": "PayPal",
+			"amount": 420.69,
+			"currency": "EUR"
+		},
+		{
+			"id": "44444444",
+			"where": "Bank",
+			"amount": 1234.56,
+			"currency": "USD"
+		}
+	],
+	"progressKeys": ["testator", "marriage", "heirs", "inheritance", "succession", "final"]
+}

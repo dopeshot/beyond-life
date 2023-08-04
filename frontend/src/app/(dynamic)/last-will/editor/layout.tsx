@@ -1,6 +1,7 @@
 'use client'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { notFound, usePathname, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import isAuth from '../../../../components/Auth/isAuth'
 import { GlobalFooter } from '../../../../components/Navbar/GlobalFooter/GlobalFooter'
 import { Navbar } from '../../../../components/Navbar/Navbar/Navbar'
 import { NavbarLogo } from '../../../../components/Navbar/NavbarLogo/NavbarLogo'
@@ -9,17 +10,23 @@ import { Sidebar } from '../../../../components/Navbar/Sidebar/Sidebar'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { fetchLastWillState, resetLastWill } from '../../../../store/lastwill/lastwill'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const Rootlayout = ({ children }: { children: React.ReactNode }) => {
 	const path = usePathname()
 	const searchParams = useSearchParams()
+	const id = searchParams.get('id')
 	const isInitialized = useAppSelector((state) => state.lastWill.isInitialized)
 
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
+		if (!id) {
+			console.warn("Can't fetch last will state because id is not defined")
+			return
+		}
+
 		dispatch(
 			fetchLastWillState({
-				lastWillId: searchParams.get('id')!,
+				lastWillId: id,
 			})
 		)
 
@@ -28,6 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		}
 		// This has to be empty to work because it will retrigger when dispatch is defined new
 	}, []) // eslint-disable-line
+
+	if (!id) return notFound()
+
 	return (
 		<>
 			{!isInitialized ? (
@@ -51,3 +61,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		</>
 	)
 }
+
+export default isAuth(Rootlayout, 'protected')

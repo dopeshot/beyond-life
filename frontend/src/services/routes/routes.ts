@@ -1,23 +1,20 @@
 export const routes = {
 	index: '/',
 	account: {
-		register: (options?: { callbackUrl?: string; funnel?: boolean }) => {
+		register: (options?: { callbackUrl?: string }) => {
 			if (!options) return '/account/register'
 
 			const queryString = new URLSearchParams({
 				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
-				...(options.funnel != null && { funnel: String(options.funnel) }),
-				//TODO: remove funnel and use callbackUrl
 			}).toString()
 
 			return `/account/register${queryString !== '' ? `?${queryString}` : ''}`
 		},
-		login: (options?: { callbackUrl?: string; funnel?: boolean }) => {
+		login: (options?: { callbackUrl?: string }) => {
 			if (!options) return '/account/login'
 
 			const queryString = new URLSearchParams({
 				...(options.callbackUrl && { callbackUrl: options.callbackUrl }),
-				...(options.funnel != null && { funnel: String(options.funnel) }),
 			}).toString()
 
 			return `/account/login${queryString !== '' ? `?${queryString}` : ''}`
@@ -44,6 +41,7 @@ export const routes = {
 		heirs: (id: string) => `/last-will/editor/heirs?id=${id}`,
 		inheritance: (id: string) => `/last-will/editor/inheritance?id=${id}`,
 		succession: (id: string) => `/last-will/editor/succession?id=${id}`,
+		plans: (id: string) => `/last-will/plans?id=${id}`,
 		buy: (options?: { id: string }) => {
 			if (!options) return '/last-will/buy'
 
@@ -53,6 +51,7 @@ export const routes = {
 
 			return `/last-will/buy${queryString !== '' ? `?${queryString}` : ''}`
 		},
+		orderConfirmation: (success: boolean) => `/last-will/order-confirmation?success=${success}`,
 		final: (id: string) => `/last-will/editor/final?id=${id}`,
 	},
 	misc: {

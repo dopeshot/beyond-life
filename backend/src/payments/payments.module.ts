@@ -9,5 +9,6 @@ import { StripeService } from './services/stripe.service'
   imports: [DbModule, SharedModule],
   controllers: [PaymentsController],
   providers: [PaymentsService, StripeService],
+  exports: [StripeService],
 })
 export class PaymentsModule {}

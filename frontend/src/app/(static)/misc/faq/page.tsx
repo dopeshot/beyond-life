@@ -1,11 +1,12 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { FAQContent } from '../../../../../content/faq'
 import { Route } from '../../../../components/ButtonsAndLinks/Route/Route'
 import { Headline } from '../../../../components/Headline/Headline'
 import { routes } from '../../../../services/routes/routes'
 
-export const metadata = {
-	title: 'FAQ | Siebtes Leben',
+export const metadata: Metadata = {
+	title: 'FAQ',
 }
 
 const FAQOverview = () => {

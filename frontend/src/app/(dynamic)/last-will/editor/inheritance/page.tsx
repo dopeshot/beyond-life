@@ -35,7 +35,7 @@ const Inheritance = () => {
 	const NEXT_LINK = routes.lastWill.succession(_id)
 
 	// Formik
-	const initalFormValues: InheritanceFormPayload = {
+	const initialFormValues: InheritanceFormPayload = {
 		financialAssets,
 		items,
 	}
@@ -45,7 +45,12 @@ const Inheritance = () => {
 			// Update inheritance global state only if values have changed
 			dispatch(setInheritance(values))
 
-			await dispatch(sendLastWillState())
+			const response = await dispatch(sendLastWillState())
+
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -86,7 +91,7 @@ const Inheritance = () => {
 			<Headline className="hidden lg:block">Erbschaft</Headline>
 
 			<Formik
-				initialValues={initalFormValues}
+				initialValues={initialFormValues}
 				validationSchema={validationSchema}
 				onSubmit={(values) => onSubmit(values, NEXT_LINK)}
 			>

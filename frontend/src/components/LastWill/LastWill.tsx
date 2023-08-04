@@ -1,241 +1,81 @@
 'use client'
+import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { getLastWillFulltext } from '../../services/api/lastwill/lastWillFulltext'
+import { useAppSelector } from '../../store/hooks'
+import { GeneratedLastWill } from '../../types/lastWill'
+import { Headline } from '../Headline/Headline'
 
 /**
  * Display Last Will.
  */
 export const LastWill = () => {
+	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const [isLoading, setIsLoading] = useState<boolean>(true)
+	const [lastWill, setLastWill] = useState<GeneratedLastWill | null>(null)
+
+	useEffect(() => {
+		const getGeneratedLastWill = async () => {
+			setIsLoading(true)
+			const response = await getLastWillFulltext(_id)
+			setLastWill(response)
+			setIsLoading(false)
+		}
+		getGeneratedLastWill()
+	}, [_id])
+
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
+
+	if (!lastWill) {
+		return notFound()
+	}
+
 	return (
-		<p>Work in progress</p>
-		// <div className="w-100 mt-2 flex-1 rounded-xl border-2 border-gray-100 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
-		// 	{/* Header */}
-		// 	<div className="flex justify-between pt-6 font-semibold">
-		// 		<div className="flex flex-col">
-		// 			<p>
-		// 				{lastWill?.testator?.firstName || ' [Vorname] '} {lastWill.testator.lastName || ' [Nachname] '}
-		// 			</p>
-		// 			<p>
-		// 				{lastWill?.testator?.street || ' [Straße] '} {lastWill?.testator?.houseNumber || ' [Hausnummer] '}
-		// 			</p>
-		// 			<p>
-		// 				{lastWill?.testator?.postalCode || ' [PLZ] '} {lastWill?.testator?.city || ' [Ort] '}
-		// 			</p>
-		// 		</div>
-		// 		<div>
-		// 			<p>
-		// 				{lastWill?.testator?.city || ' [Ort] '}, den{' '}
-		// 				{new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })}
-		// 			</p>
-		// 		</div>
-		// 	</div>
-		// 	{/* Start Testament */}
-		// 	<Headline level={3} size="text-lg" className="pb-8 pt-12 text-center">
-		// 		Mein letzter Wille und Testament
-		// 	</Headline>
-		// 	{/* Erblasser */}
-		// 	<p className="pb-8">
-		// 		Ich, {lastWill?.testator?.firstName || ' [Vorname] '} {lastWill.testator.lastName || ' [Nachname] '}, geboren am{' '}
-		// 		{lastWill.testator.birthDate || ' [Geburtstag] '} in {lastWill.testator.birthPlace || ' [Geburtsort]'},
-		// 		widerrufe mit diesem Testament alle bisher errichteten Verfügungen von Todes wegen und bestimme hiermit
-		// 		Folgendes:
-		// 	</p>
-		// 	{/* Verteiltes Erbe */}
-		// 	<Headline level={3} size="text-lg">
-		// 		§1 Erbeinsetzung
-		// 	</Headline>
-		// 	<p className="pb-4">Als Erben meines Nachlasses setze ich folgende Personen ein:</p>
-		// 	{lastWill.marriage.relationshipStatus === undefined && lastWill.heirs.persons.length === 0 && (
-		// 		<p className="pb-4">[Keine Erben angegeben]</p>
-		// 	)}
-		// 	{/* Ehepartner */}
-		// 	{lastWill.marriage.relationshipStatus === 'married' && (
-		// 		<p className="pb-4">
-		// 			{getPartnerGenderText(lastWill.marriage.partnerGender ?? 'divers')},{' '}
-		// 			{lastWill.marriage.partnerFirstName || ' [Name] '} {lastWill.marriage.partnerLastName || '[Nachname]'},
-		// 			geboren am {lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von{' '}
-		// 			{lastWill.marriage.percentage || ' [?%] '} Prozent.
-		// 			{lastWill.inheritance.financialAssets.length > 1 && lastWill.marriage.percentage !== undefined && (
-		// 				<>
-		// 					Dies entspricht einem Wert von{' '}
-		// 					{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), lastWill.marriage.percentage)}{' '}
-		// 					€.
-		// 				</>
-		// 			)}
-		// 		</p>
-		// 	)}
-		// 	{/* Sonstige Erben außer Ehepartner */}
-		// 	{lastWill.heirs.persons.map((person) => (
-		// 		<p key={person.id} className="pb-4">
-		// 			{getHeirGenderText(person.heirsType ?? 'other', person.gender ?? 'divers')},{' '}
-		// 			{person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-		// 			{person.dateOfBirth || ' [Geburtstag] '}, mit einem Anteil in Höhe von {person.percentage || ' [?%] '}{' '}
-		// 			Prozent.
-		// 			{lastWill.inheritance.financialAssets.length > 1 && person.percentage !== undefined && (
-		// 				<>
-		// 					Dies entspricht einem Wert von{' '}
-		// 					{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), person.percentage)} €.
-		// 				</>
-		// 			)}
-		// 		</p>
-		// 	))}
-
-		// 	{/* Unternehmen die erben */}
-		// 	{lastWill.heirs.organisations.map((organisation) => (
-		// 		<p key={organisation.id} className="pb-4">
-		// 			Das Unternehmen, {organisation.name || ' [Name] '}, aus {organisation.zipCode || ' [Postleitzahl] '}{' '}
-		// 			{organisation.city || ' [Stadt] '}, mit einem Anteil in Höhe von {organisation.percentage || ' [?%] '}{' '}
-		// 			Prozent.
-		// 			{lastWill.inheritance.financialAssets.length > 1 && organisation.percentage !== undefined && (
-		// 				<>
-		// 					Dies entspricht einem Wert von{' '}
-		// 					{getMoneyAmount(calculateSumOfMoney(lastWill.inheritance.financialAssets), organisation.percentage)} €.
-		// 				</>
-		// 			)}
-		// 		</p>
-		// 	))}
-
-		// 	{/* Ersatzerbe fixer String */}
-		// 	<Headline level={3} size="text-lg">
-		// 		§2 Ersatzerbe
-		// 	</Headline>
-		// 	<p className="pb-4">
-		// 		Sollte einer der Erben, vor mir verstorben sein, erhalten die verbliebenen Erben diesen Erbteil entsprechend dem
-		// 		Verhältnis der von mir vorgegebenen Erbanteile.
-		// 	</p>
-
-		// 	{/* Vermächtnisse */}
-		// 	{lastWill.inheritance.items[0].name !== '' && (
-		// 		<>
-		// 			<Headline level={3} size="text-lg">
-		// 				§3 Vermächtnisse
-		// 			</Headline>
-
-		// 			{/* Vermächtnisse Ehepartner */}
-		// 			{lastWill.marriage.relationshipStatus === 'married' &&
-		// 				lastWill.marriage.itemIds !== undefined &&
-		// 				lastWill.marriage.itemIds.length > 0 &&
-		// 				lastWill.marriage.itemIds.map((itemId) => {
-		// 					const item = lastWill.inheritance.items.find((item) => item.id === itemId)
-		// 					if (item) {
-		// 						return (
-		// 							<p key={itemId} className="pb-2">
-		// 								Ich vermache {lastWill.marriage.partnerFirstName || ' [Vorname] '}{' '}
-		// 								{lastWill.marriage.partnerLastName || ' [Nachname]'}, geboren am{' '}
-		// 								{lastWill.marriage.partnerDateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil,{' '}
-		// 								{item.name}.
-		// 								{item.description !== '' && item.description !== undefined && (
-		// 									<>
-		// 										{' '}
-		// 										{lastWill.marriage.partnerFirstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert:{' '}
-		// 										{item.description}.
-		// 									</>
-		// 								)}
-		// 							</p>
-		// 						)
-		// 					}
-		// 				})}
-
-		// 			{/* Vermächtnisse andere Erben */}
-		// 			{lastWill.heirs.persons.map(
-		// 				(person) =>
-		// 					person.itemIds !== undefined &&
-		// 					person.itemIds.map((itemId) => {
-		// 						const item = lastWill.inheritance.items.find((item) => item.id === itemId)
-		// 						if (!item) return null
-
-		// 						return (
-		// 							<p key={person.id! + itemId} className="pb-2">
-		// 								Ich vermache {person.firstName || ' [Vorname] '} {person.lastName || ' [Nachname]'}, geboren am{' '}
-		// 								{person.dateOfBirth || ' [Geburtstag] '}, ohne Anrechnung auf ihren Erbteil, {item.name}.
-		// 								{item.description !== '' && item.description !== undefined && (
-		// 									<>
-		// 										{' '}
-		// 										{person.firstName || ' [Vorname] '} ist mit der folgenden Auflage beschwert: {item.description}.
-		// 									</>
-		// 								)}
-		// 							</p>
-		// 						)
-		// 					})
-		// 			)}
-
-		// 			{/* Vermächtnisse Unternehmen */}
-		// 			{lastWill.heirs.organisations.map(
-		// 				(organisation) =>
-		// 					organisation.itemIds !== undefined &&
-		// 					organisation.itemIds.map((itemId) => {
-		// 						const item = lastWill.inheritance.items.find((item) => item.id === itemId)
-		// 						if (!item) return null
-
-		// 						return (
-		// 							<p key={organisation.id! + itemId} className="pb-2">
-		// 								Ich vermache dem Unternehmen {organisation.name || ' [Unternehmen] '}, aus{' '}
-		// 								{organisation.zipCode || ' [Postleitzahl] '} {organisation.city || ' [Stadt] '}, ohne Anrechnung auf
-		// 								den Erbteil, {item.name}.
-		// 								{item.description !== '' && item.description !== undefined && (
-		// 									<>
-		// 										{' '}
-		// 										Das Unternehmen {organisation.name || ' [Unternehmen] '} ist mit der folgenden Auflage
-		// 										beschwert: {item.description}.
-		// 									</>
-		// 								)}
-		// 							</p>
-		// 						)
-		// 					})
-		// 			)}
-
-		// 			<p className="pb-3">Die Vermächtnisse fallen jeweils mit dem Erbfall an und sind sofort fällig.</p>
-		// 			<p className="pb-3">
-		// 				Etwaige Kosten der Vermächtniserfüllung haben die jeweiligen Vermächtnisnehmer zu tragen.
-		// 			</p>
-		// 			<p className="pb-3">
-		// 				Ersatzvermächtnisnehmer sind nicht bestimmt. Das jeweilige Vermächtnis entfällt ersatzlos, wenn der/die
-		// 				Vermächtnisnehmer/-in vor oder nach dem Erbfall, gleich aus welchem Grunde, wegfällt.
-		// 			</p>
-		// 		</>
-		// 	)}
-
-		// 	{/* Rechtswahl */}
-		// 	{lastWill.inheritance.items[0].name !== '' ? (
-		// 		<Headline level={3} size="text-lg">
-		// 			§4 Rechtswahl
-		// 		</Headline>
-		// 	) : (
-		// 		<Headline level={3} size="text-lg">
-		// 			§3 Rechtswahl
-		// 		</Headline>
-		// 	)}
-		// 	<p className="pb-4">
-		// 		Auf meinen gesamten Nachlass sowie für Fragen, die die Wirksamkeit dieses Testaments betreffen, soll deutsches
-		// 		Erbrecht anwendbar sein. Diese Rechtswahl soll auch dann weiterhin Gültigkeit haben, wenn ich meinen letzten
-		// 		gewöhnlichen Aufenthalt im Ausland habe.
-		// 	</p>
-		// 	{/* Klausel */}
-		// 	{lastWill.inheritance.items[0].name !== '' ? (
-		// 		<Headline level={3} size="text-lg">
-		// 			§5 Salvatorische Klausel
-		// 		</Headline>
-		// 	) : (
-		// 		<Headline level={3} size="text-lg">
-		// 			§4 Salvatorische Klausel
-		// 		</Headline>
-		// 	)}
-		// 	<p className="pb-4">
-		// 		Sollte eine der in diesem Testament enthaltenen Anordnungen unwirksam sein, so behalten dennoch alle anderen
-		// 		Anordnungen ihre Wirkung.
-		// 	</p>
-
-		// 	<div className="mt-8">
-		// 		<p className="mb-2">[Deine Unterschrift]</p>
-		// 		<hr className=" w-2/6 border-t-2" />
-		// 		<p className="mt-2">
-		// 			{lastWill?.testator?.firstName || ' [Vorname] '} {lastWill?.testator?.lastName || ' [Nachname] '}
-		// 		</p>
-		// 	</div>
-
-		// 	<div className=" pt-10">
-		// 		Hinweis: Dieses Testament-Generierungstool ist ein Prototyp und ausschließlich für die Media Night an der
-		// 		Hochschule der Medien in Stuttgart gedacht. Es ist noch in Entwicklung und bietet derzeit keine rechtliche
-		// 		Absicherung, doch wir arbeiten daran, in Zukunft eine Notarvalidierung bereitzustellen.
-		// 	</div>
-		// </div>
+		<main className="w-100 bg-red-0 my-2 flex-1 rounded-xl border-2 border-gray-200 px-4 py-3 md:px-8 md:py-6 xl:w-5/6 2xl:w-4/6">
+			<section className="bg-red-0 mb-8 flex justify-between">
+				<aside>
+					<p>{lastWill.testatorHeader.fullName}</p>
+					<p>{lastWill.testatorHeader.AddressStreet}</p>
+					<p>{lastWill.testatorHeader.AddressCity}</p>
+				</aside>
+				<aside className="bg-red-0">
+					<p>{lastWill.locationHeader}</p>
+				</aside>
+			</section>
+			<section className="bg-green-0 mb-8 text-center">
+				<Headline level={3} hasMargin>
+					{lastWill.title}
+				</Headline>
+			</section>
+			<p className="mb-4">{lastWill.initialText}</p>
+			<section className="bg-yellow-0 mb-8">
+				{lastWill.paragraphs.map((paragraph, index) => (
+					<div key={index} className="mb-6">
+						<Headline level={4} hasMargin>
+							{paragraph.title}
+						</Headline>
+						{paragraph.contents.map((content, index) => (
+							<p key={index}>{content}</p>
+						))}
+					</div>
+				))}
+			</section>
+			<section className="mb-8 flex">
+				<div>
+					<p className="mb-4">[Ihre Unterschrift]</p>
+					<hr className="border-t-1 mb-4 border-black" />
+					<p>{lastWill.testatorHeader.fullName}</p>
+				</div>
+			</section>
+			<footer>
+				<p className="mb-4 text-gray-600">
+					Hinweis: Das Testament muss mit der Hand geschrieben werden. Dieser Text stellt keinen Ersatz für
+					professionelle rechtliche Beratung dar. Wenn Sie Fragen oder Bedenken haben, sollten Sie einen Anwalt
+					konsultieren.
+				</p>
+			</footer>
+		</main>
 	)
 }

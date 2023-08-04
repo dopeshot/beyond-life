@@ -1,7 +1,6 @@
-import { mount } from 'cypress/react'
 import { Form, Formik } from 'formik'
 import 'material-symbols'
-import 'tailwindcss/tailwind.css'
+import '../../../app/globals.css'
 import { Checkbox, CheckboxProps } from './Checkbox'
 
 const data: CheckboxProps = {
@@ -18,6 +17,7 @@ const data: CheckboxProps = {
 			value: 2,
 			label: 'Cake',
 			icon: 'cake',
+			helperText: 'Cake is very tasty!',
 		},
 		{
 			value: 3,
@@ -37,7 +37,7 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 describe('Checkbox', () => {
 	beforeEach(() => {
-		mount(
+		cy.mount(
 			<Wrapper>
 				<Checkbox
 					name={data.name}
@@ -85,5 +85,24 @@ describe('Checkbox', () => {
 
 	it('should not display icon before label when not defined', () => {
 		cy.datacy(`checkbox-${data.name}-option-${data.options[0].value}`, ' i').should('not.exist')
+	})
+
+	describe('Checkbox Modal', () => {
+		beforeEach(() => {
+			cy.datacy(`checkbox-${data.options[1].value}-info-icon`).click()
+		})
+
+		it('should open modal when IconButton is clicked', () => {
+			cy.datacy('modal').should('be.visible')
+		})
+
+		it('should display correct headline in the modal', () => {
+			cy.datacy('modal').should('contain', data.options[1].helperText)
+		})
+
+		it('should close modal when close button is clicked', () => {
+			cy.datacy('modal-close-button').click({ force: true })
+			cy.datacy('modal').should('not.be.visible')
+		})
 	})
 })

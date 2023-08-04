@@ -1,0 +1,16 @@
+[
+	{
+		"_id": "1",
+		"progressKeys": ["testator", "heirs", "final"],
+		"testator": "Lisa Müller",
+		"createdAt": "Wed Aug 02 2023 19:34:49 GMT+0200 (Mitteleuropäische Sommerzeit)",
+		"updatedAt": "Wed Aug 02 2023 19:34:49 GMT+0200 (Mitteleuropäische Sommerzeit)"
+	},
+	{
+		"_id": "2",
+		"progressKeys": ["testator", "marriage", "heirs", "inheritance", "succession", "final"],
+		"testator": "Tim Müller",
+		"createdAt": "Wed Aug 02 2023 19:35:40 GMT+0200 (Mitteleuropäische Sommerzeit)",
+		"updatedAt": "Wed Aug 02 2023 19:35:40 GMT+0200 (Mitteleuropäische Sommerzeit)"
+	}
+]

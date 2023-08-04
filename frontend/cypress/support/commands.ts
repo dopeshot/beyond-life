@@ -5,6 +5,8 @@ import sessiondata from '../fixtures/auth/sessionData.json'
 import tokens from '../fixtures/auth/tokens.json'
 
 const apiUrl = Cypress.env('CYPRESS_API_BASE_URL')
+
+/**** Response Types ****/
 const postOkResponse = {
 	OK: {
 		statusCode: 201,
@@ -24,6 +26,80 @@ const unauthorizedResponse = {
 		},
 	},
 }
+const emailConflictResponse = {
+	EMAIL_CONFLICT: {
+		statusCode: 409,
+		body: {
+			error: 'Conflict',
+			message: 'Email is already taken.',
+			statusCode: 409,
+		},
+	},
+}
+const networkErrorResponse = {
+	NETWORK_ERROR: {
+		forceNetworkError: true,
+	},
+}
+
+/***** Responses ****/
+const paymentCheckoutResponse = {
+	OK: {
+		statusCode: 201,
+		fixture: 'payment/checkoutSession.json',
+	},
+	...networkErrorResponse,
+}
+
+const getLastWillFulltextResponse = {
+	OK: {
+		statusCode: 200,
+		fixture: 'lastwill/lastWillFulltext.json',
+	},
+	...networkErrorResponse,
+}
+
+const profileLastWillResponse = {
+	OK: {
+		statusCode: 200,
+		fixture: 'profile/lastWills.json',
+	},
+	EMPTY: {
+		statusCode: 200,
+		body: [],
+	},
+	...networkErrorResponse,
+}
+
+const profileLastWillDeleteResponse = {
+	...okResponse,
+	...networkErrorResponse,
+}
+
+const changeEmailResponse = {
+	...okResponse,
+	...emailConflictResponse,
+	...unauthorizedResponse,
+}
+
+const changePasswordResponse = {
+	...okResponse,
+	UNAUTHORIZED: {
+		statusCode: 401,
+		body: {
+			message: 'This is not allowed...either you do not exist or the provided password was invalid',
+			error: 'Unauthorized',
+			statusCode: 401,
+		},
+	},
+	...networkErrorResponse,
+}
+
+const deleteAccountResponse = {
+	...okResponse,
+	...unauthorizedResponse,
+}
+
 const forgotPasswordApiResponseTypes = {
 	...postOkResponse,
 	SERVICE_UNAVAILABLE: {
@@ -103,9 +179,7 @@ const loginResponseTypes = {
 		statusCode: 200,
 		body: tokens,
 	},
-	NETWORK_ERROR: {
-		forceNetworkError: true,
-	},
+	...networkErrorResponse,
 	...unauthorizedResponse,
 }
 
@@ -114,17 +188,8 @@ const registerResponseTypes = {
 		statusCode: 200,
 		body: tokens,
 	},
-	EMAIL_CONFLICT: {
-		statusCode: 409,
-		body: {
-			error: 'Conflict',
-			message: 'Email is already taken.',
-			statusCode: 409,
-		},
-	},
-	NETWORK_ERROR: {
-		forceNetworkError: true,
-	},
+	...emailConflictResponse,
+	...networkErrorResponse,
 }
 
 /**** Command Helper ****/
@@ -138,6 +203,59 @@ Cypress.Commands.add('check404', () => {
 })
 
 /**** Interceptors ****/
+Cypress.Commands.add('mockGetLastWillById', (shouldHaveSampleData = false) => {
+	const fixture = shouldHaveSampleData ? 'lastwill/singleLastWillData.json' : 'lastwill/singleLastWill.json'
+
+	cy.intercept('GET', `${apiUrl}/lastwill/*`, {
+		statusCode: 200,
+		fixture,
+	}).as('mockGetLastWillById')
+})
+
+Cypress.Commands.add('mockCreateLastWill', () => {
+	cy.intercept('POST', `${apiUrl}/lastwill`, {
+		statusCode: 201,
+		fixture: 'lastwill/singleLastWill.json',
+	}).as('mockCreateLastWill')
+})
+
+Cypress.Commands.add('mockUpdateLastWill', () => {
+	cy.intercept('PUT', `${apiUrl}/lastwill/*`, {
+		statusCode: 200,
+		fixture: 'lastwill/singleLastWill.json',
+	}).as('mockUpdateLastWill')
+})
+
+Cypress.Commands.add('mockGetLastWillFulltext', (response = 'OK') => {
+	cy.intercept('GET', `${apiUrl}/lastwill/*/fulltext`, getLastWillFulltextResponse[response]).as(
+		'mockGetLastWillFulltext'
+	)
+})
+
+Cypress.Commands.add('mockLastWillDelete', (response = 'OK') => {
+	cy.intercept('DELETE', `${apiUrl}/lastwill/*`, profileLastWillDeleteResponse[response]).as('mockLastWillDelete')
+})
+
+Cypress.Commands.add('mockProfileLastWills', (response = 'OK') => {
+	cy.intercept('GET', `${apiUrl}/lastwill`, profileLastWillResponse[response]).as('mockProfileLastWills')
+})
+
+Cypress.Commands.add('mockCreateCheckoutSession', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/payments/checkout`, paymentCheckoutResponse[response]).as('mockCreateCheckoutSession')
+})
+
+Cypress.Commands.add('mockChangeEmail', (response = 'OK') => {
+	cy.intercept('PATCH', `${apiUrl}/profile/change-email`, changeEmailResponse[response]).as('mockChangeEmail')
+})
+
+Cypress.Commands.add('mockChangePassword', (response = 'OK') => {
+	cy.intercept('POST', `${apiUrl}/profile/change-password`, changePasswordResponse[response]).as('mockChangePassword')
+})
+
+Cypress.Commands.add('mockDeleteAccount', (response = 'OK') => {
+	cy.intercept('DELETE', `${apiUrl}/profile`, deleteAccountResponse[response]).as('mockDeleteAccount')
+})
+
 Cypress.Commands.add('mockForgotPassword', (response = 'OK') => {
 	cy.intercept('POST', `${apiUrl}/auth/forgot-password`, forgotPasswordApiResponseTypes[response]).as(
 		'mockForgotPassword'

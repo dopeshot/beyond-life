@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { Test, TestingModule } from '@nestjs/testing'
+import { ThrottlerModule } from '@nestjs/throttler'
 import { Connection, Model } from 'mongoose'
 import * as nodemailer from 'nodemailer'
 import { NodemailerMock } from 'nodemailer-mock'
@@ -16,8 +17,11 @@ import { DbModule } from '../src/db/db.module'
 import { User } from '../src/db/entities/users.entity'
 import { MailTemplates } from '../src/mail/interfaces/mail.interface'
 import { MailModule } from '../src/mail/mail.module'
+import { PaymentsModule } from '../src/payments/payments.module'
+import { StripeService } from '../src/payments/services/stripe.service'
 import { JWTPayload } from '../src/shared/interfaces/jwt-payload.interface'
 import { SharedModule } from '../src/shared/shared.module'
+import { MockStripeService } from './__mocks__/stripeservice'
 import { MockConfigService } from './helpers/config-service.helper'
 import { comparePassword } from './helpers/general.helper'
 import { getMailUsedTemplate, getTokenFromMail } from './helpers/mail.helper'
@@ -26,7 +30,7 @@ import {
   rootTypegooseTestModule,
 } from './helpers/mongo.helper'
 import { SAMPLE_USER, SAMPLE_USER_PW_HASH } from './helpers/sample-data.helper'
-const { mock } = nodemailer as unknown as NodemailerMock
+const mailer = nodemailer as unknown as NodemailerMock
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication
@@ -35,9 +39,10 @@ describe('AuthController (e2e)', () => {
   let userModel: Model<User>
   let configService: ConfigService
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ThrottlerModule.forRoot({}),
         DbModule,
         SharedModule,
         ConfigModule.forRoot({ isGlobal: true }),
@@ -45,14 +50,23 @@ describe('AuthController (e2e)', () => {
         rootTypegooseTestModule(),
         MailModule.forRoot({ transport: {} as any, defaultSender: '' }),
         AuthModule,
+        PaymentsModule,
       ],
     })
       .overrideProvider(ConfigService)
       .useClass(MockConfigService)
+      .overrideProvider(StripeService)
+      .useClass(MockStripeService)
       .compile()
 
     app = await moduleFixture.createNestApplication()
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
 
     jwtService = app.get<JwtService>(JwtService)
     connection = await app.get(getConnectionToken())
@@ -62,10 +76,14 @@ describe('AuthController (e2e)', () => {
     await app.init()
   })
 
-  afterEach(async () => {
-    await app.close()
+  afterAll(async () => {
     await closeInMongodConnection()
-    mock.reset()
+    await app.close()
+  })
+
+  beforeEach(async () => {
+    await userModel.deleteMany()
+    mailer.mock.reset()
   })
 
   describe('/auth/register (POST)', () => {
@@ -119,12 +137,12 @@ describe('AuthController (e2e)', () => {
           .post('/auth/register')
           .send(SAMPLE_USER)
         // ASSERT
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
       })
 
       it('should pass if email cannot be send', async () => {
         // ARRANGE
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/register')
@@ -140,7 +158,7 @@ describe('AuthController (e2e)', () => {
           .send(SAMPLE_USER)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        const sentMail = mock.getSentMail()[0]
+        const sentMail = mailer.mock.getSentMail()[0]
         const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
@@ -338,6 +356,7 @@ describe('AuthController (e2e)', () => {
         { secret: configService.get('JWT_VERIFY_SECRET') },
       )
     })
+
     describe('Positive Tests', () => {
       it('should verify user email with valid token', async () => {
         // ACT
@@ -351,7 +370,27 @@ describe('AuthController (e2e)', () => {
         const user = await userModel.findOne({ email: SAMPLE_USER.email })
         expect(user.hasVerifiedEmail).toEqual(true)
       })
+
+      it('should update stripe customer if already customer', async () => {
+        // ARRANGE
+        await userModel.updateOne({}, { stripeCustomerId: 'cus_test' })
+        const spy = jest
+          .spyOn(MockStripeService.prototype, 'customer_update')
+          .mockReturnValueOnce(null)
+        // ACT
+        const res = await request(app.getHttpServer())
+          .get(`/auth/verify-email`)
+          .query({
+            token,
+          })
+        // ASSERT
+        expect(res.statusCode).toEqual(HttpStatus.OK)
+        expect(spy).toHaveBeenCalledTimes(1)
+        const user = await userModel.findOne({ email: SAMPLE_USER.email })
+        expect(user.hasVerifiedEmail).toEqual(true)
+      })
     })
+
     describe('Negative Tests', () => {
       it('should fail for invalid token', async () => {
         // ACT
@@ -419,7 +458,7 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(1)
+        expect(mailer.mock.getSentMail().length).toEqual(1)
       })
 
       it('should not send mail if user email is already verified', async () => {
@@ -442,7 +481,7 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        expect(mock.getSentMail().length).toEqual(0)
+        expect(mailer.mock.getSentMail().length).toEqual(0)
       })
 
       it('should send valid token in said email', async () => {
@@ -452,7 +491,7 @@ describe('AuthController (e2e)', () => {
           .set('Authorization', `Bearer ${token}`)
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.OK)
-        const sentMail = mock.getSentMail()[0]
+        const sentMail = mailer.mock.getSentMail()[0]
         const verifyToken = getTokenFromMail(sentMail.html as string)
         const tokenPayload: VerifyJWTPayload = jwtService.verify(verifyToken, {
           secret: configService.get<string>('JWT_VERIFY_SECRET'),
@@ -483,7 +522,7 @@ describe('AuthController (e2e)', () => {
 
         it('should fail if mail could not be send', async () => {
           // ARRANGE
-          mock.setShouldFail(true)
+          mailer.mock.setShouldFail(true)
           // ACT
           const res = await request(app.getHttpServer())
             .get('/auth/request-verify-email')
@@ -518,8 +557,8 @@ describe('AuthController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        expect(mock.getSentMail().length).toEqual(1)
-        const mail = mock.getSentMail()[0]
+        expect(mailer.mock.getSentMail().length).toEqual(1)
+        const mail = mailer.mock.getSentMail()[0]
         const template = getMailUsedTemplate(mail.html as string)
         expect(template).toEqual(MailTemplates.PASSWORD_RESET)
       })
@@ -538,8 +577,8 @@ describe('AuthController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        expect(mock.getSentMail().length).toEqual(1)
-        const mail = mock.getSentMail()[0]
+        expect(mailer.mock.getSentMail().length).toEqual(1)
+        const mail = mailer.mock.getSentMail()[0]
         const token = getTokenFromMail(mail.html as string)
         const tokenPayload: PasswordResetJWTPayload = jwtService.verify(token, {
           secret: configService.get('JWT_PASSWORD_RESET_SECRET'),
@@ -562,8 +601,8 @@ describe('AuthController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        expect(mock.getSentMail().length).toEqual(1)
-        const mail = mock.getSentMail()[0]
+        expect(mailer.mock.getSentMail().length).toEqual(1)
+        const mail = mailer.mock.getSentMail()[0]
         const template = getMailUsedTemplate(mail.html as string)
         expect(template).toEqual(MailTemplates.PASSWORD_RESET_SUPPORT)
       })
@@ -579,12 +618,12 @@ describe('AuthController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.CREATED)
-        expect(mock.getSentMail().length).toEqual(0)
+        expect(mailer.mock.getSentMail().length).toEqual(0)
       })
 
       it('should fail if mail could not be sent', async () => {
         // ARRANGE
-        mock.setShouldFail(true)
+        mailer.mock.setShouldFail(true)
         // ACT
         const res = await request(app.getHttpServer())
           .post('/auth/forgot-password')
@@ -593,7 +632,7 @@ describe('AuthController (e2e)', () => {
           })
         // ASSERT
         expect(res.statusCode).toEqual(HttpStatus.SERVICE_UNAVAILABLE)
-        expect(mock.getSentMail().length).toEqual(0)
+        expect(mailer.mock.getSentMail().length).toEqual(0)
       })
     })
   })

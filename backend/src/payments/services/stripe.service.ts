@@ -13,7 +13,9 @@ export class StripeService {
     })
   }
 
-  async customer_create(email: string) {
+  async customer_create(
+    email: string,
+  ): Promise<Stripe.Response<Stripe.Customer>> {
     try {
       return await this.stripe.customers.create({ email })
     } catch (error) {
@@ -22,11 +24,23 @@ export class StripeService {
     }
   }
 
+  async customer_update(customerId: string, email: string) {
+    try {
+      await this.stripe.customers.update(customerId, { email })
+    } catch (error) {
+      this.logger.error(error)
+      throw new ServiceUnavailableException('Could not update Customer @Stripe')
+    }
+  }
+
   async checkout_session_create(
     plan: string,
     price_id: string,
     customer: string,
-  ) {
+  ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
+    const url =
+      this.configService.get('FRONTEND_DOMAIN') +
+      this.configService.get('STRIPE_REDIRECT_ROUTE')
     try {
       const stripeSession = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card', 'paypal', 'klarna'],
@@ -38,8 +52,8 @@ export class StripeService {
           },
         ],
         mode: 'payment',
-        success_url: this.configService.get('STRIPE_SUCCESS_URL'),
-        cancel_url: this.configService.get('STRIPE_CANCEL_URL'),
+        success_url: `${url}?success=1&plan=${plan}`,
+        cancel_url: `${url}?success=0`,
         customer,
       })
       return stripeSession
@@ -49,7 +63,7 @@ export class StripeService {
     }
   }
 
-  webhook_constructEvent(payload: any, signature: string) {
+  webhook_constructEvent(payload: any, signature: string): Stripe.Event {
     const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET')
     try {
       return this.stripe.webhooks.constructEvent(

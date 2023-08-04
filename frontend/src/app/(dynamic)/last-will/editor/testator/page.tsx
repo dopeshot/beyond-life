@@ -19,6 +19,18 @@ import { Gender } from '../../../../../types/gender'
 import { TestatorFormPayload } from '../../../../../types/lastWill'
 import { SidebarPages } from '../../../../../types/sidebar'
 
+// TODO: Ensure all schemas are equal from the strength
+const validationSchema: ObjectSchema<TestatorFormPayload> = object({
+	name: string(),
+	gender: string<Gender>(),
+	birthDate: string(),
+	birthPlace: string(),
+	houseNumber: string(),
+	zipCode: string(),
+	city: string(),
+	street: string(),
+	moreInfos: array(),
+})
 /**
  * Testator Page
  */
@@ -42,23 +54,16 @@ const Testator = () => {
 
 	// TODO: Convert put this outside and test it
 	const initialFormValues: TestatorFormPayload = {
-		...formTestator,
-		...address,
+		name: formTestator.name ?? '',
+		gender: formTestator.gender ?? undefined,
+		birthDate: formTestator.birthDate ?? '',
+		birthPlace: formTestator.birthPlace ?? '',
+		street: address ? address.street ?? '' : '',
+		houseNumber: address ? address.houseNumber ?? '' : '',
+		zipCode: address ? address.zipCode ?? '' : '',
+		city: address ? address.city ?? '' : '',
 		moreInfos: [...(isHandicapped ? ['isHandicapped'] : []), ...(isInsolvent ? ['isInsolvent'] : [])],
 	}
-
-	// TODO: Ensure all schemas are equal from the strength
-	const validationSchema: ObjectSchema<TestatorFormPayload> = object({
-		name: string(),
-		gender: string<Gender>(),
-		birthDate: string(),
-		birthPlace: string(),
-		houseNumber: string(),
-		zipCode: string(),
-		city: string(),
-		street: string(),
-		moreInfos: array(),
-	})
 
 	const onSubmit = async (values: TestatorFormPayload, href: string) => {
 		// This functions only gets called if values have changed
@@ -66,7 +71,11 @@ const Testator = () => {
 			// Update marriage global state
 			dispatch(setTestator(values))
 
-			await dispatch(sendLastWillState())
+			const response = await dispatch(sendLastWillState())
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
 
 			// Redirect to previous or next page
 			router.push(href)
@@ -109,7 +118,7 @@ const Testator = () => {
 								<div className="2xl:w-2/3">
 									<div className="mb-4 grid gap-x-3 md:mb-0 md:grid-cols-2">
 										{/* Name */}
-										<div className="col-span-2">
+										<div className="col-span-2 mb-2 md:mb-4">
 											<TextInput
 												name="name"
 												inputRequired
@@ -134,7 +143,7 @@ const Testator = () => {
 									</div>
 									{/* Adress */}
 									<div className="grid gap-x-3 md:grid-cols-4">
-										<div className="md:col-start-1 md:col-end-3">
+										<div className="mb-2 md:col-start-1 md:col-end-3 md:mb-4">
 											<TextInput
 												name="street"
 												inputRequired
@@ -143,10 +152,10 @@ const Testator = () => {
 												autoComplete="street-address"
 											/>
 										</div>
-										<div className="md:col-start-3 md:col-end-4">
+										<div className="mb-2 md:col-start-3 md:col-end-4 md:mb-4">
 											<TextInput name="houseNumber" inputRequired labelText="Hausnummer" placeholder="Hausnummer" />
 										</div>
-										<div className="md:col-start-1 md:col-end-2">
+										<div className="mb-2 md:col-start-1 md:col-end-2 md:mb-4">
 											<TextInput
 												name="zipCode"
 												inputRequired
@@ -168,7 +177,6 @@ const Testator = () => {
 									name="moreInfos"
 									labelText="Weitere relevante Infos"
 									inputRequired
-									helperText="Diese Infos sind relevant, um die Verteilung besser einschätzen zu können."
 									options={testatorMoreInfosOptions}
 								/>
 							</div>

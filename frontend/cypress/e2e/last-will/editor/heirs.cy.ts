@@ -1,13 +1,15 @@
 describe('Last Will Heirs Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/heirs')
+		cy.mockUpdateLastWill()
+		cy.mockGetLastWillById()
+		cy.login({
+			route: '/last-will/editor/heirs?id=1',
+		})
+		cy.wait('@mockGetLastWillById')
 	})
 
 	describe('Person', () => {
 		beforeEach(() => {
-			// TODO: Remove when find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			cy.datacy('heirs-dropdownbutton').click()
 			cy.datacy('dropdownbutton-option-1').click()
 		})
@@ -33,34 +35,23 @@ describe('Last Will Heirs Page', () => {
 			cy.datacy('checkbox-moreInfos-option-isHandicapped').click()
 			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
 
-			// Children
-			cy.datacy('checkbox-ownChild-option-ownChild').click()
-			cy.datacy('childRelationShip-dropdown-button').click()
-			cy.datacy('childRelationShip-dropdown-option-childTogether').click()
-
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
-
+			cy.wait('@mockUpdateLastWill')
 			cy.datacy('persons-row-JoyJumper').should('be.visible')
 		})
 
 		it('should update a person', () => {
 			// Add person
 			cy.datacy('textinput-name-input').type('JoyJumper')
-			cy.datacy('button-submit').click()
 
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.datacy('button-submit').click()
+			cy.wait('@mockUpdateLastWill')
 
 			// Edit person
 			cy.datacy('persons-editbutton-JoyJumper').click()
 			cy.datacy('textinput-name-input').clear().type('NewJoy')
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			cy.datacy('persons-row-JoyJumper').should('not.exist')
 			cy.datacy('persons-row-NewJoy').should('be.visible')
@@ -69,17 +60,14 @@ describe('Last Will Heirs Page', () => {
 		it('should remove a person', () => {
 			// Add person
 			cy.datacy('textinput-name-input').type('JoyJumper')
-			cy.datacy('button-submit').click()
 
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.datacy('button-submit').click()
+			cy.wait('@mockUpdateLastWill')
 
 			// Delete person
 			cy.datacy('persons-deletebutton-JoyJumper').click()
 			cy.datacy('button-delete').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			cy.datacy('persons-row-JoyJumper').should('not.exist')
 		})
@@ -87,8 +75,7 @@ describe('Last Will Heirs Page', () => {
 
 	describe('Organisation', () => {
 		beforeEach(() => {
-			// TODO: Remove when find a new fix see /pages/start.cy.ts
-			cy.wait(200)
+			cy.mockUpdateLastWill()
 
 			cy.datacy('heirs-dropdownbutton').click()
 			cy.datacy('dropdownbutton-option-5').click()
@@ -105,9 +92,7 @@ describe('Last Will Heirs Page', () => {
 			cy.datacy('textinput-city-input').type('My Hood')
 
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			cy.datacy('organisations-row-Orga').should('be.visible')
 		})
@@ -116,17 +101,13 @@ describe('Last Will Heirs Page', () => {
 			// Add organisation
 			cy.datacy('textinput-name-input').type('Orga')
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			// Edit organisation
 			cy.datacy('organisations-editbutton-Orga').click()
 			cy.datacy('textinput-name-input').clear().type('NewOrga')
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			cy.datacy('organisations-row-NewOrga').should('be.visible')
 		})
@@ -135,9 +116,7 @@ describe('Last Will Heirs Page', () => {
 			// Add organisation
 			cy.datacy('textinput-name-input').type('Orga')
 			cy.datacy('button-submit').click()
-
-			// TODO(Zoe-Bot): Adjust when api is updated
-			cy.wait(510)
+			cy.wait('@mockUpdateLastWill')
 
 			// Delete organisation
 			cy.datacy('organisations-deletebutton-Orga').click()
