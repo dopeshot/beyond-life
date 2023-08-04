@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { tableData } from '../../../../../../content/order-confirmation'
 import headerBackground from '../../../../../assets/images/layout/headerBackground.jpg'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
@@ -11,6 +12,10 @@ import { routes } from '../../../../../services/routes/routes'
  * Return page after payment with stripe
  */
 const OrderConfirmation = () => {
+	useEffect(() => {
+		document.title = 'Kaufbestätigung | Siebtes Leben'
+	}, [])
+
 	return (
 		<>
 			<header className="relative w-full">

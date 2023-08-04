@@ -45,6 +45,10 @@ const MyLastWills = () => {
 		fetchLastWills()
 	}, [fetchLastWills])
 
+	useEffect(() => {
+		document.title = 'Profil | Siebtes Leben'
+	}, [])
+
 	return (
 		<div>
 			{lastWills.length === 0 ? (

@@ -2,6 +2,7 @@
 import { Form, Formik, FormikProps } from 'formik'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { ObjectSchema, boolean, object } from 'yup'
 import image from '../../../../../assets/images/layout/family2.jpg'
 import { Alert } from '../../../../../components/Alert/Alert'
@@ -37,6 +38,10 @@ const Start = () => {
 		// Redirect to Testator Page
 		router.push(routes.lastWill.testator('demo'))
 	}
+
+	useEffect(() => {
+		document.title = 'Testament Start | Siebtes Leben'
+	}, [])
 
 	return (
 		<div className="container mb-5 mt-8 lg:mt-[30px] lg:flex lg:min-h-[calc(100vh-130px-60px)]">

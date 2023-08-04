@@ -105,6 +105,10 @@ const Marriage = () => {
 		dispatch(setProgressKeys(SidebarPages.MARRIAGE))
 	}, [dispatch])
 
+	useEffect(() => {
+		document.title = 'Testament Familienstand | Siebtes Leben'
+	}, [])
+
 	return (
 		<div className="container mt-5">
 			<Headline className="hidden lg:block">Familienstand</Headline>

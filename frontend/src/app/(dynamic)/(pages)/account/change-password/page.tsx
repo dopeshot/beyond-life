@@ -2,7 +2,7 @@
 import { Form, Formik } from 'formik'
 import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ObjectSchema, object, ref, string } from 'yup'
 import { PASSWORD_MATCH_ERROR, PASSWORD_MIN_LENGTH_ERROR } from '../../../../../../content/validation'
 import { Alert, AlertProps } from '../../../../../components/Alert/Alert'
@@ -71,6 +71,10 @@ const ChangePassword = () => {
 	// Local State
 	const [isLoading, setIsLoading] = useState(false)
 	const [status, setStatus] = useState<ChangePasswordResponse | null>(null)
+
+	useEffect(() => {
+		document.title = 'Passwort ändern | Siebtes Leben'
+	}, [])
 
 	// Render 404 if no token is provided
 	if (!token) {

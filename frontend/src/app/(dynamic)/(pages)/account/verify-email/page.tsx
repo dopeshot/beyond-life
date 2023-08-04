@@ -39,6 +39,10 @@ const EmailVerified = () => {
 		verifyMailRequest()
 	}, [verifyMailRequest])
 
+	useEffect(() => {
+		document.title = 'Email verifizieren | Siebtes Leben'
+	}, [])
+
 	if (!token) {
 		return notFound()
 	}

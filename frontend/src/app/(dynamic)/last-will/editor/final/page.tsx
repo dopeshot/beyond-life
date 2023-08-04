@@ -20,6 +20,10 @@ const Final = () => {
 		dispatch(setProgressKeys(SidebarPages.FINAL))
 	}, [dispatch])
 
+	useEffect(() => {
+		document.title = 'Testament Abschreiben | Siebtes Leben'
+	}, [])
+
 	return (
 		<div className="container mb-12 mt-5 flex flex-1 flex-col">
 			<Headline className="hidden md:mb-8 lg:block">Zusammenfassung</Headline>

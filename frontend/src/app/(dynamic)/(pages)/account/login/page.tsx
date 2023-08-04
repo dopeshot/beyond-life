@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from 'react'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
 import { AccountForm } from '../../../../../components/Form/AccountForm/AccountForm'
@@ -9,6 +10,10 @@ import { routes } from '../../../../../services/routes/routes'
  * Login Page
  */
 const Login = () => {
+	useEffect(() => {
+		document.title = 'Login | Siebtes Leben'
+	}, [])
+
 	return (
 		<div className="container mt-10 md:mt-32 md:w-1/2 2xl:w-1/3">
 			<div className="mb-5 text-center md:mb-10">

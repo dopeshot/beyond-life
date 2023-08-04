@@ -84,6 +84,10 @@ const Succession = () => {
 		dispatch(setProgressKeys(SidebarPages.SUCCESSION))
 	}, [dispatch])
 
+	useEffect(() => {
+		document.title = 'Testament Erbfolge | Siebtes Leben'
+	}, [])
+
 	return (
 		<div className="container my-5 flex flex-1 flex-col">
 			<Headline className="hidden lg:block">Erbfolge</Headline>
