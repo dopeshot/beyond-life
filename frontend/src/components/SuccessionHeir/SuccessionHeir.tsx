@@ -3,6 +3,7 @@ import { Item } from '../../types/lastWill'
 import { TextInput } from '../Form/TextInput/TextInput'
 import { Headline } from '../Headline/Headline'
 import { IconButton } from '../IconButton/IconButton'
+import { Tooltip } from '../Tooltip/Tooltip'
 
 export type SuccessionHeirProps = {
 	/** Sets the name of the Heir */
@@ -59,7 +60,9 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputField
 					{items.length >= 3 && <p className="text-gray-500">und weitere...</p>}
 				</div>
 				<div className="flex h-full items-end">
-					<IconButton datacy={`${datacy}-edit`} onClick={onClick} icon="edit" className="text-lg text-gray-500" />
+					<Tooltip content="Bearbeiten">
+						<IconButton datacy={`${datacy}-edit`} onClick={onClick} icon="edit" className="text-lg text-gray-500" />
+					</Tooltip>
 				</div>
 			</div>
 		</div>
