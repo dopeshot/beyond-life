@@ -14,7 +14,11 @@ export class LastWillDBService {
     private readonly lastWillModel: ReturnModelType<typeof LastWill>,
   ) {}
 
-  async createOne(createLastWillDto: CreateLastWillDto, userId: ObjectId) {
+  async createOne(
+    createLastWillDto: CreateLastWillDto,
+    userId: ObjectId,
+  ): Promise<LastWill> {
+    this.logger.log('Creating new Lastwill')
     const createdLastWill = await this.lastWillModel.create({
       ...createLastWillDto,
       accountId: userId,
@@ -22,11 +26,11 @@ export class LastWillDBService {
     return createdLastWill.toObject() satisfies LastWill
   }
 
-  async findAllByUser(userId: ObjectId) {
+  async findAllByUser(userId: ObjectId): Promise<LastWill[]> {
     return await this.lastWillModel.find({ accountId: userId }).lean()
   }
 
-  async findFullById(id: string, userId: ObjectId) {
+  async findFullById(id: string, userId: ObjectId): Promise<LastWill> {
     const lastWill = await this.lastWillModel
       .findOne({ _id: id, accountId: userId })
       .lean()
@@ -38,7 +42,8 @@ export class LastWillDBService {
     id: string,
     userId: ObjectId,
     updateLastWillDto: UpdateLastWillDto,
-  ) {
+  ): Promise<LastWill> {
+    this.logger.log('Updating last will')
     const updatedLastWill = await this.lastWillModel
       .findOneAndUpdate({ _id: id, accountId: userId }, updateLastWillDto, {
         new: true,
@@ -48,15 +53,17 @@ export class LastWillDBService {
     return updatedLastWill
   }
 
-  async deleteOneById(id: string, userId: ObjectId) {
+  async deleteOneById(id: string, userId: ObjectId): Promise<void> {
+    this.logger.log('Deleting last will')
     await this.lastWillModel.deleteOne({ _id: id, accountId: userId })
   }
 
-  async countDocuments(accountId: ObjectId) {
+  async countDocuments(accountId: ObjectId): Promise<number> {
     return await this.lastWillModel.countDocuments({ accountId })
   }
 
-  async deleteAllByUser(accountId: ObjectId) {
+  async deleteAllByUser(accountId: ObjectId): Promise<void> {
+    this.logger.log('Deleting all last wills for user')
     await this.lastWillModel.deleteMany({ accountId })
   }
 }

@@ -18,6 +18,18 @@ declare global {
 			 */
 			check404(): Chainable<void>
 			/**
+			 * Mocks the get last will by id endpoint.
+			 */
+			mockGetLastWillById(shouldHaveSampleData?: boolean): Chainable<void>
+			/**
+			 * Mocks the create last will endpoint.
+			 */
+			mockCreateLastWill(): Chainable<void>
+			/**
+			 * Mocks the update last will endpoint.
+			 */
+			mockUpdateLastWill(): Chainable<void>
+			/**
 			 * Mocks the get last will fulltext endpoint.
 			 * @param response the response type we want to mock.
 			 */

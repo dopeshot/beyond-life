@@ -97,6 +97,16 @@ describe('LastWillController (e2e)', () => {
         expect(res.body).toBeDefined()
         const createdLastWill = await lastWillModel.count()
         expect(createdLastWill).toBe(1)
+        const extraValues = {
+          _id: null,
+          accountId: null,
+          updatedAt: null,
+          createdAt: null,
+        }
+        expect({ ...res.body, ...extraValues }).toStrictEqual({
+          ...sampleObject,
+          ...extraValues,
+        })
       })
 
       it('should allow multiple last wills', async () => {
@@ -205,7 +215,7 @@ describe('LastWillController (e2e)', () => {
           .expect(HttpStatus.BAD_REQUEST)
       })
 
-      // Can't test missing type in Organisation because it is optional
+      // Can't test missing type in Organisation because everything is optional
 
       it('should prevent exceeding paymentPlan lastWill limit', async () => {
         await lastWillModel.create({

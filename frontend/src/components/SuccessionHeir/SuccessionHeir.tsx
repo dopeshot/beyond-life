@@ -29,7 +29,7 @@ export const SuccessionHeir: React.FC<SuccessionHeirProps> = ({ name, inputField
 				</Headline>
 				<div className="flex items-center">
 					<TextInput
-						datacy={datacy}
+						datacy={`textinput-${datacy}`}
 						className="pr-6 text-right"
 						type="number"
 						width="w-24"

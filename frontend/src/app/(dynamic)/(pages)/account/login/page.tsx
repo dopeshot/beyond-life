@@ -1,4 +1,5 @@
 'use client'
+import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import isAuth from '../../../../../components/Auth/isAuth'
 import { Route } from '../../../../../components/ButtonsAndLinks/Route/Route'
@@ -13,6 +14,9 @@ const Login = () => {
 	useEffect(() => {
 		document.title = 'Login | Siebtes Leben'
 	}, [])
+	// Url Params
+	const searchParams = useSearchParams()
+	const callbackUrl = searchParams.get('callbackUrl')
 
 	return (
 		<div className="container mt-10 md:mt-32 md:w-1/2 2xl:w-1/3">
@@ -25,7 +29,7 @@ const Login = () => {
 
 			<div className="flex items-baseline justify-center gap-2 text-sm">
 				<p className="font-medium text-gray-500">Noch keinen Account?</p>
-				<Route href={routes.account.register()} kind="tertiary">
+				<Route href={routes.account.register({ callbackUrl: callbackUrl ?? '' })} kind="tertiary">
 					Jetzt Registrieren
 				</Route>
 			</div>

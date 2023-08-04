@@ -1,0 +1,14 @@
+{
+	"createdAt": "2023-08-03T14:09:23.168Z",
+	"updatedAt": "2023-08-03T14:09:23.168Z",
+	"_id": "64cbb513b4897e6ff52f3cba",
+	"accountId": "64cad37c6550813b2137ebe9",
+	"common": {},
+	"testator": {
+		"name": ""
+	},
+	"heirs": [],
+	"items": [],
+	"financialAssets": [],
+	"progressKeys": []
+}

@@ -1,66 +1,65 @@
 describe('Last Will Marriage Page', () => {
 	beforeEach(() => {
-		cy.visit('/last-will/editor/marriage')
+		cy.mockGetLastWillById()
+		cy.login({
+			route: '/last-will/editor/marriage?id=1',
+		})
+
+		cy.wait('@mockGetLastWillById')
 	})
 
-	describe.skip('Basic Flow', () => {
+	describe('Basic Flow', () => {
 		it('should fill out divorced and redirect to /last-will/editor/heirs after submit', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			cy.datacy('field-relationshipStatus-divorced').click()
 
+			cy.mockUpdateLastWill()
 			cy.datacy('button-next-submit').click()
+			cy.wait('@mockUpdateLastWill')
 
 			cy.url().should('include', 'last-will/editor/heirs')
 		})
 
 		it('should fill out married and data from partner and redirect to /last-will/editor/heirs after submit', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			// Relationship
 			cy.datacy('field-relationshipStatus-married').click()
 
 			// Partner Citizenship
-			cy.datacy('checkbox-partnerGermanCitizenship-option-partnerGermanCitizenship').click()
+			cy.datacy('checkbox-isPartnerGermanCitizenship-option-isPartnerGermanCitizenship').click()
 
 			// Personal Data
-			cy.datacy('textinput-partnerFirstName-input').type('Joy')
-			cy.datacy('textinput-partnerLastName-input').type('Jumper')
+			cy.datacy('textinput-name-input').type('Joy Jumper')
 
-			cy.datacy('partnerGender-dropdown-button').click()
-			cy.datacy('partnerGender-dropdown-option-female').click()
+			cy.datacy('gender-dropdown-button').click()
+			cy.datacy('gender-dropdown-option-female').click()
 
-			cy.datacy('datepicker-partnerDateOfBirth-input').type('1990-01-01')
-			cy.datacy('textinput-partnerPlaceOfBirth-input').type('Here')
+			cy.datacy('datepicker-birthDate-input').type('1990-01-01')
+			cy.datacy('textinput-birthPlace-input').type('Here')
 
 			// Adress
-			cy.datacy('textinput-partnerStreet-input').type('Cool Street')
-			cy.datacy('textinput-partnerHouseNumber-input').type('1337')
+			cy.datacy('textinput-street-input').type('Cool Street')
+			cy.datacy('textinput-houseNumber-input').type('1337')
 
-			cy.datacy('textinput-partnerZipCode-input').type('11111')
-			cy.datacy('textinput-partnerCity-input').type('My Hood')
+			cy.datacy('textinput-zipCode-input').type('11111')
+			cy.datacy('textinput-city-input').type('My Hood')
 
 			// More Infos
-			cy.datacy('checkbox-partnerMoreInfos-option-partnerHandicapped').click()
-			cy.datacy('checkbox-partnerMoreInfos-option-partnerInsolvent').click()
-			cy.datacy('checkbox-partnerMoreInfos-option-partnerBerlinWill').click()
+			cy.datacy('checkbox-moreInfos-option-isHandicapped').click()
+			cy.datacy('checkbox-moreInfos-option-isInsolvent').click()
+			cy.datacy('checkbox-moreInfos-option-isBerlinWill').click()
 
 			// Property Status
 			cy.datacy('field-matrimonialProperty-communityOfGain').click()
 
+			cy.mockUpdateLastWill()
 			cy.datacy('button-next-submit').click()
+			cy.wait('@mockUpdateLastWill')
 
 			cy.url().should('include', 'last-will/editor/heirs')
 		})
 	})
 
-	describe.skip('Personal Data Married', () => {
+	describe('Personal Data Married', () => {
 		it('should hide personal data of partner when married is false', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			cy.datacy('field-relationshipStatus-married').click()
 			cy.datacy('field-relationshipStatus-divorced').click()
 
@@ -68,9 +67,6 @@ describe('Last Will Marriage Page', () => {
 		})
 
 		it('should show personal data of partner when married', () => {
-			// TODO: Remove whe find a new fix see /pages/start.cy.ts
-			cy.wait(200)
-
 			cy.datacy('field-relationshipStatus-married').click()
 
 			cy.datacy('partner-fields').should('exist')

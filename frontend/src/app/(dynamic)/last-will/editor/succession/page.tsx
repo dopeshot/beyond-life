@@ -20,13 +20,14 @@ import { SidebarPages } from '../../../../../types/sidebar'
  * Succession Page
  */
 const Succession = () => {
+	const router = useRouter()
+
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selectedHeirIndex, setSelectedHeirIndex] = useState<number>()
 
-	const router = useRouter()
-
 	// Global State
 	const _id = useAppSelector((state) => state.lastWill.data._id)
+	const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
 	const heirs = useAppSelector((state) => state.lastWill.data.heirs)
 	const items = useAppSelector((state) => state.lastWill.data.items)
 	const isLoading = useAppSelector((state) => state.lastWill.isLoading)
@@ -35,7 +36,7 @@ const Succession = () => {
 
 	// Prepare links
 	const PREVIOUS_LINK = routes.lastWill.inheritance(_id)
-	const NEXT_LINK = routes.lastWill.final(_id)
+	const NEXT_LINK = isAuthenticated ? routes.lastWill.final(_id) : routes.lastWill.plans(_id) // TODO checken, ob für Testament schon bezahlt wurde
 
 	// Formik
 	const initialFormValues: SuccessionFormPayload = {
@@ -56,7 +57,12 @@ const Succession = () => {
 		try {
 			// Update store
 			dispatch(setSuccession(values))
-			await dispatch(sendLastWillState())
+			const response = await dispatch(sendLastWillState())
+			if (response.meta.requestStatus === 'rejected') {
+				return
+				// TODO: Add error handling here
+			}
+
 			router.push(href)
 		} catch (error) {
 			console.error('An error occured while submitting the form: ', error)
@@ -102,6 +108,7 @@ const Succession = () => {
 						<div className="mt-5 grid grid-cols-1 gap-6 md:mt-6 md:grid-cols-2 2xl:grid-cols-3">
 							{values.heirs.map((heir, index) => (
 								<SuccessionHeir
+									datacy={`heir-${heir.id}`}
 									key={`heir-${heir.id}`}
 									name={heir.name}
 									inputFieldName={`heirs.${index}.percentage`}
@@ -138,6 +145,7 @@ const Succession = () => {
 										</Headline>
 										<div className="flex items-center">
 											<TextInput
+												datacy={`textinput-modal-${selectedHeirIndex}`}
 												className="pr-6 text-right"
 												type="number"
 												min={0}
@@ -167,6 +175,7 @@ const Succession = () => {
 														)
 														.map((item, index) => (
 															<div
+																datacy={`assigned-item-${item.id}`}
 																key={item.id}
 																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {
@@ -200,6 +209,7 @@ const Succession = () => {
 														.filter((item) => !values.heirs.find((heir) => heir.itemIds?.includes(item.id)))
 														.map((item) => (
 															<div
+																datacy={`unassigned-item-${item.id}`}
 																key={item.id}
 																className="group -ml-2 flex cursor-pointer justify-between rounded-md p-0.5 px-2 hover:bg-gray-100"
 																onClick={() => {

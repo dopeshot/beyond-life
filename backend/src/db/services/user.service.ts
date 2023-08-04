@@ -49,6 +49,7 @@ export class UserDBService {
    * @description Insert user and handle constraint violations
    */
   async insertUser(userData: Partial<User>): Promise<User> {
+    this.logger.log('Creating user')
     try {
       userData.password = await this.hashPassword(userData.password)
       const user: User = await this.userModel.create(userData)
@@ -65,7 +66,10 @@ export class UserDBService {
   /**
    * @description Set users email verify value
    */
-  async updateUserEmailVerify(email: string, newVerifyValue?: boolean) {
+  async updateUserEmailVerify(
+    email: string,
+    newVerifyValue?: boolean,
+  ): Promise<void> {
     if (!newVerifyValue) {
       newVerifyValue = true
     }
@@ -79,12 +83,14 @@ export class UserDBService {
     return await bhash(password, 10)
   }
 
-  async updateUserPassword(id: ObjectId, password: string) {
+  async updateUserPassword(id: ObjectId, password: string): Promise<void> {
+    this.logger.log('Updating user password')
     const hashedPw = await this.hashPassword(password)
     await this.userModel.updateOne({ _id: id }, { password: hashedPw })
   }
 
-  async updateUserEmail(id: ObjectId, email: string) {
+  async updateUserEmail(id: ObjectId, email: string): Promise<void> {
+    this.logger.log('Updating user email')
     try {
       await this.userModel.updateOne(
         { _id: id },
@@ -97,14 +103,16 @@ export class UserDBService {
     }
   }
 
-  async deleteUserById(_id: ObjectId) {
+  async deleteUserById(_id: ObjectId): Promise<void> {
+    this.logger.log('Deleting user')
     await this.userModel.deleteOne({ _id })
   }
 
   async updateUserPaymentPlan(
     stripeCustomerId: string,
     paymentPlan: PaymentOptions,
-  ) {
+  ): Promise<void> {
+    this.logger.log('Updating user payment plan')
     try {
       await this.userModel.findOneAndUpdate(
         { stripeCustomerId },
@@ -122,7 +130,8 @@ export class UserDBService {
   async updateUserCheckoutInformation(
     stripeCustomerId: string,
     checkoutInformation: CheckoutInformation,
-  ) {
+  ): Promise<void> {
+    this.logger.log('Updating user checkout information')
     // We do 2 calls here since we want to know if the customerId exists
     const user = await this.userModel.findOne({ stripeCustomerId })
     if (!user)
@@ -149,7 +158,11 @@ export class UserDBService {
     }
   }
 
-  async updateUserStripeCustomerId(_id: string, stripeCustomerId: string) {
+  async updateUserStripeCustomerId(
+    _id: string,
+    stripeCustomerId: string,
+  ): Promise<void> {
+    this.logger.log('Updating user customer id')
     await this.userModel.findByIdAndUpdate({ _id }, { stripeCustomerId })
   }
 }
