@@ -32,7 +32,7 @@ describe('prepareLastWills function', () => {
 				{ label: 'Erben', icon: 'check_circle' },
 				{ label: 'Erbschaft', icon: 'cancel' },
 				{ label: 'Erbfolge', icon: 'cancel' },
-				{ label: 'Zusammenfassung', icon: 'cancel' },
+				{ label: 'Abschreiben', icon: 'cancel' },
 			],
 		})
 
@@ -45,7 +45,7 @@ describe('prepareLastWills function', () => {
 				{ label: 'Erben', icon: 'cancel' },
 				{ label: 'Erbschaft', icon: 'cancel' },
 				{ label: 'Erbfolge', icon: 'cancel' },
-				{ label: 'Zusammenfassung', icon: 'cancel' },
+				{ label: 'Abschreiben', icon: 'cancel' },
 			],
 		})
 	})

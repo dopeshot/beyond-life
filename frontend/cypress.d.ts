@@ -47,7 +47,7 @@ declare global {
 			/**
 			 * Mock the create checkout session endpoint.
 			 */
-			mockCreateCheckoutSession(): Chainable<void>
+			mockCreateCheckoutSession(response?: 'OK' | 'NETWORK_ERROR'): Chainable<void>
 			/**
 			 * Mock the change email endpoint.
 			 * @param response the response type we want to mock.

@@ -28,7 +28,7 @@ export const sidebarElements: SidebarElement[] = [
 	},
 	{
 		page: SidebarPages.FINAL,
-		title: 'Zusammenfassung',
+		title: 'Abschreiben',
 		description: 'Überprüfung und Abschreiben',
 	},
 ]
